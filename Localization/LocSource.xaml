@@ -1,0 +1,28 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- MainView -->
+
+    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsvTitle">Screenshots</sys:String>
+
+    <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
+    
+    <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
+
+
+    <!-- ScreenshotsVisualizerView -->
+
+    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+
+
+    <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvShowSinglePicture">Show single screenshot</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Show list of screenshots</sys:String>
+
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
+    
+    <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    
+</ResourceDictionary>

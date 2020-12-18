@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="ScreenshotsVisualizer.Views.SsvScreenshotsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
+             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
+             mc:Ignorable="d" Height="700" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
+
+    <UserControl.Resources>
+        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <plugincommon:IndexConverter x:Key="IndexConverter"/>
+        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
+    </UserControl.Resources>
+
+    <DockPanel Margin="10">
+        <ListBox DockPanel.Dock="Left" Width="400" Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="center"
+                               Height="96" Width="96" 
+                                       Source="{Binding FileName, IsAsync=True, Mode=OneWay}" Name="PART_Picture" />
+
+                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding FileNameOnly}" Width="240"
+                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <Grid Grid.Column="2" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                       Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}}"/>
+
+                            <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" Grid.Column="2" Visibility="Collapsed"
+                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{StaticResource font}" VerticalAlignment="Center"
+                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid>
+            <Image Name="PART_Screenshot" />
+        </Grid>
+    </DockPanel>
+</UserControl>
