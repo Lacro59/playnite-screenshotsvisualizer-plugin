@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
              xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
+             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              mc:Ignorable="d" MinHeight="100" MinWidth="200">
 
     <UserControl.Resources>
         <plugincommon:IndexConverter x:Key="IndexConverter"/>
         <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
+        <services:TgaConverter x:Key="TgaConverter"/>
     </UserControl.Resources>
 
     <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
@@ -41,7 +43,7 @@ s
 
                         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                   Source="{Binding FileName, IsAsync=True}">
+                                   Source="{Binding FileName, IsAsync=True, Converter={StaticResource TgaConverter}}">
                             <Image.Height>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />

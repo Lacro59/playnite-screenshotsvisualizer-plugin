@@ -91,7 +91,7 @@ namespace ScreenshotsVisualizer.Services
                 gameScreenshots.InSettings = true;
 
                 // Get files
-                string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", "*.bmp" };
+                string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga" };
                 if (Directory.Exists(gameScreenshots.ScreenshotsFolder))
                 {
                     Parallel.ForEach(Directory.EnumerateFiles(gameScreenshots.ScreenshotsFolder, "*.*")

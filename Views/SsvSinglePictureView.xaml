@@ -4,11 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
+             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <services:TgaConverter x:Key="TgaConverter"/>
+    </UserControl.Resources>
+    
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
         <Grid>
-            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" Source="{Binding PictureSource, IsAsync=True}"
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" 
+                   Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource TgaConverter}}"
                    Height="576" Width="1024" />
         </Grid>
     </Grid>

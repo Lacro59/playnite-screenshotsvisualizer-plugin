@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
+             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              mc:Ignorable="d" MinHeight="100" MinWidth="100">
 
     <UserControl.Resources>
         <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
+        <services:TgaConverter x:Key="TgaConverter"/>
     </UserControl.Resources>
     
     <Grid Loaded="Grid_Loaded">
@@ -18,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
-               Source="{Binding PictureSource, IsAsync=True}" />
+               Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource TgaConverter}}" />
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
