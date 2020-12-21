@@ -250,7 +250,7 @@ namespace ScreenshotsVisualizer
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
-            return new ScreenshotsVisualizerSettingsView(PlayniteApi);
+            return new ScreenshotsVisualizerSettingsView(PlayniteApi, this.GetPluginUserDataPath());
         }
     }
 }

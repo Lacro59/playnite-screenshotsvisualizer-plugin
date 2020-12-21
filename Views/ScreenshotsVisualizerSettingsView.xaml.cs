@@ -1,6 +1,7 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
+using ScreenshotsVisualizer.Clients;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,16 @@ namespace ScreenshotsVisualizer.Views
         private static readonly ILogger logger = LogManager.GetLogger();
         private IPlayniteAPI _PlayniteApi;
 
+        private string _PluginUserDataPath;
+
         public static List<ListGameScreenshot> listGameScreenshots = new List<ListGameScreenshot>();
         public static List<ListGame> listGames = new List<ListGame>();
 
 
-        public ScreenshotsVisualizerSettingsView(IPlayniteAPI PlayniteApi)
+        public ScreenshotsVisualizerSettingsView(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
             _PlayniteApi = PlayniteApi;
+            _PluginUserDataPath = PluginUserDataPath;
 
             InitializeComponent();
 
@@ -243,6 +247,41 @@ namespace ScreenshotsVisualizer.Views
             }
         }
 
+
+        // Add Steam game automaticly
+        private void PART_BtAddSteamGame_Click(object sender, RoutedEventArgs e)
+        {
+            Steam steam = new Steam(_PluginUserDataPath);
+
+            var tmpList = listGames.GetClone().Where(x => x.SourceName == "Steam").ToList();
+            foreach (var game in tmpList)
+            {
+                int index = listGames.FindIndex(x => x.Id == game.Id);
+                listGames.RemoveAt(index);
+
+                string Icon = string.Empty;
+                if (!game.Icon.IsNullOrEmpty())
+                {
+                    Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
+                }
+
+                listGameScreenshots.Add(new ListGameScreenshot
+                {
+                    Id = game.Id,
+                    Icon = Icon,
+                    Name = game.Name,
+                    ScreenshotsFolder = steam.GetGamePathScreenshotsFolder(_PlayniteApi.Database.Games.Get(game.Id)),
+                    SourceName = game.SourceName
+                });
+            }
+
+            PART_ListGame.ItemsSource = null;
+            PART_ListGame.ItemsSource = listGames;
+
+            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            PART_ListGameScreenshot.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+        }
     }
 
 

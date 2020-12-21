@@ -433,7 +433,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="150" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35" />
@@ -451,6 +451,9 @@
                     <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
                             Click="PART_BtSelectGame_Click" IsEnabled="False" Width="120"
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Button Grid.Column="2" Name="PART_BtAddSteamGame" Content="{DynamicResource LOCSsvAddSteamGame}" HorizontalAlignment="Right" 
+                            Click="PART_BtAddSteamGame_Click"
+                            Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
                 </Grid>
 
                 <Grid Grid.Row="2" Name="PART_GridContenerListGame" 
