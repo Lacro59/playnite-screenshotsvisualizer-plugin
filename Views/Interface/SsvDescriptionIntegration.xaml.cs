@@ -58,6 +58,17 @@ namespace ScreenshotsVisualizer.Views.Interface
                 {
                     this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
+                        if (PluginDatabase.GameSelectedData.HasData)
+                        {
+                            this.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                            return;
+                        }
+
+
                         // Margin with title
                         if (PluginDatabase.PluginSettings.IntegrationShowTitle)
                         {
