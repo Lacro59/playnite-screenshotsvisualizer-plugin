@@ -55,9 +55,8 @@ namespace ScreenshotsVisualizer.Views
 
             if (File.Exists(screenshot.FileName))
             {
-                ImageConverter tgaConverter = new ImageConverter();
-                PART_Screenshot.Source = (BitmapImage)tgaConverter.Convert(screenshot.FileName, null, null, null);
-                //PART_Screenshot.Source = new BitmapImage(new Uri(screenshot.FileName));
+                ImageConverter imageConverter = new ImageConverter();
+                PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(screenshot.FileName, null, null, null);
             }
         }
 
@@ -79,17 +78,8 @@ namespace ScreenshotsVisualizer.Views
                 {
                     if (File.Exists(screenshot.FileName))
                     {
-                        PART_ListScreenshots.SelectedIndex = -1;
-                        PART_ListScreenshots.ItemsSource = null;
-
                         PART_Screenshot.Source = null;
                         PART_Screenshot.UpdateLayout();
-                        var tmp = ((Image)((Grid)((Grid)((Button)sender).Parent).Parent).FindName("PART_Picture"));
-                        tmp.Source = null;
-                        tmp.UpdateLayout();
-
-                        System.GC.Collect();
-                        System.GC.WaitForPendingFinalizers();
 
                         Task.Run(() => 
                         {
@@ -98,11 +88,18 @@ namespace ScreenshotsVisualizer.Views
 
                             }
 
-                            File.Delete(screenshot.FileName);
-                        });
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                screenshot.FileName,
+                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
+                            });
 
                         gameScreenshots.Items.Remove(screenshot);
                         PluginDatabase.Update(gameScreenshots);
+
+                        PART_ListScreenshots.SelectedIndex = -1;
+                        PART_ListScreenshots.ItemsSource = null;
                     }
                 }
                 catch (Exception ex)
@@ -113,6 +110,7 @@ namespace ScreenshotsVisualizer.Views
                 var Items = gameScreenshots.Items;
                 Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
+                PART_ListScreenshots.ItemsSource = null;
                 PART_ListScreenshots.ItemsSource = Items;
             }
             else

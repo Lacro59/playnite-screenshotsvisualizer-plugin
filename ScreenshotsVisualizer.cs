@@ -95,6 +95,20 @@ namespace ScreenshotsVisualizer
                     var ViewExtension = new SsvScreenshotsView(PlayniteApi, ScreenshotsVisualizer.GameSelected);
                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
                     windowExtension.ShowDialog();
+
+                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                    {
+                        var TaskIntegrationUI = Task.Run(() =>
+                        {
+                            screenshotsVisualizerUI.Initial();
+                            screenshotsVisualizerUI.taskHelper.Check();
+                            var dispatcherOp = screenshotsVisualizerUI.AddElements();
+                            if (dispatcherOp != null)
+                            {
+                                dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameSelected); };
+                            }
+                        });
+                    }
                 }
             });
 

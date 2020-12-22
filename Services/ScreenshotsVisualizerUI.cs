@@ -245,6 +245,20 @@ namespace ScreenshotsVisualizer.Services
             var ViewExtension = new SsvScreenshotsView(_PlayniteApi, ScreenshotsVisualizer.GameSelected);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
             windowExtension.ShowDialog();
+
+            if (PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme || PluginDatabase.PluginSettings.EnableIntegrationInDescription)
+            {
+                var TaskIntegrationUI = Task.Run(() =>
+                {
+                    ScreenshotsVisualizer.screenshotsVisualizerUI.Initial();
+                    ScreenshotsVisualizer.screenshotsVisualizerUI.taskHelper.Check();
+                    var dispatcherOp = ScreenshotsVisualizer.screenshotsVisualizerUI.AddElements();
+                    if (dispatcherOp != null)
+                    {
+                        dispatcherOp.Completed += (s, ev) => { ScreenshotsVisualizer.screenshotsVisualizerUI.RefreshElements(ScreenshotsVisualizer.GameSelected); };
+                    }
+                });
+            }
         }
 
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
