@@ -335,6 +335,11 @@
                                 <TextBox Text="{Binding IntegrationShowSinglePictureHeight, FallbackValue=150}" Width="40" Grid.Column="1"
                                                  VerticalAlignment="Center" TextAlignment="Center"/>
                             </Grid>
+                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding OpenViewerWithOnSelection}" 
+                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                            </CheckBox>
                         </Grid>
                     </GroupBox>
 
@@ -412,6 +417,11 @@
                                 <TextBox Text="{Binding IntegrationShowPicturesHeight, FallbackValue=200}" Width="40" Grid.Column="1"
                                                  VerticalAlignment="Center" TextAlignment="Center"/>
                             </Grid>
+                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding OpenViewerWithOnSelection}" 
+                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                            </CheckBox>
                         </Grid>
                     </GroupBox>
                 </StackPanel>

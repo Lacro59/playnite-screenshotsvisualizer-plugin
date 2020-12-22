@@ -29,6 +29,9 @@ namespace ScreenshotsVisualizer
         public bool IntegrationShowSinglePicture { get; set; } = false;
         public bool IntegrationShowPictures { get; set; } = false;
 
+        public bool OpenViewerWithOnSelection { get; set; } = false;
+        public bool LinkWithSinglePicture { get; set; } = false;
+
         public double IntegrationShowSinglePictureHeight { get; set; } = 150;
 
         public double IntegrationShowPicturesHeight { get; set; } = 150;
@@ -74,6 +77,9 @@ namespace ScreenshotsVisualizer
                 IntegrationTopGameDetails = savedSettings.IntegrationTopGameDetails;
                 IntegrationShowSinglePicture = savedSettings.IntegrationShowSinglePicture;
                 IntegrationShowPictures = savedSettings.IntegrationShowPictures;
+
+                OpenViewerWithOnSelection = savedSettings.OpenViewerWithOnSelection;
+                LinkWithSinglePicture = savedSettings.LinkWithSinglePicture;
 
                 IntegrationShowSinglePictureHeight = savedSettings.IntegrationShowSinglePictureHeight;
 

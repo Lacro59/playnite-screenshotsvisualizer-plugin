@@ -155,18 +155,36 @@ namespace ScreenshotsVisualizer.Views.Interface
         }
 
 
-        private void PART_ScreenshotsPicture_MouseDown(object sender, MouseButtonEventArgs e)
+        private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            WindowCreationOptions windowCreationOptions = new WindowCreationOptions
-            {
-                ShowMinimizeButton = false,
-                ShowMaximizeButton = true,
-                ShowCloseButton = true
-            };
+            bool IsGood = false;
 
-            var ViewExtension = new SsvSinglePictureView(screenshots[index]);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
-            windowExtension.ShowDialog();
+            if (PluginDatabase.PluginSettings.OpenViewerWithOnSelection)
+            {
+                IsGood = true;
+            }
+            else
+            {
+                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                {
+                    IsGood = true;
+                }
+            }
+
+
+            if (IsGood)
+            {
+                WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                {
+                    ShowMinimizeButton = false,
+                    ShowMaximizeButton = true,
+                    ShowCloseButton = true
+                };
+
+                var ViewExtension = new SsvSinglePictureView(screenshots[index]);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
+                windowExtension.ShowDialog();
+            }
         }
     }
 }

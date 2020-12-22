@@ -16,12 +16,11 @@
     </UserControl.Resources>
 
     <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
-        <ListBox Name="PART_ListScreenshots"                             
+        <ListBox Name="PART_ListScreenshots"                
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <!--UniformGrid Columns="{Binding CountItems}" Rows="1" /-->
                     <VirtualizingStackPanel Orientation="Horizontal" PreviewMouseWheel="VirtualizingStackPanel_PreviewMouseWheel" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
@@ -42,7 +41,7 @@ s
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
+                        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform"
                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
                                Source="{Binding FileName, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}">
                             <Image.Height>

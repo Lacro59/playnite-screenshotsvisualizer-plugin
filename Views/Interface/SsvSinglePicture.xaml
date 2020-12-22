@@ -11,15 +11,15 @@
         <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
         <services:ImageConverter x:Key="ImageConverter" />
     </UserControl.Resources>
-    
-    <Grid Loaded="Grid_Loaded">
+
+    <Grid Loaded="Grid_Loaded" Name="PART_Contener" MouseDown="PART_Contener_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="8" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform"
                Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}" />
 
         <Grid Grid.Row="2">

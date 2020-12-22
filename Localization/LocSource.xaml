@@ -26,5 +26,7 @@
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
     
 </ResourceDictionary>
