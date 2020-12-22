@@ -89,36 +89,44 @@ namespace ScreenshotsVisualizer.Views.Interface
 
         private void ListBoxItem_MouseLeftButtonDownClick(object sender, MouseButtonEventArgs e)
         {
-            int index = PART_ListScreenshots.SelectedIndex;
-            Screenshot screenshot = ((Screenshot)PART_ListScreenshots.Items[index]);
-
-            bool IsGood = false;
-
-            if (PluginDatabase.PluginSettings.OpenViewerWithOnSelection)
+            ListBoxItem item = ItemsControl.ContainerFromElement(PART_ListScreenshots, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item != null)
             {
-                IsGood = true;
-            }
-            else
-            {
-                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                int index = PART_ListScreenshots.SelectedIndex;
+                Screenshot screenshot = ((Screenshot)PART_ListScreenshots.Items[index]);
+
+                bool IsGood = false;
+
+                if (PluginDatabase.PluginSettings.OpenViewerWithOnSelection)
                 {
                     IsGood = true;
                 }
-            }
-
-
-            if (IsGood)
-            {
-                WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                else
                 {
-                    ShowMinimizeButton = false,
-                    ShowMaximizeButton = true,
-                    ShowCloseButton = true
-                };
+                    if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                    {
+                        IsGood = true;
+                    }
+                }
 
-                var ViewExtension = new SsvSinglePictureView(screenshot);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
-                windowExtension.ShowDialog();
+
+                if (IsGood)
+                {
+                    WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true
+                    };
+
+                    var ViewExtension = new SsvSinglePictureView(screenshot);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
+                    windowExtension.ShowDialog();
+                }
+            }
+            else
+            {
+
             }
         }
 
@@ -134,7 +142,15 @@ namespace ScreenshotsVisualizer.Views.Interface
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (PluginDatabase.PluginSettings.LinkWithSinglePicture && PluginDatabase.PluginSettings.IntegrationShowSinglePicture)
+            {
+                SsvSinglePicture ssvSinglePicture = Tools.FindVisualChildren<SsvSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
 
+                if (ssvSinglePicture != null)
+                {
+                    ssvSinglePicture.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
+                }
+            }
         }
     }
 

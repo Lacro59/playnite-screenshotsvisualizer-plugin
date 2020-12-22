@@ -120,6 +120,16 @@ namespace ScreenshotsVisualizer.Views.Interface
         }
 
 
+        public void SetPictureFromList(int index)
+        {
+            if (index != -1)
+            {
+                this.index = index;
+
+                SetPicture(screenshots[index]);
+            }
+        }
+
         private void PART_Prev_Click(object sender, RoutedEventArgs e)
         {
             if (index == 0)

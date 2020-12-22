@@ -16,7 +16,7 @@
     </UserControl.Resources>
 
     <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
-        <ListBox Name="PART_ListScreenshots"                
+        <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"                
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
             <ListBox.ItemsPanel>

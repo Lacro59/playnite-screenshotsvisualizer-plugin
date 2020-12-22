@@ -406,6 +406,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
@@ -421,6 +422,12 @@
                                       IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
                                       VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding LinkWithSinglePicture}" 
+                                      IsEnabled="{Binding IntegrationShowSinglePicture}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
                             </CheckBox>
                         </Grid>
                     </GroupBox>
