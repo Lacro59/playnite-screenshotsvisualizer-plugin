@@ -112,6 +112,25 @@ namespace ScreenshotsVisualizer
                 }
             });
 
+            gameMenuItems.Add(new GameMenuItem
+            {
+                // Refresh data
+                MenuSection = resources.GetString("LOCSsv"),
+                Description = resources.GetString("LOCCommonRefreshGameData"),
+                Action = (gameMenuItem) =>
+                {
+                    PluginDatabase.RefreshData(GameMenu);
+
+                    screenshotsVisualizerUI.Initial();
+                    screenshotsVisualizerUI.taskHelper.Check();
+                    var dispatcherOp = screenshotsVisualizerUI.AddElements();
+                    if (dispatcherOp != null)
+                    {
+                        dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameMenu); };
+                    }
+                }
+            });
+
 #if DEBUG
             gameMenuItems.Add(new GameMenuItem
             {
