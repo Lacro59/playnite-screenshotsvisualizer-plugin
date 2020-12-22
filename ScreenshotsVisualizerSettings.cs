@@ -17,6 +17,8 @@ namespace ScreenshotsVisualizer
         public bool EnableCheckVersion { get; set; } = true;
         public bool MenuInExtensions { get; set; } = true;
 
+        public bool EnableTag { get; set; } = false;
+
         public bool EnableIntegrationButton { get; set; } = false;
         public bool EnableIntegrationInDescription { get; set; } = true;
 
@@ -66,6 +68,8 @@ namespace ScreenshotsVisualizer
             {
                 EnableCheckVersion = savedSettings.EnableCheckVersion;
                 MenuInExtensions = savedSettings.MenuInExtensions;
+
+                EnableTag = savedSettings.EnableTag;
 
                 EnableIntegrationButton = savedSettings.EnableIntegrationButton;
                 EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;

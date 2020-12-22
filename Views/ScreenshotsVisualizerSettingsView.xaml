@@ -442,11 +442,16 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
                     <RowDefinition Height="10" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid>
+                <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource LOCSsvAddTag}" />
+                </CheckBox>
+
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="*" />
@@ -473,7 +478,7 @@
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
                 </Grid>
 
-                <Grid Grid.Row="2" Name="PART_GridContenerListGame" 
+                <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
                       Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
                              Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
@@ -499,7 +504,7 @@
                     </ListBox>
                 </Grid>
 
-                <Grid Grid.Row="2" Name="PART_GridContener"
+                <Grid Grid.Row="3" Name="PART_GridContener"
                       Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                     <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True"
                              Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 

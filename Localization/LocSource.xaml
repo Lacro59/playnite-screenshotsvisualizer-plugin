@@ -18,6 +18,7 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
     
     <sys:String x:Key="LOCSsvShowSinglePicture">Show single screenshot</sys:String>

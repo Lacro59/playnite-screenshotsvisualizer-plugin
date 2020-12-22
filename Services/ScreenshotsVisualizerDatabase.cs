@@ -145,5 +145,88 @@ namespace ScreenshotsVisualizer.Services
                 Common.LogError(ex, PluginName, $"Error on File load for {game.Name} on {gameScreenshots.ScreenshotsFolder}");
             }
         }
+
+
+        protected override void GetPluginTags()
+        {
+#if DEBUG
+            logger.Debug($"{PluginName} - GetPluginTags()");
+#endif
+            System.Threading.SpinWait.SpinUntil(() => _PlayniteApi.Database.IsOpen, -1);
+
+            try
+            {
+                // Get tags in playnite database
+                PluginTags = new List<Tag>();
+                foreach (Tag tag in _PlayniteApi.Database.Tags)
+                {
+                    if (tag.Name.IndexOf("[SSV] ") > -1)
+                    {
+                        PluginTags.Add(tag);
+                    }
+                }
+
+                // Add missing tags
+                if (PluginTags.Count == 0)
+                {
+                    _PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SSV] {resources.GetString("LOCSsvTitle")}" });
+
+                    foreach (Tag tag in _PlayniteApi.Database.Tags)
+                    {
+                        if (tag.Name.IndexOf("[HLTB] ") > -1)
+                        {
+                            PluginTags.Add(tag);
+                        }
+                    }
+                }
+
+#if DEBUG
+                logger.Debug($"{PluginName} - PluginTags: {JsonConvert.SerializeObject(PluginTags)}");
+#endif
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, PluginName);
+            }
+        }
+
+        public override void AddTag(Game game)
+        {
+            GameScreenshots gameScreenshots = Get(game, true);
+
+            if (gameScreenshots.HasData)
+            {
+                try
+                {
+                    if (PluginTags.FirstOrDefault() != null)
+                    {
+                        Guid TagId = PluginTags.FirstOrDefault().Id;
+
+                        if (game.TagIds != null)
+                        {
+                            game.TagIds.Add(TagId);
+                        }
+                        else
+                        {
+                            game.TagIds = new List<Guid> { TagId };
+                        }
+
+                        _PlayniteApi.Database.Games.Update(game);
+                    }
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Common.LogError(ex, PluginName);
+#endif
+                    logger.Error($"{PluginName} - Tag insert error with {game.Name}");
+                    _PlayniteApi.Notifications.Add(new NotificationMessage(
+                        $"{PluginName}-Tag-Errors",
+                        $"{PluginName}\r\n" + resources.GetString("LOCCommonNotificationTagError"),
+                        NotificationType.Error
+                    ));
+                }
+            }
+        }
     }
 }

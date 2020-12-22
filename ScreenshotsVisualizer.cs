@@ -134,22 +134,25 @@ namespace ScreenshotsVisualizer
             }
 
             List<MainMenuItem> mainMenuItems = new List<MainMenuItem>();
-
-            /*
+            
             mainMenuItems.Add(new MainMenuItem
             {
-                // Show list achievements for all games
-                new MainMenuItem
+                MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                Description = resources.GetString("LOCCommonAddAllTags"),
+                Action = (mainMenuItem) =>
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
-                    Description = resources.GetString("LOCSuccessStoryViewGames"),
-                    Action = (mainMenuItem) =>
-                    {
-
-                    }
+                    PluginDatabase.AddTagAllGame();
                 }
             });
-            */
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                Description = resources.GetString("LOCCommonRemoveAllTags"),
+                Action = (mainMenuItem) =>
+                {
+                    PluginDatabase.RemoveTagAllGame();
+                }
+            });
 
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem

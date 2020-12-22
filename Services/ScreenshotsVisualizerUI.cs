@@ -152,6 +152,11 @@ namespace ScreenshotsVisualizer.Services
                         if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
                         {
                             PluginDatabase.SetCurrent(gameScreenshots);
+
+                            if (PluginDatabase.PluginSettings.EnableTag)
+                            {
+                                PluginDatabase.AddTag(GameSelected);
+                            }
                         }
                     }
                 }
