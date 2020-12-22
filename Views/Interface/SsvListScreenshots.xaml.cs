@@ -83,6 +83,7 @@ namespace ScreenshotsVisualizer.Views.Interface
             IntegrationUI.SetControlSize((FrameworkElement)sender);
         }
 
+
         private void PART_ScreenshotsPicture_MouseDown(object sender, MouseButtonEventArgs e)
         {
             int index = int.Parse(((FrameworkElement)sender).Tag.ToString());
@@ -98,6 +99,16 @@ namespace ScreenshotsVisualizer.Views.Interface
             var ViewExtension = new SsvSinglePictureView(screenshot);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
             windowExtension.ShowDialog();
+        }
+
+
+        private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                ((VirtualizingStackPanel)sender).LineLeft();
+            else
+                ((VirtualizingStackPanel)sender).LineRight();
+            e.Handled = true;
         }
     }
 

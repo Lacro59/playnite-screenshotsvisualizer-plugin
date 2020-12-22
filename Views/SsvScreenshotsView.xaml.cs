@@ -55,7 +55,7 @@ namespace ScreenshotsVisualizer.Views
 
             if (File.Exists(screenshot.FileName))
             {
-                TgaConverter tgaConverter = new TgaConverter();
+                ImageConverter tgaConverter = new ImageConverter();
                 PART_Screenshot.Source = (BitmapImage)tgaConverter.Convert(screenshot.FileName, null, null, null);
                 //PART_Screenshot.Source = new BitmapImage(new Uri(screenshot.FileName));
             }

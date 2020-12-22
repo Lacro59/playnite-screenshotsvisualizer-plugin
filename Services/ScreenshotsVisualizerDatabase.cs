@@ -27,7 +27,20 @@ namespace ScreenshotsVisualizer.Services
         {
             IsLoaded = false;
 
-            Directory.Delete(Path.Combine(PluginUserDataPath, "ScreenshotsVisualizer"), true);
+            if (Directory.Exists(Path.Combine(PluginUserDataPath, "ScreenshotsVisualizer")))
+            {
+                string[] files = Directory.GetFiles(Path.Combine(PluginUserDataPath, "ScreenshotsVisualizer"));
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
 
             Database = new ScreeshotsVisualizeCollection(PluginDatabaseDirectory);
             Database.SetGameInfo<Screenshot>(_PlayniteApi);
@@ -97,18 +110,25 @@ namespace ScreenshotsVisualizer.Services
                     Parallel.ForEach(Directory.EnumerateFiles(gameScreenshots.ScreenshotsFolder, "*.*")
                         .Where(s => extensions.Any(ext => ext == Path.GetExtension(s))), (objectFile) =>
                         {
-                            DateTime Modified = File.GetLastWriteTime(objectFile);
-
-                            gameScreenshots.Items.Add(new Screenshot
+                            try
                             {
-                                FileName = objectFile,
-                                Modifed = Modified
-                            });
+                                DateTime Modified = File.GetLastWriteTime(objectFile);
+
+                                gameScreenshots.Items.Add(new Screenshot
+                                {
+                                    FileName = objectFile,
+                                    Modifed = Modified
+                                });
+                            }
+                            catch
+                            {
+
+                            }
                         });
                 }
                 else
                 {
-                    logger.Warn($"ScreenshotsVisualizer - Screenshots directory not found for {game.Name}");
+                    //logger.Warn($"ScreenshotsVisualizer - Screenshots directory not found for {game.Name}");
                 }
 
                 gameScreenshots.Items = gameScreenshots.Items.Where(x => x != null).ToList();

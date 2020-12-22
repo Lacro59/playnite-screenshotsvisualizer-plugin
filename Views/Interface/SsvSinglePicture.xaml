@@ -9,7 +9,7 @@
 
     <UserControl.Resources>
         <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
-        <services:TgaConverter x:Key="TgaConverter"/>
+        <services:ImageConverter x:Key="ImageConverter" />
     </UserControl.Resources>
     
     <Grid Loaded="Grid_Loaded">
@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
-               Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource TgaConverter}}" />
+               Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}" />
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

@@ -12,7 +12,7 @@
         <plugincommon:IndexConverter x:Key="IndexConverter"/>
         <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
-        <services:TgaConverter x:Key="TgaConverter"/>
+        <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
 
     <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
@@ -21,7 +21,8 @@
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="{Binding CountItems}" Rows="1" />
+                    <!--UniformGrid Columns="{Binding CountItems}" Rows="1" /-->
+                    <VirtualizingStackPanel Orientation="Horizontal" PreviewMouseWheel="VirtualizingStackPanel_PreviewMouseWheel" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 s
@@ -42,8 +43,8 @@ s
                         </Grid.RowDefinitions>
 
                         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseDown="PART_ScreenshotsPicture_MouseDown"
-                                   Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                   Source="{Binding FileName, IsAsync=True, Converter={StaticResource TgaConverter}}">
+                               Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                               Source="{Binding FileName, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}">
                             <Image.Height>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />

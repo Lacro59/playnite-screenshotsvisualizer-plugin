@@ -1,5 +1,4 @@
-﻿using Pfim;
-using PluginCommon;
+﻿using PluginCommon;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,63 +12,57 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using ImageFormat = Pfim.ImageFormat;
 
 namespace ScreenshotsVisualizer.Services
 {
-    public class TgaConverter : MarkupExtension, IValueConverter
+    public class ImageConverter : MarkupExtension, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string && File.Exists((string)value))
+            if (value is string && !((string)value).IsNullOrEmpty() && File.Exists((string)value))
             {
-                if (((string)value).ToLower().Contains("tga"))
+                BitmapLoadProperties bitmapLoadProperties = null;
+                if (parameter is string && (string)parameter == "1")
                 {
-                    using (var image = Pfim.Pfim.FromFile((string)value))
+                    bitmapLoadProperties = new BitmapLoadProperties(100, 0)
                     {
-                        PixelFormat format;
+                        Source = (string)value
+                    };
+                }
+                if (parameter is string && (string)parameter == "2")
+                {
+                    bitmapLoadProperties = new BitmapLoadProperties(200, 0)
+                    {
+                        Source = (string)value
+                    };
+                }
 
-                        // Convert from Pfim's backend agnostic image format into GDI+'s image format
-                        switch (image.Format)
-                        {
-                            case ImageFormat.Rgba32:
-                                format = PixelFormat.Format32bppArgb;
-                                break;
-                            case ImageFormat.Rgb24:
-                                format = PixelFormat.Format24bppRgb;
-                                break;
-                            default:
-                                // see the sample for more details
-                                throw new NotImplementedException();
-                        }
 
-                        // Pin pfim's data array so that it doesn't get reaped by GC, unnecessary
-                        // in this snippet but useful technique if the data was going to be used in
-                        // control like a picture box
-                        var handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
-                        Bitmap bitmap = null;
-                        try
-                        {
-                            var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
-                            bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
-                        }
-                        finally
-                        {
-                            handle.Free();
-                        }
+                if (((string)value).EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
+                {
+                    BitmapImage bitmapImage = BitmapExtensions.TgaToBitmap((string)value);
 
-                        if (bitmap != null)
-                        {
-                            return ImageTools.ConvertBitmapToBitmapImage(bitmap);
-                        }
+                    if (bitmapLoadProperties == null)
+                    {
+                        return bitmapImage;
+                    }
+                    else
+                    {
+                        return bitmapImage.GetClone(bitmapLoadProperties);
                     }
                 }
-                else if (!((string)value).IsNullOrEmpty())
+                
+
+                if (bitmapLoadProperties == null)
                 {
-                    return new BitmapImage(new Uri((string)value));
+                    return BitmapExtensions.BitmapFromFile((string)value);
+                }
+                else
+                {
+                    return BitmapExtensions.BitmapFromFile((string)value, bitmapLoadProperties);
                 }
             }
-
+            
             return value;
         }
 

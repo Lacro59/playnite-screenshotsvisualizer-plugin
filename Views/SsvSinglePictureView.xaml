@@ -8,13 +8,13 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <services:TgaConverter x:Key="TgaConverter"/>
+        <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
     
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
         <Grid>
             <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" 
-                   Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource TgaConverter}}"
+                   Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource ImageConverter}}"
                    Height="576" Width="1024" />
         </Grid>
     </Grid>
