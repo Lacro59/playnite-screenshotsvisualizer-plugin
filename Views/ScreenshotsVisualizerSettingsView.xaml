@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
-             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
-        <plugincommon:IndexConverter x:Key="IndexConverter"/>
+        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
         <converters:NegateConverter x:Key="NegateConverter" />
     </UserControl.Resources>
 
@@ -533,10 +533,10 @@
                                     <ScrollViewer Grid.Column="6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Name="scv">
                                         <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" MaxWidth="{Binding ElementName=scv, Path=ActualWidth}" />
                                     </ScrollViewer>
-                                    <Button Grid.Column="8" Content="" FontFamily="{StaticResource font}" Click="ButtonSelectFolder_Click" 
+                                    <Button Grid.Column="8" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
                                             Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
                                             VerticalAlignment="Center" />
-                                    <Button Grid.Column="10" Content="" FontFamily="{StaticResource font}" Click="ButtonRemove_Click" 
+                                    <Button Grid.Column="10" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
                                             Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
                                             VerticalAlignment="Center" />
                                 </Grid>

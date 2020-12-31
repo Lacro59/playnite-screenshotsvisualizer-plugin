@@ -1,5 +1,5 @@
-﻿using Playnite.SDK;
-using PluginCommon;
+﻿using CommonPluginsShared;
+using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;

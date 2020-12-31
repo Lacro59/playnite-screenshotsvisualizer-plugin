@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
-             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              mc:Ignorable="d" MinHeight="100" MinWidth="200">
 
     <UserControl.Resources>
-        <plugincommon:IndexConverter x:Key="IndexConverter"/>
-        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
         <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>

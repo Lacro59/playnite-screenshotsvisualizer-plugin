@@ -1,16 +1,15 @@
 ﻿<Button x:Class="ScreenshotsVisualizer.Views.Interface.SsvButton"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
-        xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         mc:Ignorable="d" Height="40">
 
     <Button.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </Button.Resources>
 
     <Button.Style>
@@ -47,7 +46,7 @@
     </Button.Style>
 
     <Grid>
-        <TextBlock Name="PART_ButtonIcon" Text="" FontFamily="{StaticResource font}" 
+        <TextBlock Name="PART_ButtonIcon" Text="" FontFamily="{DynamicResource CommonFont}" 
                    Visibility="{Binding EnableIntegrationButtonJustIcon, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Name="PART_ButtonText"  Text="{DynamicResource LOCSsvTitle}"
                    Visibility="{Binding EnableIntegrationButtonJustIcon, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />

@@ -1,6 +1,6 @@
-﻿using Playnite.SDK;
+﻿using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
 using ScreenshotsVisualizer.Clients;
 using ScreenshotsVisualizer.Models;
 using System;

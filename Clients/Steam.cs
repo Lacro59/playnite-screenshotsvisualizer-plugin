@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
+using CommonPluginsShared;
 using SteamKit2;
 using System;
 using System.Collections.Generic;

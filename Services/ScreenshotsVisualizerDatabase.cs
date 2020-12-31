@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
-using PluginCommon.Collections;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;

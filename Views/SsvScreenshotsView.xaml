@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
-             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              mc:Ignorable="d" Height="700" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
-        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <plugincommon:IndexConverter x:Key="IndexConverter"/>
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
         <services:ImageConverter x:Key="ImageConverter"/>
         <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </UserControl.Resources>
@@ -49,7 +49,7 @@
                                        Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}}"/>
 
                             <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" Grid.Column="2"
-                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{StaticResource font}" VerticalAlignment="Center"
+                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" VerticalAlignment="Center"
                                     Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
                         </Grid>
                     </Grid>
