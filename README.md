@@ -1,5 +1,5 @@
 # playnite-screenshotsvisualizer-plugin
-Generic plugin for [Playnite](https://playnite.link/) application.
+Generic plugin for [Playnite](https://playnite.link) application.  
 This plugin shows your games screenshots in Playnite. 
 
 More information here: https://playnite.link/forum/thread-514.html
