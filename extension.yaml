@@ -5,3 +5,10 @@ Version: 1.2.1
 Module: ScreenshotsVisualizer.dll
 Type: GenericPlugin
 Icon: icon.png
+Links:
+  - Name: Plugin forum
+    Url: https://playnite.link/forum/thread-514.html
+  - Name: Plugin Github
+    Url: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin
+  - Name: Plugin translations
+    Url: https://crowdin.com/project/playnite-extensions
