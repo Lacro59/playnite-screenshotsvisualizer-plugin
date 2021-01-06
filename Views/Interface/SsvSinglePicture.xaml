@@ -8,7 +8,6 @@
              mc:Ignorable="d" MinHeight="100" MinWidth="100">
 
     <UserControl.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
         <services:ImageConverter x:Key="ImageConverter" />
     </UserControl.Resources>
 
@@ -19,8 +18,14 @@
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform"
-               Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}" />
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform">
+            <Image.Source>
+                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                    <Binding Path="PictureSource" IsAsync="True" />
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                </MultiBinding>
+            </Image.Source>
+        </Image>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

@@ -42,8 +42,15 @@ s
                         </Grid.RowDefinitions>
 
                         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform"
-                               Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                               Source="{Binding FileName, IsAsync=True, Converter={StaticResource ImageConverter}, ConverterParameter=2}">
+                               Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                                    <Binding Path="FileName" IsAsync="True" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                                </MultiBinding>
+                            </Image.Source>
+                            
                             <Image.Height>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />

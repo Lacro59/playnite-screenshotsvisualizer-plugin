@@ -13,8 +13,14 @@
     
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
         <Grid>
-            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" 
-                   Source="{Binding PictureSource, IsAsync=True, Converter={StaticResource ImageConverter}}" />
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="3">
+                        <Binding Path="PictureSource" IsAsync="True" />
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </Grid>
     </Grid>
 </UserControl>
