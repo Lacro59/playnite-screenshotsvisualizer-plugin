@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Services
@@ -114,11 +115,27 @@ namespace ScreenshotsVisualizer.Services
                             {
                                 DateTime Modified = File.GetLastWriteTime(objectFile);
 
-                                gameScreenshots.Items.Add(new Screenshot
+                                if (item.UsedFilePattern)
                                 {
-                                    FileName = objectFile,
-                                    Modifed = Modified
-                                });
+                                    string Pattern = item.FilePattern.Replace("{digit}", @"\d*");
+
+                                    if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
+                                    {
+                                        gameScreenshots.Items.Add(new Screenshot
+                                        {
+                                            FileName = objectFile,
+                                            Modifed = Modified
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    gameScreenshots.Items.Add(new Screenshot
+                                    {
+                                        FileName = objectFile,
+                                        Modifed = Modified
+                                    });
+                                }
                             }
                             catch
                             {

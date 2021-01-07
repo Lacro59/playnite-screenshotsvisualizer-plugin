@@ -10,5 +10,7 @@ namespace ScreenshotsVisualizer.Models
     {
         public Guid Id { get; set; }
         public string ScreenshotsFolder { get; set; }
+        public bool UsedFilePattern { get; set; }
+        public string FilePattern { get; set; }
     }
 }

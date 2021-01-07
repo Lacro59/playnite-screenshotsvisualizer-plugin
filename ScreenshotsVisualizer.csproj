@@ -78,6 +78,9 @@
     <Compile Include="Models\GameSettings.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\ScreeshotsVisualizeCollection.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml.cs">
+      <DependentUpon>TextBlockTrimmed.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\Converters.cs" />
@@ -131,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Interface\SsvButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

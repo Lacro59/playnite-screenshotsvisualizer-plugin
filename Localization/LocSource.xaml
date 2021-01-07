@@ -31,4 +31,12 @@
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
     
+    <sys:String x:Key="LOCSsvUsedFilePattern">Used a file pattern</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+
+To use the simplified version, replace the numbers with {digit} and remove the extension.
+
+Example:
+GameName_20200107-1 => GameName_ {digit} - {digit}</sys:String>
+
 </ResourceDictionary>

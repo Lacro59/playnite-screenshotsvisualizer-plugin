@@ -73,6 +73,8 @@ namespace ScreenshotsVisualizer.Views
                         Icon = Icon,
                         Name = game.Name,
                         ScreenshotsFolder = item.ScreenshotsFolder,
+                        UsedFilePattern = item.UsedFilePattern,
+                        FilePattern = item.FilePattern,
                         SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id)
                     });
                 }
@@ -196,6 +198,8 @@ namespace ScreenshotsVisualizer.Views
                 Icon = Icon,
                 Name = SelectedItem.Name,
                 ScreenshotsFolder = string.Empty,
+                UsedFilePattern = false,
+                FilePattern = string.Empty,
                 SourceName = SelectedItem.SourceName
             });
             
@@ -299,6 +303,8 @@ namespace ScreenshotsVisualizer.Views
         public string Icon { get; set; }
         public string Name { get; set; }
         public string SourceName { get; set; }
+        public bool UsedFilePattern { get; set; }
+        public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
     }
 }

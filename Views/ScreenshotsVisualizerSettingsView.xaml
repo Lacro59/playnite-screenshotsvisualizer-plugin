@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -461,8 +462,8 @@
                         <RowDefinition Height="35" />
                     </Grid.RowDefinitions>
 
-                    <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" HorizontalAlignment="left" Width="120" />
-
+                    <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
+                                  HorizontalAlignment="left" Width="120" VerticalAlignment="Center" />
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label Content="{DynamicResource LOCSearchLabel}" FontSize="16" Margin="0,0,10,0" />
@@ -472,9 +473,11 @@
 
                     <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
                             Click="PART_BtSelectGame_Click" IsEnabled="False" Width="120"
+                            VerticalAlignment="Center"
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Button Grid.Column="2" Name="PART_BtAddSteamGame" Content="{DynamicResource LOCSsvAddSteamGame}" HorizontalAlignment="Right" 
                             Click="PART_BtAddSteamGame_Click"
+                            VerticalAlignment="Center"
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
                 </Grid>
 
@@ -489,56 +492,100 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="400" />
                                         <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
                                     <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
                                        Source="{Binding Icon}"/>
-                                    <Label Grid.Column="2" Content="{Binding Name}" />
-                                    <Label Grid.Column="4" Content="{Binding SourceName}" />
+                                    <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
+                                    <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
 
+
                 <Grid Grid.Row="3" Name="PART_GridContener"
                       Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                    <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True"
+                    <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True" MinHeight="100"
                              Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
-                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}">
+                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="*" SharedSizeGroup="A" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="250" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="15" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="8" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
 
-                                    <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                       Source="{Binding Icon}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="4" Text="{Binding SourceName}" VerticalAlignment="Center" />
-                                    <ScrollViewer Grid.Column="6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Name="scv">
-                                        <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" MaxWidth="{Binding ElementName=scv, Path=ActualWidth}" />
-                                    </ScrollViewer>
-                                    <Button Grid.Column="8" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
-                                            Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                            VerticalAlignment="Center" />
-                                    <Button Grid.Column="10" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
-                                            Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                            VerticalAlignment="Center" />
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
+                                               VerticalAlignment="Center" Source="{Binding Icon}"/>
+                                        <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
+                                                                   Grid.Column="2" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
+
+                                        <Grid Grid.Column="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox Grid.Column="0" Name="PART_UsedPattern" VerticalAlignment="Center" IsChecked="{Binding UsedFilePattern}">
+                                                <Label Content="{DynamicResource LOCSsvUsedFilePattern}" />
+                                            </CheckBox>
+
+                                            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" 
+                                                          VerticalScrollBarVisibility="Disabled" Name="scvPattern">
+                                                <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" 
+                                                         MinWidth="50" IsEnabled="{Binding ElementName=PART_UsedPattern, Path=IsChecked}"
+                                                         MaxWidth="{Binding ElementName=scvPattern, Path=ActualWidth}">
+                                                    <TextBox.ToolTip>
+                                                        <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
+                                                    </TextBox.ToolTip>
+                                                </TextBox>
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" HorizontalAlignment="Right"
+                                                   Grid.Column="0" Text="{Binding SourceName, FallbackValue=Source_Name}" VerticalAlignment="Center" />
+                                        <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Name="scv">
+                                            <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" 
+                                                     MinWidth="200"
+                                                     MaxWidth="{Binding ElementName=scv, Path=ActualWidth}" />
+                                        </ScrollViewer>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
+                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    VerticalAlignment="Center" />
+                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
+                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    VerticalAlignment="Center" Margin="10,0,0,0" />
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
