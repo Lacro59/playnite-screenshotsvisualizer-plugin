@@ -201,6 +201,8 @@ namespace ScreenshotsVisualizer
                     {
                         var TaskIntegrationUI = Task.Run(() =>
                         {
+                            System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+
                             screenshotsVisualizerUI.Initial();
                             screenshotsVisualizerUI.taskHelper.Check();
                             var dispatcherOp = screenshotsVisualizerUI.AddElements();

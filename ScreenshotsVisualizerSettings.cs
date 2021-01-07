@@ -135,14 +135,17 @@ namespace ScreenshotsVisualizer
             plugin.SavePluginSettings(this);
 
             ScreenshotsVisualizer.screenshotsVisualizerUI.RemoveElements();
+
             var TaskIntegrationUI = Task.Run(() =>
             {
+                ScreenshotsVisualizer.PluginDatabase.IsLoaded = false;
+                ScreenshotsVisualizer.PluginDatabase.InitializeDatabase();
+
+                System.Threading.SpinWait.SpinUntil(() => ScreenshotsVisualizer.PluginDatabase.IsLoaded, -1);
+
                 var dispatcherOp = ScreenshotsVisualizer.screenshotsVisualizerUI.AddElements();
                 dispatcherOp.Completed += (s, e) => { ScreenshotsVisualizer.screenshotsVisualizerUI.RefreshElements(ScreenshotsVisualizer.GameSelected); };
             });
-
-            ScreenshotsVisualizer.PluginDatabase.IsLoaded = false;
-            ScreenshotsVisualizer.PluginDatabase.InitializeDatabase();
         }
 
         // Code execute when user decides to confirm changes made since BeginEdit was called.

@@ -66,6 +66,17 @@ namespace ScreenshotsVisualizer.Views.Interface
                 {
                     this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
+                        if (PluginDatabase.GameSelectedData.HasData)
+                        {
+                            this.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                            return;
+                        }
+
+
                         bool EnableIntegrationButtonJustIcon;
                         if (_JustIcon == null)
                         {
