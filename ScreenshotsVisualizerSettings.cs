@@ -13,6 +13,7 @@ namespace ScreenshotsVisualizer
     public class ScreenshotsVisualizerSettings : ISettings
     {
         private readonly ScreenshotsVisualizer plugin;
+        private ScreenshotsVisualizerSettings editingClone;
 
         public bool EnableCheckVersion { get; set; } = true;
         public bool MenuInExtensions { get; set; } = true;
@@ -97,22 +98,28 @@ namespace ScreenshotsVisualizer
             }
         }
 
+        // Code executed when settings view is opened and user starts editing values.
         public void BeginEdit()
         {
-            // Code executed when settings view is opened and user starts editing values.
+            editingClone = this.GetClone();
         }
 
+        // Code executed when user decides to cancel any changes made since BeginEdit was called.
+        // This method should revert any changes made to Option1 and Option2.
         public void CancelEdit()
         {
-            // Code executed when user decides to cancel any changes made since BeginEdit was called.
-            // This method should revert any changes made to Option1 and Option2.
+            LoadValues(editingClone);
         }
 
+        private void LoadValues(ScreenshotsVisualizerSettings source)
+        {
+            source.CopyProperties(this, false, null, true);
+        }
+
+        // Code executed when user decides to confirm changes made since BeginEdit was called.
+        // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
-            // Code executed when user decides to confirm changes made since BeginEdit was called.
-            // This method should save settings made to Option1 and Option2.
-
             gameSettings = new List<GameSettings>();
             foreach (var item in ScreenshotsVisualizerSettingsView.listGameScreenshots)
             {
