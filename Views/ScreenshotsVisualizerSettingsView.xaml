@@ -251,6 +251,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
 
                             <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowSinglePicture}" VerticalAlignment="Center">
@@ -259,6 +260,13 @@
                             <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationShowPictures}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSsvShowPictures}" />
                             </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding AddBorder}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                            </CheckBox>
+                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding AddRoundedCorner}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
+                            </CheckBox-->
                         </Grid>
                     </GroupBox>
 

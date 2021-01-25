@@ -41,9 +41,14 @@ namespace ScreenshotsVisualizer.Views.Interface
             InitializeComponent();
 
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
-        
 
-        PluginDatabase.PropertyChanged += OnPropertyChanged;
+            this.DataContext = new
+            {
+                AddBorder = PluginDatabase.PluginSettings.AddBorder,
+                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner
+            };
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
 
@@ -76,6 +81,8 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             this.DataContext = new
             {
+                AddBorder = PluginDatabase.PluginSettings.AddBorder,
+                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
                 CountItems = screenshots.Count
             };
         }
@@ -137,9 +144,13 @@ namespace ScreenshotsVisualizer.Views.Interface
         private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
+            {
                 ((VirtualizingStackPanel)sender).LineLeft();
+            }
             else
+            {
                 ((VirtualizingStackPanel)sender).LineRight();
+            }
             e.Handled = true;
         }
 

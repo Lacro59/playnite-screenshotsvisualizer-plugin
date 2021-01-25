@@ -13,6 +13,7 @@
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
         <services:ImageConverter x:Key="ImageConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
@@ -41,7 +42,7 @@ s
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform"
+                        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
 
                             <Image.Source>
@@ -64,6 +65,13 @@ s
                                 </MultiBinding>
                             </Image.Width>
                         </Image>
+                        <Border Name="PART_ImageBorder" Grid.Row="0"
+                                BorderThickness="{DynamicResource ControlBorderThickness}" 
+                                BorderBrush="{DynamicResource NormalBorderBrush}" 
+                                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                                Visibility="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        </Border>
 
                         <Grid Grid.Row="2" Name="PART_LabelContener">
                             <Grid.ColumnDefinitions>

@@ -9,6 +9,7 @@
 
     <UserControl.Resources>
         <services:ImageConverter x:Key="ImageConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid Loaded="Grid_Loaded" Name="PART_Contener" MouseDown="PART_Contener_MouseDown">
@@ -17,8 +18,8 @@
             <RowDefinition Height="8" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
-
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform">
+        
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
                     <Binding Path="PictureSource" IsAsync="True" />
@@ -26,6 +27,42 @@
                 </MultiBinding>
             </Image.Source>
         </Image>
+        <Border Name="PART_ImageBorder" Grid.Row="0"
+                BorderThickness="{DynamicResource ControlBorderThickness}" 
+                BorderBrush="{DynamicResource NormalBorderBrush}" 
+                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                Visibility="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}">
+        </Border>
+
+        <!--Border BorderBrush="{DynamicResource NormalBorderBrush}" Grid.Row="0"
+                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="CornerRadius" Value="0,0,0,0" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AddCorner}" Value="True">
+                            <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding AddRoundedCorner}" Value="True">
+                            <Setter Property="CornerRadius" Value="8,8,8,8" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border.Background>
+                <ImageBrush Stretch="Uniform">
+                    <ImageBrush.ImageSource>
+                        <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="4">
+                            <Binding Path="PictureSource" IsAsync="True" />
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}" />
+                        </MultiBinding>
+                    </ImageBrush.ImageSource>
+                </ImageBrush>
+            </Border.Background>
+        </Border-->
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

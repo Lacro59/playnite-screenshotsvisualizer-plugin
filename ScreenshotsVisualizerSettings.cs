@@ -43,6 +43,9 @@ namespace ScreenshotsVisualizer
 
         public bool EnableIntegrationFS { get; set; } = false;
 
+        public bool AddBorder { get; set; } = true;
+        public bool AddRoundedCorner { get; set; } = false;
+
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
 
@@ -95,6 +98,9 @@ namespace ScreenshotsVisualizer
                 EnableIntegrationFS = savedSettings.EnableIntegrationFS;
 
                 gameSettings = savedSettings.gameSettings;
+
+                AddBorder = savedSettings.AddBorder;
+                AddRoundedCorner = savedSettings.AddRoundedCorner;
             }
         }
 

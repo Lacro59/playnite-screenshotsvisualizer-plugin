@@ -43,6 +43,12 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             InitializeComponent();
 
+            this.DataContext = new
+            {
+                AddBorder = PluginDatabase.PluginSettings.AddBorder,
+                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner
+            };
+
             PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
@@ -92,6 +98,8 @@ namespace ScreenshotsVisualizer.Views.Interface
             {
                 this.DataContext = new
                 {
+                    AddBorder = PluginDatabase.PluginSettings.AddBorder,
+                    AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
                     PictureSource = string.Empty,
                     PictureInfos = string.Empty
                 };
@@ -114,6 +122,8 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             this.DataContext = new
             {
+                AddBorder = PluginDatabase.PluginSettings.AddBorder,
+                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
                 PictureSource = PictureSource,
                 PictureInfos = PictureInfos
             };
