@@ -55,11 +55,7 @@ namespace ScreenshotsVisualizer
             if (settings.EnableCheckVersion)
             {
                 CheckVersion cv = new CheckVersion();
-
-                if (cv.Check("ScreenshotsVisualizer", pluginFolder))
-                {
-                    cv.ShowNotification(api, "ScreenshotsVisualizer - " + resources.GetString("LOCUpdaterWindowTitle"));
-                }
+                cv.Check("ScreenshotsVisualizer", pluginFolder, api);
             }
 
             // Init ui interagration

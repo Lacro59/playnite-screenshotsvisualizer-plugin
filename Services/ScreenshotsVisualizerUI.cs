@@ -155,6 +155,7 @@ namespace ScreenshotsVisualizer.Services
 
                             if (PluginDatabase.PluginSettings.EnableTag)
                             {
+                                PluginDatabase.RemoveTag(GameSelected);
                                 PluginDatabase.AddTag(GameSelected);
                             }
                         }
