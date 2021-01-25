@@ -5,15 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
-             mc:Ignorable="d" MinHeight="576" MinWidth="1024">
+             mc:Ignorable="d" MinHeight="100" MinWidth="100">
 
     <UserControl.Resources>
         <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
-    
+
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
-        <Grid>
-            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
+        <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="3">
                         <Binding Path="PictureSource" IsAsync="True" />
@@ -22,5 +21,4 @@
                 </Image.Source>
             </Image>
         </Grid>
-    </Grid>
 </UserControl>
