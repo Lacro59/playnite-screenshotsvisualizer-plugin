@@ -9,6 +9,7 @@
     <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->

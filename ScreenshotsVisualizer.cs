@@ -3,10 +3,12 @@ using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -78,36 +80,55 @@ namespace ScreenshotsVisualizer
         // To add new game menu items override GetGameMenuItems
         public override List<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
-            var GameMenu = args.Games.First();
+            Game GameMenu = args.Games.First();
+            GameScreenshots gameScreenshots = PluginDatabase.Get(GameMenu);
+
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
-            gameMenuItems.Add(new GameMenuItem
+            if (gameScreenshots.HasData)
             {
-                // Delete & download localizations data for the selected game
-                MenuSection = resources.GetString("LOCSsv"),
-                Description = resources.GetString("LOCSsvViewScreenshots"),
-                Action = (gameMenuItem) =>
+                gameMenuItems.Add(new GameMenuItem
                 {
-                    var ViewExtension = new SsvScreenshotsView(PlayniteApi, ScreenshotsVisualizer.GameSelected);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
-                    windowExtension.ShowDialog();
-
-                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                    // Delete & download localizations data for the selected game
+                    MenuSection = resources.GetString("LOCSsv"),
+                    Description = resources.GetString("LOCSsvViewScreenshots"),
+                    Action = (gameMenuItem) =>
                     {
-                        var TaskIntegrationUI = Task.Run(() =>
+                        var ViewExtension = new SsvScreenshotsView(PlayniteApi, ScreenshotsVisualizer.GameSelected);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
+                        windowExtension.ShowDialog();
+
+                        if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
                         {
-                            screenshotsVisualizerUI.Initial();
-                            screenshotsVisualizerUI.taskHelper.Check();
-                            var dispatcherOp = screenshotsVisualizerUI.AddElements();
-                            if (dispatcherOp != null)
+                            var TaskIntegrationUI = Task.Run(() =>
                             {
-                                dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameSelected); };
-                            }
-                        });
+                                screenshotsVisualizerUI.Initial();
+                                screenshotsVisualizerUI.taskHelper.Check();
+                                var dispatcherOp = screenshotsVisualizerUI.AddElements();
+                                if (dispatcherOp != null)
+                                {
+                                    dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameSelected); };
+                                }
+                            });
+                        }
                     }
+                });
+
+                if (!gameScreenshots.ScreenshotsFolder.IsNullOrEmpty() && Directory.Exists(gameScreenshots.ScreenshotsFolder))
+                {
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        // Open directory
+                        MenuSection = resources.GetString("LOCSsv"),
+                        Description = resources.GetString("LOCSsvOpenScreenshotsDirectory"),
+                        Action = (gameMenuItem) =>
+                        {
+                            Process.Start(gameScreenshots.ScreenshotsFolder);
+                        }
+                    });
                 }
-            });
+            }
 
             gameMenuItems.Add(new GameMenuItem
             {
