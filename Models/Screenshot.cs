@@ -15,6 +15,7 @@ namespace ScreenshotsVisualizer.Models
         /// </summary>
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
+        public string SizeString { get; set; }
 
         [JsonIgnore]
         public string FileNameOnly

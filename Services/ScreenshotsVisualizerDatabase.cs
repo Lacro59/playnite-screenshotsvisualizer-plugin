@@ -114,6 +114,8 @@ namespace ScreenshotsVisualizer.Services
                             try
                             {
                                 DateTime Modified = File.GetLastWriteTime(objectFile);
+                                ImageProperty imageProperty = ImageTools.GetImapeProperty(objectFile);
+                                string SizeString = imageProperty.Width + "x" + imageProperty.Height;
 
                                 if (item.UsedFilePattern)
                                 {
@@ -124,7 +126,8 @@ namespace ScreenshotsVisualizer.Services
                                         gameScreenshots.Items.Add(new Screenshot
                                         {
                                             FileName = objectFile,
-                                            Modifed = Modified
+                                            Modifed = Modified,
+                                            SizeString = SizeString
                                         });
                                     }
                                 }
@@ -133,7 +136,8 @@ namespace ScreenshotsVisualizer.Services
                                     gameScreenshots.Items.Add(new Screenshot
                                     {
                                         FileName = objectFile,
-                                        Modifed = Modified
+                                        Modifed = Modified,
+                                        SizeString = SizeString
                                     });
                                 }
                             }
