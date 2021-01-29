@@ -123,6 +123,7 @@ namespace ScreenshotsVisualizer.Services
                     List<ResourcesList> resourcesLists = new List<ResourcesList>();
                     resourcesLists.Add(new ResourcesList { Key = "Ssv_HasData", Value = false });
                     resourcesLists.Add(new ResourcesList { Key = "Ssv_Count", Value = 0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Ssv_ListScreenshots", Value = new List<Screenshot>() });
                     ui.AddResources(resourcesLists);
 
 
@@ -138,6 +139,7 @@ namespace ScreenshotsVisualizer.Services
                         resourcesLists = new List<ResourcesList>();
                         resourcesLists.Add(new ResourcesList { Key = "Ssv_HasData", Value = true });
                         resourcesLists.Add(new ResourcesList { Key = "Ssv_Count", Value = gameScreenshots.Items.Count });
+                        resourcesLists.Add(new ResourcesList { Key = "Ssv_ListScreenshots", Value = gameScreenshots.Items });
                     }
                     else
                     {

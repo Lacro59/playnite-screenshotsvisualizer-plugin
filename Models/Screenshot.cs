@@ -10,6 +10,9 @@ namespace ScreenshotsVisualizer.Models
 {
     public class Screenshot
     {
+        /// <summary>
+        /// Complete path file
+        /// </summary>
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
