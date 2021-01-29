@@ -16,7 +16,7 @@
         <controls:ZoomBorder ClipToBounds="True">
             <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
                 <Image.Source>
-                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="3">
+                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
                         <Binding Path="PictureSource" IsAsync="True" />
                         <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
                     </MultiBinding>

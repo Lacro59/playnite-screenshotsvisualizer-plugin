@@ -189,34 +189,16 @@ namespace ScreenshotsVisualizer.Services
 
             FrameworkElement BtActionBar;
 
-            /*
-            if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle)
+            if (PluginDatabase.PluginSettings.EnableIntegrationButtonDetails)
             {
-                if (PluginDatabase.PluginSettings.EnableIntegrationButtonDetails)
-                {
-                    BtActionBar = new GameActivityToggleButtonDetails();
-                }
-                else
-                {
-                    BtActionBar = new GameActivityToggleButton();
-                }
-
-                ((ToggleButton)BtActionBar).Click += OnBtActionBarToggleButtonClick;
+                BtActionBar = new SsvButtonDetails();
             }
             else
             {
-            */
-                if (PluginDatabase.PluginSettings.EnableIntegrationButtonDetails)
-                {
-                    BtActionBar = new SsvButtonDetails();
-                }
-                else
-                {
-                    BtActionBar = new SsvButton();
-                }
+                BtActionBar = new SsvButton();
+            }
 
-                ((Button)BtActionBar).Click += OnBtActionBarClick;
-            //}
+            ((Button)BtActionBar).Click += OnBtActionBarClick;
 
             if (!PluginDatabase.PluginSettings.EnableIntegrationInDescriptionOnlyIcon)
             {
@@ -285,7 +267,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "GameActivity", "OnCustomThemeButtonClick() error");
+                    Common.LogError(ex, "ScreenshotsVisualizer", "OnCustomThemeButtonClick() error");
                 }
             }
         }

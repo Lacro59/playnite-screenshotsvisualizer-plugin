@@ -22,6 +22,10 @@ namespace ScreenshotsVisualizer.Services
             if (values[0] is string && !((string)values[0]).IsNullOrEmpty() && File.Exists((string)values[0]))
             {
                 BitmapLoadProperties bitmapLoadProperties = null;
+                if (parameter is string && (string)parameter == "-")
+                {
+                    bitmapLoadProperties = null;
+                }
                 if (parameter is string && (string)parameter == "1")
                 {
                     bitmapLoadProperties = new BitmapLoadProperties(100, 0)
@@ -95,6 +99,10 @@ namespace ScreenshotsVisualizer.Services
                         {
                             Source = (string)values[0]
                         };
+                    }
+                    else if (ActualHeight >= 600)
+                    {
+                        bitmapLoadProperties = null;
                     }
                     else
                     {
