@@ -21,9 +21,9 @@
 
     <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
-    
-    <sys:String x:Key="LOCSsvShowSinglePicture">Show single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Show list of screenshots</sys:String>
+
+    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
 

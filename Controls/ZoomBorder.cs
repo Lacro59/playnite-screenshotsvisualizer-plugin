@@ -13,6 +13,7 @@ namespace ScreenshotsVisualizer.Controls
         private Point origin;
         private Point start;
 
+
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
             return (TranslateTransform)((TransformGroup)element.RenderTransform)
@@ -73,8 +74,8 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        #region Child Events
 
+        #region Child Events
         private void child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (child != null)
@@ -140,7 +141,6 @@ namespace ScreenshotsVisualizer.Controls
                 }
             }
         }
-
         #endregion
     }
 }

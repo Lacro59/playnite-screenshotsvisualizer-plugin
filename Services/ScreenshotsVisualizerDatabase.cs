@@ -14,13 +14,11 @@ using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Services
 {
-    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettings, ScreeshotsVisualizeCollection, GameScreenshots>
+    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots>
     {
-        public ScreenshotsVisualizerDatabase(IPlayniteAPI PlayniteApi, ScreenshotsVisualizerSettings PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, PluginUserDataPath)
+        public ScreenshotsVisualizerDatabase(IPlayniteAPI PlayniteApi, ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
         {
-            PluginName = "ScreenshotsVisualizer";
 
-            ControlAndCreateDirectory(PluginUserDataPath, "ScreenshotsVisualizer");
         }
 
 
@@ -28,9 +26,10 @@ namespace ScreenshotsVisualizer.Services
         {
             IsLoaded = false;
 
-            if (Directory.Exists(Path.Combine(PluginUserDataPath, "ScreenshotsVisualizer")))
+            // TODO Better way?
+            if (Directory.Exists(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer")))
             {
-                string[] files = Directory.GetFiles(Path.Combine(PluginUserDataPath, "ScreenshotsVisualizer"));
+                string[] files = Directory.GetFiles(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer"));
                 foreach (string file in files)
                 {
                     try
@@ -43,12 +42,10 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
 
-            Database = new ScreeshotsVisualizeCollection(PluginDatabaseDirectory);
-            Database.SetGameInfo<Screenshot>(_PlayniteApi);
+            Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
+            Database.SetGameInfo<Screenshot>(PlayniteApi);
 
             GetFromSettings();
-
-            GameSelectedData = new GameScreenshots();
             GetPluginTags();
 
             IsLoaded = true;
@@ -57,7 +54,7 @@ namespace ScreenshotsVisualizer.Services
 
         public void RefreshData(Game game)
         {
-            GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == game.Id);
+            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
 
             if (gameSettings != null)
             {
@@ -68,7 +65,6 @@ namespace ScreenshotsVisualizer.Services
 
         public override GameScreenshots Get(Guid Id, bool OnlyCache = false)
         {
-            GameIsLoaded = false;
             GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
 #if DEBUG
             logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - gameScreenshots: {JsonConvert.SerializeObject(gameScreenshots)}");
@@ -76,19 +72,18 @@ namespace ScreenshotsVisualizer.Services
 
             if (gameScreenshots == null)
             {
-                Game game = _PlayniteApi.Database.Games.Get(Id);
+                Game game = PlayniteApi.Database.Games.Get(Id);
                 gameScreenshots = GetDefault(game);
                 Add(gameScreenshots);
             }
-
-            GameIsLoaded = true;
+            
             return gameScreenshots;
         }
 
 
         public void GetFromSettings()
         {
-            foreach (var item in PluginSettings.gameSettings)
+            foreach (var item in PluginSettings.Settings.gameSettings)
             {
                 SetDataFromSettings(item);
             }
@@ -96,7 +91,7 @@ namespace ScreenshotsVisualizer.Services
 
         private void SetDataFromSettings(GameSettings item)
         {
-            Game game = _PlayniteApi.Database.Games.Get(item.Id);
+            Game game = PlayniteApi.Database.Games.Get(item.Id);
             GameScreenshots gameScreenshots = GetDefault(game);
 
             try
@@ -163,7 +158,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, PluginName, $"Error on File load for {game.Name} on {gameScreenshots.ScreenshotsFolder}");
+                Common.LogError(ex, false, $"Error on File load for {game.Name} on {gameScreenshots.ScreenshotsFolder}");
             }
         }
 
@@ -173,13 +168,13 @@ namespace ScreenshotsVisualizer.Services
 #if DEBUG
             logger.Debug($"{PluginName} - GetPluginTags()");
 #endif
-            System.Threading.SpinWait.SpinUntil(() => _PlayniteApi.Database.IsOpen, -1);
+            System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
             try
             {
                 // Get tags in playnite database
                 PluginTags = new List<Tag>();
-                foreach (Tag tag in _PlayniteApi.Database.Tags)
+                foreach (Tag tag in PlayniteApi.Database.Tags)
                 {
                     if (tag.Name.IndexOf("[SSV] ") > -1)
                     {
@@ -190,9 +185,9 @@ namespace ScreenshotsVisualizer.Services
                 // Add missing tags
                 if (PluginTags.Count == 0)
                 {
-                    _PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SSV] {resources.GetString("LOCSsvTitle")}" });
+                    PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SSV] {resources.GetString("LOCSsvTitle")}" });
 
-                    foreach (Tag tag in _PlayniteApi.Database.Tags)
+                    foreach (Tag tag in PlayniteApi.Database.Tags)
                     {
                         if (tag.Name.IndexOf("[HLTB] ") > -1)
                         {
@@ -207,11 +202,11 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, PluginName);
+                Common.LogError(ex, false);
             }
         }
 
-        public override void AddTag(Game game)
+        public override void AddTag(Game game, bool noUpdate = false)
         {
             GameScreenshots gameScreenshots = Get(game, true);
 
@@ -232,21 +227,36 @@ namespace ScreenshotsVisualizer.Services
                             game.TagIds = new List<Guid> { TagId };
                         }
 
-                        _PlayniteApi.Database.Games.Update(game);
+                        PlayniteApi.Database.Games.Update(game);
                     }
                 }
                 catch (Exception ex)
                 {
-#if DEBUG
-                    Common.LogError(ex, PluginName);
-#endif
+                    Common.LogError(ex, true);
                     logger.Error($"{PluginName} - Tag insert error with {game.Name}");
-                    _PlayniteApi.Notifications.Add(new NotificationMessage(
+
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
                         $"{PluginName}-Tag-Errors",
                         $"{PluginName}\r\n" + resources.GetString("LOCCommonNotificationTagError"),
                         NotificationType.Error
                     ));
                 }
+            }
+        }
+
+
+        public override void SetThemesResources(Game game)
+        {
+            GameScreenshots gameScreenshots = Get(game, true);
+
+            PluginSettings.Settings.HasData = gameScreenshots.HasData;
+        }
+
+        public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)
+        {
+            foreach (var GameUpdated in e.UpdatedItems)
+            {
+                Database.SetGameInfo<Screenshot>(PlayniteApi, GameUpdated.NewData.Id);
             }
         }
     }

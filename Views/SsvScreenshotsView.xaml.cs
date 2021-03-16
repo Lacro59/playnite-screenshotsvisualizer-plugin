@@ -104,7 +104,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false);
                 }
 
                 var Items = gameScreenshots.Items;

@@ -55,7 +55,7 @@ namespace ScreenshotsVisualizer.Views
         private void LoadData(IPlayniteAPI PlayniteApi)
         {
             listGameScreenshots = new List<ListGameScreenshot>();
-            foreach (var item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.gameSettings)
+            foreach (var item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
             {
                 Game game = PlayniteApi.Database.Games.Get(item.Id);
 
@@ -116,7 +116,7 @@ namespace ScreenshotsVisualizer.Views
             string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
-                var TextBox = Tools.FindVisualChildren<TextBox>(((FrameworkElement)sender).Parent).FirstOrDefault();
+                var TextBox = Tools.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
 
                 if (TextBox != null)
                 {
@@ -124,7 +124,6 @@ namespace ScreenshotsVisualizer.Views
                     listGameScreenshots[index].ScreenshotsFolder = SelectedFolder;
                 }
             }
-
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
@@ -218,37 +217,6 @@ namespace ScreenshotsVisualizer.Views
                 PART_ListGame.ItemsSource = listGames.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
                 PART_ListGameScreenshot.ItemsSource = listGameScreenshots.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
             //}
-        }
-
-
-        private void Checkbox_Click(object sender, RoutedEventArgs e)
-        {
-            CheckBox cb = (CheckBox)sender;
-
-            if ((cb.Name == "Ssv_IntegrationInButtonDetails") && (bool)cb.IsChecked)
-            {
-                Ssv_IntegrationInDescriptionOnlyIcon.IsChecked = false;
-            }
-            if ((cb.Name == "Ssv_IntegrationInDescriptionOnlyIcon") && (bool)cb.IsChecked)
-            {
-                Ssv_IntegrationInButtonDetails.IsChecked = false;
-            }
-
-
-            if ((cb.Name == "Ssv_IntegrationInButton") && (bool)cb.IsChecked)
-            {
-                Ssv_IntegrationInCustomTheme.IsChecked = false;
-            }
-            if ((cb.Name == "Ssv_IntegrationInDescription") && (bool)cb.IsChecked)
-            {
-                Ssv_IntegrationInCustomTheme.IsChecked = false;
-            }
-
-            if ((cb.Name == "Ssv_IntegrationInCustomTheme") && (bool)cb.IsChecked)
-            {
-                Ssv_IntegrationInButton.IsChecked = false;
-                Ssv_IntegrationInDescription.IsChecked = false;
-            }
         }
 
 

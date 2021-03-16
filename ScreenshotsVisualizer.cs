@@ -1,8 +1,10 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.PlayniteExtended;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using ScreenshotsVisualizer.Controls;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
@@ -19,70 +21,83 @@ using System.Windows.Controls;
 
 namespace ScreenshotsVisualizer
 {
-    public class ScreenshotsVisualizer : Plugin
+    public class ScreenshotsVisualizer : PluginExtended<ScreenshotsVisualizerSettingsViewModel, ScreenshotsVisualizerDatabase>
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private ScreenshotsVisualizerSettings settings { get; set; }
-
         public override Guid Id { get; } = Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
 
         private readonly TaskHelper taskHelper = new TaskHelper();
 
-        public static string pluginFolder;
-        public static ScreenshotsVisualizerDatabase PluginDatabase;
-        public static Game GameSelected { get; set; }
-        public static ScreenshotsVisualizerUI screenshotsVisualizerUI { get; set; }
-
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
         {
-            settings = new ScreenshotsVisualizerSettings(this);
-
-            // Loading plugin database 
-            PluginDatabase = new ScreenshotsVisualizerDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
-            PluginDatabase.InitializeDatabase();
-
-            // Get plugin's location 
-            pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            // Add plugin localization in application ressource.
-            PluginLocalization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
-            // Add common in application ressource.
-            Common.Load(pluginFolder);
-            Common.SetEvent(PlayniteApi);
-
-            // Check version
-            if (settings.EnableCheckVersion)
-            {
-                CheckVersion cv = new CheckVersion();
-                cv.Check("ScreenshotsVisualizer", pluginFolder, api);
-            }
-
-            // Init ui interagration
-            screenshotsVisualizerUI = new ScreenshotsVisualizerUI(api, settings, this.GetPluginUserDataPath());
-
             // Custom theme button
-            if (settings.EnableIntegrationInCustomTheme)
-            {
-                EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(screenshotsVisualizerUI.OnCustomThemeButtonClick));
-            }
+            EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
 
-            // Add event fullScreen
-            if (api.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+            // Custom elements integration
+            AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                //EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(BtFullScreen_ClickEvent));
-            }
+                ElementList = new List<string> { "SsvButton", "SsvSinglePicture", "SsvListScreenshots" },
+                SourceName = "ScreenshotsVisualizer",
+                SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
+            });
         }
 
 
+        #region Custom event
+        public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
+        {
+            string ButtonName = string.Empty;
+            try
+            {
+                ButtonName = ((Button)sender).Name;
+                if (ButtonName == "PART_SsvCustomButton")
+                {
+                    Common.LogDebug(true, $"OnCustomThemeButtonClick()");
+
+                    var ViewExtension = new SsvScreenshotsView(PlayniteApi, PluginDatabase.GameContext);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
+                    windowExtension.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
+        #endregion
+
+
+        #region Theme integration
+
+        // List custom controls
+        public override Control GetGameViewControl(GetGameViewControlArgs args)
+        {
+            if (args.Name == "SsvButton")
+            {
+                return new SsvButton();
+            }
+
+            if (args.Name == "SsvSinglePicture")
+            {
+                return new SsvSinglePicture();
+            }
+
+            if (args.Name == "SsvListScreenshots")
+            {
+                return new SsvListScreenshots();
+            }
+
+            return null;
+        }
+        #endregion
+
+
+        #region Menus
         // To add new game menu items override GetGameMenuItems
         public override List<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             Game GameMenu = args.Games.First();
             GameScreenshots gameScreenshots = PluginDatabase.Get(GameMenu);
-
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
@@ -95,23 +110,9 @@ namespace ScreenshotsVisualizer
                     Description = resources.GetString("LOCSsvViewScreenshots"),
                     Action = (gameMenuItem) =>
                     {
-                        var ViewExtension = new SsvScreenshotsView(PlayniteApi, ScreenshotsVisualizer.GameSelected);
+                        var ViewExtension = new SsvScreenshotsView(PlayniteApi, PluginDatabase.GameContext);
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
                         windowExtension.ShowDialog();
-
-                        if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
-                        {
-                            var TaskIntegrationUI = Task.Run(() =>
-                            {
-                                screenshotsVisualizerUI.Initial();
-                                screenshotsVisualizerUI.taskHelper.Check();
-                                var dispatcherOp = screenshotsVisualizerUI.AddElements();
-                                if (dispatcherOp != null)
-                                {
-                                    dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameSelected); };
-                                }
-                            });
-                        }
                     }
                 });
 
@@ -138,14 +139,6 @@ namespace ScreenshotsVisualizer
                 Action = (gameMenuItem) =>
                 {
                     PluginDatabase.RefreshData(GameMenu);
-
-                    screenshotsVisualizerUI.Initial();
-                    screenshotsVisualizerUI.taskHelper.Check();
-                    var dispatcherOp = screenshotsVisualizerUI.AddElements();
-                    if (dispatcherOp != null)
-                    {
-                        dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameMenu); };
-                    }
                 }
             });
 
@@ -165,7 +158,7 @@ namespace ScreenshotsVisualizer
         public override List<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
         {
             string MenuInExtensions = string.Empty;
-            if (settings.MenuInExtensions)
+            if (PluginSettings.Settings.MenuInExtensions)
             {
                 MenuInExtensions = "@";
             }
@@ -202,38 +195,23 @@ namespace ScreenshotsVisualizer
 
             return mainMenuItems;
         }
+        #endregion
 
 
+        #region Game evenet
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
             try
             {
                 if (args.NewValue != null && args.NewValue.Count == 1)
                 {
-                    GameSelected = args.NewValue[0];
-#if DEBUG
-                    logger.Debug($"ScreenshotsVisualizer - OnGameSelected() - {GameSelected.Name} - {GameSelected.Id.ToString()}");
-#endif
-                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
-                    {
-                        var TaskIntegrationUI = Task.Run(() =>
-                        {
-                            System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                            screenshotsVisualizerUI.Initial();
-                            screenshotsVisualizerUI.taskHelper.Check();
-                            var dispatcherOp = screenshotsVisualizerUI.AddElements();
-                            if (dispatcherOp != null)
-                            {
-                                dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(args.NewValue[0]); };
-                            }
-                        });
-                    }
+                    PluginDatabase.GameContext = args.NewValue[0];
+                    PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on OnGameSelected()");
+                Common.LogError(ex, false);
             }
         }
 
@@ -258,18 +236,20 @@ namespace ScreenshotsVisualizer
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStopped(Game game, long elapsedSeconds)
         {
-            var TaskIntegrationUI = Task.Run(() =>
+            try
             {
-                PluginDatabase.RefreshData(game);
-
-                screenshotsVisualizerUI.Initial();
-                screenshotsVisualizerUI.taskHelper.Check();
-                var dispatcherOp = screenshotsVisualizerUI.AddElements();
-                if (dispatcherOp != null)
+                var TaskGameStopped = Task.Run(() =>
                 {
-                    dispatcherOp.Completed += (s, e) => { screenshotsVisualizerUI.RefreshElements(GameSelected); };
-                }
-            });
+                    if (game.Id == PluginDatabase.GameContext.Id)
+                    {
+                        PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
         }
 
         // Add code to be executed when game is uninstalled.
@@ -277,8 +257,10 @@ namespace ScreenshotsVisualizer
         {
 
         }
+        #endregion
 
 
+        #region Application event
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted()
         {
@@ -290,6 +272,7 @@ namespace ScreenshotsVisualizer
         {
 
         }
+        #endregion
 
 
         // Add code to be executed when library is updated.
@@ -299,14 +282,16 @@ namespace ScreenshotsVisualizer
         }
 
 
+        #region Settings
         public override ISettings GetSettings(bool firstRunSettings)
         {
-            return settings;
+            return PluginSettings;
         }
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
             return new ScreenshotsVisualizerSettingsView(PlayniteApi, this.GetPluginUserDataPath());
         }
+        #endregion
     }
 }

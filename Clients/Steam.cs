@@ -48,7 +48,7 @@ namespace ScreenshotsVisualizer.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "ScreenshotsVisualizer");
+                Common.LogError(ex, false);
                 return string.Empty;
             }
         }

@@ -1,68 +1,111 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
-using System;
+using Newtonsoft.Json;
+using Playnite.SDK.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace ScreenshotsVisualizer
 {
-    public class ScreenshotsVisualizerSettings : ISettings
+    public class ScreenshotsVisualizerSettings : ObservableObject
     {
-        private readonly ScreenshotsVisualizer plugin;
-        private ScreenshotsVisualizerSettings editingClone;
-
-        public bool EnableCheckVersion { get; set; } = true;
+        #region Settings variables
         public bool MenuInExtensions { get; set; } = true;
 
         public bool EnableTag { get; set; } = false;
 
-        public bool EnableIntegrationButton { get; set; } = false;
-        public bool EnableIntegrationInDescription { get; set; } = true;
 
-        public bool EnableIntegrationInDescriptionOnlyIcon { get; set; } = false;
+        private bool _EnableIntegrationButton { get; set; } = false;
+        public bool EnableIntegrationButton
+        {
+            get => _EnableIntegrationButton;
+            set
+            {
+                _EnableIntegrationButton = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool EnableIntegrationButtonDetails { get; set; } = false;
-        public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
-        public bool IntegrationShowTitle { get; set; } = false;
-        public bool IntegrationTopGameDetails { get; set; } = false;
-        public bool IntegrationShowSinglePicture { get; set; } = false;
-        public bool IntegrationShowPictures { get; set; } = false;
-
-        public bool OpenViewerWithOnSelection { get; set; } = false;
-        public bool LinkWithSinglePicture { get; set; } = false;
-
+        private bool _EnableIntegrationShowSinglePicture { get; set; } = false;
+        public bool EnableIntegrationShowSinglePicture
+        {
+            get => _EnableIntegrationShowSinglePicture;
+            set
+            {
+                _EnableIntegrationShowSinglePicture = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double IntegrationShowSinglePictureHeight { get; set; } = 150;
+        public bool OpenViewerWithOnSelectionSinglePicture { get; set; } = false;
+        public bool AddBorderSinglePicture { get; set; } = true;
+        public bool AddRoundedCornerSinglePicture { get; set; } = false;
+
+        private bool _EnableIntegrationShowPictures { get; set; } = false;
+        public bool EnableIntegrationShowPictures
+        {
+            get => _EnableIntegrationShowPictures;
+            set
+            {
+                _EnableIntegrationShowPictures = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double IntegrationShowPicturesHeight { get; set; } = 150;
-
-        public bool EnableIntegrationInCustomTheme { get; set; } = false;
-
-        public bool EnableIntegrationFS { get; set; } = false;
-
+        public bool LinkWithSinglePicture { get; set; } = false;
+        public bool OpenViewerWithOnSelection { get; set; } = false;
         public bool AddBorder { get; set; } = true;
         public bool AddRoundedCorner { get; set; } = false;
 
-        public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
+        public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
+        #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
-        // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
-        [JsonIgnore]
-        public bool OptionThatWontBeSaved { get; set; } = false;
-
-        // Parameterless constructor must exist if you want to use LoadPluginSettings method.
-        public ScreenshotsVisualizerSettings()
+        // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
+        #region Variables exposed
+        [DontSerialize]
+        private bool _HasData { get; set; } = false;
+        public bool HasData
         {
+            get => _HasData;
+            set
+            {
+                _HasData = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion  
+    }
+
+
+    public class ScreenshotsVisualizerSettingsViewModel : ObservableObject, ISettings
+    {
+        private readonly ScreenshotsVisualizer Plugin;
+        private ScreenshotsVisualizerSettings EditingClone { get; set; }
+
+        private ScreenshotsVisualizerSettings _Settings;
+        public ScreenshotsVisualizerSettings Settings
+        {
+            get => _Settings;
+            set
+            {
+                _Settings = value;
+                OnPropertyChanged();
+            }
         }
 
-        public ScreenshotsVisualizerSettings(ScreenshotsVisualizer plugin)
+
+        public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
         {
             // Injecting your plugin instance is required for Save/Load method because Playnite saves data to a location based on what plugin requested the operation.
-            this.plugin = plugin;
+            Plugin = plugin;
 
             // Load saved settings.
             var savedSettings = plugin.LoadPluginSettings<ScreenshotsVisualizerSettings>();
@@ -70,66 +113,35 @@ namespace ScreenshotsVisualizer
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
             {
-                EnableCheckVersion = savedSettings.EnableCheckVersion;
-                MenuInExtensions = savedSettings.MenuInExtensions;
-
-                EnableTag = savedSettings.EnableTag;
-
-                EnableIntegrationButton = savedSettings.EnableIntegrationButton;
-                EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
-
-                EnableIntegrationInDescriptionOnlyIcon = savedSettings.EnableIntegrationInDescriptionOnlyIcon;
-                EnableIntegrationButtonDetails = savedSettings.EnableIntegrationButtonDetails;
-
-                IntegrationShowTitle = savedSettings.IntegrationShowTitle;
-                IntegrationTopGameDetails = savedSettings.IntegrationTopGameDetails;
-                IntegrationShowSinglePicture = savedSettings.IntegrationShowSinglePicture;
-                IntegrationShowPictures = savedSettings.IntegrationShowPictures;
-
-                OpenViewerWithOnSelection = savedSettings.OpenViewerWithOnSelection;
-                LinkWithSinglePicture = savedSettings.LinkWithSinglePicture;
-
-                IntegrationShowSinglePictureHeight = savedSettings.IntegrationShowSinglePictureHeight;
-
-                IntegrationShowPicturesHeight = savedSettings.IntegrationShowPicturesHeight;
-
-                EnableIntegrationInCustomTheme = savedSettings.EnableIntegrationInCustomTheme;
-
-                EnableIntegrationFS = savedSettings.EnableIntegrationFS;
-
-                gameSettings = savedSettings.gameSettings;
-
-                AddBorder = savedSettings.AddBorder;
-                AddRoundedCorner = savedSettings.AddRoundedCorner;
+                Settings = savedSettings;
+            }
+            else
+            {
+                Settings = new ScreenshotsVisualizerSettings();
             }
         }
 
         // Code executed when settings view is opened and user starts editing values.
         public void BeginEdit()
         {
-            editingClone = this.GetClone();
+            EditingClone = Serialization.GetClone(Settings);
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.
         // This method should revert any changes made to Option1 and Option2.
         public void CancelEdit()
         {
-            LoadValues(editingClone);
-        }
-
-        private void LoadValues(ScreenshotsVisualizerSettings source)
-        {
-            source.CopyProperties(this, false, null, true);
+            Settings = EditingClone;
         }
 
         // Code executed when user decides to confirm changes made since BeginEdit was called.
         // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
-            gameSettings = new List<GameSettings>();
+            Settings.gameSettings = new List<GameSettings>();
             foreach (var item in ScreenshotsVisualizerSettingsView.listGameScreenshots)
             {
-                gameSettings.Add(new GameSettings
+                Settings.gameSettings.Add(new GameSettings
                 {
                     Id = item.Id,
                     ScreenshotsFolder = item.ScreenshotsFolder,
@@ -138,20 +150,9 @@ namespace ScreenshotsVisualizer
                 });
             }
 
-            plugin.SavePluginSettings(this);
-
-            ScreenshotsVisualizer.screenshotsVisualizerUI.RemoveElements();
-
-            var TaskIntegrationUI = Task.Run(() =>
-            {
-                ScreenshotsVisualizer.PluginDatabase.IsLoaded = false;
-                ScreenshotsVisualizer.PluginDatabase.InitializeDatabase();
-
-                System.Threading.SpinWait.SpinUntil(() => ScreenshotsVisualizer.PluginDatabase.IsLoaded, -1);
-
-                var dispatcherOp = ScreenshotsVisualizer.screenshotsVisualizerUI.AddElements();
-                dispatcherOp.Completed += (s, e) => { ScreenshotsVisualizer.screenshotsVisualizerUI.RefreshElements(ScreenshotsVisualizer.GameSelected); };
-            });
+            Plugin.SavePluginSettings(Settings);
+            ScreenshotsVisualizer.PluginDatabase.PluginSettings = this;
+            this.OnPropertyChanged();
         }
 
         // Code execute when user decides to confirm changes made since BeginEdit was called.

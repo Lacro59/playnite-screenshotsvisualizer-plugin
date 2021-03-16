@@ -1,12 +1,15 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Controls;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
+using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,58 +20,72 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
-namespace ScreenshotsVisualizer.Views.Interface
+namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
     /// Logique d'interaction pour SsvListScreenshots.xaml
     /// </summary>
-    public partial class SsvListScreenshots : UserControl
+    public partial class SsvListScreenshots : PluginUserControlExtend
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private static IPlayniteAPI _PlayniteApi;
-
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
 
-        public SsvListScreenshots(IPlayniteAPI PlayniteApi)
+        public SsvListScreenshots()
         {
-            _PlayniteApi = PlayniteApi;
-
             InitializeComponent();
 
-            PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
+            PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+            PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+            PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
 
+            // Apply settings
+            PluginSettings_PropertyChanged(null, null);
+
+            PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
+        }
+
+
+        #region OnPropertyChange
+        // When settings is updated
+        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Apply settings
             this.DataContext = new
             {
-                AddBorder = PluginDatabase.PluginSettings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner
+
             };
 
-            PluginDatabase.PropertyChanged += OnPropertyChanged;
+            // Publish changes for the currently displayed game
+            GameContextChanged(null, GameContext);
         }
 
-
-        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        // When game is changed
+        public override void GameContextChanged(Game oldContext, Game newContext)
         {
-            try
+            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
+
+            // When control is not used
+            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures)
             {
-                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
-                {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
-                    {
-                        SetData(PluginDatabase.GameSelectedData.Items);
-                    }));
-                }
+                return;
             }
-            catch (Exception ex)
+
+            if (newContext != null)
             {
-                Common.LogError(ex, "ScreenshotsVisualizer");
+                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
+
+                if (!gameScreenshots.HasData)
+                {
+                    MustDisplay = false;
+                    return;
+                }
+
+                SetData(gameScreenshots.Items);
             }
         }
+        #endregion
 
 
         public void SetData(List<Screenshot> screenshots)
@@ -81,16 +98,11 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             this.DataContext = new
             {
-                AddBorder = PluginDatabase.PluginSettings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
+                PluginDatabase.PluginSettings.Settings.AddBorder,
+                PluginDatabase.PluginSettings.Settings.AddRoundedCorner,
+                PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight,
                 CountItems = screenshots.Count
             };
-        }
-
-
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            IntegrationUI.SetControlSize((FrameworkElement)sender);
         }
 
 
@@ -104,7 +116,7 @@ namespace ScreenshotsVisualizer.Views.Interface
 
                 bool IsGood = false;
 
-                if (PluginDatabase.PluginSettings.OpenViewerWithOnSelection)
+                if (PluginDatabase.PluginSettings.Settings.OpenViewerWithOnSelection)
                 {
                     IsGood = true;
                 }
@@ -127,7 +139,7 @@ namespace ScreenshotsVisualizer.Views.Interface
                     };
 
                     var ViewExtension = new SsvSinglePictureView(screenshot);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
                     windowExtension.ResizeMode = ResizeMode.CanResize;
                     windowExtension.Height = 720;
                     windowExtension.Width = 1280;
@@ -154,9 +166,10 @@ namespace ScreenshotsVisualizer.Views.Interface
             e.Handled = true;
         }
 
+
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PluginDatabase.PluginSettings.LinkWithSinglePicture && PluginDatabase.PluginSettings.IntegrationShowSinglePicture)
+            if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
             {
                 SsvSinglePicture ssvSinglePicture = Tools.FindVisualChildren<SsvSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
 

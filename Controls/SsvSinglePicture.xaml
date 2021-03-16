@@ -1,24 +1,29 @@
-﻿<UserControl x:Class="ScreenshotsVisualizer.Views.Interface.SsvSinglePicture"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
-             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
-             mc:Ignorable="d" MinHeight="100" MinWidth="100">
+﻿<controls:PluginUserControlExtend
+        xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
+        x:Class="ScreenshotsVisualizer.Controls.SsvSinglePicture"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
+        xmlns:services="clr-namespace:CommonPluginsShared"
+        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
+        Height="{Binding IntegrationShowSinglePictureHeight}"
+        MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
-    <UserControl.Resources>
+    <controls:PluginUserControlExtend.Resources>
         <services:ImageConverter x:Key="ImageConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
+    </controls:PluginUserControlExtend.Resources>
 
-    <Grid Loaded="Grid_Loaded" Name="PART_Contener" MouseDown="PART_Contener_MouseDown">
+    <Grid Name="PART_Contener" MouseDown="PART_Contener_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="8" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
-        
+
         <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
@@ -80,4 +85,4 @@
                     Click="PART_Next_Click" FontSize="24" />
         </Grid>
     </Grid>
-</UserControl>
+</controls:PluginUserControlExtend>

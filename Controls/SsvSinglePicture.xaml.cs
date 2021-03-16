@@ -1,13 +1,16 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Controls;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
+using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,69 +21,73 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
-namespace ScreenshotsVisualizer.Views.Interface
+namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
     /// Logique d'interaction pour SsvSinglePicture.xaml
     /// </summary>
-    public partial class SsvSinglePicture : UserControl
+    public partial class SsvSinglePicture : PluginUserControlExtend
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private static IPlayniteAPI _PlayniteApi;
-
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         private List<Screenshot> screenshots = new List<Screenshot>();
         private int index = 0;
 
-        public SsvSinglePicture(IPlayniteAPI PlayniteApi)
-        {
-            _PlayniteApi = PlayniteApi;
 
+        public SsvSinglePicture()
+        {
             InitializeComponent();
 
+            PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+            PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+            PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+
+            // Apply settings
+            PluginSettings_PropertyChanged(null, null);
+        }
+
+
+        #region OnPropertyChange
+        // When settings is updated
+        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Apply settings
             this.DataContext = new
             {
-                AddBorder = PluginDatabase.PluginSettings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner
+
             };
 
-            PluginDatabase.PropertyChanged += OnPropertyChanged;
+            // Publish changes for the currently displayed game
+            GameContextChanged(null, GameContext);
         }
 
-
-        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        // When game is changed
+        public override void GameContextChanged(Game oldContext, Game newContext)
         {
-            try
-            {
-                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
-                {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
-                    {
-                        SetData(PluginDatabase.GameSelectedData.Items);
+            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
 
-                        if (screenshots.Count > 1)
-                        {
-                            PART_Prev.IsEnabled = true;
-                            PART_Next.IsEnabled = true;
-                        }
-                        else
-                        {
-                            PART_Prev.IsEnabled = false;
-                            PART_Next.IsEnabled = false;
-                        }
-                    }));
-                }
-            }
-            catch (Exception ex)
+            // When control is not used
+            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
             {
-                Common.LogError(ex, "ScreenshotsVisualizer");
+                return;
+            }
+
+            if (newContext != null)
+            {
+                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
+
+                if (!gameScreenshots.HasData)
+                {
+                    MustDisplay = false;
+                    return;
+                }
+
+                SetData(gameScreenshots.Items);
             }
         }
+        #endregion
 
 
         public void SetData(List<Screenshot> screenshots)
@@ -90,6 +97,17 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             index = 0;
 
+            if (screenshots.Count > 1)
+            {
+                PART_Prev.IsEnabled = true;
+                PART_Next.IsEnabled = true;
+            }
+            else
+            {
+                PART_Prev.IsEnabled = false;
+                PART_Next.IsEnabled = false;
+            }
+
             if (screenshots.Count > 0)
             {
                 SetPicture(screenshots[index]);
@@ -98,14 +116,14 @@ namespace ScreenshotsVisualizer.Views.Interface
             {
                 this.DataContext = new
                 {
-                    AddBorder = PluginDatabase.PluginSettings.AddBorder,
-                    AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
+                    AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
+                    AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
+                    PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
                     PictureSource = string.Empty,
                     PictureInfos = string.Empty
                 };
             }
         }
-        
 
         private void SetPicture(Screenshot screenshot)
         {
@@ -122,10 +140,11 @@ namespace ScreenshotsVisualizer.Views.Interface
 
             this.DataContext = new
             {
-                AddBorder = PluginDatabase.PluginSettings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner,
-                PictureSource = PictureSource,
-                PictureInfos = PictureInfos
+                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
+                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
+                PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
+                PictureSource,
+                PictureInfos
             };
         }
 
@@ -139,6 +158,7 @@ namespace ScreenshotsVisualizer.Views.Interface
                 SetPicture(screenshots[index]);
             }
         }
+
 
         private void PART_Prev_Click(object sender, RoutedEventArgs e)
         {
@@ -169,17 +189,11 @@ namespace ScreenshotsVisualizer.Views.Interface
         }
 
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            IntegrationUI.SetControlSize((FrameworkElement)sender);
-        }
-
-
         private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
         {
             bool IsGood = false;
 
-            if (PluginDatabase.PluginSettings.OpenViewerWithOnSelection)
+            if (PluginDatabase.PluginSettings.Settings.OpenViewerWithOnSelectionSinglePicture)
             {
                 IsGood = true;
             }
@@ -202,7 +216,7 @@ namespace ScreenshotsVisualizer.Views.Interface
                 };
 
                 var ViewExtension = new SsvSinglePictureView(screenshots[index]);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
                 windowExtension.ResizeMode = ResizeMode.CanResize;
                 windowExtension.Height = 720;
                 windowExtension.Width = 1280;

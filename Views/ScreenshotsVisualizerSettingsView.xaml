@@ -17,432 +17,6 @@
     </UserControl.Resources>
 
     <TabControl Margin="20">
-        <TabItem Header="{DynamicResource LOCCommonIntegration}">
-            <ScrollViewer>
-                <StackPanel Margin="0,10,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="30" />
-                        </Grid.RowDefinitions>
-
-                        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding EnableIntegrationInCustomTheme}" 
-                                  Name="Ssv_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
-                            <Label Content="{DynamicResource LOCCommonIntegrationInCustomTheme}" />
-                        </CheckBox>
-
-                        <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableIntegrationButton}" 
-                                  Name="Ssv_IntegrationInButton" Click="Checkbox_Click" VerticalAlignment="Center">
-                            <Label Content="{DynamicResource LOCCommonIntegrationButton}" />
-                        </CheckBox>
-
-                        <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableIntegrationInDescription}" 
-                                  Name="Ssv_IntegrationInDescription" Click="Checkbox_Click" VerticalAlignment="Center">
-                            <Label Content="{DynamicResource LOCCommonIntegrationInDescription}" />
-                        </CheckBox>
-                    </Grid>
-
-                    <GroupBox Header="{DynamicResource LOCCommonIntegrationButtonOptions}" Margin="0,10,0,0">
-                        <GroupBox.Style>
-                            <Style TargetType="GroupBox">
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                <Setter Property="Padding" Value="5" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupBox}">
-                                            <Border DockPanel.Dock="Top"
-                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                <DockPanel>
-                                                    <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                      RecognizesAccessKey="True" />
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
-                                                </DockPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInButton, Path=IsChecked}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </GroupBox.Style>
-
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationInDescriptionOnlyIcon}" Name="Ssv_IntegrationInDescriptionOnlyIcon" 
-                                          Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationButtonOnlyIcon}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding EnableIntegrationButtonDetails}" Name="Ssv_IntegrationInButtonDetails" 
-                                          Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
-                            </CheckBox>
-
-                            <!--CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding EnableIntegrationInDescriptionWithToggle}" Name="Ssv_IntegrationInDescriptionWithToggle" 
-                                          Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationButtonIsToggle}" />
-                            </CheckBox-->
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCGameActivityIntegrationDescriptionOptions}" Margin="0,10,0,0">
-                        <GroupBox.Style>
-                            <Style TargetType="GroupBox">
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                <Setter Property="Padding" Value="5" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupBox}">
-                                            <Border DockPanel.Dock="Top"
-                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                <DockPanel>
-                                                    <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                      RecognizesAccessKey="True" />
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
-                                                </DockPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding EnableIntegrationButton}" Value="True" />
-                                            <Condition Binding="{Binding EnableIntegrationInDescriptionWithToggle}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="False" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </GroupBox.Style>
-
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowTitle}" 
-                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationShowTitle}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationTopGameDetails}" 
-                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationTopGameDetails}" />
-                            </CheckBox>
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCCommonIntegrationSelectElements}" Margin="0,10,0,0">
-                        <GroupBox.Style>
-                            <Style TargetType="GroupBox">
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                <Setter Property="Padding" Value="5" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupBox}">
-                                            <Border DockPanel.Dock="Top"
-                                                    BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                <DockPanel>
-                                                    <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                  RecognizesAccessKey="True" />
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                             Margin="{TemplateBinding Padding}"/>
-                                                </DockPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </GroupBox.Style>
-
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowSinglePicture}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationShowPictures}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvShowPictures}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding AddBorder}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                            </CheckBox>
-                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding AddRoundedCorner}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
-                            </CheckBox-->
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCSsvShowSinglePictureOptions}" Margin="0,10,0,0">
-                        <GroupBox.Style>
-                            <Style TargetType="GroupBox">
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                <Setter Property="Padding" Value="5" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupBox}">
-                                            <Border DockPanel.Dock="Top"
-                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                <DockPanel>
-                                                    <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                      RecognizesAccessKey="True" />
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
-                                                </DockPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowSinglePicture}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowSinglePicture}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowSinglePicture}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </GroupBox.Style>
-
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                <TextBox Text="{Binding IntegrationShowSinglePictureHeight, FallbackValue=150}" Width="40" Grid.Column="1"
-                                                 VerticalAlignment="Center" TextAlignment="Center"/>
-                            </Grid>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding OpenViewerWithOnSelection}" 
-                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                            </CheckBox>
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCSsvShowPicturesOptions}" Margin="0,10,0,0">
-                        <GroupBox.Style>
-                            <Style TargetType="GroupBox">
-                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                <Setter Property="Padding" Value="5" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupBox}">
-                                            <Border DockPanel.Dock="Top"
-                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                <DockPanel>
-                                                    <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                      RecognizesAccessKey="True" />
-                                                        </TextBlock>
-                                                    </Border>
-                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
-                                                </DockPanel>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowPictures}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowPictures}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Ssv_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                            <Condition Binding="{Binding IntegrationShowPictures}" Value="True" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </GroupBox.Style>
-
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                <TextBox Text="{Binding IntegrationShowPicturesHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                                 VerticalAlignment="Center" TextAlignment="Center"/>
-                            </Grid>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding OpenViewerWithOnSelection}" 
-                                      IsEnabled="{Binding ElementName=Ssv_IntegrationInDescription, Path=IsChecked}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding LinkWithSinglePicture}" 
-                                      IsEnabled="{Binding IntegrationShowSinglePicture}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
-                            </CheckBox>
-                        </Grid>
-                    </GroupBox>
-                </StackPanel>
-            </ScrollViewer>
-        </TabItem>
 
         <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
             <Grid Name="PART_Settings" Margin="0,10,0,0">
@@ -456,7 +30,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
                     <Label Content="{DynamicResource LOCSsvAddTag}" />
                 </CheckBox>
 
@@ -514,7 +88,6 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-
 
                 <Grid Grid.Row="3" Name="PART_GridContener"
                       Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
@@ -577,7 +150,7 @@
                                             <ColumnDefinition Width="8" />
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
-                                        
+
                                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" HorizontalAlignment="Right"
                                                    Grid.Column="0" Text="{Binding SourceName, FallbackValue=Source_Name}" VerticalAlignment="Center" />
                                         <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Name="scv">
@@ -600,6 +173,139 @@
                     </ListBox>
                 </Grid>
             </Grid>
+        </TabItem>
+        
+        <TabItem Header="{DynamicResource LOCCommonIntegration}">
+            <ScrollViewer>
+                <StackPanel Margin="0,10,0,0">
+                    <Label Content="{DynamicResource LOCCommonControlsAvailable}" />
+                    <Separator Margin="0,0,0,10" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        
+                        <CheckBox Grid.Row="0" VerticalAlignment="Center" 
+                                  IsChecked="{Binding Settings.EnableIntegrationButton}" 
+                                  Name="PART_IntegrationButton">
+                            <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
+                        </CheckBox>
+                        
+                        <CheckBox Grid.Row="2" VerticalAlignment="Center" 
+                                  IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" 
+                                  Name="PART_IntegrationSinglePicture">
+                            <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
+                        </CheckBox>
+                        
+                        <CheckBox Grid.Row="4" VerticalAlignment="Center" 
+                                  IsChecked="{Binding Settings.EnableIntegrationShowPictures}" 
+                                  Name="PART_IntegrationPictures">
+                            <Label Content="{DynamicResource LOCSsvShowPictures}" />
+                        </CheckBox>
+                    </Grid>
+
+                    <GroupBox Header="{DynamicResource LOCCommonIntegrationButtonOptions}" Margin="0,30,0,0" 
+                              IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButtonDetails}" 
+                                      Name="Ssv_IntegrationInButtonDetails" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
+                            </CheckBox>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource LOCSsvShowSinglePictureOptions}" Margin="0,10,0,0"
+                              IsEnabled="{Binding ElementName=PART_IntegrationSinglePicture, Path=IsChecked}">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                <TextBox Text="{Binding Settings.IntegrationShowSinglePictureHeight, FallbackValue=150}" 
+                                         Width="40" Grid.Column="1" 
+                                         VerticalAlignment="Center" TextAlignment="Center"/>
+                            </Grid>
+                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelectionSinglePicture}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding Settings.AddBorderSinglePicture}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                            </CheckBox>
+                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding Settings.AddRoundedCornerSinglePicture}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
+                            </CheckBox-->
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource LOCSsvShowPicturesOptions}" Margin="0,10,0,0"
+                              IsEnabled="{Binding ElementName=PART_IntegrationPictures, Path=IsChecked}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                <TextBox Text="{Binding Settings.IntegrationShowPicturesHeight, FallbackValue=200}" Width="40" Grid.Column="1"
+                                                 VerticalAlignment="Center" TextAlignment="Center"/>
+                            </Grid>
+                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelection}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding Settings.AddBorder}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                            </CheckBox>
+                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding Settings.AddRoundedCorner}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
+                            </CheckBox-->
+
+                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}" 
+                                      VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
+                            </CheckBox>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
         </TabItem>
     </TabControl>
 </UserControl>

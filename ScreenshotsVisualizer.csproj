@@ -30,14 +30,27 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug9|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Dropbox\Playnite\Playnite9\Extensions\playnite-screenshotsvisualizer-plugin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Playnite.SDK, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PlayniteSDK.5.5.0\lib\net462\Playnite.SDK.dll</HintPath>
+    <Reference Include="Playnite.SDK">
+      <HintPath>..\..\..\Dropbox\Playnite\Playnite9\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -59,6 +72,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +88,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\Steam.cs" />
+    <Compile Include="Controls\SsvButton.xaml.cs">
+      <DependentUpon>SsvButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SsvListScreenshots.xaml.cs">
+      <DependentUpon>SsvListScreenshots.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SsvSinglePicture.xaml.cs">
+      <DependentUpon>SsvSinglePicture.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
@@ -82,26 +105,13 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml.cs">
       <DependentUpon>TextBlockTrimmed.xaml</DependentUpon>
     </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
+      <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\Converters.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
-    <Compile Include="Services\ScreenshotsVisualizerUI.cs" />
-    <Compile Include="Views\Interface\SsvButton.xaml.cs">
-      <DependentUpon>SsvButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SsvButtonDetails.xaml.cs">
-      <DependentUpon>SsvButtonDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SsvDescriptionIntegration.xaml.cs">
-      <DependentUpon>SsvDescriptionIntegration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SsvListScreenshots.xaml.cs">
-      <DependentUpon>SsvListScreenshots.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SsvSinglePicture.xaml.cs">
-      <DependentUpon>SsvSinglePicture.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ScreenshotsVisualizerSettingsView.xaml.cs">
       <DependentUpon>ScreenshotsVisualizerSettingsView.xaml</DependentUpon>
     </Compile>
@@ -135,29 +145,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Controls\SsvButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SsvListScreenshots.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SsvSinglePicture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Interface\SsvButton.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SsvButtonDetails.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SsvDescriptionIntegration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SsvListScreenshots.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SsvSinglePicture.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScreenshotsVisualizerSettingsView.xaml">
       <SubType>Designer</SubType>
