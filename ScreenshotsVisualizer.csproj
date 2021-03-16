@@ -97,6 +97,9 @@
     <Compile Include="Controls\SsvSinglePicture.xaml.cs">
       <DependentUpon>SsvSinglePicture.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SsvViewItem.xaml.cs">
+      <DependentUpon>SsvViewItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
@@ -154,6 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SsvSinglePicture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SsvViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

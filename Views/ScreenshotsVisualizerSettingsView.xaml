@@ -187,6 +187,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         
                         <CheckBox Grid.Row="0" VerticalAlignment="Center" 
@@ -194,14 +196,19 @@
                                   Name="PART_IntegrationButton">
                             <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
                         </CheckBox>
-                        
-                        <CheckBox Grid.Row="2" VerticalAlignment="Center" 
+
+                        <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationViewItem}" 
+                              VerticalAlignment="Center" Name="PART_IntegrationViewItem">
+                            <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
+                        </CheckBox>
+
+                        <CheckBox Grid.Row="4" VerticalAlignment="Center" 
                                   IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" 
                                   Name="PART_IntegrationSinglePicture">
                             <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
                         </CheckBox>
                         
-                        <CheckBox Grid.Row="4" VerticalAlignment="Center" 
+                        <CheckBox Grid.Row="6" VerticalAlignment="Center" 
                                   IsChecked="{Binding Settings.EnableIntegrationShowPictures}" 
                                   Name="PART_IntegrationPictures">
                             <Label Content="{DynamicResource LOCSsvShowPictures}" />

@@ -36,7 +36,7 @@ namespace ScreenshotsVisualizer
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                ElementList = new List<string> { "SsvButton", "SsvSinglePicture", "SsvListScreenshots" },
+                ElementList = new List<string> { "SsvButton", "SsvSinglePicture", "SsvListScreenshots", "SsvViewItem" },
                 SourceName = "ScreenshotsVisualizer",
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
@@ -85,6 +85,11 @@ namespace ScreenshotsVisualizer
             if (args.Name == "SsvListScreenshots")
             {
                 return new SsvListScreenshots();
+            }
+
+            if (args.Name == "SsvViewItem")
+            {
+                return new SsvViewItem();
             }
 
             return null;

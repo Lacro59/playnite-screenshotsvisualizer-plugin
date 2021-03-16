@@ -17,6 +17,17 @@ namespace ScreenshotsVisualizer
         public bool EnableTag { get; set; } = false;
 
 
+        private bool _EnableIntegrationViewItem { get; set; } = false;
+        public bool EnableIntegrationViewItem
+        {
+            get => _EnableIntegrationViewItem;
+            set
+            {
+                _EnableIntegrationViewItem = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _EnableIntegrationButton { get; set; } = false;
         public bool EnableIntegrationButton
         {
@@ -78,6 +89,18 @@ namespace ScreenshotsVisualizer
             set
             {
                 _HasData = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private List<Screenshot> _ListScreenshots { get; set; } = new List<Screenshot>();
+        public List<Screenshot> ListScreenshots
+        {
+            get => _ListScreenshots;
+            set
+            {
+                _ListScreenshots = value;
                 OnPropertyChanged();
             }
         }
