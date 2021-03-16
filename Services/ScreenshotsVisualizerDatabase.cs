@@ -66,9 +66,7 @@ namespace ScreenshotsVisualizer.Services
         public override GameScreenshots Get(Guid Id, bool OnlyCache = false)
         {
             GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
-#if DEBUG
-            logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - gameScreenshots: {JsonConvert.SerializeObject(gameScreenshots)}");
-#endif
+            Common.LogDebug(true, $"GetFromDb({Id.ToString()}) - gameScreenshots: {JsonConvert.SerializeObject(gameScreenshots)}");
 
             if (gameScreenshots == null)
             {
@@ -144,7 +142,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 else
                 {
-                    //logger.Warn($"ScreenshotsVisualizer - Screenshots directory not found for {game.Name}");
+                    logger.Warn($"Screenshots directory not found for {game.Name}");
                 }
 
                 gameScreenshots.Items = gameScreenshots.Items.Where(x => x != null).ToList();
@@ -165,9 +163,7 @@ namespace ScreenshotsVisualizer.Services
 
         protected override void GetPluginTags()
         {
-#if DEBUG
-            logger.Debug($"{PluginName} - GetPluginTags()");
-#endif
+            Common.LogDebug(true, $"{PluginName} - GetPluginTags()");
             System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
             try
@@ -196,9 +192,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                 }
 
-#if DEBUG
-                logger.Debug($"{PluginName} - PluginTags: {JsonConvert.SerializeObject(PluginTags)}");
-#endif
+                Common.LogDebug(true, $"PluginTags: {JsonConvert.SerializeObject(PluginTags)}");
             }
             catch (Exception ex)
             {
@@ -233,7 +227,7 @@ namespace ScreenshotsVisualizer.Services
                 catch (Exception ex)
                 {
                     Common.LogError(ex, true);
-                    logger.Error($"{PluginName} - Tag insert error with {game.Name}");
+                    logger.Error($"Tag insert error with {game.Name}");
 
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         $"{PluginName}-Tag-Errors",

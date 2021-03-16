@@ -80,7 +80,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 else
                 {
-                    logger.Warn($"ScreenshotsVisualizer - Game is deleted - {item.Id}");
+                    logger.Warn($"Game is deleted - {item.Id}");
                 }
             }
 

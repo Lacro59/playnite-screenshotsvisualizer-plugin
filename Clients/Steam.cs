@@ -81,7 +81,7 @@ namespace ScreenshotsVisualizer.Clients
 
                 if (SteamId.IsNullOrEmpty())
                 {
-                    logger.Warn("ScreenshotsVisualizer - No find SteamId");
+                    logger.Warn("No find SteamId");
                     return PathScreeshotsFolder;
                 }
 
@@ -94,11 +94,11 @@ namespace ScreenshotsVisualizer.Clients
                 }
                 else
                 {
-                    logger.Warn("ScreenshotsVisualizer - Folder Steam userdata not find");
+                    logger.Warn("Folder Steam userdata not find");
                 }
             }
 
-            logger.Warn("ScreenshotsVisualizer - No find Steam installation");
+            logger.Warn("No find Steam installation");
             return PathScreeshotsFolder;
         }
 
