@@ -36,8 +36,7 @@
                                    TextTrimming="CharacterEllipsis" 
                                    VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                        <Image Grid.Column="0" Grid.Row="2" 
-                               MaxHeight="96" Name="PART_Picture">
+                        <Image Grid.Column="0" Grid.Row="2" Height="96" Name="PART_Picture">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
                                     <Binding Path="FileName" IsAsync="True" />
