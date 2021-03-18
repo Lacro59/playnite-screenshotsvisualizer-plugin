@@ -6,6 +6,7 @@ using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,20 +28,20 @@ namespace ScreenshotsVisualizer.Services
             IsLoaded = false;
 
             // TODO Better way?
-            if (Directory.Exists(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer")))
-            {
-                string[] files = Directory.GetFiles(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer"));
-                foreach (string file in files)
-                {
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
+            //if (Directory.Exists(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer")))
+            //{
+            //    string[] files = Directory.GetFiles(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer"));
+            //    foreach (string file in files)
+            //    {
+            //        try
+            //        {
+            //            File.Delete(file);
+            //        }
+            //        catch
+            //        {
+            //        }
+            //    }
+            //}
 
             Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Screenshot>(PlayniteApi);
@@ -48,8 +49,30 @@ namespace ScreenshotsVisualizer.Services
             GetFromSettings();
             GetPluginTags();
 
+            Task.Run(() => { RefreshDataAll(); });
+
             IsLoaded = true;
             return true;
+        }
+
+
+        public void RefreshDataAll()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            foreach (var item in Database.Items)
+            {
+                Game game = PlayniteApi.Database.Games.Get(item.Key);
+                if (game != null)
+                {
+                    RefreshData(game);
+                }
+            }
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            logger.Info($"RefreshDataAll - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
         }
 
         public void RefreshData(Game game)

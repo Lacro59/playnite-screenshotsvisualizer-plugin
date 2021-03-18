@@ -76,7 +76,6 @@ namespace ScreenshotsVisualizer
 
 
         #region Theme integration
-
         // List custom controls
         public override Control GetGameViewControl(GetGameViewControlArgs args)
         {
