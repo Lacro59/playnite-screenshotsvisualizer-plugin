@@ -113,8 +113,6 @@ namespace ScreenshotsVisualizer.Services
                             try
                             {
                                 DateTime Modified = File.GetLastWriteTime(objectFile);
-                                ImageProperty imageProperty = ImageTools.GetImapeProperty(objectFile);
-                                string SizeString = imageProperty.Width + "x" + imageProperty.Height;
 
                                 if (item.UsedFilePattern)
                                 {
@@ -125,8 +123,7 @@ namespace ScreenshotsVisualizer.Services
                                         gameScreenshots.Items.Add(new Screenshot
                                         {
                                             FileName = objectFile,
-                                            Modifed = Modified,
-                                            SizeString = SizeString
+                                            Modifed = Modified
                                         });
                                     }
                                 }
@@ -136,13 +133,12 @@ namespace ScreenshotsVisualizer.Services
                                     {
                                         FileName = objectFile,
                                         Modifed = Modified,
-                                        SizeString = SizeString
                                     });
                                 }
                             }
-                            catch
+                            catch (Exception ex)
                             {
-
+                                Common.LogError(ex, false);
                             }
                         });
                 }

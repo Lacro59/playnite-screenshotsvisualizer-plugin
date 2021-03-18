@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommonPluginsShared;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,24 @@ namespace ScreenshotsVisualizer.Models
         /// </summary>
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
-        public string SizeString { get; set; }
+
+        [JsonIgnore]
+        public string SizeString
+        {
+            get
+            {
+                if (File.Exists(FileName))
+                {
+                    ImageProperty imageProperty = ImageTools.GetImapeProperty(FileName);
+                    if (imageProperty != null)
+                    {
+                        return imageProperty.Width + "x" + imageProperty.Height;
+                    }
+                }
+
+                return string.Empty;
+            }
+        }
 
         [JsonIgnore]
         public string FileNameOnly
