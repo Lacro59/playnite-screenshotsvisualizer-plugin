@@ -51,12 +51,15 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
-
-            if (File.Exists(screenshot.FileName))
+            if (PART_ListScreenshots.SelectedItem != null)
             {
-                CommonPluginsShared.ImageConverter imageConverter = new CommonPluginsShared.ImageConverter();
-                PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
+                Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
+
+                if (File.Exists(screenshot.FileName))
+                {
+                    CommonPluginsShared.ImageConverter imageConverter = new CommonPluginsShared.ImageConverter();
+                    PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
+                }
             }
         }
 
@@ -97,9 +100,6 @@ namespace ScreenshotsVisualizer.Views
 
                         gameScreenshots.Items.Remove(screenshot);
                         PluginDatabase.Update(gameScreenshots);
-
-                        PART_ListScreenshots.SelectedIndex = -1;
-                        PART_ListScreenshots.ItemsSource = null;
                     }
                 }
                 catch (Exception ex)
@@ -110,6 +110,7 @@ namespace ScreenshotsVisualizer.Views
                 var Items = gameScreenshots.Items;
                 Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
+                PART_ListScreenshots.SelectedIndex = -1;
                 PART_ListScreenshots.ItemsSource = null;
                 PART_ListScreenshots.ItemsSource = Items;
             }

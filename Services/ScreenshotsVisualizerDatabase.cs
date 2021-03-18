@@ -147,7 +147,11 @@ namespace ScreenshotsVisualizer.Services
                     logger.Warn($"Screenshots directory not found for {game.Name}");
                 }
 
-                gameScreenshots.Items = gameScreenshots.Items.Where(x => x != null).ToList();
+                var elements = gameScreenshots.Items.Where(x => x != null);
+                if (elements.Count() > 0)
+                {
+                    gameScreenshots.Items = elements.ToList();
+                }
 
                 if (Database.Get(game.Id) != null)
                 {
