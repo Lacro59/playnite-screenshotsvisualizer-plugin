@@ -54,8 +54,16 @@ namespace ScreenshotsVisualizer
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");
 
-                    var ViewExtension = new SsvScreenshotsView(PlayniteApi, PluginDatabase.GameContext);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
+                    WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true
+                    };
+
+                    var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+                    windowExtension.ResizeMode = ResizeMode.CanResize;
                     windowExtension.ShowDialog();
                 }
             }
@@ -115,8 +123,16 @@ namespace ScreenshotsVisualizer
                     Description = resources.GetString("LOCSsvViewScreenshots"),
                     Action = (gameMenuItem) =>
                     {
-                        var ViewExtension = new SsvScreenshotsView(PlayniteApi, PluginDatabase.GameContext);
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
+                        WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true
+                        };
+
+                        var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+                        windowExtension.ResizeMode = ResizeMode.CanResize;
                         windowExtension.ShowDialog();
                     }
                 });

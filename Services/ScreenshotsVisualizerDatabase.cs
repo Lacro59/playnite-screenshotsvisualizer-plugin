@@ -191,7 +191,7 @@ namespace ScreenshotsVisualizer.Services
 
                     foreach (Tag tag in PlayniteApi.Database.Tags)
                     {
-                        if (tag.Name.IndexOf("[HLTB] ") > -1)
+                        if (tag.Name.IndexOf("[SSV] ") > -1)
                         {
                             PluginTags.Add(tag);
                         }

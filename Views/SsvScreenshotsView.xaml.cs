@@ -29,16 +29,13 @@ namespace ScreenshotsVisualizer.Views
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
 
-        private IPlayniteAPI _PlayniteApi;
-
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         private GameScreenshots gameScreenshots;
 
-        public SsvScreenshotsView(IPlayniteAPI PlayniteApi, Game GameSelected)
-        {
-            _PlayniteApi = PlayniteApi;
 
+        public SsvScreenshotsView(Game GameSelected)
+        {
             InitializeComponent();
 
             gameScreenshots = PluginDatabase.Get(GameSelected);
@@ -46,6 +43,8 @@ namespace ScreenshotsVisualizer.Views
             Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
             PART_ListScreenshots.ItemsSource = Items;
+
+            SetInfos();
         }
 
 
@@ -69,7 +68,7 @@ namespace ScreenshotsVisualizer.Views
 
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.Items[index];
 
-            var RessultDialog = _PlayniteApi.Dialogs.ShowMessage(
+            var RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
                 string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 "ScreenshotsVisualizer",
                 MessageBoxButton.YesNo
@@ -113,6 +112,8 @@ namespace ScreenshotsVisualizer.Views
                 PART_ListScreenshots.SelectedIndex = -1;
                 PART_ListScreenshots.ItemsSource = null;
                 PART_ListScreenshots.ItemsSource = Items;
+
+                SetInfos();
             }
             else
             {
@@ -144,6 +145,20 @@ namespace ScreenshotsVisualizer.Views
 
             //file is not locked
             return false;
+        }
+
+
+        private void SetInfos()
+        {
+            PART_FilesCount.Content = gameScreenshots.Items.Count + " " + resources.GetString("LOCSsvTitle");
+
+            long TotalSize = 0;
+            foreach(var item in gameScreenshots.Items)
+            {
+                TotalSize += item.FileSize;
+            }
+
+            PART_FilesSize.Content = Tools.SizeSuffix(TotalSize);
         }
     }
 }

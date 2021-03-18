@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
-             mc:Ignorable="d" Height="700" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
+             mc:Ignorable="d" 
+             MinHeight="700" MinWidth="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
@@ -14,8 +15,18 @@
         <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
 
-    <DockPanel>
-        <ListBox DockPanel.Dock="Left" Width="400" Margin="10"
+    <Grid Margin="10"> 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
+        <ListBox Grid.Column="0" Grid.Row="0" 
                  Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -32,7 +43,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" 
-                                   Text="{Binding FileNameOnly}" Width="240" FontWeight="Bold"
+                                   Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" Width="240" FontWeight="Bold"
+                                    Style="{DynamicResource BaseTextBlockStyle}"
                                    TextTrimming="CharacterEllipsis" 
                                    VerticalAlignment="Center" HorizontalAlignment="Left" />
 
@@ -54,17 +66,24 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"
-                                       Text="{Binding SizeString}" />
+                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                       Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}, FallbackValue='2021/03/18 11:14'}" />
                             <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"
-                                       Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}}" />
-                            
+                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                       Text="{Binding SizeString, FallbackValue='1280x720'}" />
+                            <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"
+                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                       Text="{Binding FileSizeString, FallbackValue='1.5Mo'}" />
+
                             <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
-                                    Grid.Column="2" Grid.Row="0" Grid.RowSpan="3"
+                                    Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
                                     ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
-                                    VerticalAlignment="Center"
+                                    VerticalAlignment="Bottom"
                                     Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
                         </Grid>
                     </Grid>
@@ -72,8 +91,20 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Grid Margin="10">
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="{DynamicResource LOCGameDetails}" />
+            <Label Grid.Column="1" Name="PART_FilesCount" Content="0 screenshots" HorizontalAlignment="Center" />
+            <Label Grid.Column="2" Name="PART_FilesSize" Content="12.3Mb" HorizontalAlignment="Right" />
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0">
             <Image Name="PART_Screenshot" />
         </Grid>
-    </DockPanel>
+    </Grid>
 </UserControl>

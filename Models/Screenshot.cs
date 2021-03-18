@@ -36,6 +36,33 @@ namespace ScreenshotsVisualizer.Models
         }
 
         [JsonIgnore]
+        public string FileSizeString
+        {
+            get
+            {
+                if (File.Exists(FileName))
+                {
+                    return Tools.SizeSuffix(new FileInfo(FileName).Length);
+                }
+
+                return string.Empty;
+            }
+        }
+        [JsonIgnore]
+        public long FileSize
+        {
+            get
+            {
+                if (File.Exists(FileName))
+                {
+                    return new FileInfo(FileName).Length;
+                }
+
+                return 0;
+            }
+        }
+
+        [JsonIgnore]
         public string FileNameOnly
         {
             get

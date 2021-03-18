@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Controls;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -110,8 +111,16 @@ namespace ScreenshotsVisualizer.Controls
 
         private void PART_SsvButton_Click(object sender, RoutedEventArgs e)
         {
-            var ViewExtension = new SsvScreenshotsView(PluginDatabase.PlayniteApi, PluginDatabase.GameContext);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension);
+            WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+            {
+                ShowMinimizeButton = false,
+                ShowMaximizeButton = true,
+                ShowCloseButton = true
+            };
+
+            var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+            windowExtension.ResizeMode = ResizeMode.CanResize;
             windowExtension.ShowDialog();
         }
     }
