@@ -39,7 +39,16 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        public bool EnableIntegrationButtonDetails { get; set; } = false;
+        public bool _EnableIntegrationButtonDetails { get; set; } = false;
+        public bool EnableIntegrationButtonDetails
+        {
+            get => _EnableIntegrationButtonDetails;
+            set
+            {
+                _EnableIntegrationButtonDetails = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool _EnableIntegrationShowSinglePicture { get; set; } = false;
         public bool EnableIntegrationShowSinglePicture

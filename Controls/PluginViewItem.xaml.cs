@@ -21,24 +21,33 @@ using System.Windows.Shapes;
 namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour SsvViewItem.xaml
+    /// Logique d'interaction pour PluginViewItem.xaml
     /// </summary>
-    public partial class SsvViewItem : PluginUserControlExtend
+    public partial class PluginViewItem : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
 
-        public SsvViewItem()
+        public PluginViewItem()
         {
             InitializeComponent();
 
-            PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-            PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-            PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+            Task.Run(() =>
+            {
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-            // Apply settings
-            PluginSettings_PropertyChanged(null, null);
+                this.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+
+                    // Apply settings
+                    PluginSettings_PropertyChanged(null, null);
+                });
+            });
         }
 
 
@@ -59,6 +68,11 @@ namespace ScreenshotsVisualizer.Controls
         // When game is changed
         public override void GameContextChanged(Game oldContext, Game newContext)
         {
+            if (!PluginDatabase.IsLoaded)
+            {
+                return;
+            }
+
             MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem;
 
             // When control is not used

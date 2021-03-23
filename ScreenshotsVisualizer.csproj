@@ -88,17 +88,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\Steam.cs" />
-    <Compile Include="Controls\SsvButton.xaml.cs">
-      <DependentUpon>SsvButton.xaml</DependentUpon>
+    <Compile Include="Controls\PluginButton.xaml.cs">
+      <DependentUpon>PluginButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SsvListScreenshots.xaml.cs">
-      <DependentUpon>SsvListScreenshots.xaml</DependentUpon>
+    <Compile Include="Controls\PluginListScreenshots.xaml.cs">
+      <DependentUpon>PluginListScreenshots.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SsvSinglePicture.xaml.cs">
-      <DependentUpon>SsvSinglePicture.xaml</DependentUpon>
+    <Compile Include="Controls\PluginSinglePicture.xaml.cs">
+      <DependentUpon>PluginSinglePicture.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SsvViewItem.xaml.cs">
-      <DependentUpon>SsvViewItem.xaml</DependentUpon>
+    <Compile Include="Controls\PluginViewItem.xaml.cs">
+      <DependentUpon>PluginViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
@@ -144,19 +144,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <Page Include="Controls\SsvButton.xaml">
+    <Page Include="Controls\PluginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SsvListScreenshots.xaml">
+    <Page Include="Controls\PluginListScreenshots.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SsvSinglePicture.xaml">
+    <Page Include="Controls\PluginSinglePicture.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SsvViewItem.xaml">
+    <Page Include="Controls\PluginViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

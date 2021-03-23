@@ -25,9 +25,9 @@ using System.Windows.Shapes;
 namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour SsvSinglePicture.xaml
+    /// Logique d'interaction pour PluginSinglePicture.xaml
     /// </summary>
-    public partial class SsvSinglePicture : PluginUserControlExtend
+    public partial class PluginSinglePicture : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
@@ -35,17 +35,26 @@ namespace ScreenshotsVisualizer.Controls
         private int index = 0;
 
 
-        public SsvSinglePicture()
+        public PluginSinglePicture()
         {
             InitializeComponent();
 
-            PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-            PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-            PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+            Task.Run(() =>
+            {
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-            // Apply settings
-            PluginSettings_PropertyChanged(null, null);
+                this.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+
+                    // Apply settings
+                    PluginSettings_PropertyChanged(null, null);
+                });
+            });
         }
 
 
@@ -66,6 +75,11 @@ namespace ScreenshotsVisualizer.Controls
         // When game is changed
         public override void GameContextChanged(Game oldContext, Game newContext)
         {
+            if (!PluginDatabase.IsLoaded)
+            {
+                return;
+            }
+
             MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
 
             // When control is not used
@@ -160,6 +174,7 @@ namespace ScreenshotsVisualizer.Controls
         }
 
 
+        #region Events
         private void PART_Prev_Click(object sender, RoutedEventArgs e)
         {
             if (index == 0)
@@ -223,5 +238,6 @@ namespace ScreenshotsVisualizer.Controls
                 windowExtension.ShowDialog();
             }
         }
+        #endregion
     }
 }

@@ -24,26 +24,35 @@ using System.Windows.Shapes;
 namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour SsvListScreenshots.xaml
+    /// Logique d'interaction pour PluginListScreenshots.xaml
     /// </summary>
-    public partial class SsvListScreenshots : PluginUserControlExtend
+    public partial class PluginListScreenshots : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
 
-        public SsvListScreenshots()
+        public PluginListScreenshots()
         {
             InitializeComponent();
 
-            PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-            PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-            PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+            Task.Run(() =>
+            {
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-            // Apply settings
-            PluginSettings_PropertyChanged(null, null);
+                this.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
 
-            PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
+                    // Apply settings
+                    PluginSettings_PropertyChanged(null, null);
+
+                    PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
+                });
+            });
         }
 
 
@@ -64,6 +73,11 @@ namespace ScreenshotsVisualizer.Controls
         // When game is changed
         public override void GameContextChanged(Game oldContext, Game newContext)
         {
+            if (!PluginDatabase.IsLoaded)
+            {
+                return;
+            }
+
             MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
 
             // When control is not used
@@ -171,7 +185,7 @@ namespace ScreenshotsVisualizer.Controls
         {
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
             {
-                SsvSinglePicture ssvSinglePicture = Tools.FindVisualChildren<SsvSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
+                PluginSinglePicture ssvSinglePicture = Tools.FindVisualChildren<PluginSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
 
                 if (ssvSinglePicture != null)
                 {

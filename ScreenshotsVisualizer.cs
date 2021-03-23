@@ -36,7 +36,7 @@ namespace ScreenshotsVisualizer
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                ElementList = new List<string> { "SsvButton", "SsvSinglePicture", "SsvListScreenshots", "SsvViewItem" },
+                ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginViewItem" },
                 SourceName = "ScreenshotsVisualizer",
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
@@ -50,7 +50,7 @@ namespace ScreenshotsVisualizer
             try
             {
                 ButtonName = ((Button)sender).Name;
-                if (ButtonName == "PART_SsvCustomButton")
+                if (ButtonName == "PART_CustomSsvButton")
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");
 
@@ -79,24 +79,24 @@ namespace ScreenshotsVisualizer
         // List custom controls
         public override Control GetGameViewControl(GetGameViewControlArgs args)
         {
-            if (args.Name == "SsvButton")
+            if (args.Name == "PluginButton")
             {
-                return new SsvButton();
+                return new PluginButton();
             }
 
-            if (args.Name == "SsvSinglePicture")
+            if (args.Name == "PluginSinglePicture")
             {
-                return new SsvSinglePicture();
+                return new PluginSinglePicture();
             }
 
-            if (args.Name == "SsvListScreenshots")
+            if (args.Name == "PluginListScreenshots")
             {
-                return new SsvListScreenshots();
+                return new PluginListScreenshots();
             }
 
-            if (args.Name == "SsvViewItem")
+            if (args.Name == "PluginViewItem")
             {
-                return new SsvViewItem();
+                return new PluginViewItem();
             }
 
             return null;
