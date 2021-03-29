@@ -1,5 +1,7 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -11,6 +13,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -30,6 +34,30 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginSinglePicture : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
+            }
+        }
+
+        private PluginSinglePictureDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginSinglePictureDataContext)_ControlDataContext;
+            }
+        }
 
         private List<Screenshot> screenshots = new List<Screenshot>();
         private int index = 0;
@@ -58,86 +86,55 @@ namespace ScreenshotsVisualizer.Controls
         }
 
 
-        #region OnPropertyChange
-        // When settings is updated
-        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public override void SetDefaultDataContext()
         {
-            // Apply settings
-            this.DataContext = new
+            ControlDataContext = new PluginSinglePictureDataContext
             {
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture,
+                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
+                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
+                IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
 
+                EnablePrev = false,
+                EnableNext = false,
+
+                PictureSource = string.Empty,
+                PictureInfos = string.Empty
             };
-
-            // Publish changes for the currently displayed game
-            GameContextChanged(null, GameContext);
         }
 
-        // When game is changed
-        public override void GameContextChanged(Game oldContext, Game newContext)
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            if (!PluginDatabase.IsLoaded)
+            return Task.Run(() =>
             {
-                return;
-            }
+                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
+                this.screenshots = gameScreenshots.Items;
+                this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-            // When control is not used
-            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
-            {
-                return;
-            }
+                index = 0;
 
-            if (newContext != null)
-            {
-                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
-
-                if (!gameScreenshots.HasData)
+                if (screenshots.Count > 1)
                 {
-                    MustDisplay = false;
-                    return;
+                    ControlDataContext.EnablePrev = true;
+                    ControlDataContext.EnableNext = true;
                 }
 
-                SetData(gameScreenshots.Items);
-            }
-        }
-        #endregion
-
-
-        public void SetData(List<Screenshot> screenshots)
-        {
-            this.screenshots = screenshots;
-            this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-            index = 0;
-
-            if (screenshots.Count > 1)
-            {
-                PART_Prev.IsEnabled = true;
-                PART_Next.IsEnabled = true;
-            }
-            else
-            {
-                PART_Prev.IsEnabled = false;
-                PART_Next.IsEnabled = false;
-            }
-
-            if (screenshots.Count > 0)
-            {
-                SetPicture(screenshots[index]);
-            }
-            else
-            {
-                this.DataContext = new
+                if (screenshots.Count > 0)
                 {
-                    AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
-                    AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
-                    PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
-                    PictureSource = string.Empty,
-                    PictureInfos = string.Empty
-                };
-            }
+                    SetPicture(screenshots[index]);
+                }
+                
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    this.DataContext = ControlDataContext;
+                }));
+
+                return true;
+            });
         }
+
 
         private void SetPicture(Screenshot screenshot)
         {
@@ -152,16 +149,9 @@ namespace ScreenshotsVisualizer.Controls
                 PictureInfos = (string)Converters.Convert(screenshot.Modifed, null, null, null);
             }
 
-            this.DataContext = new
-            {
-                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
-                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
-                PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
-                PictureSource,
-                PictureInfos
-            };
+            ControlDataContext.PictureSource = PictureSource;
+            ControlDataContext.PictureInfos = PictureInfos;
         }
-
 
         public void SetPictureFromList(int index)
         {
@@ -170,6 +160,12 @@ namespace ScreenshotsVisualizer.Controls
                 this.index = index;
 
                 SetPicture(screenshots[index]);
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    this.DataContext = null;
+                    this.DataContext = ControlDataContext;
+                }));
             }
         }
 
@@ -186,7 +182,7 @@ namespace ScreenshotsVisualizer.Controls
                 index--;
             }
 
-            SetPicture(screenshots[index]);
+            SetPictureFromList(index);
         }
 
         private void PART_Next_Click(object sender, RoutedEventArgs e)
@@ -200,7 +196,7 @@ namespace ScreenshotsVisualizer.Controls
                 index++;
             }
 
-            SetPicture(screenshots[index]);
+            SetPictureFromList(index);
         }
 
 
@@ -239,5 +235,20 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
         #endregion
+    }
+
+
+    public class PluginSinglePictureDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+        public bool AddBorder { get; set; }
+        public bool AddRoundedCorner { get; set; }
+        public double IntegrationShowSinglePictureHeight { get; set; }
+
+        public bool EnablePrev { get; set; }
+        public bool EnableNext { get; set; }
+
+        public string PictureSource { get; set; }
+        public string PictureInfos { get; set; }
     }
 }

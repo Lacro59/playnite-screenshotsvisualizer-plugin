@@ -9,7 +9,7 @@
         mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="&#xea38;" FontFamily="{DynamicResource CommonFont}"
+        <TextBlock Text="{Binding Text, Mode=OneWay, FallbackValue='&#xea38;'}" FontFamily="{DynamicResource CommonFont}"
                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Foreground}"
                    FontSize="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=FontSize}" />
     </Grid>

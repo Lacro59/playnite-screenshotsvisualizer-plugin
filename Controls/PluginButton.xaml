@@ -22,10 +22,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            
-            <TextBlock Text="&#xea38;" FontFamily="{DynamicResource CommonFont}"
+
+            <TextBlock Text="{Binding Text, Mode=OneWay, FallbackValue='&#xea38;'}" FontFamily="{DynamicResource CommonFont}"
                        Grid.Column="0" VerticalAlignment="Center"
-                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=FontSize}" />
+                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
 
             <Grid Grid.Column="1" Margin="3,0,0,0"
                   Visibility="{Binding DisplayDetails, Converter={StaticResource BooleanToVisibilityConverter}}">

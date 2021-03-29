@@ -22,6 +22,7 @@
 
     <Grid Name="PART_GridContenerListGame">
         <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"
+                 ItemsSource="{Binding ItemsSource}"
                  Tag="{Binding AddBorder}"
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
@@ -30,7 +31,7 @@
                     <VirtualizingStackPanel Orientation="Horizontal" PreviewMouseWheel="VirtualizingStackPanel_PreviewMouseWheel" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            s
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="5" Name="PART_Contener">

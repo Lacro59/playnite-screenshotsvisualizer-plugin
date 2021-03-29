@@ -86,10 +86,9 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        public override GameScreenshots Get(Guid Id, bool OnlyCache = false)
+        public override GameScreenshots Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
-            Common.LogDebug(true, $"GetFromDb({Id.ToString()}) - gameScreenshots: {JsonConvert.SerializeObject(gameScreenshots)}");
 
             if (gameScreenshots == null)
             {

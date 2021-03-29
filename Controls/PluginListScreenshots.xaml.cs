@@ -1,5 +1,7 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -7,9 +9,11 @@ using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -29,6 +34,30 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginListScreenshots : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
+            }
+        }
+
+        private PluginListScreenshotsDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginListScreenshotsDataContext)_ControlDataContext;
+            }
+        }
 
 
         public PluginListScreenshots()
@@ -56,70 +85,44 @@ namespace ScreenshotsVisualizer.Controls
         }
 
 
-        #region OnPropertyChange
-        // When settings is updated
-        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public override void SetDefaultDataContext()
         {
-            // Apply settings
-            this.DataContext = new
+            ControlDataContext = new PluginListScreenshotsDataContext
             {
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures,
+                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder,
+                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner,
+                IntegrationShowPicturesHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight,
 
+                CountItems = 0,
+                ItemsSource = new ObservableCollection<Screenshot>()
             };
-
-            // Publish changes for the currently displayed game
-            GameContextChanged(null, GameContext);
         }
 
-        // When game is changed
-        public override void GameContextChanged(Game oldContext, Game newContext)
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            if (!PluginDatabase.IsLoaded)
+            return Task.Run(() =>
             {
-                return;
-            }
+                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
+                List<Screenshot> screenshots = gameScreenshots.Items;
+                screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-            // When control is not used
-            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures)
-            {
-                return;
-            }
+                ControlDataContext.ItemsSource = screenshots.ToObservable();
+                ControlDataContext.CountItems = screenshots.Count;
 
-            if (newContext != null)
-            {
-                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
-
-                if (!gameScreenshots.HasData)
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    MustDisplay = false;
-                    return;
-                }
+                    this.DataContext = ControlDataContext;
+                }));
 
-                SetData(gameScreenshots.Items);
-            }
-        }
-        #endregion
-
-
-        public void SetData(List<Screenshot> screenshots)
-        {
-            screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-            PART_ListScreenshots.ItemsSource = null;
-            PART_ListScreenshots.Items.Clear();
-            PART_ListScreenshots.ItemsSource = screenshots;
-
-            this.DataContext = new
-            {
-                PluginDatabase.PluginSettings.Settings.AddBorder,
-                PluginDatabase.PluginSettings.Settings.AddRoundedCorner,
-                PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight,
-                CountItems = screenshots.Count
-            };
+                return true;
+            });
         }
 
 
+        #region Events
         private void ListBoxItem_MouseLeftButtonDownClick(object sender, MouseButtonEventArgs e)
         {
             ListBoxItem item = ItemsControl.ContainerFromElement(PART_ListScreenshots, e.OriginalSource as DependencyObject) as ListBoxItem;
@@ -166,7 +169,6 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-
         private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
@@ -180,7 +182,6 @@ namespace ScreenshotsVisualizer.Controls
             e.Handled = true;
         }
 
-
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
@@ -193,8 +194,20 @@ namespace ScreenshotsVisualizer.Controls
                 }
             }
         }
+        #endregion
     }
 
+
+    public class PluginListScreenshotsDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+        public bool AddBorder { get; set; }
+        public bool AddRoundedCorner { get; set; }
+        public double IntegrationShowPicturesHeight { get; set; }
+
+        public int CountItems { get; set; }
+        public ObservableCollection<Screenshot> ItemsSource { get; set; }
+    }
 
     public class TwoSizeMultiValueConverter : IMultiValueConverter
     {

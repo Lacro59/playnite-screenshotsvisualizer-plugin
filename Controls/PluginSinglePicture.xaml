@@ -76,12 +76,14 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Name="PART_Prev" Grid.Column="0" Content="" FontFamily="{DynamicResource CommonFont}" 
+            <Button Name="PART_Prev" Grid.Column="0" Content="&#xe941;" FontFamily="{DynamicResource CommonFont}" 
+                    IsEnabled="{Binding EnablePrev}"
                     Click="PART_Prev_Click" FontSize="24" />
 
-            <Label Grid.Column="1" Content="{Binding PictureInfos}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Label Name="PART_Label" Grid.Column="1" Content="{Binding PictureInfos}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-            <Button Name="PART_Next" Grid.Column="2" Content="" FontFamily="{DynamicResource CommonFont}" 
+            <Button Name="PART_Next" Grid.Column="2" Content="&#xe942;" FontFamily="{DynamicResource CommonFont}" 
+                    IsEnabled="{Binding EnableNext}"
                     Click="PART_Next_Click" FontSize="24" />
         </Grid>
     </Grid>

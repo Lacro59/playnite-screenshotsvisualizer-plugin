@@ -1,4 +1,6 @@
-﻿using CommonPluginsShared.Controls;
+﻿using CommonPluginsShared.Collections;
+using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -26,6 +30,30 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginViewItem : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
+            }
+        }
+
+        private PluginViewItemDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginViewItemDataContext)_ControlDataContext;
+            }
+        }
 
 
         public PluginViewItem()
@@ -51,47 +79,38 @@ namespace ScreenshotsVisualizer.Controls
         }
 
 
-        #region OnPropertyChange
-        // When settings is updated
-        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public override void SetDefaultDataContext()
         {
-            // Apply settings
-            this.DataContext = new
+            ControlDataContext = new PluginViewItemDataContext
             {
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem,
 
+                Text = "\uea38"
             };
-
-            // Publish changes for the currently displayed game
-            GameContextChanged(null, GameContext);
         }
 
-        // When game is changed
-        public override void GameContextChanged(Game oldContext, Game newContext)
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            if (!PluginDatabase.IsLoaded)
+            return Task.Run(() =>
             {
-                return;
-            }
+                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem;
-
-            // When control is not used
-            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem)
-            {
-                return;
-            }
-
-            if (newContext != null)
-            {
-                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
-
-                if (!gameScreenshots.HasData)
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    MustDisplay = false;
-                    return;
-                }
-            }
+                    this.DataContext = ControlDataContext;
+                }));
+
+                return true;
+            });
         }
-        #endregion
+    }
+
+
+    public class PluginViewItemDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+
+        public string Text { get; set; }
     }
 }

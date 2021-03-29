@@ -1,5 +1,7 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -11,6 +13,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -30,10 +34,36 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginButton : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
+            }
+        }
+
+        private PluginButtonDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginButtonDataContext)_ControlDataContext;
+            }
+        }
 
 
         public PluginButton()
         {
+            AlwaysShow = true;
+
             InitializeComponent();
 
             Task.Run(() =>
@@ -55,72 +85,57 @@ namespace ScreenshotsVisualizer.Controls
         }
 
 
-        #region OnPropertyChange
-        // When settings is updated
-        public override void PluginSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public override void SetDefaultDataContext()
         {
-            // Apply settings
-            this.DataContext = new
+            ControlDataContext = new PluginButtonDataContext
             {
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton,
+                DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails,
 
+                Text = "\uea38",
+                SsvDateLast = string.Empty,
+                SsvTotal = 0
             };
-
-            // Publish changes for the currently displayed game
-            GameContextChanged(null, GameContext);
         }
 
-        // When game is changed
-        public override void GameContextChanged(Game oldContext, Game newContext)
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            if (!PluginDatabase.IsLoaded)
+            return Task.Run(() =>
             {
-                return;
-            }
+                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-            MustDisplay = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton;
-
-            // When control is not used
-            if (!PluginDatabase.PluginSettings.Settings.EnableIntegrationButton)
-            {
-                return;
-            }
-
-            LocalDateConverter localDateConverter = new LocalDateConverter();
-
-            bool DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails;
-            DateTime SsvDateLast = DateTime.Now;
-            int SsvTotal = 0;
-
-            if (DisplayDetails && newContext != null)
-            {
-                GameScreenshots gameScreenshots = PluginDatabase.Get(newContext);
-
-                if (gameScreenshots.HasData)
+                if (ControlDataContext.DisplayDetails)
                 {
-                    var tmp = gameScreenshots.Items;
-                    tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-                    SsvDateLast = tmp[0].Modifed;
+                    if (gameScreenshots.HasData)
+                    {
+                        var tmp = gameScreenshots.Items;
+                        tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+                        DateTime SsvDateLast = tmp[0].Modifed;
 
-                    SsvTotal = gameScreenshots.Items.Count();
+                        LocalDateConverter localDateConverter = new LocalDateConverter();
+
+                        ControlDataContext.SsvDateLast = (string)localDateConverter.Convert(SsvDateLast, null, null, CultureInfo.CurrentCulture);
+                        ControlDataContext.SsvTotal = gameScreenshots.Items.Count();
+                    }
+                    else
+                    {
+                        ControlDataContext.DisplayDetails = false;
+                    }
                 }
                 else
                 {
-                    DisplayDetails = false;
+                    ControlDataContext.DisplayDetails = false;
                 }
-            }
-            else
-            {
-                DisplayDetails = false;
-            }
 
-            this.DataContext = new
-            {
-                DisplayDetails,
-                SsvDateLast = localDateConverter.Convert(SsvDateLast, null, null, CultureInfo.CurrentCulture),
-                SsvTotal
-            };
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    this.DataContext = ControlDataContext;
+                }));
+
+                return true;
+            });
         }
-        #endregion
 
 
         #region Events
@@ -139,5 +154,17 @@ namespace ScreenshotsVisualizer.Controls
             windowExtension.ShowDialog();
         }
         #endregion
+    }
+
+
+    public class PluginButtonDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+        public bool DisplayDetails { get; set; }
+        public bool ButtonContextMenu { get; set; }
+
+        public string Text { get; set; }
+        public string SsvDateLast { get; set; }
+        public int SsvTotal { get; set; }
     }
 }
