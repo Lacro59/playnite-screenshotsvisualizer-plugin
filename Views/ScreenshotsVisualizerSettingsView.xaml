@@ -276,7 +276,8 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowSinglePictureHeight}" Width="40" Grid.Column="1" />
+                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowSinglePictureHeight}" 
+                                                                         Width="40" Grid.Column="1" TextAlignment="Center" />
                                         </Grid>
 
                                         <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorderSinglePicture}">
@@ -327,7 +328,8 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowPicturesHeight}" Width="40" Grid.Column="1" />
+                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowPicturesHeight}" 
+                                                                         Width="40" Grid.Column="1" TextAlignment="Center" />
                                         </Grid>
 
                                         <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorder}">
