@@ -4,20 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
         <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
         <converters:NegateConverter x:Key="NegateConverter" />
     </UserControl.Resources>
 
     <TabControl Margin="20">
-
         <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
             <Grid Name="PART_Settings" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -190,127 +190,161 @@
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        
-                        <CheckBox Grid.Row="0" VerticalAlignment="Center" 
-                                  IsChecked="{Binding Settings.EnableIntegrationButton}" 
-                                  Name="PART_IntegrationButton">
-                            <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
-                        </CheckBox>
 
-                        <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationViewItem}" 
-                              VerticalAlignment="Center" Name="PART_IntegrationViewItem">
-                            <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
-                        </CheckBox>
+                        <Expander Grid.Row="0">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
 
-                        <CheckBox Grid.Row="4" VerticalAlignment="Center" 
-                                  IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" 
-                                  Name="PART_IntegrationSinglePicture">
-                            <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
-                        </CheckBox>
-                        
-                        <CheckBox Grid.Row="6" VerticalAlignment="Center" 
-                                  IsChecked="{Binding Settings.EnableIntegrationShowPictures}" 
-                                  Name="PART_IntegrationPictures">
-                            <Label Content="{DynamicResource LOCSsvShowPictures}" />
-                        </CheckBox>
+                            <Expander.Header>
+                                <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButton}" Name="PART_IntegrationButton">
+                                    <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
+                                </CheckBox>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButtonDetails}">
+                                            <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox IsChecked="{Binding Settings.EnableIntegrationViewItem}" Name="PART_IntegrationViewItem">
+                                    <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
+                                </CheckBox>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="4">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" Name="PART_IntegrationSinglePicture">
+                                    <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
+                                </CheckBox>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_IntegrationSinglePicture, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowSinglePictureHeight}" Width="40" Grid.Column="1" />
+                                        </Grid>
+
+                                        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorderSinglePicture}">
+                                            <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                                        </CheckBox>
+                                        <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelectionSinglePicture}">
+                                            <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander Grid.Row="6">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowPictures}" Name="PART_IntegrationPictures">
+                                    <Label Content="{DynamicResource LOCSsvShowPictures}" />
+                                </CheckBox>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_IntegrationPictures, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                            <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowPicturesHeight}" Width="40" Grid.Column="1" />
+                                        </Grid>
+
+                                        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorder}">
+                                            <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                                        </CheckBox>
+                                        <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelection}">
+                                            <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                                        </CheckBox>
+
+                                        <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
+                                            <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
                     </Grid>
-
-                    <GroupBox Header="{DynamicResource LOCCommonIntegrationButtonOptions}" Margin="0,30,0,0" 
-                              IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButtonDetails}" 
-                                      Name="Ssv_IntegrationInButtonDetails" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
-                            </CheckBox>
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCSsvShowSinglePictureOptions}" Margin="0,10,0,0"
-                              IsEnabled="{Binding ElementName=PART_IntegrationSinglePicture, Path=IsChecked}">
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                <TextBox Text="{Binding Settings.IntegrationShowSinglePictureHeight, FallbackValue=150}" 
-                                         Width="40" Grid.Column="1" 
-                                         VerticalAlignment="Center" TextAlignment="Center"/>
-                            </Grid>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelectionSinglePicture}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding Settings.AddBorderSinglePicture}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                            </CheckBox>
-                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding Settings.AddRoundedCornerSinglePicture}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
-                            </CheckBox-->
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Header="{DynamicResource LOCSsvShowPicturesOptions}" Margin="0,10,0,0"
-                              IsEnabled="{Binding ElementName=PART_IntegrationPictures, Path=IsChecked}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                <TextBox Text="{Binding Settings.IntegrationShowPicturesHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                                 VerticalAlignment="Center" TextAlignment="Center"/>
-                            </Grid>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelection}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding Settings.AddBorder}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                            </CheckBox>
-                            <!--CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding Settings.AddRoundedCorner}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvAddRoundedCorner}" />
-                            </CheckBox-->
-
-                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}" 
-                                      VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
-                            </CheckBox>
-                        </Grid>
-                    </GroupBox>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
