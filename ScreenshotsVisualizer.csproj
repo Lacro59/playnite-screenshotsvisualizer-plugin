@@ -82,6 +82,9 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml.cs">
       <DependentUpon>TextBlockTrimmed.xaml</DependentUpon>
     </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
+      <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\Converters.cs" />
@@ -136,6 +139,10 @@
       <SubType>Designer</SubType>
     </None>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
