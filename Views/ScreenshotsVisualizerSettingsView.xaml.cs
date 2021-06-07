@@ -1,8 +1,6 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using ScreenshotsVisualizer.Clients;
-using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,8 +221,6 @@ namespace ScreenshotsVisualizer.Views
         // Add Steam game automaticly
         private void PART_BtAddSteamGame_Click(object sender, RoutedEventArgs e)
         {
-            Steam steam = new Steam(_PluginUserDataPath);
-
             var tmpList = listGames.GetClone().Where(x => x.SourceName == "Steam").ToList();
             foreach (var game in tmpList)
             {
@@ -242,7 +238,7 @@ namespace ScreenshotsVisualizer.Views
                     Id = game.Id,
                     Icon = Icon,
                     Name = game.Name,
-                    ScreenshotsFolder = steam.GetGamePathScreenshotsFolder(_PlayniteApi.Database.Games.Get(game.Id)),
+                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + _PlayniteApi.Database.Games.Get(game.Id).GameId + "\\screenshots",
                     SourceName = game.SourceName
                 });
             }

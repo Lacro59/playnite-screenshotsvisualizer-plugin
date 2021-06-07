@@ -153,6 +153,12 @@ namespace ScreenshotsVisualizer
                         }
                     });
                 }
+
+                gameMenuItems.Add(new GameMenuItem
+                {
+                    MenuSection = resources.GetString("LOCSsv"),
+                    Description = "-"
+                });
             }
 
             gameMenuItems.Add(new GameMenuItem
@@ -216,7 +222,7 @@ namespace ScreenshotsVisualizer
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem
             {
-                MenuSection = resources.GetString("LOCSsv"),
+                MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
                 Description = "-"
             });
             mainMenuItems.Add(new MainMenuItem
@@ -232,7 +238,7 @@ namespace ScreenshotsVisualizer
         #endregion
 
 
-        #region Game evenet
+        #region Game event
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
             try
@@ -274,6 +280,8 @@ namespace ScreenshotsVisualizer
             {
                 var TaskGameStopped = Task.Run(() =>
                 {
+                    PluginDatabase.RefreshData(game);
+
                     if (game.Id == PluginDatabase.GameContext.Id)
                     {
                         PluginDatabase.SetThemesResources(PluginDatabase.GameContext);

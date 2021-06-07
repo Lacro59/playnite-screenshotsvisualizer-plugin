@@ -87,7 +87,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\Steam.cs" />
     <Compile Include="Controls\PluginButton.xaml.cs">
       <DependentUpon>PluginButton.xaml</DependentUpon>
     </Compile>

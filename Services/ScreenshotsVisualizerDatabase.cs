@@ -27,29 +27,10 @@ namespace ScreenshotsVisualizer.Services
         {
             IsLoaded = false;
 
-            // TODO Better way?
-            //if (Directory.Exists(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer")))
-            //{
-            //    string[] files = Directory.GetFiles(Path.Combine(Paths.PluginDatabasePath, "ScreenshotsVisualizer"));
-            //    foreach (string file in files)
-            //    {
-            //        try
-            //        {
-            //            File.Delete(file);
-            //        }
-            //        catch
-            //        {
-            //        }
-            //    }
-            //}
-
             Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Screenshot>(PlayniteApi);
 
-            GetFromSettings();
             GetPluginTags();
-
-            Task.Run(() => { RefreshDataAll(); });
 
             IsLoaded = true;
             return true;
@@ -117,12 +98,14 @@ namespace ScreenshotsVisualizer.Services
 
         private void SetDataFromSettings(GameSettings item)
         {
+            System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+
             Game game = PlayniteApi.Database.Games.Get(item.Id);
             GameScreenshots gameScreenshots = GetDefault(game);
 
             try
             {
-                gameScreenshots.ScreenshotsFolder = item.ScreenshotsFolder;
+                gameScreenshots.ScreenshotsFolder = item.GetScreenshotsFolder(PlayniteApi);
                 gameScreenshots.InSettings = true;
 
                 // Get files
@@ -166,18 +149,13 @@ namespace ScreenshotsVisualizer.Services
                 }
                 else
                 {
-                    logger.Warn($"Screenshots directory not found for {game.Name}");
+                    Common.LogDebug(true, $"Screenshots directory not found for {game.Name}");
                 }
 
                 var elements = gameScreenshots.Items.Where(x => x != null);
                 if (elements.Count() > 0)
                 {
                     gameScreenshots.Items = elements.ToList();
-                }
-
-                if (Database.Get(game.Id) != null)
-                {
-                    Database.Remove(game.Id);
                 }
 
                 AddOrUpdate(gameScreenshots);
