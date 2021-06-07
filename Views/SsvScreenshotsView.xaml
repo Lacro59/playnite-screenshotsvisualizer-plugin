@@ -6,12 +6,13 @@
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" 
              MinHeight="700" MinWidth="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
         <services:ImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
 

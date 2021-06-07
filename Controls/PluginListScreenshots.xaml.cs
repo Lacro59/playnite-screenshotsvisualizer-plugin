@@ -186,7 +186,7 @@ namespace ScreenshotsVisualizer.Controls
         {
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
             {
-                PluginSinglePicture ssvSinglePicture = Tools.FindVisualChildren<PluginSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
+                PluginSinglePicture ssvSinglePicture = UI.FindVisualChildren<PluginSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
 
                 if (ssvSinglePicture != null)
                 {

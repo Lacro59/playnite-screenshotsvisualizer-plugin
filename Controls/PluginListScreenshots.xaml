@@ -7,16 +7,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
-        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding IntegrationShowPicturesHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
     <controls:PluginUserControlExtend.Resources>
-        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
-        <commonpluginsshared:ImageConverter x:Key="ImageConverter"/>
+        <convertersshared:ImageConverter x:Key="ImageConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </controls:PluginUserControlExtend.Resources>
 

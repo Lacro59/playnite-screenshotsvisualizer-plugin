@@ -116,7 +116,7 @@ namespace ScreenshotsVisualizer.Views
             string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
-                var TextBox = Tools.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
+                var TextBox = UI.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
 
                 if (TextBox != null)
                 {

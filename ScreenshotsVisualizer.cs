@@ -25,8 +25,6 @@ namespace ScreenshotsVisualizer
     {
         public override Guid Id { get; } = Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
 
-        private readonly TaskHelper taskHelper = new TaskHelper();
-
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
         {
@@ -37,6 +35,12 @@ namespace ScreenshotsVisualizer
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
                 ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginViewItem" },
+                SourceName = "ScreenshotsVisualizer"
+            });
+
+            // Settings integration
+            AddSettingsSupport(new AddSettingsSupportArgs
+            {
                 SourceName = "ScreenshotsVisualizer",
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
@@ -166,6 +170,11 @@ namespace ScreenshotsVisualizer
             gameMenuItems.Add(new GameMenuItem
             {
                 MenuSection = resources.GetString("LOCSsv"),
+                Description = "-"
+            });
+            gameMenuItems.Add(new GameMenuItem
+            {
+                MenuSection = resources.GetString("LOCSsv"),
                 Description = "Test",
                 Action = (mainMenuItem) => { }
             });
@@ -205,6 +214,11 @@ namespace ScreenshotsVisualizer
             });
 
 #if DEBUG
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = resources.GetString("LOCSsv"),
+                Description = "-"
+            });
             mainMenuItems.Add(new MainMenuItem
             {
                 MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),

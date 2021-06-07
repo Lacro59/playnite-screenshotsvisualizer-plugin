@@ -5,15 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
         <converters:NegateConverter x:Key="NegateConverter" />
     </UserControl.Resources>
 

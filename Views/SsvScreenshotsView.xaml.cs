@@ -56,7 +56,7 @@ namespace ScreenshotsVisualizer.Views
 
                 if (File.Exists(screenshot.FileName))
                 {
-                    CommonPluginsShared.ImageConverter imageConverter = new CommonPluginsShared.ImageConverter();
+                    CommonPluginsShared.Converters.ImageConverter imageConverter = new CommonPluginsShared.Converters.ImageConverter();
                     PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
                 }
             }
