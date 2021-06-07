@@ -180,7 +180,7 @@ namespace ScreenshotsVisualizer.Services
                     Database.Remove(game.Id);
                 }
 
-                Database.Add(gameScreenshots);
+                AddOrUpdate(gameScreenshots);
             }
             catch (Exception ex)
             {

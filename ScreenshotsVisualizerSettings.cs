@@ -184,6 +184,11 @@ namespace ScreenshotsVisualizer
 
             Plugin.SavePluginSettings(Settings);
             ScreenshotsVisualizer.PluginDatabase.PluginSettings = this;
+            Task.Run(() => 
+            {
+                ScreenshotsVisualizer.PluginDatabase.GetFromSettings();
+                ScreenshotsVisualizer.PluginDatabase.RefreshDataAll();
+            });
             this.OnPropertyChanged();
         }
 
