@@ -176,7 +176,7 @@ namespace ScreenshotsVisualizer
                 Settings.gameSettings.Add(new GameSettings
                 {
                     Id = item.Id,
-                    ScreenshotsFolder = item.ScreenshotsFolder,
+                    ScreenshotsFolders = item.ScreenshotsFolders,
                     UsedFilePattern = item.UsedFilePattern,
                     FilePattern = item.FilePattern
                 });

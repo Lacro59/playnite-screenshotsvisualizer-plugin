@@ -141,7 +141,7 @@ namespace ScreenshotsVisualizer
                     }
                 });
 
-                if (!gameScreenshots.ScreenshotsFolder.IsNullOrEmpty() && Directory.Exists(gameScreenshots.ScreenshotsFolder))
+                if (gameScreenshots.ScreenshotsFolders.Count != 0 && gameScreenshots.FoldersExist)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
@@ -150,7 +150,10 @@ namespace ScreenshotsVisualizer
                         Description = resources.GetString("LOCSsvOpenScreenshotsDirectory"),
                         Action = (gameMenuItem) =>
                         {
-                            Process.Start(gameScreenshots.ScreenshotsFolder);
+                            foreach(string Folder in gameScreenshots.ScreenshotsFolders)
+                            {
+                                Process.Start(Folder);
+                            }
                         }
                     });
                 }

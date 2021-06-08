@@ -13,13 +13,24 @@ namespace ScreenshotsVisualizer.Models
     public class GameSettings
     {
         public Guid Id { get; set; }
-        public string ScreenshotsFolder { get; set; }
+        public List<FolderSettings> ScreenshotsFolders { get; set; }
+
+        // TEMP
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
+        public string ScreenshotsFolder { get; set; }
 
-        public string GetScreenshotsFolder(IPlayniteAPI PlayniteApi)
+        public List<string> GetScreenshotsFolders(IPlayniteAPI PlayniteApi)
         {
-            return PlayniteTools.StringExpand(PlayniteApi.Database.Games.Get(Id), ScreenshotsFolder);
+            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpand(PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
         }
+    }
+
+
+    public class FolderSettings
+    {
+        public bool UsedFilePattern { get; set; }
+        public string FilePattern { get; set; }
+        public string ScreenshotsFolder { get; set; }
     }
 }

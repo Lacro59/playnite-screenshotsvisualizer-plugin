@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,15 +66,32 @@ namespace ScreenshotsVisualizer.Views
                         Icon = PlayniteApi.Database.GetFullFilePath(game.Icon);
                     }
 
+                    // TEMP
+                    List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
+                    if (!item.ScreenshotsFolder.IsNullOrEmpty())
+                    {
+                        ScreenshotsFolders.Add(new FolderSettings
+                        {
+                            UsedFilePattern = item.UsedFilePattern,
+                            FilePattern = item.FilePattern,
+                            ScreenshotsFolder = item.ScreenshotsFolder
+                        });
+                    }
+                    else
+                    {
+                        ScreenshotsFolders = item.ScreenshotsFolders;
+                    }
+
                     listGameScreenshots.Add(new ListGameScreenshot
                     {
                         Id = item.Id,
                         Icon = Icon,
                         Name = game.Name,
-                        ScreenshotsFolder = item.ScreenshotsFolder,
+                        ScreenshotsFolders = ScreenshotsFolders,
                         UsedFilePattern = item.UsedFilePattern,
                         FilePattern = item.FilePattern,
-                        SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id)
+                        SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id),
+                        SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(PlayniteApi, item.Id))
                     });
                 }
                 else
@@ -97,7 +115,8 @@ namespace ScreenshotsVisualizer.Views
                     Id = item.Id,
                     Icon = Icon,
                     Name = item.Name,
-                    SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id)
+                    SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id),
+                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(PlayniteApi, item.Id))
                 });
             }
 
@@ -109,7 +128,11 @@ namespace ScreenshotsVisualizer.Views
         #region Action on list games screenshots
         private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(((Button)sender).Tag.ToString());
+            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            var item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
@@ -119,37 +142,45 @@ namespace ScreenshotsVisualizer.Views
                 if (TextBox != null)
                 {
                     TextBox.Text = SelectedFolder;
-                    listGameScreenshots[index].ScreenshotsFolder = SelectedFolder;
+                    listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].ScreenshotsFolder = SelectedFolder;
                 }
             }
+
+            PART_ListGameScreenshot.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            TextboxSearch_TextChanged(null, null);
         }
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)sender).Tag.ToString());
 
+            var item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+
             PART_ListGameScreenshot.ItemsSource = null;
-            listGameScreenshots.RemoveAt(index);
+            listGameScreenshots.RemoveAt(ControlIndex);
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            TextboxSearch_TextChanged(null, null);
 
             var TaskView = Task.Run(() =>
             {
                 var DbWithoutAlready = _PlayniteApi.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
                 listGames = new List<ListGame>();
-                foreach (Game item in DbWithoutAlready)
+                foreach (Game game in DbWithoutAlready)
                 {
                     string Icon = string.Empty;
-                    if (!item.Icon.IsNullOrEmpty())
+                    if (!game.Icon.IsNullOrEmpty())
                     {
-                        Icon = _PlayniteApi.Database.GetFullFilePath(item.Icon);
+                        Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
                     }
 
                     listGames.Add(new ListGame
                     {
-                        Id = item.Id,
+                        Id = game.Id,
                         Icon = Icon,
-                        Name = item.Name,
-                        SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Id)
+                        Name = game.Name,
+                        SourceName = PlayniteTools.GetSourceName(_PlayniteApi, game.Id)
                     });
                 }
                 
@@ -163,6 +194,33 @@ namespace ScreenshotsVisualizer.Views
                     PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
                 });
             });
+        }
+
+        private void ButtonRemoveFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            var item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+
+            PART_ListGameScreenshot.ItemsSource = null;
+            listGameScreenshots[ControlIndex].ScreenshotsFolders.RemoveAt(indexFolder);
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            TextboxSearch_TextChanged(null, null);
+        }
+
+        private void ButtonAddFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+
+            var item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+
+            PART_ListGameScreenshot.ItemsSource = null;
+            listGameScreenshots[ControlIndex].ScreenshotsFolders.Add(new FolderSettings());
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            TextboxSearch_TextChanged(null, null);
         }
         #endregion
 
@@ -194,10 +252,11 @@ namespace ScreenshotsVisualizer.Views
                 Id = SelectedItem.Id,
                 Icon = Icon,
                 Name = SelectedItem.Name,
-                ScreenshotsFolder = string.Empty,
+                ScreenshotsFolders = new List<FolderSettings>(),
                 UsedFilePattern = false,
                 FilePattern = string.Empty,
-                SourceName = SelectedItem.SourceName
+                SourceName = SelectedItem.SourceName,
+                SourceIcon = TransformIcon.Get(SelectedItem.SourceName)
             });
             
             listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
@@ -230,13 +289,20 @@ namespace ScreenshotsVisualizer.Views
                     Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
                 }
 
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
+                ScreenshotsFolders.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + _PlayniteApi.Database.Games.Get(game.Id).GameId + "\\screenshots"
+                });
+
                 listGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
                     Name = game.Name,
-                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + _PlayniteApi.Database.Games.Get(game.Id).GameId + "\\screenshots",
-                    SourceName = game.SourceName
+                    ScreenshotsFolders = ScreenshotsFolders,
+                    SourceName = game.SourceName,
+                    SourceIcon = TransformIcon.Get(game.SourceName)
                 });
             }
 
@@ -265,13 +331,20 @@ namespace ScreenshotsVisualizer.Views
                     Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
                 }
 
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
+                ScreenshotsFolders.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name
+                });
+
                 listGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
                     Name = game.Name,
-                    ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name,
-                    SourceName = game.SourceName
+                    ScreenshotsFolders = ScreenshotsFolders,
+                    SourceName = game.SourceName,
+                    SourceIcon = TransformIcon.Get(game.SourceName)
                 });
             }
 
@@ -293,6 +366,7 @@ namespace ScreenshotsVisualizer.Views
         public string Icon { get; set; }
         public string Name { get; set; }
         public string SourceName { get; set; }
+        public string SourceIcon { get; set; }
     }
     
     public class ListGameScreenshot
@@ -301,8 +375,9 @@ namespace ScreenshotsVisualizer.Views
         public string Icon { get; set; }
         public string Name { get; set; }
         public string SourceName { get; set; }
+        public string SourceIcon { get; set; }
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
-        public string ScreenshotsFolder { get; set; }
+        public List<FolderSettings> ScreenshotsFolders { get; set; }
     }
 }

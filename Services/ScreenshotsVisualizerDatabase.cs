@@ -105,64 +105,70 @@ namespace ScreenshotsVisualizer.Services
 
             try
             {
-                gameScreenshots.ScreenshotsFolder = item.GetScreenshotsFolder(PlayniteApi);
+                gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders(PlayniteApi);
                 gameScreenshots.InSettings = true;
 
-                // Get files
-                string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga" };
-                if (Directory.Exists(gameScreenshots.ScreenshotsFolder))
+                foreach (var ScreenshotsFolder in item.ScreenshotsFolders)
                 {
-                    Parallel.ForEach(Directory.EnumerateFiles(gameScreenshots.ScreenshotsFolder, "*.*")
-                        .Where(s => extensions.Any(ext => ext == Path.GetExtension(s))), (objectFile) =>
-                        {
-                            try
+                    string PathFolder = PlayniteTools.StringExpand(game, ScreenshotsFolder.ScreenshotsFolder);
+
+                    // Get files
+                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga" };
+                    if (Directory.Exists(PathFolder))
+                    {
+                        Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*")
+                            .Where(s => extensions.Any(ext => ext == Path.GetExtension(s))), (objectFile) =>
                             {
-                                DateTime Modified = File.GetLastWriteTime(objectFile);
-
-                                if (item.UsedFilePattern)
+                                try
                                 {
-                                    string Pattern = item.FilePattern.Replace("{digit}", @"\d*");
+                                    DateTime Modified = File.GetLastWriteTime(objectFile);
 
-                                    if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
+                                    if (ScreenshotsFolder.UsedFilePattern)
+                                    {
+                                        string Pattern = ScreenshotsFolder.FilePattern.Replace("{digit}", @"\d*");
+                                        Pattern = PlayniteTools.StringExpand(game, Pattern);
+
+                                        if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
+                                        {
+                                            gameScreenshots.Items.Add(new Screenshot
+                                            {
+                                                FileName = objectFile,
+                                                Modifed = Modified
+                                            });
+                                        }
+                                    }
+                                    else
                                     {
                                         gameScreenshots.Items.Add(new Screenshot
                                         {
                                             FileName = objectFile,
-                                            Modifed = Modified
+                                            Modifed = Modified,
                                         });
                                     }
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    gameScreenshots.Items.Add(new Screenshot
-                                    {
-                                        FileName = objectFile,
-                                        Modifed = Modified,
-                                    });
+                                    Common.LogError(ex, false);
                                 }
-                            }
-                            catch (Exception ex)
-                            {
-                                Common.LogError(ex, false);
-                            }
-                        });
-                }
-                else
-                {
-                    Common.LogDebug(true, $"Screenshots directory not found for {game.Name}");
-                }
+                            });
+                    }
+                    else
+                    {
+                        Common.LogDebug(true, $"Screenshots directory not found for {game.Name}");
+                    }
 
-                var elements = gameScreenshots.Items.Where(x => x != null);
-                if (elements.Count() > 0)
-                {
-                    gameScreenshots.Items = elements.ToList();
-                }
+                    var elements = gameScreenshots.Items.Where(x => x != null);
+                    if (elements.Count() > 0)
+                    {
+                        gameScreenshots.Items = elements.ToList();
+                    }
 
-                AddOrUpdate(gameScreenshots);
+                    AddOrUpdate(gameScreenshots);
+                }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on File load for {game.Name} on {gameScreenshots.ScreenshotsFolder}");
+                Common.LogError(ex, false, $"Error on File load for {game.Name}");
             }
         }
 

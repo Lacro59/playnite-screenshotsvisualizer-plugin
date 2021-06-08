@@ -15,6 +15,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
         <converters:NegateConverter x:Key="NegateConverter" />
+        <convertersshared:ListMoreOneBoolConverter x:Key="ListMoreOneBoolConverter" />
     </UserControl.Resources>
 
     <TabControl Margin="20">
@@ -117,10 +118,10 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,2">
+                                <Grid Margin="0,5">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
-                                        <RowDefinition Height="8" />
+                                        <RowDefinition Height="5" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
 
@@ -128,65 +129,96 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="200"/>
-                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="8" />
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
 
                                         <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
-                                               VerticalAlignment="Center" Source="{Binding Icon}"/>
+                                               VerticalAlignment="Center" Source="{Binding Icon}" Stretch="Uniform" />
+
+                                        <Label Content="{Binding SourceIcon, FallbackValue='X'}" FontFamily="{DynamicResource CommonFont}"
+                                               Grid.Column="2" VerticalAlignment="Center" FontSize="22" Margin="0,-4,0,0" />
+
                                         <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
-                                                                   Grid.Column="2" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
+                                                                   Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
 
-                                        <Grid Grid.Column="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="8" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                                        <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
+                                                Name="ButtonAddFolder"
+                                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                VerticalAlignment="Center" Grid.Column="6" />
 
-                                            <CheckBox Grid.Column="0" Name="PART_UsedPattern" VerticalAlignment="Center" IsChecked="{Binding UsedFilePattern}">
-                                                <Label Content="{DynamicResource LOCSsvUsedFilePattern}" />
-                                            </CheckBox>
-
-                                            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" 
-                                                          VerticalScrollBarVisibility="Disabled" Name="scvPattern">
-                                                <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" 
-                                                         MinWidth="50" IsEnabled="{Binding ElementName=PART_UsedPattern, Path=IsChecked}"
-                                                         MaxWidth="{Binding ElementName=scvPattern, Path=ActualWidth}">
-                                                    <TextBox.ToolTip>
-                                                        <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
-                                                    </TextBox.ToolTip>
-                                                </TextBox>
-                                            </ScrollViewer>
-                                        </Grid>
+                                        <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
+                                                Name="ButtonRemove"
+                                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                VerticalAlignment="Center" Grid.Column="8" />
                                     </Grid>
 
-                                    <Grid Grid.Row="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="30" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
+                                    <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100"
+                                                  Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="40,0,0,5">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="8" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
 
-                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" HorizontalAlignment="Right"
-                                                   Grid.Column="0" Text="{Binding SourceName, FallbackValue=Source_Name}" VerticalAlignment="Center" />
-                                        <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" Name="scv">
-                                            <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" 
-                                                     MinWidth="200"
-                                                     MaxWidth="{Binding ElementName=scv, Path=ActualWidth}" />
-                                        </ScrollViewer>
-                                        <StackPanel Grid.Column="4" Orientation="Horizontal">
-                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
-                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                                    VerticalAlignment="Center" />
-                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
-                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                                    VerticalAlignment="Center" Margin="10,0,0,0" />
-                                        </StackPanel>
-                                    </Grid>
+                                                    <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" 
+                                                             MinWidth="180" Grid.Column="0" />
+
+                                                    <Grid Grid.Column="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="auto" />
+                                                            <ColumnDefinition Width="8" />
+                                                            <ColumnDefinition Width="auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="auto" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
+                                                                Name="ButtonSelectFolder"                                                                
+                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                VerticalAlignment="Center" Grid.Column="0" />
+
+                                                        <CheckBox Grid.Column="2" Name="PART_UsedPattern" VerticalAlignment="Center" 
+                                                                  IsChecked="{Binding UsedFilePattern, FallbackValue=True}">
+                                                            <Label Content="{DynamicResource LOCSsvUsedFilePattern}" />
+                                                        </CheckBox>
+
+                                                        <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
+                                                                Name="ButtonRemoveFolder"
+                                                                IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
+                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                VerticalAlignment="Center" Grid.Column="4" />
+                                                    </Grid>
+
+                                                    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,0"
+                                                          Visibility="{Binding ElementName=PART_UsedPattern, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="100" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
+                                                            <TextBox.ToolTip>
+                                                                <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
+                                                            </TextBox.ToolTip>
+                                                        </TextBox>
+                                                    </Grid>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -194,7 +226,7 @@
                 </Grid>
             </Grid>
         </TabItem>
-        
+
         <TabItem Header="{DynamicResource LOCCommonIntegration}">
             <ScrollViewer>
                 <StackPanel Margin="0,10,0,0">
