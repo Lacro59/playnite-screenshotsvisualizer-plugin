@@ -246,6 +246,8 @@ namespace ScreenshotsVisualizer.Views
             listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+            TextboxSearch_TextChanged(null, null);
         }
 
         // Add Ubisoft Connect game automaticly
@@ -279,6 +281,8 @@ namespace ScreenshotsVisualizer.Views
             listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+            TextboxSearch_TextChanged(null, null);
         }
     }
 
