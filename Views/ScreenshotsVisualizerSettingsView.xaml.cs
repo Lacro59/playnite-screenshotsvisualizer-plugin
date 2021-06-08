@@ -250,6 +250,39 @@ namespace ScreenshotsVisualizer.Views
             PART_ListGameScreenshot.ItemsSource = null;
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
         }
+
+        // Add Ubisoft Connect game automaticly
+        private void PART_BtAddUplay_Click(object sender, RoutedEventArgs e)
+        {
+            var tmpList = listGames.GetClone().Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
+            foreach (var game in tmpList)
+            {
+                int index = listGames.FindIndex(x => x.Id == game.Id);
+                listGames.RemoveAt(index);
+
+                string Icon = string.Empty;
+                if (!game.Icon.IsNullOrEmpty())
+                {
+                    Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
+                }
+
+                listGameScreenshots.Add(new ListGameScreenshot
+                {
+                    Id = game.Id,
+                    Icon = Icon,
+                    Name = game.Name,
+                    ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name,
+                    SourceName = game.SourceName
+                });
+            }
+
+            PART_ListGame.ItemsSource = null;
+            PART_ListGame.ItemsSource = listGames;
+
+            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            PART_ListGameScreenshot.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+        }
     }
 
 

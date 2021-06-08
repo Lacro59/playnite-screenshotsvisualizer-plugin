@@ -36,31 +36,54 @@
 
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
                     <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
-                                  HorizontalAlignment="left" Width="120" VerticalAlignment="Center" />
+                                  HorizontalAlignment="left" />
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0">
                         <Label Content="{DynamicResource LOCSearchLabel}" FontSize="16" Margin="0,0,10,0" />
-                        <TextBox Name="TextboxSearch" TextWrapping="NoWrap" VerticalAlignment="Center"
-                                 KeyUp="TextboxSearch_KeyUp" Width="200" />
+                        <TextBox Name="TextboxSearch" TextWrapping="NoWrap" 
+                                 KeyUp="TextboxSearch_KeyUp" Width="150" />
                     </StackPanel>
 
                     <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
-                            Click="PART_BtSelectGame_Click" IsEnabled="False" Width="120"
-                            VerticalAlignment="Center"
+                            Click="PART_BtSelectGame_Click" IsEnabled="False"
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <Button Grid.Column="2" Name="PART_BtAddSteamGame" Content="{DynamicResource LOCSsvAddSteamGame}" HorizontalAlignment="Right" 
-                            Click="PART_BtAddSteamGame_Click"
-                            VerticalAlignment="Center"
-                            Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
+                        <Button Name="PART_BtAddSteamGame" HorizontalAlignment="Left" 
+                                Click="PART_BtAddSteamGame_Click"
+                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{DynamicResource LOCAddTitle}" 
+                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                            </StackPanel>
+                        </Button>
+                        <Button Name="PART_BtAddUplay" HorizontalAlignment="Left" 
+                                Click="PART_BtAddUplay_Click" Margin="10,0,0,0"
+                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{DynamicResource LOCAddTitle}" 
+                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Label Grid.Column="4" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
+                           ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
                 </Grid>
 
                 <Grid Grid.Row="3" Name="PART_GridContenerListGame" 

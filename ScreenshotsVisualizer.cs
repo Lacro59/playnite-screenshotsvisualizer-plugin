@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.PlayniteExtended;
+using CommonPluginsShared.StoresAPI;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
@@ -182,7 +183,10 @@ namespace ScreenshotsVisualizer
             {
                 MenuSection = resources.GetString("LOCSsv"),
                 Description = "Test",
-                Action = (mainMenuItem) => { }
+                Action = (mainMenuItem) => 
+                {
+
+                }
             });
 #endif
 
