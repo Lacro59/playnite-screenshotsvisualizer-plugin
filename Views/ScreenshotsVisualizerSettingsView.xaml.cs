@@ -208,13 +208,10 @@ namespace ScreenshotsVisualizer.Views
 
 
         // Search by name
-        private void TextboxSearch_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if (!TextboxSearch.Text.IsNullOrEmpty())
-            //{
-                PART_ListGame.ItemsSource = listGames.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
-                PART_ListGameScreenshot.ItemsSource = listGameScreenshots.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
-            //}
+            PART_ListGame.ItemsSource = listGames.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
         }
 
 

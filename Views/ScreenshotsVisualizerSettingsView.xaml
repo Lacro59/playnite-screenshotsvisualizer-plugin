@@ -49,11 +49,8 @@
                     <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
                                   HorizontalAlignment="left" />
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,0,0">
-                        <Label Content="{DynamicResource LOCSearchLabel}" FontSize="16" Margin="0,0,10,0" />
-                        <TextBox Name="TextboxSearch" TextWrapping="NoWrap" 
-                                 KeyUp="TextboxSearch_KeyUp" Width="150" />
-                    </StackPanel>
+                    <playnitecontrols:SearchBox x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged"
+                                                Margin="10,0,0,0" Grid.Column="1" />
 
                     <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
                             Click="PART_BtSelectGame_Click" IsEnabled="False"
