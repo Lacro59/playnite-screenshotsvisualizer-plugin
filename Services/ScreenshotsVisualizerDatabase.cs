@@ -37,6 +37,7 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
+        /*
         public void RefreshDataAll()
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -55,15 +56,32 @@ namespace ScreenshotsVisualizer.Services
             TimeSpan ts = stopWatch.Elapsed;
             logger.Info($"RefreshDataAll - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
         }
+        */
 
         public void RefreshData(Game game)
         {
-            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                false
+            );
+            globalProgressOptions.IsIndeterminate = true;
 
-            if (gameSettings != null)
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
-                SetDataFromSettings(gameSettings);
-            }
+                try
+                {
+                    GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
+
+                    if (gameSettings != null)
+                    {
+                        SetDataFromSettings(gameSettings);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }, globalProgressOptions);
         }
 
 

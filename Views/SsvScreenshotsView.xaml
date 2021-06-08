@@ -43,11 +43,13 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" 
-                                   Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" Width="240" FontWeight="Bold"
-                                    Style="{DynamicResource BaseTextBlockStyle}"
-                                   TextTrimming="CharacterEllipsis" 
-                                   VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Name="PART_GridText">
+                            <TextBlock MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
+                                       Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" MinWidth="250" FontWeight="Bold"
+                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                       TextTrimming="CharacterEllipsis" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        </Grid>
 
                         <Image Grid.Column="0" Grid.Row="2" Height="96" Name="PART_Picture">
                             <Image.Source>
