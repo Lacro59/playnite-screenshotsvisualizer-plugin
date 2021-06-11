@@ -357,6 +357,18 @@ namespace ScreenshotsVisualizer.Views
 
             TextboxSearch_TextChanged(null, null);
         }
+
+
+        #region FolderToSave
+        private void ButtonSelectFolderToSave_Click(object sender, RoutedEventArgs e)
+        {
+            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            if (!SelectedFolder.IsNullOrEmpty())
+            {
+                PART_FolderToSave.Text = SelectedFolder;
+            }
+        }
+        #endregion
     }
 
 

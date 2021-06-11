@@ -83,6 +83,9 @@ namespace ScreenshotsVisualizer
         public bool AddBorder { get; set; } = true;
         public bool AddRoundedCorner { get; set; } = false;
 
+        public bool EnableFolderToSave { get; set; } = false;
+        public string FolderToSave { get; set; } = string.Empty;
+        public string FileSavePattern { get; set; } = string.Empty;
 
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
         #endregion

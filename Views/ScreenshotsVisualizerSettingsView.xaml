@@ -402,6 +402,57 @@
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
+
+        <TabItem Header="{DynamicResource LOCCommonMisc}">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <GroupBox Grid.Row="0">
+                        <GroupBox.Header>
+                            <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
+                                <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />
+                            </CheckBox>
+                        </GroupBox.Header>
+
+                        <Grid IsEnabled="{Binding ElementName=PART_EnableFolderToSave, Path=IsChecked}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
+                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolderToSave_Click" 
+                                    Name="ButtonSelectFolderToSave" Grid.Column="4" />
+                            <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center" 
+                                     Name="PART_FolderToSave" MinWidth="100" Grid.Column="2" Grid.Row="0" />
+                            <Label Grid.Column="6" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
+                                   ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
+
+                            <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
+                            <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center" 
+                                     Name="PART_FileSavePattern" MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5">
+                                <TextBox.ToolTip>
+                                    <ToolTip Content="{DynamicResource LOCSsvUsedFileSavePatternTooltip}" />
+                                </TextBox.ToolTip>
+                            </TextBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
     </TabControl>
 </UserControl>
     

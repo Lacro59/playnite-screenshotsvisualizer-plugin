@@ -85,6 +85,116 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
+        public void MoveToFolderToSave(Game game)
+        {
+            if (PluginSettings.Settings.EnableFolderToSave)
+            {
+                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                    $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                    false
+                );
+                globalProgressOptions.IsIndeterminate = true;
+
+                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                {
+                    try
+                    {
+                        // Refresh data
+                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
+                        if (gameSettings != null)
+                        {
+                            SetDataFromSettings(gameSettings);
+                        }
+
+
+                        string PathFolder = PlayniteTools.StringExpand(game, PluginSettings.Settings.FolderToSave);
+                        string Pattern = PlayniteTools.StringExpand(game, PluginSettings.Settings.FileSavePattern);
+                        string PatternWithDigit = string.Empty;
+
+                        GameScreenshots gameScreenshots = Get(game);
+                        int digit = 1;
+
+                        if (!Directory.Exists(PathFolder))
+                        {
+                            Directory.CreateDirectory(PathFolder);
+                        }
+
+                        bool HaveDigit = false;
+                        foreach (Screenshot screenshot in gameScreenshots.Items)
+                        {
+                            if (File.Exists(screenshot.FileName))
+                            {
+                                string ext = Path.GetExtension(screenshot.FileName);
+
+                                Pattern = Pattern.Replace("{DateModified}", screenshot.Modifed.ToString("yyyy-MM-dd"));
+                                Pattern = Pattern.Replace("{DateTimeModified}", screenshot.Modifed.ToString("yyyy-MM-dd HH_mm_ss"));
+
+                                if (Pattern.Contains("{digit}"))
+                                {
+                                    HaveDigit = true;
+                                    PatternWithDigit = Pattern;
+                                    Pattern = PatternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
+                                    digit++;
+                                }
+
+                                Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
+
+                                string destFileName = Path.Combine(PathFolder, Pattern);
+
+
+                                // If file exists
+                                if (File.Exists(destFileName + ext))
+                                {
+                                    if (HaveDigit)
+                                    {
+                                        while (File.Exists(destFileName + ext))
+                                        {
+                                            Pattern = PatternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
+                                            Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
+                                            destFileName = Path.Combine(PathFolder, Pattern);
+                                            digit++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        destFileName += $" ({DateTime.Now.ToString("yyyy-MM-dd HH_mm_ss")})";
+                                    }
+                                }
+
+
+                                try
+                                {
+                                    File.Move(screenshot.FileName, destFileName + ext);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Common.LogError(ex, false);
+                                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                                         $"{PluginName}-Error-MoveToFolderToSave",
+                                         $"{PluginName}\r\n{ex.Message}",
+                                         NotificationType.Error
+                                    ));
+                                    break;
+                                }
+                            }
+                        }
+
+
+                        // Refresh data
+                        if (gameSettings != null)
+                        {
+                            SetDataFromSettings(gameSettings);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }, globalProgressOptions);
+            }
+        }
+
+
         public override GameScreenshots Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
@@ -123,6 +233,16 @@ namespace ScreenshotsVisualizer.Services
 
             try
             {
+                if (PluginSettings.Settings.EnableFolderToSave && item.ScreenshotsFolders.Find(x => x.ScreenshotsFolder == PluginSettings.Settings.FolderToSave) == null)
+                {
+                    item.ScreenshotsFolders.Add(new FolderSettings
+                    {
+                        ScreenshotsFolder = PluginSettings.Settings.FolderToSave,
+                        UsedFilePattern = true,
+                        FilePattern = PluginSettings.Settings.FileSavePattern
+                    });
+                }
+
                 gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders(PlayniteApi);
                 gameScreenshots.InSettings = true;
 
@@ -143,9 +263,13 @@ namespace ScreenshotsVisualizer.Services
 
                                     if (ScreenshotsFolder.UsedFilePattern)
                                     {
-                                        string Pattern = ScreenshotsFolder.FilePattern.Replace("{digit}", @"\d*");
-                                        Pattern = PlayniteTools.StringExpand(game, Pattern);
+                                        string Pattern = PlayniteTools.StringExpand(game, ScreenshotsFolder.FilePattern);
+                                        Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
 
+                                        Pattern = Pattern.Replace("{digit}", @"\d*");
+                                        Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");
+                                        Pattern = Pattern.Replace("{DateTimeModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}_[0-9]{2}_[0-9]{2} ");
+                              
                                         if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
                                         {
                                             gameScreenshots.Items.Add(new Screenshot

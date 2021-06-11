@@ -158,6 +158,20 @@ namespace ScreenshotsVisualizer
                     });
                 }
 
+                if (gameScreenshots.Items.Count > 0 && PluginDatabase.PluginSettings.Settings.EnableFolderToSave)
+                {
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        // Open directory
+                        MenuSection = resources.GetString("LOCSsv"),
+                        Description = resources.GetString("LOCSsvMoveToSave"),
+                        Action = (gameMenuItem) =>
+                        {
+                            PluginDatabase.MoveToFolderToSave(GameMenu);
+                        }
+                    });
+                }
+
                 gameMenuItems.Add(new GameMenuItem
                 {
                     MenuSection = resources.GetString("LOCSsv"),

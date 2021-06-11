@@ -10,6 +10,9 @@
     
     <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    
+    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -40,6 +43,39 @@
 To use the simplified version, replace the numbers with {digit} and remove the extension.
 
 Example:
-GameName_20200107-1 => GameName_ {digit} - {digit}</sys:String>
+GameName_20200107-1 => GameName_{digit} - {digit}</sys:String>
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
+{ImagePath} - Game ISO/ROM path if set
+{ImageName} - Game ISO/ROM file name
+{ImageNameNoExt} - Game ISO/ROM file name without extension
+{Name} - Game name
+        
+{digit} - Incremented file number
+{DateModified} - File date modified         
+{DateTimeModified} - File date and time modified         
+       
+Steam variables can be used to add a dynamic string:        
+{SteamId} - Steam user Id
+        
+Windows variables can be used to add a dynamic string:        
+{WinDir}
+{AllUsersProfile}
+{AppData}
+{HomePath}
+{UserName}
+{ComputerName}
+{UserProfile}
+{HomeDrive}
+{SystemDrive}
+{SystemRoot}
+{Public}
+{CommonProgramW6432}
+{CommonProgramFiles}
+{ProgramFiles}
+{CommonProgramFiles(x86)}
+{ProgramFiles(x86)}</sys:String>
+
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
 
 </ResourceDictionary>
