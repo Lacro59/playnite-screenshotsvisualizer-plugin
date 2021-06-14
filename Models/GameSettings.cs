@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonPluginsShared;
+using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
@@ -22,7 +22,7 @@ namespace ScreenshotsVisualizer.Models
 
         public List<string> GetScreenshotsFolders(IPlayniteAPI PlayniteApi)
         {
-            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpand(PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
+            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpandWithStores(PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
         }
     }
 

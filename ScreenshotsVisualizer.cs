@@ -1,6 +1,5 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.PlayniteExtended;
-using CommonPluginsShared.StoresAPI;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
