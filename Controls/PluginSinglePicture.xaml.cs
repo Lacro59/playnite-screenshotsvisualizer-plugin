@@ -99,6 +99,8 @@ namespace ScreenshotsVisualizer.Controls
                 EnablePrev = false,
                 EnableNext = false,
 
+                IsVideo = false,
+                Thumbnail = string.Empty,
                 PictureSource = string.Empty,
                 PictureInfos = string.Empty
             };
@@ -139,6 +141,8 @@ namespace ScreenshotsVisualizer.Controls
 
         private void SetPicture(Screenshot screenshot)
         {
+            bool IsVideo = false;
+            string Thumbnail = string.Empty;
             string PictureSource = string.Empty;
             string PictureInfos = string.Empty;
 
@@ -146,10 +150,14 @@ namespace ScreenshotsVisualizer.Controls
 
             if (File.Exists(screenshot.FileName))
             {
+                IsVideo = screenshot.IsVideo;
+                Thumbnail = screenshot.Thumbnail;
                 PictureSource = screenshot.FileName;
                 PictureInfos = (string)Converters.Convert(screenshot.Modifed, null, null, null);
             }
 
+            ControlDataContext.IsVideo = IsVideo;
+            ControlDataContext.Thumbnail = Thumbnail;
             ControlDataContext.PictureSource = PictureSource;
             ControlDataContext.PictureInfos = PictureInfos;
         }
@@ -235,25 +243,6 @@ namespace ScreenshotsVisualizer.Controls
                 windowExtension.ShowDialog();
             }
         }
-
-
-        private void Video_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var Video = sender as MediaElement;
-                if (Video.NaturalDuration.HasTimeSpan && Video.NaturalDuration.TimeSpan.TotalSeconds > 2)
-                {
-                    Video.LoadedBehavior = MediaState.Play;
-                    Video.LoadedBehavior = MediaState.Pause;
-                    Video.Position = new TimeSpan(0, 0, ((int)Video.NaturalDuration.TimeSpan.TotalSeconds / 2));
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false);
-            }
-        }
         #endregion
     }
 
@@ -268,6 +257,8 @@ namespace ScreenshotsVisualizer.Controls
         public bool EnablePrev { get; set; }
         public bool EnableNext { get; set; }
 
+        public bool IsVideo { get; set; }
+        public string Thumbnail { get; set; }
         public string PictureSource { get; set; }
         public string PictureInfos { get; set; }
     }

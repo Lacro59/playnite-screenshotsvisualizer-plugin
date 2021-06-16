@@ -75,24 +75,29 @@
                                 </MultiBinding>
                             </Image.Width>
                         </Image>
-                        <MediaElement Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      ScrubbingEnabled="True"
-                                      Stretch="Uniform" MediaOpened="Video_MediaOpened"
-                                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                      Source="{Binding FileName}" LoadedBehavior="Stop" Name="Video">
-                            <MediaElement.Height>
+                        <Image Grid.Row="0" Name="PART_ScreenshotsPictureThumbnail" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+                               Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                               Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                                    <Binding Path="Thumbnail" IsAsync="True" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                                </MultiBinding>
+                            </Image.Source>
+
+                            <Image.Height>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />
                                     <Binding ElementName="PART_LabelContener" Path="ActualHeight" />
                                 </MultiBinding>
-                            </MediaElement.Height>
-                            <MediaElement.Width>
+                            </Image.Height>
+                            <Image.Width>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />
                                     <Binding ElementName="PART_LabelContener" Path="ActualHeight" />
                                 </MultiBinding>
-                            </MediaElement.Width>
-                        </MediaElement>
+                            </Image.Width>
+                        </Image>
                         <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 

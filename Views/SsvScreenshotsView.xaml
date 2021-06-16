@@ -21,7 +21,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10"> 
+    <Grid Margin="10" Unloaded="Grid_Unloaded"> 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
@@ -64,12 +64,14 @@
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
-                        <MediaElement Grid.Column="0" Grid.Row="2" Height="96" Width="170"
-                                      ScrubbingEnabled="True"
-                                      Stretch="Uniform" MediaOpened="Video_MediaOpened"
-                                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                      Source="{Binding FileName}" LoadedBehavior="Stop" Name="Video">
-                        </MediaElement>
+                        <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture_Thumbnail"
+                               Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                                    <Binding Path="Thumbnail" IsAsync="True" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
                         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 
@@ -91,15 +93,20 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"
                                        Style="{DynamicResource BaseTextBlockStyle}"
                                        Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}, FallbackValue='2021/03/18 11:14'}" />
-                            <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"
+                            <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"
                                        Style="{DynamicResource BaseTextBlockStyle}" Name="PART_SizePicture"
                                        Text="{Binding SizeString, FallbackValue='1280x720'}" />
-                            <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"
+                            <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"
+                                       Style="{DynamicResource BaseTextBlockStyle}" Name="PART_Duration"
+                                       Text="{Binding DurationString, FallbackValue='00:00:00'}" />
+                            <TextBlock Grid.Column="0" Grid.Row="6" VerticalAlignment="Center"
                                        Style="{DynamicResource BaseTextBlockStyle}"
                                        Text="{Binding FileSizeString, FallbackValue='1.5Mo'}" />
 
@@ -127,9 +134,29 @@
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0">
-            <Image Name="PART_Screenshot" />
-            <MediaElement ScrubbingEnabled="True" Stretch="Uniform" 
+            <Image Name="PART_Screenshot" Visibility="Collapsed" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown" />
+            <MediaElement ScrubbingEnabled="True" Stretch="Uniform" MediaOpened="PART_Video_MediaOpened"
+                          Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
                           Source="{Binding FileName}" LoadedBehavior="Play" Name="PART_Video" />
+
+            <StackPanel Name="PART_Controls" Visibility="{Binding ElementName=PART_Video, Path=Visibility}"
+                        HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom">
+                <!-- Play button. -->
+                <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec74;" Click="OnMouseDownPlayMedia" Margin="5" />
+
+                <!-- Pause button. -->
+                <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec72;" Click="OnMouseDownPauseMedia" Margin="5" />
+
+                <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
+                <TextBlock Foreground="White" VerticalAlignment="Center" Margin="50,5,5,5"  >Volume</TextBlock>
+                <Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" 
+                        Minimum="0" Maximum="1" Value="0.5" Width="70"/>
+
+                <!-- Seek to slider. Ths slider allows you to jump to different parts of the media playback. -->
+                <Slider Name="timelineSlider" Margin="50,5,5,5" ValueChanged="SeekToMediaPosition" Width="400" VerticalAlignment="Center" />
+
+                <Label Name="lblStatus" Content="Not playing..." Margin="5" VerticalAlignment="Center" />
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

@@ -37,12 +37,15 @@
                 </MultiBinding>
             </Image.Source>
         </Image>
-        <MediaElement Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                      ScrubbingEnabled="True"
-                      Stretch="Uniform" MediaOpened="Video_MediaOpened"
-                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                      Source="{Binding PictureSource}" LoadedBehavior="Stop" Name="Video">
-        </MediaElement>
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture_Thumbnail" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+               Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Image.Source>
+                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                    <Binding Path="Thumbnail" IsAsync="True" />
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                </MultiBinding>
+            </Image.Source>
+        </Image>
         <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                    Style="{DynamicResource BaseTextBlockStyle}" 
