@@ -34,7 +34,8 @@ namespace ScreenshotsVisualizer.Views
 
             this.DataContext = new
             {
-                PictureSource
+                PictureSource,
+                IsVideo = screenshot.IsVideo
             };
         }
 

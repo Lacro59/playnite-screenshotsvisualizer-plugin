@@ -194,6 +194,25 @@ namespace ScreenshotsVisualizer.Controls
                 }
             }
         }
+
+
+        private void Video_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Video = sender as MediaElement;
+                if (Video.NaturalDuration.HasTimeSpan && Video.NaturalDuration.TimeSpan.TotalSeconds > 2)
+                {
+                    Video.LoadedBehavior = MediaState.Play;
+                    Video.LoadedBehavior = MediaState.Pause;
+                    Video.Position = new TimeSpan(0, 0, ((int)Video.NaturalDuration.TimeSpan.TotalSeconds / 2));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
         #endregion
     }
 

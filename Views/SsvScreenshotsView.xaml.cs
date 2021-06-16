@@ -56,8 +56,21 @@ namespace ScreenshotsVisualizer.Views
 
                 if (File.Exists(screenshot.FileName))
                 {
-                    CommonPluginsShared.Converters.ImageConverter imageConverter = new CommonPluginsShared.Converters.ImageConverter();
-                    PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
+                    if (screenshot.IsVideo)
+                    {
+                        PART_Screenshot.Source = null;
+                        PART_Screenshot.Visibility = Visibility.Collapsed;
+
+                        PART_Video.Source = new Uri(screenshot.FileName);
+                    }
+                    else
+                    {
+                        PART_Video.Source = null;
+                        PART_Video.Visibility = Visibility.Collapsed;
+
+                        CommonPluginsShared.Converters.ImageConverter imageConverter = new CommonPluginsShared.Converters.ImageConverter();
+                        PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
+                    }
                 }
             }
         }
@@ -159,6 +172,29 @@ namespace ScreenshotsVisualizer.Views
             }
 
             PART_FilesSize.Content = Tools.SizeSuffix(TotalSize);
+        }
+
+
+        private void Video_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Video = sender as MediaElement;
+                if (Video.NaturalDuration.HasTimeSpan && Video.NaturalDuration.TimeSpan.TotalSeconds > 2)
+                {
+                    Video.LoadedBehavior = MediaState.Play;
+                    Video.LoadedBehavior = MediaState.Pause;
+                    Video.Position = new TimeSpan(0, 0, ((int)Video.NaturalDuration.TimeSpan.TotalSeconds / 2));
+                }
+
+                FrameworkElement ElementParent = (FrameworkElement)((FrameworkElement)sender).Parent;
+                var Element = ElementParent.FindName("PART_SizePicture");
+                ((TextBlock)Element).Text = ((MediaElement)sender).NaturalVideoWidth + "x" + ((MediaElement)sender).NaturalVideoHeight;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
         }
     }
 }

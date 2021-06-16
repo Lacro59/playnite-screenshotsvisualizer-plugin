@@ -252,7 +252,7 @@ namespace ScreenshotsVisualizer.Services
                     string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
 
                     // Get files
-                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga" };
+                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi" };
                     if (Directory.Exists(PathFolder))
                     {
                         Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*")

@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared;
+﻿using CommonPluginsPlaynite.Common;
+using CommonPluginsShared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,14 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (File.Exists(FileName))
                 {
-                    ImageProperty imageProperty = ImageTools.GetImapeProperty(FileName);
-                    if (imageProperty != null)
+                    if (Path.GetExtension(FileName).ToLower().Contains("mp4"))
                     {
-                        return imageProperty.Width + "x" + imageProperty.Height;
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        ImageProperties imageProperties = Images.GetImageProperties(FileName);
+                        return imageProperties.Width + "x" + imageProperties.Height;
                     }
                 }
 
@@ -68,6 +73,20 @@ namespace ScreenshotsVisualizer.Models
             get
             {
                 return Path.GetFileName(FileName);
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsVideo
+        {
+            get
+            {
+                if (!File.Exists(FileName))
+                {
+                    return false;
+                }
+
+                return Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi");
             }
         }
     }

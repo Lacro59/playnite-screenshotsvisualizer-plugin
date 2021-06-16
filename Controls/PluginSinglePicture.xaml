@@ -7,8 +7,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
         xmlns:services="clr-namespace:CommonPluginsShared"
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding IntegrationShowSinglePictureHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
@@ -16,6 +17,8 @@
     <controls:PluginUserControlExtend.Resources>
         <convertersshared:ImageConverter x:Key="ImageConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_Contener" MouseDown="PART_Contener_MouseDown">
@@ -25,7 +28,8 @@
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+               Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
                     <Binding Path="PictureSource" IsAsync="True" />
@@ -33,6 +37,20 @@
                 </MultiBinding>
             </Image.Source>
         </Image>
+        <MediaElement Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                      ScrubbingEnabled="True"
+                      Stretch="Uniform" MediaOpened="Video_MediaOpened"
+                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Source="{Binding PictureSource}" LoadedBehavior="Stop" Name="Video">
+        </MediaElement>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                   FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
+                   Style="{DynamicResource BaseTextBlockStyle}" 
+                   Text="{Binding PictureSource, Converter={StaticResource GetMediaTypeConverter}}">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+            </TextBlock.Effect>
+        </TextBlock>
         <Border Name="PART_ImageBorder" Grid.Row="0"
                 BorderThickness="{DynamicResource ControlBorderThickness}" 
                 BorderBrush="{DynamicResource NormalBorderBrush}" 
