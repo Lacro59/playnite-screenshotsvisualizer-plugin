@@ -9,10 +9,11 @@
              xmlns:controls="clr-namespace:ScreenshotsVisualizer.Controls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:converters1="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" MinHeight="100" MinWidth="100">
 
     <UserControl.Resources>
-        <services:ImageConverter x:Key="ImageConverter"/>
+        <converters1:ImageConverter x:Key="ImageConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>

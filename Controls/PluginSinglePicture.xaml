@@ -28,23 +28,34 @@
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
-               Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-            <Image.Source>
-                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
-                    <Binding Path="PictureSource" IsAsync="True" />
-                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                </MultiBinding>
-            </Image.Source>
-        </Image>
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture_Thumbnail" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
-               Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Image.Source>
-                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
-                    <Binding Path="Thumbnail" IsAsync="True" />
-                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                </MultiBinding>
-            </Image.Source>
+        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                            <Setter Property="Source" >
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                                        <Binding Path="PictureSource" IsAsync="True" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                            <Setter Property="Source" >
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
+                                        <Binding Path="Thumbnail" IsAsync="True" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
         </Image>
         <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"

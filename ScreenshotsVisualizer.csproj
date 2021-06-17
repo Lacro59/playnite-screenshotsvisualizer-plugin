@@ -123,7 +123,6 @@
     </Compile>
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
-    <Compile Include="Services\Converters.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Views\ScreenshotsVisualizerSettingsView.xaml.cs">
       <DependentUpon>ScreenshotsVisualizerSettingsView.xaml</DependentUpon>

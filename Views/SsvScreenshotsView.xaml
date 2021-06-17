@@ -16,7 +16,7 @@
     <UserControl.Resources>
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
-        <services:ImageConverter x:Key="ImageConverter"/>
+        <convertersshared:ImageConverter x:Key="ImageConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
@@ -57,21 +57,32 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                         </Grid>
 
-                        <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture"
-                               Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                    <Binding Path="FileName" IsAsync="True" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                        <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture_Thumbnail"
-                               Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                    <Binding Path="Thumbnail" IsAsync="True" />
-                                </MultiBinding>
-                            </Image.Source>
+                        <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                            <Setter Property="Source" >
+                                                <Setter.Value>
+                                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                                                        <Binding Path="FileName" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                            <Setter Property="Source" >
+                                                <Setter.Value>
+                                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                                                        <Binding Path="Thumbnail" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
                         </Image>
                         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"

@@ -140,7 +140,7 @@ namespace ScreenshotsVisualizer
                     }
                 });
 
-                if (gameScreenshots.ScreenshotsFolders.Count != 0 && gameScreenshots.FoldersExist)
+                if (gameScreenshots.ScreenshotsFolders != null && gameScreenshots.ScreenshotsFolders.Count != 0 && gameScreenshots.FoldersExist)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
