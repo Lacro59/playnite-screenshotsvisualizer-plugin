@@ -8,6 +8,7 @@
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              xmlns:controls="clr-namespace:ScreenshotsVisualizer.Controls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" MinHeight="100" MinWidth="100">
 
     <UserControl.Resources>
@@ -16,16 +17,10 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" Unloaded="Grid_Unloaded">
-        <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-
-        <controls:ZoomBorder ClipToBounds="True"> 
-            <Grid>
-                <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown"
-                        Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
+        <controls:ZoomBorder ClipToBounds="True"
+                             Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
                             <Binding Path="PictureSource" IsAsync="True" />
@@ -33,32 +28,10 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-
-                <MediaElement ScrubbingEnabled="True" Stretch="Uniform" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
-                              MediaOpened="PART_Video_MediaOpened"
-                              Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                              Source="{Binding PictureSource}" LoadedBehavior="Play" Name="PART_Video" />
-            </Grid>
         </controls:ZoomBorder>
 
-        <StackPanel Name="PART_Controls" Visibility="{Binding ElementName=PART_Video, Path=Visibility}"
-                    Grid.Row="1"
-                    HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom">
-            <!-- Play button. -->
-            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec74;" Click="OnMouseDownPlayMedia" Margin="5" />
-
-            <!-- Pause button. -->
-            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec72;" Click="OnMouseDownPauseMedia" Margin="5" />
-
-            <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
-            <TextBlock Foreground="White" VerticalAlignment="Center" Margin="50,5,5,5"  >Volume</TextBlock>
-            <Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" 
-                    Minimum="0" Maximum="1" Value="0.5" Width="70"/>
-
-            <!-- Seek to slider. Ths slider allows you to jump to different parts of the media playback. -->
-            <Slider Name="timelineSlider" Margin="50,5,5,5" ValueChanged="SeekToMediaPosition" Width="400" VerticalAlignment="Center" />
-
-            <Label Name="lblStatus" Content="Not playing..." Margin="5" VerticalAlignment="Center" />
-        </StackPanel>
+        <controls1:MediaElementExtend MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
+                                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
     </Grid>
 </UserControl>    

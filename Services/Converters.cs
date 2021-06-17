@@ -21,6 +21,12 @@ namespace ScreenshotsVisualizer.Services
         {
             if (values[0] is string && !((string)values[0]).IsNullOrEmpty() && File.Exists((string)values[0]))
             {
+                string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga" };
+                if (!extensions.Contains(Path.GetExtension((string)values[0])))
+                {
+                    return values[0];
+                }
+
                 BitmapLoadProperties bitmapLoadProperties = null;
                 if (parameter is string && (string)parameter == "-")
                 {
