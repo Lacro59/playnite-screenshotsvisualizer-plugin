@@ -31,8 +31,6 @@ namespace ScreenshotsVisualizer.Services
             Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Screenshot>(PlayniteApi);
 
-            GetPluginTags();
-
             IsLoaded = true;
             return true;
         }
@@ -357,6 +355,7 @@ namespace ScreenshotsVisualizer.Services
 
         public override void AddTag(Game game, bool noUpdate = false)
         {
+            GetPluginTags();
             GameScreenshots gameScreenshots = Get(game, true);
 
             if (gameScreenshots.HasData)
