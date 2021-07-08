@@ -1,9 +1,9 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsStores;
-using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
@@ -345,7 +345,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                 }
 
-                Common.LogDebug(true, $"PluginTags: {JsonConvert.SerializeObject(PluginTags)}");
+                Common.LogDebug(true, $"PluginTags: {Serialization.ToJson(PluginTags)}");
             }
             catch (Exception ex)
             {

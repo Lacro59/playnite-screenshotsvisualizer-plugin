@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Playnite.SDK.Data;
 
 namespace ScreenshotsVisualizer.Models
 {
@@ -31,7 +31,7 @@ namespace ScreenshotsVisualizer.Models
 
         public List<string> ScreenshotsFolders { get; set; }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool FoldersExist
         {
             get
@@ -48,7 +48,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool InSettings { get; set; }
     }
 }

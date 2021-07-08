@@ -3,7 +3,7 @@ using CommonPluginsShared;
 using MediaToolkit;
 using MediaToolkit.Model;
 using MediaToolkit.Options;
-using Newtonsoft.Json;
+using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace ScreenshotsVisualizer.Models
 {
     public class Screenshot
     {
-        [JsonIgnore]
+        [DontSerialize]
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace ScreenshotsVisualizer.Models
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string SizeString
         {
             get
@@ -48,7 +48,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string FileSizeString
         {
             get
@@ -61,7 +61,7 @@ namespace ScreenshotsVisualizer.Models
                 return string.Empty;
             }
         }
-        [JsonIgnore]
+        [DontSerialize]
         public long FileSize
         {
             get
@@ -75,7 +75,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string FileNameOnly
         {
             get
@@ -84,7 +84,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool IsVideo
         {
             get
@@ -99,7 +99,7 @@ namespace ScreenshotsVisualizer.Models
         }
 
         #region Video
-        [JsonIgnore]
+        [DontSerialize]
         public string Thumbnail
         {
             get
@@ -146,10 +146,10 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         private TimeSpan _Duration = default(TimeSpan);
 
-        [JsonIgnore]
+        [DontSerialize]
         public string DurationString
         {
             get
@@ -163,7 +163,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public TimeSpan Duration
         {
             get

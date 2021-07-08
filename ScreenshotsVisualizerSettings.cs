@@ -1,7 +1,6 @@
 ﻿using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
-using Newtonsoft.Json;
 using Playnite.SDK.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
