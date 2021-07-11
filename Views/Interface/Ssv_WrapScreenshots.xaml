@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="ScreenshotsVisualizer.Views.Interface.Ssv_WrapScreenshots"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScreenshotsVisualizer.Views.Interface"
+             xmlns:models="clr-namespace:ScreenshotsVisualizer.Models"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
+             xmlns:controls="clr-namespace:ScreenshotsVisualizer.Controls"
+             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <commonpluginsshared:IndexConverter x:Key="IndexConverter"/>
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
+        <services:ImageConverter x:Key="ImageConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <DataTemplate x:Key="ItemTemplate">
+            <Grid Margin="5" Name="PART_Contener" Height="150" Width="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+                       Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                            <Binding Path="FileName" IsAsync="True" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <Border Name="PART_ImageBorder" Grid.Row="0"
+                        BorderThickness="{DynamicResource ControlBorderThickness}" 
+                        BorderBrush="{DynamicResource NormalBorderBrush}" 
+                        Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                        Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                        Visibility="{Binding Path=DataContext.AddBorder, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                </Border>
+
+                <Grid Grid.Row="2" Name="PART_LabelContener">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" Content="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Name="PART_GridContenerListGame" Loaded="Grid_Loaded">
+        <ListBox Name="PART_ListScreenshots" ItemTemplate="{StaticResource ItemTemplate}"     
+                 SelectionChanged="PART_ListScreenshots_SelectionChanged"
+                 Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
+                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </Grid>
+</UserControl>

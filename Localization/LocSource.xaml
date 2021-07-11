@@ -24,12 +24,14 @@
     
     <sys:String x:Key="LOCSsvShowSinglePicture">Show single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Show list of screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Show list of vertical screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVerticalOptions">List of vertical screenshot options</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>

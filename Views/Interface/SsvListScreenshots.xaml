@@ -25,7 +25,7 @@
                     <VirtualizingStackPanel Orientation="Horizontal" PreviewMouseWheel="VirtualizingStackPanel_PreviewMouseWheel" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-s
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="5" Name="PART_Contener">
