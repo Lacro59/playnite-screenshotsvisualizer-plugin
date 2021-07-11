@@ -124,6 +124,7 @@ namespace ScreenshotsVisualizer.Services
                     resourcesLists.Add(new ResourcesList { Key = "Ssv_HasData", Value = false });
                     resourcesLists.Add(new ResourcesList { Key = "Ssv_Count", Value = 0 });
                     resourcesLists.Add(new ResourcesList { Key = "Ssv_ListScreenshots", Value = new List<Screenshot>() });
+                    resourcesLists.Add(new ResourcesList { Key = "Ssv_EnableIntegrationInCustomTheme", Value = PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme });
                     ui.AddResources(resourcesLists);
 
 
