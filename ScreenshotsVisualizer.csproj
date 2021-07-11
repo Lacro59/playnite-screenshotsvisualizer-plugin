@@ -82,6 +82,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="VirtualizingWrapPanel, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\VirtualizingWrapPanel.1.5.4\lib\net45\VirtualizingWrapPanel.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="YamlDotNet, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\YamlDotNet.5.4.0\lib\net45\YamlDotNet.dll</HintPath>
@@ -91,6 +94,9 @@
   <ItemGroup>
     <Compile Include="Controls\PluginButton.xaml.cs">
       <DependentUpon>PluginButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginListScreenshotsVertical.xaml.cs">
+      <DependentUpon>PluginListScreenshotsVertical.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PluginListScreenshots.xaml.cs">
       <DependentUpon>PluginListScreenshots.xaml</DependentUpon>
@@ -156,6 +162,10 @@
     <Page Include="Controls\PluginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginListScreenshotsVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\PluginListScreenshots.xaml">
       <SubType>Designer</SubType>

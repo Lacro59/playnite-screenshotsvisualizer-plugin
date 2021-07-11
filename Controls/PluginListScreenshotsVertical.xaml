@@ -1,0 +1,114 @@
+﻿<controls:PluginUserControlExtend
+        xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
+        x:Class="ScreenshotsVisualizer.Controls.PluginListScreenshotsVertical"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
+        Height="{Binding IntegrationShowPicturesHeight}"
+        MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
+
+    <controls:PluginUserControlExtend.Resources>
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
+        <convertersshared:ImageConverter x:Key="ImageConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+
+        <DataTemplate x:Key="ItemTemplate">
+            <Grid Margin="5" Name="PART_Contener" Height="150" Width="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+                       Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                    <Setter Property="Source" >
+                                        <Setter.Value>
+                                            <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                                                <Binding Path="FileName" IsAsync="True" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                    <Setter Property="Source" >
+                                        <Setter.Value>
+                                            <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
+                                                <Binding Path="Thumbnail" IsAsync="True" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                           FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
+                           Style="{DynamicResource BaseTextBlockStyle}" 
+                           Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+                    </TextBlock.Effect>
+                </TextBlock>
+                <Border Name="PART_ImageBorder" Grid.Row="0"
+                        BorderThickness="{DynamicResource ControlBorderThickness}" 
+                        BorderBrush="{DynamicResource NormalBorderBrush}" 
+                        Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                        Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                        Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                </Border>
+
+                <Grid Grid.Row="2" Name="PART_LabelContener">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" Content="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </controls:PluginUserControlExtend.Resources>
+
+    <Grid Name="PART_GridContenerListGame">
+        <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"
+                 ItemsSource="{Binding ItemsSource}"
+                 ItemTemplate="{StaticResource ItemTemplate}"     
+                 Tag="{Binding AddBorder}"
+                 Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
+                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </Grid>
+</controls:PluginUserControlExtend>

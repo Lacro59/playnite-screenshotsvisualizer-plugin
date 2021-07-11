@@ -34,7 +34,7 @@ namespace ScreenshotsVisualizer
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginViewItem" },
+                ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginListScreenshotsVertical", "PluginViewItem" },
                 SourceName = "ScreenshotsVisualizer"
             });
 
@@ -96,6 +96,11 @@ namespace ScreenshotsVisualizer
             if (args.Name == "PluginListScreenshots")
             {
                 return new PluginListScreenshots();
+            }
+
+            if (args.Name == "PluginListScreenshotsVertical")
+            {
+                return new PluginListScreenshotsVertical();
             }
 
             if (args.Name == "PluginViewItem")

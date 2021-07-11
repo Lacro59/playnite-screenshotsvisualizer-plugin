@@ -76,6 +76,17 @@ namespace ScreenshotsVisualizer
             }
         }
 
+        private bool _EnableIntegrationShowPicturesVertical { get; set; } = false;
+        public bool EnableIntegrationShowPicturesVertical
+        {
+            get => _EnableIntegrationShowPicturesVertical;
+            set
+            {
+                _EnableIntegrationShowPicturesVertical = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double IntegrationShowPicturesHeight { get; set; } = 150;
         public bool LinkWithSinglePicture { get; set; } = false;
         public bool OpenViewerWithOnSelection { get; set; } = false;

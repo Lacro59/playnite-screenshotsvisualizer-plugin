@@ -27,6 +27,7 @@
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
 
