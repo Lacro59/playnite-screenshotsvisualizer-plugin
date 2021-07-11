@@ -337,7 +337,7 @@ namespace ScreenshotsVisualizer.Services
 
             FrameworkElement PART_SsvSinglePicture = null;
             FrameworkElement PART_SsvListScreenshots = null;
-            FrameworkElement PART_SsvWrapScreenshots = null;
+            FrameworkElement PART_SsvListScreenshotsVertical = null;
 
             try
             {
@@ -347,7 +347,7 @@ namespace ScreenshotsVisualizer.Services
 
                 PART_SsvSinglePicture = IntegrationUI.SearchElementByName("PART_SsvSinglePicture", false, true);
                 PART_SsvListScreenshots = IntegrationUI.SearchElementByName("PART_SsvListScreenshots", false, true);
-                PART_SsvWrapScreenshots = IntegrationUI.SearchElementByName("PART_SsvWrapScreenshots", false, true);
+                PART_SsvListScreenshotsVertical = IntegrationUI.SearchElementByName("PART_SsvListScreenshotsVertical", false, true);
             }
             catch (Exception ex)
             {
@@ -457,13 +457,13 @@ namespace ScreenshotsVisualizer.Services
 #endif
             }
 
-            if (PART_SsvWrapScreenshots != null)
+            if (PART_SsvListScreenshotsVertical != null)
             {
-                PART_SsvWrapScreenshots = new Ssv_WrapScreenshots(_PlayniteApi);
+                PART_SsvListScreenshotsVertical = new Ssv_ListScreenshotsVertical(_PlayniteApi);
                 try
                 {
-                    ui.AddElementInCustomTheme(PART_SsvWrapScreenshots, "PART_SsvWrapScreenshots");
-                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_SsvWrapScreenshots", Element = PART_SsvWrapScreenshots });
+                    ui.AddElementInCustomTheme(PART_SsvListScreenshotsVertical, "PART_SsvListScreenshotsVertical");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_SsvListScreenshotsVertical", Element = PART_SsvListScreenshotsVertical });
                 }
                 catch (Exception ex)
                 {

@@ -126,8 +126,8 @@
     <Compile Include="Views\Interface\SsvSinglePicture.xaml.cs">
       <DependentUpon>SsvSinglePicture.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Interface\Ssv_WrapScreenshots.xaml.cs">
-      <DependentUpon>Ssv_WrapScreenshots.xaml</DependentUpon>
+    <Compile Include="Views\Interface\Ssv_ListScreenshotsVertical.xaml.cs">
+      <DependentUpon>Ssv_ListScreenshotsVertical.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScreenshotsVisualizerSettingsView.xaml.cs">
       <DependentUpon>ScreenshotsVisualizerSettingsView.xaml</DependentUpon>
@@ -190,7 +190,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Interface\Ssv_WrapScreenshots.xaml">
+    <Page Include="Views\Interface\Ssv_ListScreenshotsVertical.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,9 +22,9 @@ using System.Windows.Threading;
 namespace ScreenshotsVisualizer.Views.Interface
 {
     /// <summary>
-    /// Logique d'interaction pour Ssv_WrapScreenshots.xaml
+    /// Logique d'interaction pour Ssv_ListScreenshotsVertical.xaml
     /// </summary>
-    public partial class Ssv_WrapScreenshots : UserControl
+    public partial class Ssv_ListScreenshotsVertical : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
@@ -34,7 +34,7 @@ namespace ScreenshotsVisualizer.Views.Interface
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
 
-        public Ssv_WrapScreenshots(IPlayniteAPI PlayniteApi)
+        public Ssv_ListScreenshotsVertical(IPlayniteAPI PlayniteApi)
         {
             _PlayniteApi = PlayniteApi;
 
