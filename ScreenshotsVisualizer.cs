@@ -27,7 +27,22 @@ namespace ScreenshotsVisualizer
 
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
-        {
+        {            
+            // Manual dll load
+            try
+            {
+                string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string PathDLL = Path.Combine(PluginPath, "VirtualizingWrapPanel.dll");
+                if (File.Exists(PathDLL))
+                {
+                    var DLL = Assembly.LoadFile(PathDLL);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+
             // Custom theme button
             EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
 
