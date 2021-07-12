@@ -40,6 +40,21 @@ namespace ScreenshotsVisualizer
         {
             settings = new ScreenshotsVisualizerSettings(this);
 
+            // Manual dll load
+            try
+            {
+                string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string PathDLL = Path.Combine(PluginPath, "VirtualizingWrapPanel.dll");
+                if (File.Exists(PathDLL))
+                {
+                    var DLL = Assembly.LoadFile(PathDLL);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "ScreenshotsVisualizer");
+            }
+
             // Loading plugin database 
             PluginDatabase = new ScreenshotsVisualizerDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
             PluginDatabase.InitializeDatabase();
