@@ -38,7 +38,7 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        public bool _EnableIntegrationButtonDetails { get; set; } = false;
+        private bool _EnableIntegrationButtonDetails { get; set; } = false;
         public bool EnableIntegrationButtonDetails
         {
             get => _EnableIntegrationButtonDetails;
@@ -103,8 +103,8 @@ namespace ScreenshotsVisualizer
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        [DontSerialize]
         private bool _HasData { get; set; } = false;
+        [DontSerialize]
         public bool HasData
         {
             get => _HasData;
@@ -115,8 +115,8 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        [DontSerialize]
         private List<Screenshot> _ListScreenshots { get; set; } = new List<Screenshot>();
+        [DontSerialize]
         public List<Screenshot> ListScreenshots
         {
             get => _ListScreenshots;
