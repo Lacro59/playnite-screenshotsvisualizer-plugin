@@ -200,14 +200,11 @@ namespace ScreenshotsVisualizer.Services
 
             if (gameScreenshots == null)
             {
-                try
+                Game game = PlayniteApi.Database.Games.Get(Id);
+                if (game != null)
                 {
-                    Game game = PlayniteApi.Database.Games.Get(Id);
                     gameScreenshots = GetDefault(game);
                     Add(gameScreenshots);
-                }
-                catch
-                {
                 }
             }
             
@@ -396,6 +393,11 @@ namespace ScreenshotsVisualizer.Services
         public override void SetThemesResources(Game game)
         {
             GameScreenshots gameScreenshots = Get(game, true);
+
+            if (gameScreenshots == null)
+            {
+                return;
+            }
 
             PluginSettings.Settings.HasData = gameScreenshots.HasData;
             PluginSettings.Settings.ListScreenshots = gameScreenshots.Items;
