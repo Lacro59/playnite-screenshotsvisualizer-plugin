@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using System;
@@ -277,7 +278,7 @@ namespace ScreenshotsVisualizer.Views
         // Add Steam game automaticly
         private void PART_BtAddSteamGame_Click(object sender, RoutedEventArgs e)
         {
-            var tmpList = listGames.GetClone().Where(x => x.SourceName == "Steam").ToList();
+            var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName == "Steam").ToList();
             foreach (var game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
@@ -319,7 +320,7 @@ namespace ScreenshotsVisualizer.Views
         // Add Ubisoft Connect game automaticly
         private void PART_BtAddUplay_Click(object sender, RoutedEventArgs e)
         {
-            var tmpList = listGames.GetClone().Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
+            var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
             foreach (var game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
