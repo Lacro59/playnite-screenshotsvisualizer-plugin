@@ -133,6 +133,7 @@ namespace ScreenshotsVisualizer
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             Game GameMenu = args.Games.First();
+            List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
             GameScreenshots gameScreenshots = PluginDatabase.Get(GameMenu);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
@@ -205,7 +206,14 @@ namespace ScreenshotsVisualizer
                 Description = resources.GetString("LOCCommonRefreshGameData"),
                 Action = (gameMenuItem) =>
                 {
-                    PluginDatabase.RefreshData(GameMenu);
+                    if (Ids.Count == 1)
+                    {
+                        PluginDatabase.RefreshData(GameMenu);
+                    }
+                    else
+                    {
+                        PluginDatabase.RefreshData(Ids);
+                    }
                 }
             });
 
@@ -243,21 +251,40 @@ namespace ScreenshotsVisualizer
             mainMenuItems.Add(new MainMenuItem
             {
                 MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
-                Description = resources.GetString("LOCCommonAddAllTags"),
+                Description = resources.GetString("LOCCommonRefreshAllData"),
                 Action = (mainMenuItem) =>
                 {
-                    PluginDatabase.AddTagAllGame();
+                    PluginDatabase.RefreshDataAll();
                 }
             });
-            mainMenuItems.Add(new MainMenuItem
+
+            if (PluginDatabase.PluginSettings.Settings.EnableTag)
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
-                Description = resources.GetString("LOCCommonRemoveAllTags"),
-                Action = (mainMenuItem) =>
+                mainMenuItems.Add(new MainMenuItem
                 {
-                    PluginDatabase.RemoveTagAllGame();
-                }
-            });
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = "-"
+                });
+
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = resources.GetString("LOCCommonAddAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.AddTagAllGame();
+                    }
+                });
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = resources.GetString("LOCCommonRemoveAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.RemoveTagAllGame();
+                    }
+                });
+            }
 
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem

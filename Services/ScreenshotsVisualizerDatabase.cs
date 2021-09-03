@@ -36,7 +36,6 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        /*
         public void RefreshDataAll()
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -44,10 +43,11 @@ namespace ScreenshotsVisualizer.Services
 
             foreach (var item in Database.Items)
             {
-                Game game = PlayniteApi.Database.Games.Get(item.Key);
-                if (game != null)
+                GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == item.Key);
+
+                if (gameSettings != null)
                 {
-                    RefreshData(game);
+                    SetDataFromSettings(gameSettings);
                 }
             }
 
@@ -55,7 +55,6 @@ namespace ScreenshotsVisualizer.Services
             TimeSpan ts = stopWatch.Elapsed;
             logger.Info($"RefreshDataAll - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
         }
-        */
 
         public void RefreshData(Game game)
         {
@@ -74,6 +73,35 @@ namespace ScreenshotsVisualizer.Services
                     if (gameSettings != null)
                     {
                         SetDataFromSettings(gameSettings);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }, globalProgressOptions);
+        }
+
+        public void RefreshData(List<Guid> Ids)
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                false
+            );
+            globalProgressOptions.IsIndeterminate = true;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                try
+                {
+                    foreach (Guid Id in Ids)
+                    {
+                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
+
+                        if (gameSettings != null)
+                        {
+                            SetDataFromSettings(gameSettings);
+                        }
                     }
                 }
                 catch (Exception ex)
