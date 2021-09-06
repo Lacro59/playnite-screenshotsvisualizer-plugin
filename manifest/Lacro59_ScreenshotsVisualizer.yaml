@@ -1,12 +1,14 @@
-AddonId: playnite-howlongtobeat-plugin
+AddonId: playnite-screenshotsvisualizer-plugin
 Packages:
   - Version: 2.0
     RequiredApiVersion: 6.0.0
     ReleaseDate: 2021-09-06
-    PackageUrl: https://github.com/Lacro59/playnite-howlongtobeat-plugin/releases/download/v2.0/playnite-howlongtobeat-plugin_2_0.pext
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.0/playnite-screenshotsvisualizer-plugin_2_0.pext
     Changelog:
       - Playnite 9 beta version (not compatible with Playnite 8)
       - Custom UI Elements for custom theme integration (see wiki on GitHub)
       - Fixed many bugs
       - Many UI tweaks
-      - Added "storefront" data
+      - Added multi folders scan
+      - Added default UPlay screenshots folder
+	  - Added basic videos support
