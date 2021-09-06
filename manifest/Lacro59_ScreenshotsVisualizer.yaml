@@ -12,3 +12,4 @@ Packages:
       - Added multi folders scan
       - Added default UPlay screenshots folder
       - Added basic videos support
+      - Added function to move your screenshots and video capture on other folders (ex cloud folder)
