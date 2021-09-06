@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="ScreenshotsVisualizer.Views.SsvSinglePictureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
+             xmlns:pbeh="clr-namespace:CommonPlayniteShared.Behaviors"
+             xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
+             xmlns:controls="clr-namespace:ScreenshotsVisualizer.Controls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:converters1="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d" MinHeight="100" MinWidth="100">
+
+    <UserControl.Resources>
+        <converters1:ImageConverter x:Key="ImageConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
+        <controls:ZoomBorder ClipToBounds="True"
+                             Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
+                            <Binding Path="PictureSource" IsAsync="True" />
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+        </controls:ZoomBorder>
+
+        <controls1:MediaElementExtend MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
+                                      Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
+    </Grid>
+</UserControl>    
