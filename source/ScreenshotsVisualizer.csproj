@@ -258,6 +258,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Localization\uk_UA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\MediaElementExtend.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
