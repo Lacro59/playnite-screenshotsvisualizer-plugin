@@ -9,7 +9,7 @@
     <sys:String x:Key="LOCSsvLatest">Останні</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">Переглянути ігрові знімки</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Відкрити каталог знімків екрану</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Відкрити каталог знімків екран</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
@@ -28,17 +28,17 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Додати рамку</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений кут</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Додати рамк</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений ку</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Параметри одного знімка екрану</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Параметри одного знімка екран</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">Параметри списку знімків екрану</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Параметри списку знімків екран</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Відкрити при виборі зображення</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екрану</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екран</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Використовується шаблон файлу</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">Використовується шаблон файл</sys:String>
     <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
 
 To use the simplified version, replace the numbers with {digit} and remove the extension.
