@@ -10,9 +10,9 @@
     
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abrir a pasta de capturas de tela</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Mover as capturas de tela para o diretório salvo</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Movendo as capturas de tela...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -25,9 +25,9 @@
     <sys:String x:Key="LOCSsvAddTag">Adicionar tag se o jogo tem capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Adicionar jogo Steam</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Exibir um controle com uma única captura de tela</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Exibir um controle com uma lista de capturas de tela</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Exibir um controle com uma lista de capturas de tela verticais</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Adicionar borda</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Adicionar canto arredondado</sys:String>
 
@@ -39,12 +39,12 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Seleção de link com visualização de captura de tela única</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Usou um padrão de arquivo</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Você pode usar diretamente um padrão regex ou usar uma versão simplificada.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Para usar a versão simplificada, substitua os números por {digit} e remova a extensão.
 
-Example:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
+Exemplo:
+NomeDoJogo_20200107-1 =&gt; NomeDoJogo_ {digit} - {digit}</sys:String>
     <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
 {ImagePath} - Game ISO/ROM path if set
 {ImageName} - Game ISO/ROM file name
@@ -76,7 +76,7 @@ Windows variables can be used to add a dynamic string:
 {CommonProgramFiles(x86)}
 {ProgramFiles(x86)}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Habilitar o mover capturas de tela em uma pasta única</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Localizar padrão</sys:String>
 
 </ResourceDictionary>
