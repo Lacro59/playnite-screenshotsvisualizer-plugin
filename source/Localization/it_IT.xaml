@@ -10,9 +10,9 @@
     
     <sys:String x:Key="LOCSsvViewScreenshots">Visualizza schermate di gioco</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Apri la directory degli screenshot</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Sposta le schermate nella cartella di salvataggio</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Spostamento delle schermate...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -25,9 +25,9 @@
     <sys:String x:Key="LOCSsvAddTag">Aggiungi etichetta se il gioco ha schermate</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Aggiungi un gioco Steam</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Visualizza un controllo con una singola schermata</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Mostra un controllo con un elenco di schermate</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Mostra un controllo con un elenco di schermate verticali</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Aggiungi bordo</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Aggiungi angolo arrotondato</sys:String>
 
@@ -39,44 +39,32 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Collega la selezione con la vista a singola schermata</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Usata una sequenza di file</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Puoi usare direttamente un modello regex o una versione semplificata.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Per usare la versione semplificata, sostituire i numeri con {digit} e rimuovere l'estensione
 
-Example:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+Esempio:
+GameName_20200107-1 =&gt; Nomegioco_{digit} - {digit}</sys:String>
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Variabili speciali possono essere usate per aggiungere una stringa dinamica:
+{ImagePath} - Percorso gioco ISO/ROM se impostato
+{ImageName} - Nome del file gioco ISO/ROM
+{ImageNameNoExt} - Nome del file di gioco ISO/ROM senza estenzione
+{Name} - Nome del gioco
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} - Numero file aumentato
+{DateModified} - Data del file modificata       
+{DateTimeModified} - Data e ora del file modificati        
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Variabili Steam possono essere usate per aggiungere una stringa dinamica:      
+{SteamId} - Id utente Steam
         
-Windows variables can be used to add a dynamic string:        
+Variabili Windows possono essere usate per aggiungere una stringa dinamica:        
 {WinDir}
 {AllUsersProfile}
 {AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+{HomePath}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Abilita lo spostamento delle schermate nella cartella univoca</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Sequenza file</sys:String>
 
 </ResourceDictionary>
