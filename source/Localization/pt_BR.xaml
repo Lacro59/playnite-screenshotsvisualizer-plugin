@@ -45,20 +45,20 @@ Para usar a versão simplificada, substitua os números por {digit} e remova a e
 
 Exemplo:
 NomeDoJogo_20200107-1 =&gt; NomeDoJogo_ {digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Variáveis especiais podem ser usadas para adicionar uma expressão dinâmica:
+{ImagePath} - Caminho da ISO/ROM do jogo, se configurada
+{ImageName} - Nome do arquivo ISO/ROM do jogo
+{ImageNameNoExt} - Nome do arquivo ISO/ROM do jogo sem extensão
+{Name} - Nome do Jogo
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} - Número do arquivo incrementado
+{DateModified} - Data de modificação do arquivo         
+{DateTimeModified} - Data e hora de modificação do arquivo         
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Variáveis do Steam podem ser usadas para adicionar uma expressão dinâmica:        
+{SteamId} - Id de usuário do Steam
         
-Windows variables can be used to add a dynamic string:        
+Variáveis do Windows podem ser usadas para adicionar uma expressão dinâmica:        
 {WinDir}
 {AllUsersProfile}
 {AppData}
