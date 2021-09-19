@@ -3,7 +3,7 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsv">Visualiseur de captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvTitle">Captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Dernières</sys:String>
@@ -45,20 +45,20 @@ Pour utiliser la version simplifiée, remplacez les nombres par {digit} et suppr
 
 Exemple:
 GameName_20200107-1 =&gt; GameName_ {digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Variables pouvant être utilisées pour ajouter une chaîne dynamique :
+{ImagePath} - Chemin de l'ISO/ROM du jeu si défini
+{ImageName} - Nom de l'ISO/ROM du jeu
+{ImageNameNoExt} - Nom du fichier ISO/ROM sans extension
+{Name} - Nom du jeu
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} -  Numéro incrémentiel de fichier 
+{DateModified} - Date de modification du fichier         
+{DateTimeModified} - Date et heure de modification du fichier     
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Variables Steam pouvant être utilisées pour ajouter une chaîne dynamique :  
+{SteamId} - ID utilisateur Steam
         
-Windows variables can be used to add a dynamic string:        
+Variables Windows pouvant être utilisées pour ajouter une chaîne dynamique :   
 {WinDir}
 {AllUsersProfile}
 {AppData}
