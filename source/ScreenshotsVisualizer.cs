@@ -73,7 +73,7 @@ namespace ScreenshotsVisualizer
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");
 
-                    WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                    WindowOptions windowOptions = new WindowOptions
                     {
                         ShowMinimizeButton = false,
                         ShowMaximizeButton = true,
@@ -81,7 +81,7 @@ namespace ScreenshotsVisualizer
                     };
 
                     var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
                     windowExtension.ResizeMode = ResizeMode.CanResize;
                     windowExtension.ShowDialog();
                 }
@@ -147,7 +147,7 @@ namespace ScreenshotsVisualizer
                     Description = resources.GetString("LOCSsvViewScreenshots"),
                     Action = (gameMenuItem) =>
                     {
-                        WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                        WindowOptions windowOptions = new WindowOptions
                         {
                             ShowMinimizeButton = false,
                             ShowMaximizeButton = true,
@@ -155,7 +155,7 @@ namespace ScreenshotsVisualizer
                         };
 
                         var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
                         windowExtension.ResizeMode = ResizeMode.CanResize;
                         windowExtension.ShowDialog();
                     }
@@ -266,6 +266,17 @@ namespace ScreenshotsVisualizer
                     Description = "-"
                 });
 
+                // Add tag for selected game in database if data exists
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = resources.GetString("LOCCommonAddTPlugin"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.AddTagSelectData();
+                    }
+                });
+                // Add tag for all games
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
@@ -275,6 +286,7 @@ namespace ScreenshotsVisualizer
                         PluginDatabase.AddTagAllGame();
                     }
                 });
+                // Remove tag for all game in database
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),

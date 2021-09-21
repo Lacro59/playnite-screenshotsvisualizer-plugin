@@ -20,7 +20,7 @@ namespace ScreenshotsVisualizer.Services
     {
         public ScreenshotsVisualizerDatabase(IPlayniteAPI PlayniteApi, ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
         {
-
+            TagBefore = "[SSV]";
         }
 
 
@@ -339,45 +339,7 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        protected override void GetPluginTags()
-        {
-            Common.LogDebug(true, $"{PluginName} - GetPluginTags()");
-            System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
-
-            try
-            {
-                // Get tags in playnite database
-                PluginTags = new List<Tag>();
-                foreach (Tag tag in PlayniteApi.Database.Tags)
-                {
-                    if (tag.Name.IndexOf("[SSV] ") > -1)
-                    {
-                        PluginTags.Add(tag);
-                    }
-                }
-
-                // Add missing tags
-                if (PluginTags.Count == 0)
-                {
-                    PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SSV] {resources.GetString("LOCSsvTitle")}" });
-
-                    foreach (Tag tag in PlayniteApi.Database.Tags)
-                    {
-                        if (tag.Name.IndexOf("[SSV] ") > -1)
-                        {
-                            PluginTags.Add(tag);
-                        }
-                    }
-                }
-
-                Common.LogDebug(true, $"PluginTags: {Serialization.ToJson(PluginTags)}");
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false);
-            }
-        }
-
+        #region Tag
         public override void AddTag(Game game, bool noUpdate = false)
         {
             GetPluginTags();
@@ -387,17 +349,16 @@ namespace ScreenshotsVisualizer.Services
             {
                 try
                 {
-                    if (PluginTags.FirstOrDefault() != null)
-                    {
-                        Guid TagId = PluginTags.FirstOrDefault().Id;
-
+                    Guid? TagId = FindGoodPluginTags(resources.GetString("LOCSsvTitle"));
+                    if (TagId != null)
+                    {                        
                         if (game.TagIds != null)
                         {
-                            game.TagIds.Add(TagId);
+                            game.TagIds.Add((Guid)TagId);
                         }
                         else
                         {
-                            game.TagIds = new List<Guid> { TagId };
+                            game.TagIds = new List<Guid> { (Guid)TagId };
                         }
 
                         PlayniteApi.Database.Games.Update(game);
@@ -416,7 +377,7 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
         }
-
+        #endregion
 
         public override void SetThemesResources(Game game)
         {

@@ -142,7 +142,7 @@ namespace ScreenshotsVisualizer.Controls
         #region Events
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+            WindowOptions windowOptions = new WindowOptions
             {
                 ShowMinimizeButton = false,
                 ShowMaximizeButton = true,
@@ -150,7 +150,7 @@ namespace ScreenshotsVisualizer.Controls
             };
 
             var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowCreationOptions);
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
             windowExtension.ResizeMode = ResizeMode.CanResize;
             windowExtension.ShowDialog();
         }

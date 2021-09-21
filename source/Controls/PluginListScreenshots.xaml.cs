@@ -148,18 +148,18 @@ namespace ScreenshotsVisualizer.Controls
 
                 if (IsGood)
                 {
-                    WindowCreationOptions windowCreationOptions = new WindowCreationOptions
+                    WindowOptions windowOptions = new WindowOptions
                     {
                         ShowMinimizeButton = false,
                         ShowMaximizeButton = true,
-                        ShowCloseButton = true
+                        ShowCloseButton = true,
+                        Height = 720,
+                        Width = 1280
                     };
 
                     var ViewExtension = new SsvSinglePictureView(screenshot);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowCreationOptions);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
                     windowExtension.ResizeMode = ResizeMode.CanResize;
-                    windowExtension.Height = 720;
-                    windowExtension.Width = 1280;
                     windowExtension.ShowDialog();
                 }
             }
