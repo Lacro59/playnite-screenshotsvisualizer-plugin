@@ -5,6 +5,7 @@ using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -263,6 +264,8 @@ namespace ScreenshotsVisualizer.Views
             listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+            TextboxSearch_TextChanged(null, null);
         }
         #endregion
 
@@ -270,14 +273,29 @@ namespace ScreenshotsVisualizer.Views
         // Search by name
         private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PART_ListGame.ItemsSource = listGames.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots.FindAll(x => x.Name.ToLower().IndexOf(TextboxSearch.Text.ToLower()) > -1).ToList();
+            PART_ListGame.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = null;
+
+
+            listGames.ForEach(x => x.IsVisible = true);
+            listGames.Where(x => !x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase))
+                     .ForEach(x => x.IsVisible = false);
+
+            listGameScreenshots.ForEach(x => x.IsVisible = true);
+            listGameScreenshots.Where(x => !x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase))
+                               .ForEach(x => x.IsVisible = false);
+
+
+            PART_ListGame.ItemsSource = listGames;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
         }
 
 
         // Add Steam game automaticly
         private void PART_BtAddSteamGame_Click(object sender, RoutedEventArgs e)
         {
+            TextboxSearch.Text = string.Empty;
+
             var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName == "Steam").ToList();
             foreach (var game in tmpList)
             {
@@ -320,6 +338,8 @@ namespace ScreenshotsVisualizer.Views
         // Add Ubisoft Connect game automaticly
         private void PART_BtAddUplay_Click(object sender, RoutedEventArgs e)
         {
+            TextboxSearch.Text = string.Empty;
+
             var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
             foreach (var game in tmpList)
             {
@@ -370,6 +390,12 @@ namespace ScreenshotsVisualizer.Views
             }
         }
         #endregion
+
+
+        private void PART_BtAddGame_Click(object sender, RoutedEventArgs e)
+        {
+            TextboxSearch_TextChanged(null, null);
+        }
     }
 
 
@@ -380,6 +406,7 @@ namespace ScreenshotsVisualizer.Views
         public string Name { get; set; }
         public string SourceName { get; set; }
         public string SourceIcon { get; set; }
+        public bool IsVisible { get; set; } = true;
     }
     
     public class ListGameScreenshot
@@ -392,5 +419,6 @@ namespace ScreenshotsVisualizer.Views
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public List<FolderSettings> ScreenshotsFolders { get; set; }
+        public bool IsVisible { get; set; } = true;
     }
 }

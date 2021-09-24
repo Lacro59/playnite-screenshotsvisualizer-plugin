@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             mc:Ignorable="d">
+             mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="600">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -48,7 +48,7 @@
                     </Grid.RowDefinitions>
 
                     <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
-                                  HorizontalAlignment="left" />
+                                  HorizontalAlignment="left" Click="PART_BtAddGame_Click" IsChecked="False" />
 
                     <playnitecontrols:SearchBox x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged"
                                                 Margin="10,0,0,0" Grid.Column="1" />
@@ -89,6 +89,12 @@
                     <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
                              Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                              Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,2">
@@ -116,6 +122,13 @@
                              Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
                              Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,5">

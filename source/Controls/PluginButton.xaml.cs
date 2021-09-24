@@ -63,7 +63,7 @@ namespace ScreenshotsVisualizer.Controls
 
         public PluginButton()
         {
-            AlwaysShow = true;
+            AlwaysShow = false;
 
             InitializeComponent();
 

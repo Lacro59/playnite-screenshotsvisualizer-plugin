@@ -333,7 +333,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                     else
                     {
-                        Common.LogDebug(true, $"Screenshots directory not found for {game.Name}");
+                        logger.Warn($"Screenshots directory not found for {game.Name}");
                     }
 
                     var elements = gameScreenshots.Items.Where(x => x != null);
