@@ -16,7 +16,7 @@ namespace ScreenshotsVisualizer
         public bool EnableTag { get; set; } = false;
 
 
-        private bool _EnableIntegrationViewItem { get; set; } = false;
+        private bool _EnableIntegrationViewItem { get; set; } = true;
         public bool EnableIntegrationViewItem
         {
             get => _EnableIntegrationViewItem;
@@ -27,7 +27,7 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        private bool _EnableIntegrationButton { get; set; } = false;
+        private bool _EnableIntegrationButton { get; set; } = true;
         public bool EnableIntegrationButton
         {
             get => _EnableIntegrationButton;
@@ -49,7 +49,7 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        private bool _EnableIntegrationShowSinglePicture { get; set; } = false;
+        private bool _EnableIntegrationShowSinglePicture { get; set; } = true;
         public bool EnableIntegrationShowSinglePicture
         {
             get => _EnableIntegrationShowSinglePicture;
@@ -65,7 +65,7 @@ namespace ScreenshotsVisualizer
         public bool AddBorderSinglePicture { get; set; } = true;
         public bool AddRoundedCornerSinglePicture { get; set; } = false;
 
-        private bool _EnableIntegrationShowPictures { get; set; } = false;
+        private bool _EnableIntegrationShowPictures { get; set; } = true;
         public bool EnableIntegrationShowPictures
         {
             get => _EnableIntegrationShowPictures;
@@ -76,7 +76,7 @@ namespace ScreenshotsVisualizer
             }
         }
 
-        private bool _EnableIntegrationShowPicturesVertical { get; set; } = false;
+        private bool _EnableIntegrationShowPicturesVertical { get; set; } = true;
         public bool EnableIntegrationShowPicturesVertical
         {
             get => _EnableIntegrationShowPicturesVertical;
