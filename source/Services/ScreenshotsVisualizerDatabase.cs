@@ -86,12 +86,19 @@ namespace ScreenshotsVisualizer.Services
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
                 $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
-                false
+                true
             );
-            globalProgressOptions.IsIndeterminate = true;
+            globalProgressOptions.IsIndeterminate = false;
 
             PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                activateGlobalProgress.ProgressMaxValue = Ids.Count;
+
+                string CancelText = string.Empty;
+
                 try
                 {
                     foreach (Guid Id in Ids)
@@ -102,12 +109,18 @@ namespace ScreenshotsVisualizer.Services
                         {
                             SetDataFromSettings(gameSettings);
                         }
+
+                        activateGlobalProgress.CurrentProgressValue++;
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, false);
                 }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
@@ -378,6 +391,7 @@ namespace ScreenshotsVisualizer.Services
             }
         }
         #endregion
+
 
         public override void SetThemesResources(Game game)
         {
