@@ -385,6 +385,9 @@ namespace ScreenshotsVisualizer.Services
 
             if (gameScreenshots == null)
             {
+                PluginSettings.Settings.HasData = false;
+                PluginSettings.Settings.ListScreenshots = new List<Screenshot>();
+
                 return;
             }
 
