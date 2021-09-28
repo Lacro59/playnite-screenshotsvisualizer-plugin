@@ -9,10 +9,11 @@
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
-        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
+        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="200"
+        d:DataContext="{d:DesignInstance Type=local:PluginListScreenshotsDataContext, IsDesignTimeCreatable=True}"
+        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight, FallbackValue=100}"
         Height="{Binding IntegrationShowPicturesHeight}"
-        MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
+        MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight, FallbackValue=200}">
 
     <controls:PluginUserControlExtend.Resources>
         <convertersshared:IndexConverter x:Key="IndexConverter"/>

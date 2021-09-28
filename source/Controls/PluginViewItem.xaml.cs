@@ -111,6 +111,6 @@ namespace ScreenshotsVisualizer.Controls
     {
         public bool IsActivated { get; set; }
 
-        public string Text { get; set; }
+        public string Text { get; set; } = "\uea38";
     }
 }

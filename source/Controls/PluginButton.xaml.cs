@@ -94,7 +94,7 @@ namespace ScreenshotsVisualizer.Controls
                 DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails,
 
                 Text = "\uea38",
-                SsvDateLast = string.Empty,
+                SsvDateLast = DateTime.Now,
                 SsvTotal = 0
             };
         }
@@ -116,7 +116,7 @@ namespace ScreenshotsVisualizer.Controls
 
                         LocalDateConverter localDateConverter = new LocalDateConverter();
 
-                        ControlDataContext.SsvDateLast = (string)localDateConverter.Convert(SsvDateLast, null, null, CultureInfo.CurrentCulture);
+                        ControlDataContext.SsvDateLast = SsvDateLast;
                         ControlDataContext.SsvTotal = gameScreenshots.Items.Count();
                     }
                     else
@@ -161,11 +161,11 @@ namespace ScreenshotsVisualizer.Controls
     public class PluginButtonDataContext : IDataContext
     {
         public bool IsActivated { get; set; }
-        public bool DisplayDetails { get; set; }
+        public bool DisplayDetails { get; set; } = true;
         public bool ButtonContextMenu { get; set; }
 
-        public string Text { get; set; }
-        public string SsvDateLast { get; set; }
-        public int SsvTotal { get; set; }
+        public string Text { get; set; } = "\uea38";
+        public DateTime SsvDateLast { get; set; } = DateTime.Now;
+        public int SsvTotal { get; set; } = 7;
     }
 }

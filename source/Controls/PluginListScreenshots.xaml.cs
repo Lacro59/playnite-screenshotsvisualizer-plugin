@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -159,8 +160,15 @@ namespace ScreenshotsVisualizer.Controls
         public bool AddRoundedCorner { get; set; }
         public double IntegrationShowPicturesHeight { get; set; }
 
-        public int CountItems { get; set; }
-        public ObservableCollection<Screenshot> ItemsSource { get; set; }
+        public int CountItems { get; set; } = 10;
+        public ObservableCollection<Screenshot> ItemsSource { get; set; } = new ObservableCollection<Screenshot>
+        {
+            new Screenshot
+            {
+                FileName = @"icon.png",
+                Modifed = DateTime.Now
+            }
+        };
     }
 
     public class TwoSizeMultiValueConverter : IMultiValueConverter

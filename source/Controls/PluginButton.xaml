@@ -8,13 +8,15 @@
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-    mc:Ignorable="d" d:DesignHeight="40">
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        mc:Ignorable="d" d:DesignHeight="40"
+        d:DataContext="{d:DesignInstance Type=local:PluginButtonDataContext, IsDesignTimeCreatable=True}">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <convertersshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
+        <convertersshared:LocalDateConverter x:Key="LocalDateConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Button Name="PART_PluginButton" Click="PART_PluginButton_Click" Style="{StaticResource {x:Type Button}}">
@@ -24,7 +26,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Text, Mode=OneWay, FallbackValue='&#xea38;'}" FontFamily="{DynamicResource CommonFont}"
+            <TextBlock Text="{Binding Text}" FontFamily="{DynamicResource CommonFont}"
                        Grid.Column="0" VerticalAlignment="Center"
                        FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
 
@@ -41,23 +43,8 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!--Label Grid.Row="0" Grid.Column="0" Margin="0,-3,0,-3"
-                       Content="{DynamicResource LOCSsvLatest}"
-                       FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}">
-                    <Label.Style>
-                        <Style TargetType="Label">
-                            <Setter Property="Padding" Value="5,3,5,5" />
-                            <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label-->
                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,-3,0,-3"
-                       Content="{Binding SsvDateLast, FallbackValue='2021/03/15'}"
+                       Content="{Binding SsvDateLast, Converter={StaticResource LocalDateConverter}}"
                        FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}">
                     <Label.Style>
                         <Style TargetType="Label">

@@ -6,10 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:PluginViewItemDataContext, IsDesignTimeCreatable=True}">
 
     <Grid>
-        <TextBlock Text="{Binding Text, Mode=OneWay, FallbackValue='&#xea38;'}" FontFamily="{DynamicResource CommonFont}"
+        <TextBlock Text="{Binding Text}" FontFamily="{DynamicResource CommonFont}"
                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Foreground}"
                    FontSize="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=FontSize}" />
     </Grid>
