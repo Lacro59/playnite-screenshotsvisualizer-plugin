@@ -19,6 +19,11 @@
 
     <sys:String x:Key="LOCSsvDeleteConfirm">¿Seguro que desea eliminar {0}?</sys:String>
 
+    
+    <!-- SsvManager -->
+
+    <sys:String x:Key="LOCSsvLastSsv">Última captura de pantalla</sys:String>
+
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
