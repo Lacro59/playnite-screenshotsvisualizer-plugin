@@ -73,35 +73,6 @@
                 Visibility="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}">
         </Border>
 
-        <!--Border BorderBrush="{DynamicResource NormalBorderBrush}" Grid.Row="0"
-                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
-                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="CornerRadius" Value="0,0,0,0" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding AddCorner}" Value="True">
-                            <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding AddRoundedCorner}" Value="True">
-                            <Setter Property="CornerRadius" Value="8,8,8,8" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <Border.Background>
-                <ImageBrush Stretch="Uniform">
-                    <ImageBrush.ImageSource>
-                        <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="4">
-                            <Binding Path="PictureSource" IsAsync="True" />
-                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}" />
-                        </MultiBinding>
-                    </ImageBrush.ImageSource>
-                </ImageBrush>
-            </Border.Background>
-        </Border-->
-
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />

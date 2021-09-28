@@ -10,7 +10,7 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
              xmlns:converters1="clr-namespace:CommonPluginsShared.Converters"
-             mc:Ignorable="d" MinHeight="100" MinWidth="100">
+             mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="500">
 
     <UserControl.Resources>
         <converters1:ImageConverter x:Key="ImageConverter"/>

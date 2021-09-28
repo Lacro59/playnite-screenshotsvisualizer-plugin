@@ -129,6 +129,9 @@
       <DependentUpon>ScreenshotsVisualizerSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SsvScreenshotsManager.xaml.cs">
+      <DependentUpon>SsvScreenshotsManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SsvScreenshotsView.xaml.cs">
       <DependentUpon>SsvScreenshotsView.xaml</DependentUpon>
     </Compile>
@@ -283,6 +286,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ScreenshotsVisualizerSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SsvScreenshotsManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

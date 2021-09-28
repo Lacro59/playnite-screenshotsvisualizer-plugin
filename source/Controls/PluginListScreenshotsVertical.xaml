@@ -9,8 +9,8 @@
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
-    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding IntegrationShowPicturesHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">

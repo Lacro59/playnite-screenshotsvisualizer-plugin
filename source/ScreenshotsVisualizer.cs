@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Controls;
 using CommonPluginsShared.PlayniteExtended;
 using Playnite.SDK;
 using Playnite.SDK.Events;
@@ -18,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ScreenshotsVisualizer
 {
@@ -95,6 +97,42 @@ namespace ScreenshotsVisualizer
 
 
         #region Theme integration
+        // Button on top panel
+        public override IEnumerable<TopPanelItem> GetTopPanelItems()
+        {
+            if (PluginSettings.Settings.EnableIntegrationButtonHeader)
+            {
+                yield return new TopPanelItem()
+                {
+                    Icon = new TextBlock
+                    {
+                        Text = "\uea38",
+                        FontSize = 20,
+                        FontFamily = resources.GetResource("CommonFont") as FontFamily
+                    },
+                    Title = resources.GetString("LOCSsv"),
+                    Activated = () =>
+                    {
+                        var windowOptions = new WindowOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true,
+                            Width = 1280,
+                            Height = 740
+                        };
+
+                        var ViewExtension = new SsvScreenshotsManager();
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
+                        windowExtension.ResizeMode = ResizeMode.CanResize;
+                        windowExtension.ShowDialog();
+                    }
+                };
+            }
+
+            yield break;
+        }
+
         // List custom controls
         public override Control GetGameViewControl(GetGameViewControlArgs args)
         {
@@ -124,6 +162,38 @@ namespace ScreenshotsVisualizer
             }
 
             return null;
+        }
+
+        // SidebarItem
+        public class SsvViewSidebar : SidebarItem
+        {
+            public SsvViewSidebar()
+            {
+                Type = SiderbarItemType.View;
+                Title = resources.GetString("LOCSsv");
+                Icon = new TextBlock
+                {
+                    Text = "\uea38",
+                    FontFamily = resources.GetResource("CommonFont") as FontFamily
+                };
+                Opened = () =>
+                {
+                    SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
+                    sidebarItemControl.SetTitle(resources.GetString("LOCSsv"));
+                    sidebarItemControl.AddContent(new SsvScreenshotsManager());
+
+                    return sidebarItemControl;
+                };
+            }
+        }
+
+        public override IEnumerable<SidebarItem> GetSidebarItems()
+        {
+            var items = new List<SidebarItem>
+            {
+                new SsvViewSidebar()
+            };
+            return items;
         }
         #endregion
 

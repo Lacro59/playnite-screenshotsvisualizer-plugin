@@ -13,6 +13,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows;
+using ScreenshotsVisualizer.Views;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -416,5 +420,59 @@ namespace ScreenshotsVisualizer.Services
                 Database.SetGameInfo<Screenshot>(PlayniteApi, GameUpdated.NewData.Id);
             }
         }
+
+
+        public void ListBoxItem_MouseLeftButtonDownClick(object sender, MouseButtonEventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+            ListBoxItem item = ItemsControl.ContainerFromElement(listBox, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item != null)
+            {
+                int index = listBox.SelectedIndex;
+                if (index == -1)
+                {
+                    return;
+                }
+
+                Screenshot screenshot = ((Screenshot)listBox.Items[index]);
+
+                bool IsGood = false;
+
+                if (PluginSettings.Settings.OpenViewerWithOnSelection)
+                {
+                    IsGood = true;
+                }
+                else
+                {
+                    if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                    {
+                        IsGood = true;
+                    }
+                }
+
+
+                if (IsGood)
+                {
+                    WindowOptions windowOptions = new WindowOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true,
+                        Height = 720,
+                        Width = 1280
+                    };
+
+                    var ViewExtension = new SsvSinglePictureView(screenshot);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
+                    windowExtension.ResizeMode = ResizeMode.CanResize;
+                    windowExtension.ShowDialog();
+                }
+            }
+            else
+            {
+
+            }
+        }
+
     }
 }

@@ -79,7 +79,7 @@ namespace ScreenshotsVisualizer.Controls
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
 
-                    PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(ListBoxItem_MouseLeftButtonDownClick), true);
+                    PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
                 });
             });
         }
@@ -122,53 +122,6 @@ namespace ScreenshotsVisualizer.Controls
 
 
         #region Events
-        private void ListBoxItem_MouseLeftButtonDownClick(object sender, MouseButtonEventArgs e)
-        {
-            ListBoxItem item = ItemsControl.ContainerFromElement(PART_ListScreenshots, e.OriginalSource as DependencyObject) as ListBoxItem;
-            if (item != null)
-            {
-                int index = PART_ListScreenshots.SelectedIndex;
-                Screenshot screenshot = ((Screenshot)PART_ListScreenshots.Items[index]);
-
-                bool IsGood = false;
-
-                if (PluginDatabase.PluginSettings.Settings.OpenViewerWithOnSelection)
-                {
-                    IsGood = true;
-                }
-                else
-                {
-                    if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
-                    {
-                        IsGood = true;
-                    }
-                }
-
-
-                if (IsGood)
-                {
-                    WindowOptions windowOptions = new WindowOptions
-                    {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        Height = 720,
-                        Width = 1280
-                    };
-
-                    var ViewExtension = new SsvSinglePictureView(screenshot);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
-                    windowExtension.ResizeMode = ResizeMode.CanResize;
-                    windowExtension.Height = 720;
-                    windowExtension.ShowDialog();
-                }
-            }
-            else
-            {
-
-            }
-        }
-
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)

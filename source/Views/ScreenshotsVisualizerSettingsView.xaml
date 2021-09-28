@@ -6,6 +6,7 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:pcmd="clr-namespace:CommonPluginsShared"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="600">
@@ -256,9 +257,27 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Expander Grid.Row="0">
+                        <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Settings.EnableIntegrationButtonHeader}"
+                                          Command="{x:Static pcmd:Commands.RestartRequired}" 
+                                          CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
+                                </CheckBox>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="2">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -294,7 +313,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                        <Expander Grid.Row="4" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -308,7 +327,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="4">
+                        <Expander Grid.Row="6">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -358,7 +377,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="6">
+                        <Expander Grid.Row="8">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -414,7 +433,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="8">
+                        <Expander Grid.Row="10">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />

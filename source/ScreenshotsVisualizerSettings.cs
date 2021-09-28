@@ -16,6 +16,8 @@ namespace ScreenshotsVisualizer
         public bool EnableTag { get; set; } = false;
 
 
+        public bool EnableIntegrationButtonHeader { get; set; } = false;
+
         private bool _EnableIntegrationViewItem { get; set; } = true;
         public bool EnableIntegrationViewItem
         {
