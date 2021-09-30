@@ -22,7 +22,7 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Last screenshot</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
