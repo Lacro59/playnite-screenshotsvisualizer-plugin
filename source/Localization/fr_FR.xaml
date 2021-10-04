@@ -3,21 +3,26 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsv">Visualiseur de captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvTitle">Captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Dernières</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">Voir les captures d'écran du jeu</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ouvrir le répertoire des captures d'écran</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Déplacer les captures d'écran vers le répertoire de sauvegarde</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
     <sys:String x:Key="LOCSsvDeleteConfirm">Êtes-vous sûr de vouloir supprimer {0} ?</sys:String>
+
+    
+    <!-- SsvManager -->
+
+    <sys:String x:Key="LOCSsvLastSsv">Dernière capture d'écran</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -25,9 +30,9 @@
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Afficher un contrôle avec une capture d'écran unique</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Afficher un contrôle avec une liste de captures d'écran</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Afficher un contrôle avec une liste de captures d'écran verticales</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Ajouter une bordure</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Ajouter un coin arrondi</sys:String>
 
@@ -39,26 +44,26 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Lier la sélection avec la vue simple de capture d'écran</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Utilisez un modèle de fichier</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Vous pouvez directement utiliser un modèle regex ou utiliser une version simplifiée.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Pour utiliser la version simplifiée, remplacez les nombres par {digit} et supprimez l'extension.
 
-Example:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+Exemple:
+GameName_20200107-1 =&gt; GameName_ {digit} - {digit}</sys:String>
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Variables pouvant être utilisées pour ajouter une chaîne dynamique :
+{ImagePath} - Chemin de l'ISO/ROM du jeu si défini
+{ImageName} - Nom de l'ISO/ROM du jeu
+{ImageNameNoExt} - Nom du fichier ISO/ROM sans extension
+{Name} - Nom du jeu
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} -  Numéro incrémentiel de fichier 
+{DateModified} - Date de modification du fichier         
+{DateTimeModified} - Date et heure de modification du fichier     
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Variables Steam pouvant être utilisées pour ajouter une chaîne dynamique :  
+{SteamId} - ID utilisateur Steam
         
-Windows variables can be used to add a dynamic string:        
+Variables Windows pouvant être utilisées pour ajouter une chaîne dynamique :   
 {WinDir}
 {AllUsersProfile}
 {AppData}
@@ -76,7 +81,7 @@ Windows variables can be used to add a dynamic string:
 {CommonProgramFiles(x86)}
 {ProgramFiles(x86)}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Activer le déplacement des captures d'écran dans un dossier unique</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Modèle de fichier</sys:String>
 
 </ResourceDictionary>
