@@ -158,7 +158,7 @@
                             <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
                                 <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
                             </GridViewColumn>
-                            <GridViewColumn Width="220" x:Name="lvGameName">
+                            <GridViewColumn Width="210" x:Name="lvGameName">
                                 <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
