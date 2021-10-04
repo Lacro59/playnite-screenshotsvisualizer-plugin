@@ -13,3 +13,11 @@ Packages:
       - Added default UPlay screenshots folder
       - Added basic videos support
       - Added function to move your screenshots and video capture on other folders (ex cloud folder)
+  - Version: 2.1
+    RequiredApiVersion: 6.0.0
+    ReleaseDate: 2021-10-04
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.1/playnite-screenshotsvisualizer-plugin_2_1.pext
+    Changelog:
+      - Playnite 9 version (not compatible with Playnite 8)
+      - Fixed many bugs
+      - Added screenshots manager
