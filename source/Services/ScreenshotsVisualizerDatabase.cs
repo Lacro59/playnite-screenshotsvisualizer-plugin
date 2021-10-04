@@ -1,16 +1,13 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
-using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -358,7 +355,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on File load for {game.Name}");
+                Common.LogError(ex, false, $"Error on file load for {game.Name}");
             }
         }
 
