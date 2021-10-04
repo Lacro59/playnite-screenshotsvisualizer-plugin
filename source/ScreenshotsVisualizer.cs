@@ -435,7 +435,19 @@ namespace ScreenshotsVisualizer
             {
                 var TaskGameStopped = Task.Run(() =>
                 {
-                    PluginDatabase.RefreshData(args.Game);
+                    try
+                    {
+                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == args.Game.Id);
+
+                        if (gameSettings != null)
+                        {
+                            PluginDatabase.SetDataFromSettings(gameSettings);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
 
                     if (args.Game.Id == PluginDatabase.GameContext.Id)
                     {

@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows;
 using ScreenshotsVisualizer.Views;
+using System.Threading;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -265,7 +266,7 @@ namespace ScreenshotsVisualizer.Services
             }
         }
 
-        private void SetDataFromSettings(GameSettings item)
+        public void SetDataFromSettings(GameSettings item)
         {
             System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
@@ -343,7 +344,13 @@ namespace ScreenshotsVisualizer.Services
                     var elements = gameScreenshots.Items.Where(x => x != null);
                     if (elements.Count() > 0)
                     {
+                        gameScreenshots.DateLastRefresh = DateTime.Now;
                         gameScreenshots.Items = elements.ToList();
+
+
+                        // set duration if has video
+                        var VideoElements = gameScreenshots.Items.Where(x => x.IsVideo).Select(x => x.Thumbnail);
+                        Thread.Sleep(1000 * VideoElements.Count());
                     }
 
                     AddOrUpdate(gameScreenshots);

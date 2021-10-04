@@ -52,7 +52,8 @@ namespace ScreenshotsVisualizer.Views
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            Task.Run(() => {
+            Task.Run(() => 
+            {
                 ObservableCollection<LveGame> LveGames = PluginDatabase.Database.Where(x => x.HasData)
                                                                 .Select(x => new LveGame
                                                                 {

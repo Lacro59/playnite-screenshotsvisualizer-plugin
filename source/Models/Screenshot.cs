@@ -61,6 +61,7 @@ namespace ScreenshotsVisualizer.Models
                 return string.Empty;
             }
         }
+
         [DontSerialize]
         public long FileSize
         {
@@ -147,9 +148,6 @@ namespace ScreenshotsVisualizer.Models
         }
 
         [DontSerialize]
-        private TimeSpan _Duration = default(TimeSpan);
-
-        [DontSerialize]
         public string DurationString
         {
             get
@@ -163,6 +161,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
+        public TimeSpan _Duration = default(TimeSpan);
         [DontSerialize]
         public TimeSpan Duration
         {
