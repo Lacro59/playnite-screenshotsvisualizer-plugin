@@ -338,8 +338,8 @@ namespace ScreenshotsVisualizer.Services
                         logger.Warn($"Screenshots directory not found for {game.Name}");
                     }
 
-                    var elements = gameScreenshots.Items.Where(x => x != null);
-                    if (elements.Count() > 0)
+                    var elements = gameScreenshots?.Items?.Where(x => x != null);
+                    if (elements?.Count() > 0)
                     {
                         gameScreenshots.DateLastRefresh = DateTime.Now;
                         gameScreenshots.Items = elements.ToList();
