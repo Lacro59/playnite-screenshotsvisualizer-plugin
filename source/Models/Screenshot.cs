@@ -6,11 +6,9 @@ using MediaToolkit.Options;
 using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Models
 {

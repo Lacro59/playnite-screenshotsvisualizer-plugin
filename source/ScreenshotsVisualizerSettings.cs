@@ -3,8 +3,6 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
 using Playnite.SDK.Data;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace ScreenshotsVisualizer
 {

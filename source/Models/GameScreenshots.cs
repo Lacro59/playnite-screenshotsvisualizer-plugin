@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using Playnite.SDK.Data;
 
@@ -26,7 +24,7 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
-        // TEMP
+        // TODO Must delete
         public string ScreenshotsFolder { get; set; }
 
         public List<string> ScreenshotsFolders { get; set; }

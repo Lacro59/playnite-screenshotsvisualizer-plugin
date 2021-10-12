@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using CommonPluginsStores;
 using Playnite.SDK;
-using Playnite.SDK.Data;
-using ScreenshotsVisualizer.Services;
 
 namespace ScreenshotsVisualizer.Models
 {
@@ -15,7 +12,7 @@ namespace ScreenshotsVisualizer.Models
         public Guid Id { get; set; }
         public List<FolderSettings> ScreenshotsFolders { get; set; }
 
-        // TEMP
+        // TODO TEMP
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
