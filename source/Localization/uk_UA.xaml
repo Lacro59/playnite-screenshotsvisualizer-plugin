@@ -4,15 +4,15 @@
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">Знімки екрана</sys:String>
+    <sys:String x:Key="LOCSsvTitle">Знімки екрану</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Останні</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">Переглянути ігрові знімки</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Відкрити каталог знімків екран</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Відкрити каталог знімків екрану</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Перемістити знімки екрану в каталог збережень</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Переміщення знімків...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -22,48 +22,48 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Останній знімок екрану</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvAddTag">Додати тег, якщо у гри є скріншоти</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">Додати тег, якщо у гри є знімки екрану</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Додати гру Steam</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Додати рамк</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений ку</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Відображення елементи керування з одним знімком екрану</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Відображення елементи керування зі списком знімків екрану</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Відображення елементи керування зі списком вертикальних знімків екрану</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Додати рамку</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений к</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Параметри одного знімка екран</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Параметри одного знімка екрану</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">Параметри списку знімків екран</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Параметри списку знімків екрану</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Відкрити при виборі зображення</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екран</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екрану</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Використовується шаблон файл</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePattern">Використовується шаблон файлу</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Ви можете безпосередньо використовувати шаблон регулярного виразу або скористатися спрощеною версією.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Щоб скористатися спрощеною версією, замініть цифри на {digit} та видаліть розширення.
 
-Example:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+Приклад:
+НазваГри_20200107-1 =&gt; НазваГри_{digit} - {digit}</sys:String>
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Спеціальні змінні, що можна використовувати для додавання до динамічного рядка:
+{ImagePath} - шлях до ISO/ROM гри, якщо встановлено
+{ImageName} - ім'я файлу ISO/ROM гри
+{ImageNameNoExt} - ім'я файлу ISO/ROM гри без розширення
+{Name} - Назва гри
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} - збільшений номер файлу
+{DateModified} - Дата зміни файлу
+{DateTimeModified} - Дата і час зміни файлу
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Змінні Steam, що можна використовувати для додавання до динамічного рядка:
+{SteamId} - ідентифікатор користувача Steam
         
-Windows variables can be used to add a dynamic string:        
+Змінні Windows, що можна використовувати для додавання до динамічного рядка:
 {WinDir}
 {AllUsersProfile}
 {AppData}
@@ -81,7 +81,7 @@ Windows variables can be used to add a dynamic string:
 {CommonProgramFiles(x86)}
 {ProgramFiles(x86)}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Увімкнути пересування знімків екрану унікальну теку</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Шаблон файлу</sys:String>
 
 </ResourceDictionary>
