@@ -3,67 +3,67 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">Screenshots</sys:String>
+    <sys:String x:Key="LOCSsv">Визуализация скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvTitle">Скриншоты</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
+    <sys:String x:Key="LOCSsvLatest">Последние</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">Скриншоты игры</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Открыть каталог скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Переместить скриншоты в каталог</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Перемещение скриншотов...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">Действительно хотите удалить {0}?</sys:String>
 
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Последний скриншот</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
-    <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">Добавить тег, если в игре есть скриншоты</sys:String>
+    <sys:String x:Key="LOCSsvAddSteamGame">Добавить игру Steam</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Показать управление одним скриншотом</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Показать управление со списком скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Показать управление со списком вертикальных скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Добавить границу</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Добавить закругленный угол</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Настройка скриншота</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Список настроек скриншотов</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Открыть при выборе изображения</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Выбор ссылки с одиночным просмотром скриншота</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Used a file pattern</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePattern">Используется шаблон файла</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Вы можете использовать регулярный шаблон или использовать упрощенную версию.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Чтобы использовать упрощенную версию, замените цифры на {digit} и удалите расширение.
 
-Example:
+Пример:
 GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Специальные переменные могут быть использованы для добавления динамической строки:
+{ImagePath} - Путь к игре ISO/ROM, если установлен
+{ImageName} - Имя файла Game ISO/ROM
+{ImageNameNoExt} - Имя файла Game ISO/ROM без расширения
+{Name} - Имя игры
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} - Номер файла с расширением
+{DateModified} - Дата файла, измененная         
+{DateTimeModified} - Дата и время изменения         
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Steam переменные могут быть использованы для добавления динамической строки:        
+{SteamId} - Идентификатор Steam пользователя
         
-Windows variables can be used to add a dynamic string:        
+переменные Windows могут использоваться для добавления динамической строки:        
 {WinDir}
 {AllUsersProfile}
 {AppData}
@@ -81,7 +81,7 @@ Windows variables can be used to add a dynamic string:
 {CommonProgramFiles(x86)}
 {ProgramFiles(x86)}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Включить перемещение скриншотов в уникальной папке</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Шаблон файла</sys:String>
 
 </ResourceDictionary>
