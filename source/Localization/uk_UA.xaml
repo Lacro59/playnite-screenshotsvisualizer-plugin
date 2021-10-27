@@ -34,7 +34,7 @@
     <sys:String x:Key="LOCSsvShowPictures">Відображення елементи керування зі списком знімків екрану</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Відображення елементи керування зі списком вертикальних знімків екрану</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Додати рамку</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений к</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Додати закруглений кут</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Параметри одного знімка екрану</sys:String>
     
