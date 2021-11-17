@@ -43,33 +43,23 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
 
-                <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture">
-                    <Image.Style>
-                        <Style TargetType="{x:Type Image}">
+                <controlsShared:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
+                                           Parameter="2" RenderOptions.BitmapScalingMode="Fant">
+                    <controlsShared:ImageAsync.Style>
+                        <Style TargetType="{x:Type controlsShared:ImageAsync}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                    <Setter Property="Source" >
-                                        <Setter.Value>
-                                            <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                                <Binding Path="FileName" IsAsync="True" />
-                                            </MultiBinding>
-                                        </Setter.Value>
-                                    </Setter>
+                                <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
+                                    <Setter Property="Source" Value="{Binding FileName}" />
                                 </DataTrigger>
 
-                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                    <Setter Property="Source" >
-                                        <Setter.Value>
-                                            <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                                <Binding Path="Thumbnail" IsAsync="True" />
-                                            </MultiBinding>
-                                        </Setter.Value>
-                                    </Setter>
+                                <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
+                                    <Setter Property="Source" Value="{Binding Thumbnail}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Image.Style>
-                </Image>
+                    </controlsShared:ImageAsync.Style>
+                </controlsShared:ImageAsync>
+                
                 <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 
@@ -214,8 +204,9 @@
             </Grid>
 
             <Grid Grid.Column="2" Grid.Row="0">
-                <Image Name="PART_Screenshot" Visibility="{Binding FileNameImage, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
-                       Source="{Binding FileNameImage}" />
+                <controlsShared:ImageAsync x:Name="PART_Screenshot" Visibility="{Binding FileNameImage, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
+                                           Source="{Binding FileNameImage}" />
+
                 <controls:MediaElementExtend Visibility="{Binding FileNameVideo, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
                                              Source="{Binding FileNameVideo}" LoadedBehavior="Play" x:Name="PART_Video" />
             </Grid>
@@ -243,7 +234,5 @@
                 </ListBox>
             </Grid>
         </Grid>
-
-
     </Grid>
 </UserControl>

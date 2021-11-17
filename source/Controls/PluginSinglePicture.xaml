@@ -28,35 +28,23 @@
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
-            <Image.Style>
-                <Style TargetType="{x:Type Image}">
+        <controls:ImageAsync Grid.Row="0" DecodePixelHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}" Parameter="0"
+                             x:Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
+            <controls:ImageAsync.Style>
+                <Style TargetType="{x:Type controls:ImageAsync}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                            <Setter Property="Source" >
-                                <Setter.Value>
-                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
-                                        <Binding Path="PictureSource" IsAsync="True" />
-                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                                    </MultiBinding>
-                                </Setter.Value>
-                            </Setter>
+                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
+                            <Setter Property="Source" Value="{Binding PictureSource}" />
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                            <Setter Property="Source" >
-                                <Setter.Value>
-                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="0">
-                                        <Binding Path="Thumbnail" IsAsync="True" />
-                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                                    </MultiBinding>
-                                </Setter.Value>
-                            </Setter>
+                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
+                            <Setter Property="Source" Value="{Binding Thumbnail}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Image.Style>
-        </Image>
+            </controls:ImageAsync.Style>
+        </controls:ImageAsync>
+        
         <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                    Style="{DynamicResource BaseTextBlockStyle}" 

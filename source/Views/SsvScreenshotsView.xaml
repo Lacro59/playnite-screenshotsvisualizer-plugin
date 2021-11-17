@@ -10,6 +10,7 @@
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:controls1="clr-namespace:CommonPluginsShared.Controls"
              mc:Ignorable="d" 
              MinHeight="700" MinWidth="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
@@ -57,33 +58,23 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                         </Grid>
 
-                        <Image Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" Name="PART_Picture">
-                            <Image.Style>
-                                <Style TargetType="{x:Type Image}">
+                        <controls1:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" x:Name="PART_Picture" Parameter="2"
+                                              Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
+                            <controls1:ImageAsync.Style>
+                                <Style TargetType="{x:Type controls1:ImageAsync}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                            <Setter Property="Source" >
-                                                <Setter.Value>
-                                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                                        <Binding Path="FileName" IsAsync="True" />
-                                                    </MultiBinding>
-                                                </Setter.Value>
-                                            </Setter>
+                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
+                                            <Setter Property="Source" Value="{Binding FileName}" />
                                         </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                            <Setter Property="Source" >
-                                                <Setter.Value>
-                                                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="2">
-                                                        <Binding Path="Thumbnail" IsAsync="True" />
-                                                    </MultiBinding>
-                                                </Setter.Value>
-                                            </Setter>
+                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
+                                            <Setter Property="Source" Value="{Binding Thumbnail}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Image.Style>
-                        </Image>
+                            </controls1:ImageAsync.Style>
+                        </controls1:ImageAsync>
+
                         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 
