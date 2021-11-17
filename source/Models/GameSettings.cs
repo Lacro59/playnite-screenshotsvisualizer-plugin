@@ -19,7 +19,7 @@ namespace ScreenshotsVisualizer.Models
 
         public List<string> GetScreenshotsFolders(IPlayniteAPI PlayniteApi)
         {
-            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpandWithStores(PlayniteApi, PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
+            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpandWithStores(PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
         }
     }
 

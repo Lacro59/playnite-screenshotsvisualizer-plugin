@@ -2,29 +2,18 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
-using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
-using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -46,7 +35,7 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private PluginListScreenshotsVerticalDataContext ControlDataContext;
+        private PluginListScreenshotsVerticalDataContext ControlDataContext = new PluginListScreenshotsVerticalDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -63,6 +52,7 @@ namespace ScreenshotsVisualizer.Controls
         public PluginListScreenshotsVertical()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
@@ -87,37 +77,24 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginListScreenshotsVerticalDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPicturesVertical,
-                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPicturesVertical;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
 
-                CountItems = 0,
-                ItemsSource = new ObservableCollection<Screenshot>()
-            };
+            ControlDataContext.CountItems = 0;
+            ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-                List<Screenshot> screenshots = gameScreenshots.Items;
-                screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            List<Screenshot> screenshots = gameScreenshots.Items;
+            screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-                ControlDataContext.ItemsSource = screenshots.ToObservable();
-                ControlDataContext.CountItems = screenshots.Count;
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            ControlDataContext.ItemsSource = screenshots.ToObservable();
+            ControlDataContext.CountItems = screenshots.Count;
         }
 
 
@@ -138,13 +115,28 @@ namespace ScreenshotsVisualizer.Controls
     }
 
 
-    public class PluginListScreenshotsVerticalDataContext : IDataContext
+    public class PluginListScreenshotsVerticalDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool AddBorder { get; set; }
-        public bool AddRoundedCorner { get; set; }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        public int CountItems { get; set; }
-        public ObservableCollection<Screenshot> ItemsSource { get; set; }
+        private bool _AddBorder;
+        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
+
+        private bool _AddRoundedCorner;
+        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+
+        private int _CountItems = 10;
+        public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }
+
+        private ObservableCollection<Screenshot> _ItemsSource = new ObservableCollection<Screenshot>
+        {
+            new Screenshot
+            {
+                FileName = @"icon.png",
+                Modifed = DateTime.Now
+            }
+        };
+        public ObservableCollection<Screenshot> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
     }
 }

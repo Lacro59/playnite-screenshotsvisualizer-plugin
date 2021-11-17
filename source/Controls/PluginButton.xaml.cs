@@ -3,29 +3,16 @@ using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
-using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -47,7 +34,7 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private PluginButtonDataContext ControlDataContext;
+        private PluginButtonDataContext ControlDataContext = new PluginButtonDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -66,6 +53,7 @@ namespace ScreenshotsVisualizer.Controls
             AlwaysShow = false;
 
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
@@ -88,54 +76,41 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginButtonDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton,
-                DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton;
+            ControlDataContext.DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails;
 
-                Text = "\uea38",
-                SsvDateLast = DateTime.Now,
-                SsvTotal = 0
-            };
+            ControlDataContext.Text = "\uea38";
+            ControlDataContext.SsvDateLast = DateTime.Now;
+            ControlDataContext.SsvTotal = 0;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
+            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+
+            if (ControlDataContext.DisplayDetails)
             {
-                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
-
-                if (ControlDataContext.DisplayDetails)
+                if (gameScreenshots.HasData)
                 {
-                    if (gameScreenshots.HasData)
-                    {
-                        var tmp = gameScreenshots.Items;
-                        tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-                        DateTime SsvDateLast = tmp[0].Modifed;
+                    var tmp = gameScreenshots.Items;
+                    tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+                    DateTime SsvDateLast = tmp[0].Modifed;
 
-                        LocalDateConverter localDateConverter = new LocalDateConverter();
+                    LocalDateConverter localDateConverter = new LocalDateConverter();
 
-                        ControlDataContext.SsvDateLast = SsvDateLast;
-                        ControlDataContext.SsvTotal = gameScreenshots.Items.Count();
-                    }
-                    else
-                    {
-                        ControlDataContext.DisplayDetails = false;
-                    }
+                    ControlDataContext.SsvDateLast = SsvDateLast;
+                    ControlDataContext.SsvTotal = gameScreenshots.Items.Count();
                 }
                 else
                 {
                     ControlDataContext.DisplayDetails = false;
                 }
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            }
+            else
+            {
+                ControlDataContext.DisplayDetails = false;
+            }
         }
 
 
@@ -158,14 +133,24 @@ namespace ScreenshotsVisualizer.Controls
     }
 
 
-    public class PluginButtonDataContext : IDataContext
+    public class PluginButtonDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool DisplayDetails { get; set; } = true;
-        public bool ButtonContextMenu { get; set; }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        public string Text { get; set; } = "\uea38";
-        public DateTime SsvDateLast { get; set; } = DateTime.Now;
-        public int SsvTotal { get; set; } = 7;
+        private bool _DisplayDetails;
+        public bool DisplayDetails { get => _DisplayDetails; set => SetValue(ref _DisplayDetails, value); }
+
+        private bool _ButtonContextMenu;
+        public bool ButtonContextMenu { get => _ButtonContextMenu; set => SetValue(ref _ButtonContextMenu, value); }
+
+        private string _Text = "\uea38";
+        public string Text { get => _Text; set => SetValue(ref _Text, value); }
+
+        private DateTime _SsvDateLast = DateTime.Now;
+        public DateTime SsvDateLast { get => _SsvDateLast; set => SetValue(ref _SsvDateLast, value); }
+
+        private int _SsvTotal = 7;
+        public int SsvTotal { get => _SsvTotal; set => SetValue(ref _SsvTotal, value); }
     }
 }

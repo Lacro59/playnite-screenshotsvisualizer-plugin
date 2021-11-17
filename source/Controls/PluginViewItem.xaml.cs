@@ -6,21 +6,8 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -42,7 +29,7 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private PluginViewItemDataContext ControlDataContext;
+        private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -59,6 +46,7 @@ namespace ScreenshotsVisualizer.Controls
         public PluginViewItem()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
@@ -81,36 +69,24 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginViewItemDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem,
-
-                Text = "\uea38"
-            };
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem;
+            ControlDataContext.Text = "\uea38";
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
         }
     }
 
 
-    public class PluginViewItemDataContext : IDataContext
+    public class PluginViewItemDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        public string Text { get; set; } = "\uea38";
+        private string _Text = "\uea38";
+        public string Text { get => _Text; set => SetValue(ref _Text, value); }
     }
 }

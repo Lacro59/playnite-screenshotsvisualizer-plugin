@@ -2,30 +2,19 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
-using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
-using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -47,7 +36,7 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private PluginListScreenshotsDataContext ControlDataContext;
+        private PluginListScreenshotsDataContext ControlDataContext = new PluginListScreenshotsDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -64,6 +53,7 @@ namespace ScreenshotsVisualizer.Controls
         public PluginListScreenshots()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
@@ -88,38 +78,25 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginListScreenshotsDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures,
-                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder,
-                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner,
-                IntegrationShowPicturesHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
+            ControlDataContext.IntegrationShowPicturesHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight;
 
-                CountItems = 0,
-                ItemsSource = new ObservableCollection<Screenshot>()
-            };
+            ControlDataContext.CountItems = 0;
+            ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
 
-                List<Screenshot> screenshots = gameScreenshots.Items;
-                screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            List<Screenshot> screenshots = gameScreenshots.Items;
+            screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-                ControlDataContext.ItemsSource = screenshots.ToObservable();
-                ControlDataContext.CountItems = screenshots.Count;
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            ControlDataContext.ItemsSource = screenshots.ToObservable();
+            ControlDataContext.CountItems = screenshots.Count;
         }
 
 
@@ -153,15 +130,24 @@ namespace ScreenshotsVisualizer.Controls
     }
 
 
-    public class PluginListScreenshotsDataContext : IDataContext
+    public class PluginListScreenshotsDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool AddBorder { get; set; }
-        public bool AddRoundedCorner { get; set; }
-        public double IntegrationShowPicturesHeight { get; set; }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        public int CountItems { get; set; } = 10;
-        public ObservableCollection<Screenshot> ItemsSource { get; set; } = new ObservableCollection<Screenshot>
+        private bool _AddBorder;
+        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
+
+        private bool _AddRoundedCorner;
+        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+
+        private double _IntegrationShowPicturesHeight;
+        public double IntegrationShowPicturesHeight { get => _IntegrationShowPicturesHeight; set => SetValue(ref _IntegrationShowPicturesHeight, value); }
+
+        private int _CountItems = 10;
+        public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }
+
+        private ObservableCollection<Screenshot> _ItemsSource = new ObservableCollection<Screenshot>
         {
             new Screenshot
             {
@@ -169,6 +155,7 @@ namespace ScreenshotsVisualizer.Controls
                 Modifed = DateTime.Now
             }
         };
+        public ObservableCollection<Screenshot> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
     }
 
     public class TwoSizeMultiValueConverter : IMultiValueConverter

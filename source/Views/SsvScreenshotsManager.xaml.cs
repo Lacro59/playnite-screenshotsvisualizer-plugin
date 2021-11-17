@@ -61,7 +61,7 @@ namespace ScreenshotsVisualizer.Views
                                                                     Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon),
                                                                     Name = x.Name,
                                                                     LastActivity = x.LastActivity,
-                                                                    SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, x.Id),
+                                                                    SourceName = PlayniteTools.GetSourceName(x.Id),
 
                                                                     LastSsv = x.Items.Select(y => y.Modifed).Max(),
                                                                     Total = x.Items.Count

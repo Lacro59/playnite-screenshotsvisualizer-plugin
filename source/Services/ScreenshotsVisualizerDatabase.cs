@@ -149,8 +149,8 @@ namespace ScreenshotsVisualizer.Services
                         }
 
 
-                        string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(PlayniteApi, game, PluginSettings.Settings.FolderToSave);
-                        string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(PlayniteApi, game, PluginSettings.Settings.FileSavePattern);
+                        string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FolderToSave);
+                        string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
                         string PatternWithDigit = string.Empty;
 
                         GameScreenshots gameScreenshots = Get(game);
@@ -179,7 +179,7 @@ namespace ScreenshotsVisualizer.Services
                                     digit++;
                                 }
 
-                                Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
+                                Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
 
                                 string destFileName = Path.Combine(PathFolder, Pattern);
 
@@ -192,7 +192,7 @@ namespace ScreenshotsVisualizer.Services
                                         while (File.Exists(destFileName + ext))
                                         {
                                             Pattern = PatternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
-                                            Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
+                                            Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
                                             destFileName = Path.Combine(PathFolder, Pattern);
                                             digit++;
                                         }
@@ -287,7 +287,7 @@ namespace ScreenshotsVisualizer.Services
 
                 foreach (var ScreenshotsFolder in item.ScreenshotsFolders)
                 {
-                    string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(PlayniteApi, game, ScreenshotsFolder.ScreenshotsFolder);
+                    string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
 
                     // Get files
                     string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi" };
@@ -302,8 +302,8 @@ namespace ScreenshotsVisualizer.Services
 
                                     if (ScreenshotsFolder.UsedFilePattern)
                                     {
-                                        string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(PlayniteApi, game, ScreenshotsFolder.FilePattern);
-                                        Pattern = CommonPluginsPlaynite.Common.Paths.GetSafeFilename(Pattern);
+                                        string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.FilePattern);
+                                        Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
 
                                         Pattern = Pattern.Replace("{digit}", @"\d*");
                                         Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");

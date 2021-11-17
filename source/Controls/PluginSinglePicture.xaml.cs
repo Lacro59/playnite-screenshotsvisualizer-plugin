@@ -3,28 +3,18 @@ using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
-using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Controls
@@ -47,7 +37,7 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private PluginSinglePictureDataContext ControlDataContext;
+        private PluginSinglePictureDataContext ControlDataContext = new PluginSinglePictureDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -67,6 +57,7 @@ namespace ScreenshotsVisualizer.Controls
         public PluginSinglePicture()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
@@ -89,53 +80,40 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginSinglePictureDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture,
-                AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture,
-                AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture,
-                IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture;
+            ControlDataContext.IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight;
 
-                EnablePrev = false,
-                EnableNext = false,
+            ControlDataContext.EnablePrev = false;
+            ControlDataContext.EnableNext = false;
 
-                IsVideo = false,
-                Thumbnail = string.Empty,
-                PictureSource = string.Empty,
-                PictureInfos = string.Empty
-            };
+            ControlDataContext.IsVideo = false;
+            ControlDataContext.Thumbnail = string.Empty;
+            ControlDataContext.PictureSource = string.Empty;
+            ControlDataContext.PictureInfos = string.Empty;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
+            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+
+            this.screenshots = gameScreenshots.Items;
+            this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+
+            index = 0;
+
+            if (screenshots.Count > 1)
             {
-                GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+                ControlDataContext.EnablePrev = true;
+                ControlDataContext.EnableNext = true;
+            }
 
-                this.screenshots = gameScreenshots.Items;
-                this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-                index = 0;
-
-                if (screenshots.Count > 1)
-                {
-                    ControlDataContext.EnablePrev = true;
-                    ControlDataContext.EnableNext = true;
-                }
-
-                if (screenshots.Count > 0)
-                {
-                    SetPicture(screenshots[index]);
-                }
-                
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            if (screenshots.Count > 0)
+            {
+                SetPicture(screenshots[index]);
+            }
         }
 
 
@@ -247,19 +225,36 @@ namespace ScreenshotsVisualizer.Controls
     }
 
 
-    public class PluginSinglePictureDataContext : IDataContext
+    public class PluginSinglePictureDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool AddBorder { get; set; }
-        public bool AddRoundedCorner { get; set; }
-        public double IntegrationShowSinglePictureHeight { get; set; }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        public bool EnablePrev { get; set; }
-        public bool EnableNext { get; set; }
+        private bool _AddBorder;
+        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
 
-        public bool IsVideo { get; set; }
-        public string Thumbnail { get; set; }
-        public string PictureSource { get; set; }
-        public string PictureInfos { get; set; }
+        private bool _AddRoundedCorner;
+        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+
+        private double _IntegrationShowSinglePictureHeight;
+        public double IntegrationShowSinglePictureHeight { get => _IntegrationShowSinglePictureHeight; set => SetValue(ref _IntegrationShowSinglePictureHeight, value); }
+
+        private bool _EnablePrev;
+        public bool EnablePrev { get => _EnablePrev; set => SetValue(ref _EnablePrev, value); }
+
+        private bool _EnableNext;
+        public bool EnableNext { get => _EnableNext; set => SetValue(ref _EnableNext, value); }
+
+        private bool _IsVideo;
+        public bool IsVideo { get => _IsVideo; set => SetValue(ref _IsVideo, value); }
+
+        private string _Thumbnail;
+        public string Thumbnail { get => _Thumbnail; set => SetValue(ref _Thumbnail, value); }
+
+        private string _PictureSource;
+        public string PictureSource { get => _PictureSource; set => SetValue(ref _PictureSource, value); }
+
+        private string _PictureInfos;
+        public string PictureInfos { get => _PictureInfos; set => SetValue(ref _PictureInfos, value); }
     }
 }

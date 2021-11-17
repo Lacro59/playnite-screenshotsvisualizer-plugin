@@ -92,8 +92,8 @@ namespace ScreenshotsVisualizer.Views
                         ScreenshotsFolders = ScreenshotsFolders,
                         UsedFilePattern = item.UsedFilePattern,
                         FilePattern = item.FilePattern,
-                        SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id),
-                        SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(PlayniteApi, item.Id))
+                        SourceName = PlayniteTools.GetSourceName(item.Id),
+                        SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(item.Id))
                     });
                 }
                 else
@@ -117,8 +117,8 @@ namespace ScreenshotsVisualizer.Views
                     Id = item.Id,
                     Icon = Icon,
                     Name = item.Name,
-                    SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Id),
-                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(PlayniteApi, item.Id))
+                    SourceName = PlayniteTools.GetSourceName(item.Id),
+                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(item.Id))
                 });
             }
 
@@ -182,7 +182,7 @@ namespace ScreenshotsVisualizer.Views
                         Id = game.Id,
                         Icon = Icon,
                         Name = game.Name,
-                        SourceName = PlayniteTools.GetSourceName(_PlayniteApi, game.Id)
+                        SourceName = PlayniteTools.GetSourceName(game.Id)
                     });
                 }
                 
