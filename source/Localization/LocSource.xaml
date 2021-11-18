@@ -84,4 +84,7 @@ Windows variables can be used to add a dynamic string:
     <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
 
+    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+
 </ResourceDictionary>

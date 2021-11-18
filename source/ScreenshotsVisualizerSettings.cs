@@ -2,6 +2,7 @@
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
 using Playnite.SDK.Data;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace ScreenshotsVisualizer

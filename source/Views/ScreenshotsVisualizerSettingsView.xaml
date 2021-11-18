@@ -27,7 +27,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="10" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -45,6 +45,8 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
@@ -93,6 +95,22 @@
 
                     <Label Grid.Column="4" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
                            ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
+
+                    <Grid Grid.Row="2" Grid.ColumnSpan="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Name="PART_BtRelative" Click="PART_BtRelative_Click"
+                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                Content="{DynamicResource LOCSsvSetRelative}" Grid.Column="1"  />
+                        <Button Name="PART_BtAbsolute" Click="PART_BtAbsolute_Click"
+                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                Content="{DynamicResource LOCSsvSetAbsolute}" Grid.Column="3"  />
+                    </Grid>
                 </Grid>
 
                 <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
@@ -102,7 +120,7 @@
                              Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
                             </Style>
                         </ListBox.ItemContainerStyle>
 
@@ -118,7 +136,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                       Source="{Binding Icon}"/>
+                                           Source="{Binding Icon}"/>
                                     <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
                                 </Grid>
@@ -136,7 +154,7 @@
                         
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
                             </Style>
                         </ListBox.ItemContainerStyle>
 

@@ -445,6 +445,109 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch_TextChanged(null, null);
         }
+
+
+        private void PART_BtRelative_Click(object sender, RoutedEventArgs e)
+        {
+            TextboxSearch.Text = string.Empty;
+
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"ScreenshotsVisualizer",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PluginDatabase.PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                try
+                {
+                    activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
+
+                    foreach (var game in listGameScreenshots)
+                    {
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
+                        foreach (var screenshotsFolders in game.ScreenshotsFolders)
+                        {
+                            screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.PathToRelativeWithStores
+                            (
+                                PluginDatabase.PlayniteApi.Database.Games.Get(game.Id),
+                                screenshotsFolders.ScreenshotsFolder
+                            );
+                        }
+
+                        activateGlobalProgress.CurrentProgressValue++;
+                    }
+
+                    this.Dispatcher.BeginInvoke((Action)delegate
+                    {
+                        listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+                        PART_ListGameScreenshot.ItemsSource = null;
+                        PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+                        TextboxSearch_TextChanged(null, null);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }, globalProgressOptions);
+        }
+
+        private void PART_BtAbsolute_Click(object sender, RoutedEventArgs e)
+        {
+            TextboxSearch.Text = string.Empty;
+
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"ScreenshotsVisualizer",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PluginDatabase.PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                try
+                {
+                    activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
+
+                    foreach (var game in listGameScreenshots)
+                    {
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
+                        foreach (var screenshotsFolders in game.ScreenshotsFolders)
+                        {
+                            screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores
+                            (
+                                PluginDatabase.PlayniteApi.Database.Games.Get(game.Id),
+                                screenshotsFolders.ScreenshotsFolder
+                            );
+                        }
+
+                        activateGlobalProgress.CurrentProgressValue++;
+                    }
+
+                    this.Dispatcher.BeginInvoke((Action)delegate
+                    {
+                        listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+                        PART_ListGameScreenshot.ItemsSource = null;
+                        PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+                        TextboxSearch_TextChanged(null, null);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }, globalProgressOptions);
+        }
     }
 
 
