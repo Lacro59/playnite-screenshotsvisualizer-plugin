@@ -84,4 +84,7 @@ Steam переменные могут быть использованы для �
     <sys:String x:Key="LOCSsvEnableFolderToSave">Включить перемещение скриншотов в уникальной папке</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файла</sys:String>
 
+    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+
 </ResourceDictionary>
