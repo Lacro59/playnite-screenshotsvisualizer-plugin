@@ -84,4 +84,7 @@ Variáveis do Windows podem ser usadas para adicionar uma expressão dinâmica:
     <sys:String x:Key="LOCSsvEnableFolderToSave">Habilitar o mover capturas de tela em uma pasta única</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Localizar padrão</sys:String>
 
+    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+
 </ResourceDictionary>
