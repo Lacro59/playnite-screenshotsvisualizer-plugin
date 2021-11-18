@@ -73,9 +73,9 @@ namespace ScreenshotsVisualizer.Views
                 {
                     ((SsvScreenshotsManagerData)DataContext).LveGames = antecedent.Result;
 
+                    PART_LveGames.Sorting();
                     if (index != -1)
                     {
-                        PART_LveGames.Sorting();
                         PART_LveGames.SelectedIndex = index;
                     }
 
