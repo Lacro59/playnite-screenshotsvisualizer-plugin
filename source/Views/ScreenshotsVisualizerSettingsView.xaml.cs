@@ -3,6 +3,7 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
+using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +26,8 @@ namespace ScreenshotsVisualizer.Views
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private IPlayniteAPI _PlayniteApi;
+
+        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         private string _PluginUserDataPath;
 
@@ -356,6 +359,52 @@ namespace ScreenshotsVisualizer.Views
                 ScreenshotsFolders.Add(new FolderSettings
                 {
                     ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name
+                });
+
+                listGameScreenshots.Add(new ListGameScreenshot
+                {
+                    Id = game.Id,
+                    Icon = Icon,
+                    Name = game.Name,
+                    ScreenshotsFolders = ScreenshotsFolders,
+                    SourceName = game.SourceName,
+                    SourceIcon = TransformIcon.Get(game.SourceName)
+                });
+            }
+
+            PART_ListGame.ItemsSource = null;
+            PART_ListGame.ItemsSource = listGames;
+
+            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            PART_ListGameScreenshot.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+            TextboxSearch_TextChanged(null, null);
+        }
+
+        // Add RetroArch game automaticly
+        private void PART_BtAddURetroArch_Click(object sender, RoutedEventArgs e)
+        {
+            TextboxSearch.Text = string.Empty;
+
+            var tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
+            foreach (var game in tmpList)
+            {
+                int index = listGames.FindIndex(x => x.Id == game.Id);
+                listGames.RemoveAt(index);
+
+                string Icon = string.Empty;
+                if (!game.Icon.IsNullOrEmpty())
+                {
+                    Icon = _PlayniteApi.Database.GetFullFilePath(game.Icon);
+                }
+
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
+                ScreenshotsFolders.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = "{RetroArchScreenshotsDir}",
+                    UsedFilePattern = true,
+                    FilePattern = "{ImageNameNoExt}-{digit}-{digit}",
                 });
 
                 listGameScreenshots.Add(new ListGameScreenshot
