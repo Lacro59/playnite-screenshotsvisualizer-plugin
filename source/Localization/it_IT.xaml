@@ -72,7 +72,7 @@ Variabili Windows possono essere usate per aggiungere una stringa dinamica:
     <sys:String x:Key="LOCSsvEnableFolderToSave">Abilita lo spostamento delle schermate nella cartella univoca</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Sequenza file</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">Trasforma in percorso assoluto</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Trasforma in percorso relativo</sys:String>
 
 </ResourceDictionary>
