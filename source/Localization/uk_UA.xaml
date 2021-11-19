@@ -84,7 +84,7 @@
     <sys:String x:Key="LOCSsvEnableFolderToSave">Увімкнути пересування знімків екрану унікальну теку</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файлу</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">Перетворити на абсолютний шлях</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Перетворити на відносний шлях</sys:String>
 
 </ResourceDictionary>
