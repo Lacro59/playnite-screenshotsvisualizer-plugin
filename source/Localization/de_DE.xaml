@@ -10,9 +10,9 @@
     
     <sys:String x:Key="LOCSsvViewScreenshots">Bildschirmfotos ansehen</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Verzeichnis der Bildschirmfotos öffnen</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Verschieben der Screenshots in das Speicherverzeichnis</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Verschieben der Screenshots...</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -22,7 +22,7 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Letzter Screenshot</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -30,9 +30,9 @@
     <sys:String x:Key="LOCSsvAddTag">Tag hinzufügen, wenn Bildschirmfotos des Spiels vorhanden sind</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam Spiel hinzufügen</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Anzeigen eines Steuerelements mit einem einzelnen Screenshot</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Anzeigen eines Steuerelements mit einer Liste von Screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Anzeigen eines Steuerelements mit einer Liste vertikaler Screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Rahmen hinzufügen</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Abgerundeten Ecken hinzufügen</sys:String>
 
@@ -44,26 +44,26 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Auswahl mit einzelner Bildschirmfoto-Ansicht verknüpfen</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Ein Dateimuster verwendet</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Sie können ein regex-Muster direkt verwenden oder eine vereinfachte Version verwenden.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Um die vereinfachte Version zu verwenden, ersetzen Sie die Zahlen mit {digit} und entfernen Sie die Dateiendung.
 
-Example:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
+Beispiel:
+GameName_20200107-1 =&gt; GameName_ {digit} - {digit}</sys:String>
+    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Spezielle Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:
+{ImagePath} - Spiel ISO/ROM Pfad, falls festgelegt
+{ImageName} - ISO/ROM Dateiname des Spiels
+{ImageNameNoExt} - ISO/ROM Dateiname des Spiels ohne Erweiterung
+{Name} - Name des Spiels
         
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
+{digit} - Erhöhte Dateinummer
+{DateModified} - Änderungsdatum der Datei         
+{DateTimeModified} - Dateidatum und Uhrzeit geändert         
        
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
+Steam Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:        
+{SteamId} - Steam User ID
         
-Windows variables can be used to add a dynamic string:        
+Windows Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:        
 {WinDir}
 {AllUsersProfile}
 {AppData}
@@ -81,10 +81,10 @@ Windows variables can be used to add a dynamic string:
 {CommonProgramFiles(x86)}
 {ProgramFiles(x86)}</sys:String>
 
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Verschieben von Screenshots in einen eindeutigen Ordner aktivieren</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Dateimuster</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">In absoluten Pfad umwandeln</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">In relativen Pfad umwandeln</sys:String>
 
 </ResourceDictionary>
