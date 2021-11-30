@@ -28,12 +28,24 @@ namespace ScreenshotsVisualizer.Services
 
         protected override bool LoadDatabase()
         {
-            IsLoaded = false;
+            try
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
 
-            Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
-            Database.SetGameInfo<Screenshot>(PlayniteApi);
+                Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
+                Database.SetGameInfo<Screenshot>(PlayniteApi);
 
-            IsLoaded = true;
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+                return false;
+            }
+
             return true;
         }
 
