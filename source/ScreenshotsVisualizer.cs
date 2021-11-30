@@ -42,7 +42,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
             }
 
             // Custom theme button
@@ -90,7 +90,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
             }
         }
         #endregion
@@ -400,7 +400,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
             }
         }
 
@@ -446,7 +446,7 @@ namespace ScreenshotsVisualizer
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false);
+                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                     }
 
                     if (args.Game.Id == PluginDatabase.GameContext.Id)
@@ -457,7 +457,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
             }
         }
         #endregion

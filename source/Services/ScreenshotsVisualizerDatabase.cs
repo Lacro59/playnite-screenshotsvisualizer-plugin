@@ -79,7 +79,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                 }
             }, globalProgressOptions);
         }
@@ -117,7 +117,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                 }
 
                 stopWatch.Stop();
@@ -210,12 +210,7 @@ namespace ScreenshotsVisualizer.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false);
-                                    PlayniteApi.Notifications.Add(new NotificationMessage(
-                                         $"{PluginName}-Error-MoveToFolderToSave",
-                                         $"{PluginName}\r\n{ex.Message}",
-                                         NotificationType.Error
-                                    ));
+                                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                                     break;
                                 }
                             }
@@ -230,7 +225,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false);
+                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                     }
                 }, globalProgressOptions);
             }
@@ -332,7 +327,7 @@ namespace ScreenshotsVisualizer.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false);
+                                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                                 }
                             });
                     }
@@ -358,7 +353,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on file load for {game.Name}");
+                Common.LogError(ex, false, $"Error on file load for {game.Name}", true, "ScreenshotsVisualizer");
             }
         }
 
