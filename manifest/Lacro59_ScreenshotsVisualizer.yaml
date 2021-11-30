@@ -31,3 +31,10 @@ Packages:
       - Added new options for screenshots folders
       - Added auto configuration for RetroArch games
       - Updated localizations
+  - Version: 2.2.1
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2021-11-30
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.2.1/playnite-screenshotsvisualizer-plugin_2_2_1.pext
+    Changelog:
+      - Updated localizations
+      - Minors UI tweaks
