@@ -27,6 +27,9 @@ namespace ScreenshotsVisualizer
     {
         public override Guid Id { get; } = Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
 
+        internal TopPanelItem topPanelItem;
+        internal SsvViewSidebar ssvViewSidebar;
+
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
         {            
@@ -61,6 +64,40 @@ namespace ScreenshotsVisualizer
                 SourceName = "ScreenshotsVisualizer",
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
+
+            // Initialize top & side bar
+            if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
+            {
+                topPanelItem = new TopPanelItem()
+                {
+                    Icon = new TextBlock
+                    {
+                        Text = "\uea38",
+                        FontSize = 20,
+                        FontFamily = resources.GetResource("CommonFont") as FontFamily
+                    },
+                    Title = resources.GetString("LOCSsv"),
+                    Activated = () =>
+                    {
+                        var windowOptions = new WindowOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true,
+                            Width = 1280,
+                            Height = 740
+                        };
+
+                        var ViewExtension = new SsvScreenshotsManager();
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
+                        windowExtension.ResizeMode = ResizeMode.CanResize;
+                        windowExtension.ShowDialog();
+                    },
+                    Visible = PluginSettings.Settings.EnableIntegrationButtonHeader
+                };
+
+                ssvViewSidebar = new SsvViewSidebar(this);
+            }
         }
 
 
@@ -100,37 +137,7 @@ namespace ScreenshotsVisualizer
         // Button on top panel
         public override IEnumerable<TopPanelItem> GetTopPanelItems()
         {
-            if (PluginSettings.Settings.EnableIntegrationButtonHeader)
-            {
-                yield return new TopPanelItem()
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = "\uea38",
-                        FontSize = 20,
-                        FontFamily = resources.GetResource("CommonFont") as FontFamily
-                    },
-                    Title = resources.GetString("LOCSsv"),
-                    Activated = () =>
-                    {
-                        var windowOptions = new WindowOptions
-                        {
-                            ShowMinimizeButton = false,
-                            ShowMaximizeButton = true,
-                            ShowCloseButton = true,
-                            Width = 1280,
-                            Height = 740
-                        };
-
-                        var ViewExtension = new SsvScreenshotsManager();
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
-                        windowExtension.ResizeMode = ResizeMode.CanResize;
-                        windowExtension.ShowDialog();
-                    }
-                };
-            }
-
-            yield break;
+            yield return topPanelItem;
         }
 
         // List custom controls
@@ -167,7 +174,7 @@ namespace ScreenshotsVisualizer
         // SidebarItem
         public class SsvViewSidebar : SidebarItem
         {
-            public SsvViewSidebar()
+            public SsvViewSidebar(ScreenshotsVisualizer plugin)
             {
                 Type = SiderbarItemType.View;
                 Title = resources.GetString("LOCSsv");
@@ -184,16 +191,16 @@ namespace ScreenshotsVisualizer
 
                     return sidebarItemControl;
                 };
+                Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonSide;
             }
         }
 
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
-            var items = new List<SidebarItem>
+            return new List<SidebarItem>
             {
-                new SsvViewSidebar()
+                ssvViewSidebar
             };
-            return items;
         }
         #endregion
 

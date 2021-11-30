@@ -16,6 +16,7 @@ namespace ScreenshotsVisualizer
 
 
         public bool EnableIntegrationButtonHeader { get; set; } = false;
+        public bool EnableIntegrationButtonSide { get; set; } = true;
 
         private bool _EnableIntegrationViewItem { get; set; } = true;
         public bool EnableIntegrationViewItem
@@ -198,6 +199,13 @@ namespace ScreenshotsVisualizer
 
             Plugin.SavePluginSettings(Settings);
             ScreenshotsVisualizer.PluginDatabase.PluginSettings = this;
+
+            if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
+            {
+                Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
+                Plugin.ssvViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
+            }
+
             this.OnPropertyChanged();
         }
 
