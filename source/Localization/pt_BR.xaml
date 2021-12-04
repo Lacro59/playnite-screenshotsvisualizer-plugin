@@ -3,10 +3,10 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">VisualizadorCapturaDeTela</sys:String>
+    <sys:String x:Key="LOCSsv">Visualizador de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvTitle">Capturas de tela</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">Último</sys:String>
+    <sys:String x:Key="LOCSsvLatest">Recente</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abrir a pasta de capturas de tela</sys:String>
