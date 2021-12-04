@@ -42,7 +42,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, "ScreenshotsVisualizaer");
                 return false;
             }
 
