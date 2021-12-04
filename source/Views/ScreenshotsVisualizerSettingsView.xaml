@@ -57,7 +57,7 @@
                                                 Margin="10,0,0,0" Grid.Column="1" />
 
                     <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
-                            Click="PART_BtSelectGame_Click" IsEnabled="False"
+                            Click="PART_BtSelectGame_Click" IsEnabled="False" Margin="10,0,0,0"
                             Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
