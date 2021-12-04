@@ -162,6 +162,8 @@ namespace ScreenshotsVisualizer.Services
 
 
                         string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FolderToSave);
+                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
+
                         string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
                         string PatternWithDigit = string.Empty;
 
