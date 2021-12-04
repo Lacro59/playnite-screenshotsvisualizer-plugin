@@ -398,10 +398,26 @@ namespace ScreenshotsVisualizer
         {
             try
             {
-                if (args.NewValue?.Count == 1)
+                if (args.NewValue?.Count == 1 && PluginDatabase.IsLoaded)
                 {
                     PluginDatabase.GameContext = args.NewValue[0];
                     PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
+                }
+                else
+                {
+                    Task.Run(() =>
+                    {
+                        System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+
+                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                        {
+                            if (args.NewValue?.Count == 1)
+                            {
+                                PluginDatabase.GameContext = args.NewValue[0];
+                                PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
+                            }
+                        });
+                    });
                 }
             }
             catch (Exception ex)
