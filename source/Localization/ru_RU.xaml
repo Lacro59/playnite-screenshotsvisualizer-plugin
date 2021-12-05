@@ -14,6 +14,8 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Перемещение скриншотов...</sys:String>
 
+    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+
 
     <!-- ScreenshotsVisualizerView -->
 
@@ -44,42 +46,12 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Выбор ссылки с одиночным просмотром скриншота</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Используется шаблон файла</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Вы можете использовать регулярный шаблон или использовать упрощенную версию.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
 
-Чтобы использовать упрощенную версию, замените цифры на {digit} и удалите расширение.
+To use the simplified version, replace the numbers with {digit} and remove the extension.
 
-Пример:
-GameName_20200107-1 =&gt; GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Специальные переменные могут быть использованы для добавления динамической строки:
-{ImagePath} - Путь к игре ISO/ROM, если установлен
-{ImageName} - Имя файла Game ISO/ROM
-{ImageNameNoExt} - Имя файла Game ISO/ROM без расширения
-{Name} - Имя игры
-        
-{digit} - Номер файла с расширением
-{DateModified} - Дата файла, измененная         
-{DateTimeModified} - Дата и время изменения         
-       
-Steam переменные могут быть использованы для добавления динамической строки:        
-{SteamId} - Идентификатор Steam пользователя
-        
-переменные Windows могут использоваться для добавления динамической строки:        
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+Example:
+GameName_20200107-1 =&gt; GameName_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Включить перемещение скриншотов в уникальной папке</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файла</sys:String>
@@ -87,4 +59,23 @@ Steam переменные могут быть использованы для �
     <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
 
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">You can used:
+- {DateModified}       yyyy-MM-dd
+- {DateTimeModified}   yyyy-MM-dd HH_mm_ss
+- {digit}              incremented</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
+If the {Name} is not included in &quot;Folder&quot;, it is automatically added.
+    
+Example:
+A game with two screenshot folders:
+- {Public}\Screenshots
+- {SteamScreenshotsDir}\435790\screenshots
+    
+If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the &quot;File Pattern&quot; and the link will be upated in plugin data.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    
 </ResourceDictionary>
