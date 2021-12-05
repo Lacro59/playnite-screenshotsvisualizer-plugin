@@ -14,6 +14,8 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Spostamento delle schermate...</sys:String>
 
+    <sys:String x:Key="LOCSsvWarningToMove">Sei sicuro di voler spostare tutte le schermate?</sys:String>
+
 
     <!-- ScreenshotsVisualizerView -->
 
@@ -49,25 +51,7 @@
 Per usare la versione semplificata, sostituire i numeri con {digit} e rimuovere l'estensione
 
 Esempio:
-GameName_20200107-1 =&gt; Nomegioco_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Variabili speciali possono essere usate per aggiungere una stringa dinamica:
-{ImagePath} - Percorso gioco ISO/ROM se impostato
-{ImageName} - Nome del file gioco ISO/ROM
-{ImageNameNoExt} - Nome del file di gioco ISO/ROM senza estenzione
-{Name} - Nome del gioco
-        
-{digit} - Numero file aumentato
-{DateModified} - Data del file modificata       
-{DateTimeModified} - Data e ora del file modificati        
-       
-Variabili Steam possono essere usate per aggiungere una stringa dinamica:      
-{SteamId} - Id utente Steam
-        
-Variabili Windows possono essere usate per aggiungere una stringa dinamica:        
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}</sys:String>
+GameName_20200107-1 =&gt; Nomegioco_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Abilita lo spostamento delle schermate nella cartella univoca</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Sequenza file</sys:String>
@@ -75,4 +59,23 @@ Variabili Windows possono essere usate per aggiungere una stringa dinamica:
     <sys:String x:Key="LOCSsvSetAbsolute">Trasforma in percorso assoluto</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Trasforma in percorso relativo</sys:String>
 
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Puoi usare:
+- {DateModified}       yyy-MM-gd
+- {DateTimeModified}   yyy-MM-dd HH_mm_ss
+- {digit}              incrementato</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Questa opzione aggiunge un menu di gioco per spostare tutti i file dello screenshot in una singola cartella.
+Se il {Name} non è incluso in &quot;Cartella&quot;, è automaticamente aggiunto.
+    
+Esempio:
+Un gioco con due cartelle screenshot:
+- {Public}\Screenshots
+- {SteamScreenshotsDir}\435790\screenshots
+    
+Se si dispone della cartella unica {DropboxFolder}\Screenshots\{Name}, dopo aver selezionato l' opzione nel menu di gioco, tutti gli screenshot verranno spostati nella cartella univoca in base al &quot;Modello di file&quot; e il link verrà aggiornato nei dati del plugin.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Mancano le impostazioni da usare per spostare le schermate</sys:String>
+    
 </ResourceDictionary>
