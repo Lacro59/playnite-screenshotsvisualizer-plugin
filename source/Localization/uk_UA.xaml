@@ -14,6 +14,8 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Переміщення знімків...</sys:String>
 
+    <sys:String x:Key="LOCSsvWarningToMove">Ви впевнені, що бажаєте перемістити всі знімки екрану?</sys:String>
+
 
     <!-- ScreenshotsVisualizerView -->
 
@@ -49,37 +51,7 @@
 Щоб скористатися спрощеною версією, замініть цифри на {digit} та видаліть розширення.
 
 Приклад:
-НазваГри_20200107-1 =&gt; НазваГри_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Спеціальні змінні, що можна використовувати для додавання до динамічного рядка:
-{ImagePath} - шлях до ISO/ROM гри, якщо встановлено
-{ImageName} - ім'я файлу ISO/ROM гри
-{ImageNameNoExt} - ім'я файлу ISO/ROM гри без розширення
-{Name} - Назва гри
-        
-{digit} - збільшений номер файлу
-{DateModified} - Дата зміни файлу
-{DateTimeModified} - Дата і час зміни файлу
-       
-Змінні Steam, що можна використовувати для додавання до динамічного рядка:
-{SteamId} - ідентифікатор користувача Steam
-        
-Змінні Windows, що можна використовувати для додавання до динамічного рядка:
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+НазваГри_20200107-1 =&gt; НазваГри_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Увімкнути пересування знімків екрану унікальну теку</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файлу</sys:String>
@@ -87,4 +59,23 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Перетворити на абсолютний шлях</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Перетворити на відносний шлях</sys:String>
 
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Ви можете використовувати:
+- {DateModified}       рррр-ММ-дд
+- {DateTimeModified}   рррр-ММ-дд ГГ_хх_сс
+- {digit}             приріст</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Ця опція додає меню гри для переміщення всіх файлів знімків екрану в одну теку.
+Якщо {Name} не включено в &quot;Теку&quot;, воно додається автоматично.
+    
+приклад:
+Гра з двома теками знімків екрану:
+- {Public}\Screenshots
+- {SteamScreenshotsDir}\435790\screenshots
+    
+Якщо у вас є унікальна тека {DropboxFolder}\Screenshots\{Name}, після вибору параметра в меню гри всі знімки екрану будуть переміщені в унікальну теку відповідно до «Шаблону файлу», а посилання буде оновлено в даних плагіну.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Відсутні налаштування для переміщення знімків екрану</sys:String>
+    
 </ResourceDictionary>
