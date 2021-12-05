@@ -258,7 +258,6 @@ namespace ScreenshotsVisualizer
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
-                        // Open directory
                         MenuSection = resources.GetString("LOCSsv"),
                         Description = resources.GetString("LOCSsvMoveToSave"),
                         Action = (gameMenuItem) =>
@@ -373,6 +372,46 @@ namespace ScreenshotsVisualizer
                     }
                 });
             }
+
+            if (PluginDatabase.PluginSettings.Settings.EnableFolderToSave)
+            {
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = "-"
+                });
+
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSsv"),
+                    Description = resources.GetString("LOCSsvMoveToSave"),
+                    Action = (gameMenuItem) =>
+                    {
+                        var dialogResult = PlayniteApi.Dialogs.ShowMessage(resources.GetString("LOCSsvWarningToMove"), resources.GetString("LOCSsv"), MessageBoxButton.YesNo);
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            if (PluginSettings.Settings.FolderToSave.IsNullOrEmpty() || PluginSettings.Settings.FileSavePattern.IsNullOrEmpty())
+                            {
+                                logger.Error("No settings to use folder to save");
+                                PlayniteApi.Notifications.Add(new NotificationMessage(
+                                    $"ScreenshotsVisualizer-MoveToFolderToSave-Errors",
+                                    $"ScreenshotsVisualizer\r\n" + resources.GetString("LOCSsvMoveToFolderToSaveError"),
+                                    NotificationType.Error,
+                                    () => this.OpenSettingsView()
+                                ));
+                            }
+                            else
+                            {
+                                foreach (var el in PluginDatabase.Database.Items)
+                                {
+                                    PluginDatabase.MoveToFolderToSaveWithNoLoader(el.Key);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
 
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem
