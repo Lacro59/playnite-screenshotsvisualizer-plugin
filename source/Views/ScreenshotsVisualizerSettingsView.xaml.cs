@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared;
+﻿using CommonPluginsControls.Controls;
+using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -16,6 +17,7 @@ namespace ScreenshotsVisualizer.Views
     public partial class ScreenshotsVisualizerSettingsView : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
+        private static IResourceProvider resources = new ResourceProvider();
 
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
@@ -532,6 +534,27 @@ namespace ScreenshotsVisualizer.Views
                     Common.LogError(ex, false, true, "ScreenshotsVisualizer");
                 }
             }, globalProgressOptions);
+        }
+
+
+        private void PART_SelectVariables_Click(object sender, RoutedEventArgs e)
+        {
+            var ViewExtension = new SelectVariable();
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCCommonSelectVariable"), ViewExtension);
+            windowExtension.ResizeMode = ResizeMode.CanResize;
+            windowExtension.ShowDialog();
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PART_TabControl.SelectedIndex == 1)
+            {
+                PART_SelectVariables.Visibility = Visibility.Collapsed;
+            } 
+            else
+            {
+                PART_SelectVariables.Visibility = Visibility.Visible;
+            }
         }
     }
 

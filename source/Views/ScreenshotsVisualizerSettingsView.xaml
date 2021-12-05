@@ -19,568 +19,573 @@
         <convertersshared:ListMoreOneBoolConverter x:Key="ListMoreOneBoolConverter" />
     </UserControl.Resources>
 
-    <TabControl Margin="20">
-        <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
-            <Grid Name="PART_Settings" Margin="0,10,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
-                    <Label Content="{DynamicResource LOCSsvAddTag}" />
-                </CheckBox>
-
-                <Grid Grid.Row="1">
+    <Grid Margin="20">
+        <TabControl Name="PART_TabControl" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
+                <Grid Name="PART_Settings" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="10" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
-                                  HorizontalAlignment="left" Click="PART_BtAddGame_Click" IsChecked="False" />
+                    <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSsvAddTag}" />
+                    </CheckBox>
 
-                    <playnitecontrols:SearchBox x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged"
-                                                Margin="10,0,0,0" Grid.Column="1" />
-
-                    <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
-                            Click="PART_BtSelectGame_Click" IsEnabled="False" Margin="10,0,0,0"
-                            Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
-                        <Button Name="PART_BtAddSteamGame" HorizontalAlignment="Left" 
-                                Click="PART_BtAddSteamGame_Click"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{DynamicResource LOCAddTitle}" 
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                            </StackPanel>
-                        </Button>
-                        <Button Name="PART_BtAddUplay" HorizontalAlignment="Left" 
-                                Click="PART_BtAddUplay_Click" Margin="10,0,0,0"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{DynamicResource LOCAddTitle}" 
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                            </StackPanel>
-                        </Button>
-                        <Button Name="PART_BtAddURetroArch" HorizontalAlignment="Left" 
-                                Click="PART_BtAddURetroArch_Click" Margin="10,0,0,0"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{DynamicResource LOCAddTitle}" 
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-
-                    <Label Grid.Column="4" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
-                           ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
-
-                    <Grid Grid.Row="2" Grid.ColumnSpan="5">
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-
-                        <Button Name="PART_BtRelative" Click="PART_BtRelative_Click"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                Content="{DynamicResource LOCSsvSetRelative}" Grid.Column="1"  />
-                        <Button Name="PART_BtAbsolute" Click="PART_BtAbsolute_Click"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                Content="{DynamicResource LOCSsvSetAbsolute}" Grid.Column="3"  />
-                    </Grid>
-                </Grid>
-
-                <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
-                      Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
-                             Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
-                             Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="400" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                           Source="{Binding Icon}"/>
-                                    <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
-                                    <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-
-                <Grid Grid.Row="3" Name="PART_GridContener"
-                      Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                    <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True" MinHeight="100"
-                             Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
-                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="5" />
-                                        <RowDefinition Height="auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
-                                               VerticalAlignment="Center" Source="{Binding Icon}" Stretch="Uniform" />
-
-                                        <Label Content="{Binding SourceIcon, FallbackValue='X'}" FontFamily="{DynamicResource CommonFont}"
-                                               Grid.Column="2" VerticalAlignment="Center" FontSize="22" Margin="0,-4,0,0" />
-
-                                        <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
-                                                                   Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
-
-                                        <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
-                                                Name="ButtonAddFolder"
-                                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                                VerticalAlignment="Center" Grid.Column="6" />
-
-                                        <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
-                                                Name="ButtonRemove"
-                                                Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
-                                                VerticalAlignment="Center" Grid.Column="8" />
-                                    </Grid>
-
-                                    <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100"
-                                                  Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Margin="40,0,0,5">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="8" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="auto" />
-                                                        <RowDefinition Height="auto" />
-                                                    </Grid.RowDefinitions>
-
-                                                    <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" 
-                                                             MinWidth="180" Grid.Column="0" />
-
-                                                    <Grid Grid.Column="2">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="auto" />
-                                                            <ColumnDefinition Width="8" />
-                                                            <ColumnDefinition Width="auto" />
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="auto" />
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
-                                                                Name="ButtonSelectFolder"                                                                
-                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                VerticalAlignment="Center" Grid.Column="0" />
-
-                                                        <CheckBox Grid.Column="2" Name="PART_UsedPattern" VerticalAlignment="Center" 
-                                                                  IsChecked="{Binding UsedFilePattern, FallbackValue=True}">
-                                                            <Label Content="{DynamicResource LOCSsvUsedFilePattern}" />
-                                                        </CheckBox>
-
-                                                        <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
-                                                                Name="ButtonRemoveFolder"
-                                                                IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
-                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                VerticalAlignment="Center" Grid.Column="4" />
-                                                    </Grid>
-
-                                                    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,0"
-                                                          Visibility="{Binding ElementName=PART_UsedPattern, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="100" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
-                                                        
-                                                        <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
-                                                            <TextBox.ToolTip>
-                                                                <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
-                                                            </TextBox.ToolTip>
-                                                        </TextBox>
-                                                    </Grid>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </Grid>
-        </TabItem>
-
-        <TabItem Header="{DynamicResource LOCCommonIntegration}">
-            <ScrollViewer>
-                <StackPanel Margin="0,10,0,0">
-                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
-                            <Expander.Style>
-                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Style>
-                            </Expander.Style>
+                        <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
+                                      HorizontalAlignment="left" Click="PART_BtAddGame_Click" IsChecked="False" />
 
-                            <Expander.Header>
-                                <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonHeader}">
-                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
-                                </CheckBox>
-                            </Expander.Header>
-                        </Expander>
+                        <playnitecontrols:SearchBox x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged"
+                                                    Margin="10,0,0,0" Grid.Column="1" />
 
-                        <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
-                            <Expander.Style>
-                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Style>
-                            </Expander.Style>
+                        <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
+                                Click="PART_BtSelectGame_Click" IsEnabled="False" Margin="10,0,0,0"
+                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                            <Expander.Header>
-                                <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonSide}">
-                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonSide}" />
-                                </CheckBox>
-                            </Expander.Header>
-                        </Expander>
-                    </Grid>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
+                            <Button Name="PART_BtAddSteamGame" HorizontalAlignment="Left" 
+                                    Click="PART_BtAddSteamGame_Click"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{DynamicResource LOCAddTitle}" 
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                    <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Name="PART_BtAddUplay" HorizontalAlignment="Left" 
+                                    Click="PART_BtAddUplay_Click" Margin="10,0,0,0"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{DynamicResource LOCAddTitle}" 
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                    <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Name="PART_BtAddURetroArch" HorizontalAlignment="Left" 
+                                    Click="PART_BtAddURetroArch_Click" Margin="10,0,0,0"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{DynamicResource LOCAddTitle}" 
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                    <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
 
-                    <StackPanel Margin="0,30,0,0">
-                        <Label Content="{DynamicResource LOCCommonControlsAvailable}" />
-                        <Separator Margin="0,0,0,10" />
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            
-                            <Expander Grid.Row="2">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Expander.Style>
+                        <Label Grid.Column="4" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
+                               ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
 
-                                <Expander.Header>
-                                    <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButton}" Name="PART_IntegrationButton">
-                                        <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
-                                    </CheckBox>
-                                </Expander.Header>
-
-                                <Expander.Content>
-                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}"
-				                        Margin="5" Padding="10"
-				                        BorderBrush="{DynamicResource PopupBorderBrush}"
-				                        BorderThickness="{DynamicResource PopupBorderThickness}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="10"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButtonDetails}">
-                                                <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
-                                            </CheckBox>
-                                        </Grid>
-                                    </Border>
-                                </Expander.Content>
-                            </Expander>
-
-                            <Expander Grid.Row="4" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Expander.Style>
-
-                                <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationViewItem}" Name="PART_IntegrationViewItem">
-                                        <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
-                                    </CheckBox>
-                                </Expander.Header>
-                            </Expander>
-
-                            <Expander Grid.Row="6">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Expander.Style>
-
-                                <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" Name="PART_IntegrationSinglePicture">
-                                        <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
-                                    </CheckBox>
-                                </Expander.Header>
-
-                                <Expander.Content>
-                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationSinglePicture, Path=IsChecked}"
-				                        Margin="5" Padding="10"
-				                        BorderBrush="{DynamicResource PopupBorderBrush}"
-				                        BorderThickness="{DynamicResource PopupBorderThickness}">
-                                        <Grid >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="10" />
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowSinglePictureHeight}" 
-                                                                         Width="40" Grid.Column="1" TextAlignment="Center" />
-                                            </Grid>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorderSinglePicture}">
-                                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                                            </CheckBox>
-                                            <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelectionSinglePicture}">
-                                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                                            </CheckBox>
-                                        </Grid>
-                                    </Border>
-                                </Expander.Content>
-                            </Expander>
-
-                            <Expander Grid.Row="8">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Expander.Style>
-
-                                <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowPictures}" Name="PART_IntegrationPictures">
-                                        <Label Content="{DynamicResource LOCSsvShowPictures}" />
-                                    </CheckBox>
-                                </Expander.Header>
-
-                                <Expander.Content>
-                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationPictures, Path=IsChecked}"
-				                        Margin="5" Padding="10"
-				                        BorderBrush="{DynamicResource PopupBorderBrush}"
-				                        BorderThickness="{DynamicResource PopupBorderThickness}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="10" />
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="10" />
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowPicturesHeight}" 
-                                                                         Width="40" Grid.Column="1" TextAlignment="Center" />
-                                            </Grid>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorder}">
-                                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                                            </CheckBox>
-                                            <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelection}">
-                                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                                            </CheckBox>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
-                                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
-                                            </CheckBox>
-                                        </Grid>
-                                    </Border>
-                                </Expander.Content>
-                            </Expander>
-
-                            <Expander Grid.Row="10">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Expander.Style>
-
-                                <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowPicturesVertical}" Name="PART_IntegrationPicturesVertical">
-                                        <Label Content="{DynamicResource LOCSsvShowPicturesVertical}" />
-                                    </CheckBox>
-                                </Expander.Header>
-
-                                <Expander.Content>
-                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationPicturesVertical, Path=IsChecked}"
-				                        Margin="5" Padding="10"
-				                        BorderBrush="{DynamicResource PopupBorderBrush}"
-				                        BorderThickness="{DynamicResource PopupBorderThickness}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="10" />
-                                                <RowDefinition Height="auto" />
-                                            </Grid.RowDefinitions>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.AddBorder}">
-                                                <Label Content="{DynamicResource LOCSsvAddBorder}" />
-                                            </CheckBox>
-                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelection}">
-                                                <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
-                                            </CheckBox>
-
-                                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
-                                                <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
-                                            </CheckBox>
-                                        </Grid>
-                                    </Border>
-                                </Expander.Content>
-                            </Expander>
-                        </Grid>
-                    </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
-        </TabItem>
-
-        <TabItem Header="{DynamicResource LOCCommonMisc}">
-            <ScrollViewer>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    
-                    <GroupBox Grid.Row="0">
-                        <GroupBox.Header>
-                            <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
-                                <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />
-                            </CheckBox>
-                        </GroupBox.Header>
-
-                        <Grid IsEnabled="{Binding ElementName=PART_EnableFolderToSave, Path=IsChecked}">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
+
+                            <Button Name="PART_BtRelative" Click="PART_BtRelative_Click"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                    Content="{DynamicResource LOCSsvSetRelative}" Grid.Column="1"  />
+                            <Button Name="PART_BtAbsolute" Click="PART_BtAbsolute_Click"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                    Content="{DynamicResource LOCSsvSetAbsolute}" Grid.Column="3"  />
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
+                          Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
+                                 Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
+                                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="400" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                               Source="{Binding Icon}"/>
+                                        <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
+                                        <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+
+                    <Grid Grid.Row="3" Name="PART_GridContener"
+                          Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                        <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True" MinHeight="100"
+                                 Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
+                                 Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="5" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
+                                                   VerticalAlignment="Center" Source="{Binding Icon}" Stretch="Uniform" />
+
+                                            <Label Content="{Binding SourceIcon, FallbackValue='X'}" FontFamily="{DynamicResource CommonFont}"
+                                                   Grid.Column="2" VerticalAlignment="Center" FontSize="22" Margin="0,-4,0,0" />
+
+                                            <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
+                                                                       Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
+
+                                            <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
+                                                    Name="ButtonAddFolder"
+                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    VerticalAlignment="Center" Grid.Column="6" />
+
+                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
+                                                    Name="ButtonRemove"
+                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    VerticalAlignment="Center" Grid.Column="8" />
+                                        </Grid>
+
+                                        <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100"
+                                                      Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="40,0,0,5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="8" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto" />
+                                                            <RowDefinition Height="auto" />
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" 
+                                                                 MinWidth="180" Grid.Column="0" />
+
+                                                        <Grid Grid.Column="2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="8" />
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
+                                                                    Name="ButtonSelectFolder"                                                                
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="0" />
+
+                                                            <CheckBox Grid.Column="2" Name="PART_UsedPattern" VerticalAlignment="Center" 
+                                                                      IsChecked="{Binding UsedFilePattern, FallbackValue=True}">
+                                                                <Label Content="{DynamicResource LOCSsvUsedFilePattern}" />
+                                                            </CheckBox>
+
+                                                            <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
+                                                                    Name="ButtonRemoveFolder"
+                                                                    IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="4" />
+                                                        </Grid>
+
+                                                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,0"
+                                                              Visibility="{Binding ElementName=PART_UsedPattern, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                        
+                                                            <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
+                                                                <TextBox.ToolTip>
+                                                                    <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
+                                                                </TextBox.ToolTip>
+                                                            </TextBox>
+                                                        </Grid>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCCommonIntegration}">
+                <ScrollViewer>
+                    <StackPanel Margin="0,10,0,0">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
-                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolderToSave_Click" 
-                                    Name="ButtonSelectFolderToSave" Grid.Column="4" />
-                            <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center" 
-                                     Name="PART_FolderToSave" MinWidth="100" Grid.Column="2" Grid.Row="0" />
-                            <Label Grid.Column="6" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
-                                   ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
+                            <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
 
-                            <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
-                            <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center" 
-                                     Name="PART_FileSavePattern" MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5">
-                                <TextBox.ToolTip>
-                                    <ToolTip Content="{DynamicResource LOCSsvUsedFileSavePatternTooltip}" />
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonHeader}">
+                                        <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
+                                    </CheckBox>
+                                </Expander.Header>
+                            </Expander>
+
+                            <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonSide}">
+                                        <Label Content="{DynamicResource LOCCommonIntegrationButtonSide}" />
+                                    </CheckBox>
+                                </Expander.Header>
+                            </Expander>
                         </Grid>
-                    </GroupBox>
-                </Grid>
-            </ScrollViewer>
-        </TabItem>
-    </TabControl>
+
+                        <StackPanel Margin="0,30,0,0">
+                            <Label Content="{DynamicResource LOCCommonControlsAvailable}" />
+                            <Separator Margin="0,0,0,10" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                            
+                                <Expander Grid.Row="2">
+                                    <Expander.Style>
+                                        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Expander.Style>
+
+                                    <Expander.Header>
+                                        <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButton}" Name="PART_IntegrationButton">
+                                            <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
+                                        </CheckBox>
+                                    </Expander.Header>
+
+                                    <Expander.Content>
+                                        <Border IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="10"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableIntegrationButtonDetails}">
+                                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+                                    </Expander.Content>
+                                </Expander>
+
+                                <Expander Grid.Row="4" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                                    <Expander.Style>
+                                        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Expander.Style>
+
+                                    <Expander.Header>
+                                        <CheckBox IsChecked="{Binding Settings.EnableIntegrationViewItem}" Name="PART_IntegrationViewItem">
+                                            <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
+                                        </CheckBox>
+                                    </Expander.Header>
+                                </Expander>
+
+                                <Expander Grid.Row="6">
+                                    <Expander.Style>
+                                        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Expander.Style>
+
+                                    <Expander.Header>
+                                        <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowSinglePicture}" Name="PART_IntegrationSinglePicture">
+                                            <Label Content="{DynamicResource LOCSsvShowSinglePicture}" />
+                                        </CheckBox>
+                                    </Expander.Header>
+
+                                    <Expander.Content>
+                                        <Border IsEnabled="{Binding ElementName=PART_IntegrationSinglePicture, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                    <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowSinglePictureHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                                </Grid>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorderSinglePicture}">
+                                                    <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                                                </CheckBox>
+                                                <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelectionSinglePicture}">
+                                                    <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+                                    </Expander.Content>
+                                </Expander>
+
+                                <Expander Grid.Row="8">
+                                    <Expander.Style>
+                                        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Expander.Style>
+
+                                    <Expander.Header>
+                                        <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowPictures}" Name="PART_IntegrationPictures">
+                                            <Label Content="{DynamicResource LOCSsvShowPictures}" />
+                                        </CheckBox>
+                                    </Expander.Header>
+
+                                    <Expander.Content>
+                                        <Border IsEnabled="{Binding ElementName=PART_IntegrationPictures, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                    <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowPicturesHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                                </Grid>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.AddBorder}">
+                                                    <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                                                </CheckBox>
+                                                <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding Settings.OpenViewerWithOnSelection}">
+                                                    <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                                                </CheckBox>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
+                                                    <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+                                    </Expander.Content>
+                                </Expander>
+
+                                <Expander Grid.Row="10">
+                                    <Expander.Style>
+                                        <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                    </Expander.Style>
+
+                                    <Expander.Header>
+                                        <CheckBox IsChecked="{Binding Settings.EnableIntegrationShowPicturesVertical}" Name="PART_IntegrationPicturesVertical">
+                                            <Label Content="{DynamicResource LOCSsvShowPicturesVertical}" />
+                                        </CheckBox>
+                                    </Expander.Header>
+
+                                    <Expander.Content>
+                                        <Border IsEnabled="{Binding ElementName=PART_IntegrationPicturesVertical, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.AddBorder}">
+                                                    <Label Content="{DynamicResource LOCSsvAddBorder}" />
+                                                </CheckBox>
+                                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.OpenViewerWithOnSelection}">
+                                                    <Label Content="{DynamicResource LOCSsvOpenViewerWithOnSelection}" />
+                                                </CheckBox>
+
+                                                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
+                                                    <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+                                    </Expander.Content>
+                                </Expander>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCCommonMisc}">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                    
+                        <GroupBox Grid.Row="0">
+                            <GroupBox.Header>
+                                <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
+                                    <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />
+                                </CheckBox>
+                            </GroupBox.Header>
+
+                            <Grid IsEnabled="{Binding ElementName=PART_EnableFolderToSave, Path=IsChecked}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
+                                <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolderToSave_Click" 
+                                        Name="ButtonSelectFolderToSave" Grid.Column="4" />
+                                <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center" 
+                                         Name="PART_FolderToSave" MinWidth="100" Grid.Column="2" Grid.Row="0" />
+                                <Label Grid.Column="6" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
+                                       ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
+
+                                <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
+                                <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center" 
+                                         Name="PART_FileSavePattern" MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5">
+                                    <TextBox.ToolTip>
+                                        <ToolTip Content="{DynamicResource LOCSsvUsedFileSavePatternTooltip}" />
+                                    </TextBox.ToolTip>
+                                </TextBox>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        
+        <Button Content="{DynamicResource LOCCommonSelectVariable}" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Name="PART_SelectVariables" Margin="0,5,0,0" Click="PART_SelectVariables_Click" />
+    </Grid>
 </UserControl>
     
