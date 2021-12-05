@@ -213,7 +213,7 @@ namespace ScreenshotsVisualizer.Services
                                     }
                                     else
                                     {
-                                        destFileName += $" ({DateTime.Now.ToString("yyyy-MM-dd HH_mm_ss")})";
+                                        destFileName += $"({DateTime.Now.ToString("yyyy-MM-dd HH_mm_ss")})";
                                     }
                                 }
 

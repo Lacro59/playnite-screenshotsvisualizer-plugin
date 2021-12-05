@@ -49,42 +49,27 @@
 To use the simplified version, replace the numbers with {digit} and remove the extension.
 
 Example:
-GameName_20200107-1 => GameName_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
-{ImagePath} - Game ISO/ROM path if set
-{ImageName} - Game ISO/ROM file name
-{ImageNameNoExt} - Game ISO/ROM file name without extension
-{Name} - Game name
-        
-{digit} - Incremented file number
-{DateModified} - File date modified         
-{DateTimeModified} - File date and time modified         
-       
-Steam variables can be used to add a dynamic string:        
-{SteamId} - Steam user Id
-        
-Windows variables can be used to add a dynamic string:        
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+GameName_20200107-1 => GameName_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">You can used:
+- {DateModified}       yyyy-MM-dd
+- {DateTimeModified}   yyyy-MM-dd HH_mm_ss
+- {digit}              incremented</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
+If the {Name} is not included in "Folder", it is automatically added.
+    
+Example:
+A game with two screenshot folders:
+- {Public}\Screenshots
+- {SteamScreenshotsDir}\435790\screenshots
+    
+If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the "File Pattern" and the link will be upated in plugin data.</sys:String>
 
 </ResourceDictionary>
