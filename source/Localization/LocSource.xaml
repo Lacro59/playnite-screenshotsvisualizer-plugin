@@ -72,4 +72,8 @@ A game with two screenshot folders:
     
 If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the "File Pattern" and the link will be upated in plugin data.</sys:String>
 
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    
 </ResourceDictionary>
