@@ -14,6 +14,8 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
+    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+
 
     <!-- ScreenshotsVisualizerView -->
 
@@ -49,37 +51,7 @@
 Para usar la versión simplificada, reemplace los números por {digit} y elimine la extensión.
 
 Ejemplo:
-NombreDeJuego_20200107-1 =&gt; NombreDeJuego_{digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Se pueden usar variables especiales para agregar una cadena dinámica:
-{ImagePath} - Ruta del ISO/ROM del juego si se establece
-{ImageName} - Nombre del ISO/ROM del juego
-{ImageNameNoExt} - Nombre de ISO/ROM del juego sin extensión
-{Name} - Nombre del juego
-        
-{digit} -  Número de archivo incrementado
-{DateModified} - Fecha de modificación del archivo 
-{DateTimeModified} - Fecha y hora de modificación del archivo    
-       
-Las variables de Steam se pueden usar para agregar una cadena dinámica:
-{SteamId} - Steam user Id
-        
-Las variables de Windows se pueden usar para agregar una cadena dinámica:
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+NombreDeJuego_20200107-1 =&gt; NombreDeJuego_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Activar el movimiento de las capturas de pantalla en una carpeta única</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Patrón de archivo</sys:String>
@@ -87,4 +59,23 @@ Las variables de Windows se pueden usar para agregar una cadena dinámica:
     <sys:String x:Key="LOCSsvSetAbsolute">Transformar en ruta absoluta</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformar en ruta relativa</sys:String>
 
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Puedes usar:
+- {DateModified}       aaaa-MM-dd
+- {DateTimeModified}   aaaaa-MM-dd HH_mm_ss
+- {digit}              incrementado</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Esta opción añade un menú de juego para mover todos los archivos de captura de pantalla a una sola carpeta.
+Si el {Name} no está incluido en &quot;Carpeta&quot;, se añade automáticamente.
+    
+Ejemplo:
+Un juego con dos carpetas de capturas de pantalla:
+- {Public}\Capturas de pantalla
+- {SteamScreenshotsDir}\435790\screenshots
+    
+Si tienes la carpeta única {DropboxFolder}\Screenshots\{Name}, después de seleccionar la opción en el menú del juego, todas las capturas de pantalla se moverán a la carpeta única de acuerdo al &quot;Patrón de archivo&quot; y el enlace se actualizará en los datos del plugin.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    
 </ResourceDictionary>
