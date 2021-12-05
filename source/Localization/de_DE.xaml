@@ -14,6 +14,8 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Verschieben der Screenshots...</sys:String>
 
+    <sys:String x:Key="LOCSsvWarningToMove">Sind Sie sicher, dass Sie alle Screenshots verschieben möchten?</sys:String>
+
 
     <!-- ScreenshotsVisualizerView -->
 
@@ -44,42 +46,12 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Auswahl mit einzelner Bildschirmfoto-Ansicht verknüpfen</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Ein Dateimuster verwendet</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Sie können ein regex-Muster direkt verwenden oder eine vereinfachte Version verwenden.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Sie können ein regex Muster direkt verwenden oder eine vereinfachte Version verwenden.
 
 Um die vereinfachte Version zu verwenden, ersetzen Sie die Zahlen mit {digit} und entfernen Sie die Dateiendung.
 
 Beispiel:
-GameName_20200107-1 =&gt; GameName_ {digit} - {digit}</sys:String>
-    <sys:String x:Key="LOCSsvUsedFileSavePatternTooltip" xml:space="preserve">Spezielle Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:
-{ImagePath} - Spiel ISO/ROM Pfad, falls festgelegt
-{ImageName} - ISO/ROM Dateiname des Spiels
-{ImageNameNoExt} - ISO/ROM Dateiname des Spiels ohne Erweiterung
-{Name} - Name des Spiels
-        
-{digit} - Erhöhte Dateinummer
-{DateModified} - Änderungsdatum der Datei         
-{DateTimeModified} - Dateidatum und Uhrzeit geändert         
-       
-Steam Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:        
-{SteamId} - Steam User ID
-        
-Windows Variablen können verwendet werden, um eine dynamische Zeichenfolge hinzuzufügen:        
-{WinDir}
-{AllUsersProfile}
-{AppData}
-{HomePath}
-{UserName}
-{ComputerName}
-{UserProfile}
-{HomeDrive}
-{SystemDrive}
-{SystemRoot}
-{Public}
-{CommonProgramW6432}
-{CommonProgramFiles}
-{ProgramFiles}
-{CommonProgramFiles(x86)}
-{ProgramFiles(x86)}</sys:String>
+GameName_20200107-1 =&gt; GameName_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Verschieben von Screenshots in einen eindeutigen Ordner aktivieren</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Dateimuster</sys:String>
@@ -87,4 +59,23 @@ Windows Variablen können verwendet werden, um eine dynamische Zeichenfolge hinz
     <sys:String x:Key="LOCSsvSetAbsolute">In absoluten Pfad umwandeln</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">In relativen Pfad umwandeln</sys:String>
 
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Sie können verwenden:
+- {DateModified}       yyyy-MM-dd
+- {DateTimeModified}   yyyy-MM-dd HH_mm_ss
+- {digit}              erhöht</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Diese Option fügt ein Spielmenü hinzu, um alle Screenshot Dateien in einen einzigen Ordner zu verschieben.
+Wenn der {Name} nicht in &quot;Ordner&quot; enthalten ist, wird er automatisch hinzugefügt.
+    
+Beispiel:
+Ein Spiel mit zwei Screenshot-Ordner:
+- {Public}\Screenshots
+- {SteamScreenshotsDir}\435790\screenshots
+    
+Wenn Sie den eindeutigen Ordner {DropboxFolder}\Screenshots\{Name} haben, werden nach Auswahl der Option im Spielmenü alle Screenshots in den eindeutigen Ordner gemäß dem &quot;Dateimuster&quot; verschoben und der Link wird in den Plugin-Daten aktualisiert.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Einstellungen fehlen um Screenshots zu verschieben</sys:String>
+    
 </ResourceDictionary>
