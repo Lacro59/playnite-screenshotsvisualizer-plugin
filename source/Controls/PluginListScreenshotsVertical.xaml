@@ -32,6 +32,13 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
+                <Border Name="PART_ImageBorder" Grid.Row="0"
+                        BorderThickness="{DynamicResource ControlBorderThickness}" 
+                        BorderBrush="{DynamicResource NormalBorderBrush}" 
+                        Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                        Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                        Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                </Border>
 
                 <controls:ImageAsync Grid.Row="0" DecodePixelHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}" Parameter="2"
                                      x:Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
@@ -72,13 +79,6 @@
                         <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
                     </TextBlock.Effect>
                 </TextBlock>
-                <Border Name="PART_ImageBorder" Grid.Row="0"
-                        BorderThickness="{DynamicResource ControlBorderThickness}" 
-                        BorderBrush="{DynamicResource NormalBorderBrush}" 
-                        Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
-                        Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
-                        Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}">
-                </Border>
 
                 <Grid Grid.Row="2" Name="PART_LabelContener">
                     <Grid.ColumnDefinitions>
