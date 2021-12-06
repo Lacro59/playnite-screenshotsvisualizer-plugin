@@ -291,8 +291,12 @@ namespace ScreenshotsVisualizer.Services
                             SetDataFromSettings(gameSettings);
                         }
 
-
-                        string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FolderToSave);
+                        string PathFolder = PluginSettings.Settings.FolderToSave;
+                        if (!PluginSettings.Settings.FolderToSave.Contains("{Name}"))
+                        {
+                            PathFolder = Path.Combine(PathFolder, "{Name}");
+                        }
+                        PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PathFolder);
                         PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
 
                         GameScreenshots gameScreenshots = Get(game);

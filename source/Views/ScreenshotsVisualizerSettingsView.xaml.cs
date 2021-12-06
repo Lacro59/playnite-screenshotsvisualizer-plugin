@@ -425,6 +425,7 @@ namespace ScreenshotsVisualizer.Views
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_FolderToSave.Text = SelectedFolder;
+                PluginDatabase.PluginSettings.Settings.FolderToSave = SelectedFolder;
             }
         }
         #endregion
