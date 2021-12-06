@@ -580,8 +580,8 @@
                                     </TextBox.ToolTip>
                                 </TextBox>
 
-                                <TextBox Grid.Row="4" Grid.ColumnSpan="7" Text="{DynamicResource LOCSsvMoveFolderExplain}"
-                                         TextWrapping="Wrap" />
+                                <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="{DynamicResource LOCSsvMoveFolderExplain}"
+                                           TextWrapping="Wrap" />
                             </Grid>
                         </GroupBox>
                     </Grid>
