@@ -14,7 +14,7 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">Voulez-vous vraiment déplacer toutes les captures d'écran ?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -29,6 +29,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUsedThumbnails">Générer des miniatures pour améliorer les performances</sys:String>
+    
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
 
@@ -46,11 +48,11 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Lier la sélection avec la vue simple de capture d'écran</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Utilisez un modèle de fichier</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">You can directly use a regex pattern or use a simplified version.
+    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Vous pouvez directement utiliser un modèle regex ou utiliser une version simplifiée.
 
-To use the simplified version, replace the numbers with {digit} and remove the extension.
+Pour utiliser la version simplifiée, remplacez les nombres par {digit} et supprimez l'extension.
 
-Example:
+Exemple:
 GameName_20200107-1 =&gt; GameName_{digit}-{digit}</sys:String>
 
     <sys:String x:Key="LOCSsvEnableFolderToSave">Activer le déplacement des captures d'écran dans un dossier unique</sys:String>
@@ -59,23 +61,23 @@ GameName_20200107-1 =&gt; GameName_{digit}-{digit}</sys:String>
     <sys:String x:Key="LOCSsvSetAbsolute">Transformer en chemin absolu</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformer en chemin relatif</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">You can used:
-- {DateModified}       yyyy-MM-dd
-- {DateTimeModified}   yyyy-MM-dd HH_mm_ss
-- {digit}              incremented</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Vous pouvez utiliser :
+- {DateModified}       yyyy-MM-jj
+- {DateTimeModified}   yyyy-MM-jj HH_mm_ss
+- {digit}              incrémenté</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
-If the {Name} is not included in &quot;Folder&quot;, it is automatically added.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Cette option ajoute un menu de jeu pour déplacer tous les fichiers de capture d'écran dans un seul dossier.
+Si le {Name} n'est pas inclus dans &quot;Dossier&quot;, il est automatiquement ajouté.
     
-Example:
-A game with two screenshot folders:
+Exemple:
+Un jeu avec deux dossiers de capture d'écran :
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
     
-If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the &quot;File Pattern&quot; and the link will be upated in plugin data.</sys:String>
+Si vous avez le dossier unique {DropboxFolder}\Screenshots\{Name}, après avoir sélectionné l'option dans le menu du jeu, toutes les captures d'écran seront déplacées dans le dossier unique selon le &quot;Modèle de fichier&quot; et le lien sera mis à jour dans les données du plugin.</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Il manque des paramètres pour déplacer les captures d'écran</sys:String>
     
 </ResourceDictionary>
