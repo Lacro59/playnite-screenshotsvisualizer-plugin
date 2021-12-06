@@ -262,7 +262,14 @@ namespace ScreenshotsVisualizer
                         Description = resources.GetString("LOCSsvMoveToSave"),
                         Action = (gameMenuItem) =>
                         {
-                            PluginDatabase.MoveToFolderToSave(GameMenu);
+                            if (Ids.Count == 1)
+                            {
+                                PluginDatabase.MoveToFolderToSave(GameMenu);
+                            }
+                            else
+                            {
+                                PluginDatabase.MoveToFolderToSave(Ids);
+                            }
                         }
                     });
                 }
@@ -402,10 +409,7 @@ namespace ScreenshotsVisualizer
                             }
                             else
                             {
-                                foreach (var el in PluginDatabase.Database.Items)
-                                {
-                                    PluginDatabase.MoveToFolderToSaveWithNoLoader(el.Key);
-                                }
+                                PluginDatabase.MoveToFolderToSaveAll();
                             }
                         }
                     }

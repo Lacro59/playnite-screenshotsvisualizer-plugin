@@ -52,22 +52,40 @@ namespace ScreenshotsVisualizer.Services
 
         public void RefreshDataAll()
         {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
 
-            foreach (var item in Database.Items)
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
-                GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == item.Key);
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
 
-                if (gameSettings != null)
+                string CancelText = string.Empty;
+                activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
+
+                foreach (var item in Database.Items)
                 {
-                    SetDataFromSettings(gameSettings);
-                }
-            }
+                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    {
+                        CancelText = " canceled";
+                        break;
+                    }
 
-            stopWatch.Stop();
-            TimeSpan ts = stopWatch.Elapsed;
-            logger.Info($"RefreshDataAll - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                    GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == item.Key);
+                    if (gameSettings != null)
+                    {
+                        SetDataFromSettings(gameSettings);
+                    }
+                    activateGlobalProgress.CurrentProgressValue++;
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"RefreshDataAll(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+            }, globalProgressOptions);
         }
 
         public void RefreshData(Game game)
@@ -83,7 +101,6 @@ namespace ScreenshotsVisualizer.Services
                 try
                 {
                     GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
-
                     if (gameSettings != null)
                     {
                         SetDataFromSettings(gameSettings);
@@ -109,21 +126,24 @@ namespace ScreenshotsVisualizer.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                activateGlobalProgress.ProgressMaxValue = Ids.Count;
-
                 string CancelText = string.Empty;
+                activateGlobalProgress.ProgressMaxValue = Ids.Count;
 
                 try
                 {
                     foreach (Guid Id in Ids)
                     {
-                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            CancelText = " canceled";
+                            break;
+                        }
 
+                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
                         if (gameSettings != null)
                         {
                             SetDataFromSettings(gameSettings);
                         }
-
                         activateGlobalProgress.CurrentProgressValue++;
                     }
                 }
@@ -134,10 +154,52 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
+
+        public void MoveToFolderToSaveAll()
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                string CancelText = string.Empty;
+                activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
+
+                foreach (var item in Database.Items)
+                {
+                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    {
+                        CancelText = " canceled";
+                        break;
+                    }
+
+                    try
+                    {
+                        MoveToFolderToSaveWithNoLoader(item.Key);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    }
+                    activateGlobalProgress.CurrentProgressValue++;
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"MoveToFolderToSaveAll{CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+            }, globalProgressOptions);
+        }
 
         public void MoveToFolderToSave(Game game)
         {
@@ -150,6 +212,46 @@ namespace ScreenshotsVisualizer.Services
             PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 MoveToFolderToSaveWithNoLoader(game);
+            }, globalProgressOptions);
+        }
+
+        public void MoveToFolderToSave(List<Guid> Ids)
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                string CancelText = string.Empty;
+                activateGlobalProgress.ProgressMaxValue = Ids.Count;
+
+                try
+                {
+                    foreach (Guid Id in Ids)
+                    {
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            CancelText = " canceled";
+                            break;
+                        }
+
+                        MoveToFolderToSaveWithNoLoader(Id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"Task MoveToFolderToSave(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
@@ -515,6 +617,5 @@ namespace ScreenshotsVisualizer.Services
 
             }
         }
-
     }
 }
