@@ -97,6 +97,42 @@ namespace ScreenshotsVisualizer.Models
             }
         }
 
+        [DontSerialize]
+        public string ImageThumbnail
+        {
+            get
+            {
+                if (PluginDatabase.PluginSettings.Settings.UsedThumbnails)
+                {
+                    string ext = Path.GetExtension(FileName);
+                    string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
+                    string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                    string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileNameWithoutExt}_Thumbnail.jpg");
+
+                    if (File.Exists(FileThumbnail))
+                    {
+                        return FileThumbnail;
+                    }
+
+                    try
+                    {
+                        ImageTools.Resize(FileName, 200, FileThumbnail);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, "ScreenshootsVisualizer");
+                    }
+
+                    if (File.Exists(FileThumbnail))
+                    {
+                        return FileThumbnail;
+                    }
+                }
+
+                return FileName;
+            }
+        }
+
         #region Video
         [DontSerialize]
         public string Thumbnail

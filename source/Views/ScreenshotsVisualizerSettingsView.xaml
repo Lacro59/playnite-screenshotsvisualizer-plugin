@@ -587,6 +587,22 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+
+            <TabItem Header="{DynamicResource LOCSettingsPerformanceLabel}">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox IsChecked="{Binding Settings.UsedThumbnails}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSsvUsedThumbnails}" />
+                    </CheckBox>
+
+                    <Button Content="{DynamicResource LOCClearLabel}" HorizontalAlignment="Right" Click="ButtonClear_Click" />
+                </Grid>
+            </TabItem>
         </TabControl>
         
         <Button Content="{DynamicResource LOCCommonSelectVariable}" HorizontalAlignment="Right" VerticalAlignment="Top" 

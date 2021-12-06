@@ -29,6 +29,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
+    
     <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
 

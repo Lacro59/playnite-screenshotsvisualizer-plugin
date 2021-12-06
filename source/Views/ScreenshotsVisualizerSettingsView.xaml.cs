@@ -1,4 +1,5 @@
-﻿using CommonPluginsControls.Controls;
+﻿using CommonPlayniteShared.Common;
+using CommonPluginsControls.Controls;
 using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -7,6 +8,7 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -554,6 +556,19 @@ namespace ScreenshotsVisualizer.Views
             else
             {
                 PART_SelectVariables.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ButtonClear_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                FileSystem.DeleteDirectory(PathThumbnail);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
             }
         }
     }
