@@ -50,6 +50,7 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
+        #region Refresh data
         public void RefreshDataAll()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -157,8 +158,10 @@ namespace ScreenshotsVisualizer.Services
                 logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
+        #endregion
 
 
+        #region Move data
         public void MoveToFolderToSaveAll()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -292,9 +295,6 @@ namespace ScreenshotsVisualizer.Services
                         string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FolderToSave);
                         PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
 
-                        string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
-                        string PatternWithDigit = string.Empty;
-
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
 
@@ -306,6 +306,9 @@ namespace ScreenshotsVisualizer.Services
                         bool HaveDigit = false;
                         foreach (Screenshot screenshot in gameScreenshots.Items)
                         {
+                            string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
+                            string PatternWithDigit = string.Empty;
+
                             if (File.Exists(screenshot.FileName))
                             {
                                 string ext = Path.GetExtension(screenshot.FileName);
@@ -372,6 +375,7 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
         }
+        #endregion
 
 
         public override GameScreenshots Get(Guid Id, bool OnlyCache = false, bool Force = false)
@@ -425,6 +429,7 @@ namespace ScreenshotsVisualizer.Services
                 foreach (var ScreenshotsFolder in item.ScreenshotsFolders)
                 {
                     string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
+                    PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
 
                     // Get files
                     string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi" };
@@ -447,8 +452,8 @@ namespace ScreenshotsVisualizer.Services
 
                                         Pattern = Pattern.Replace("{digit}", @"\d*");
                                         Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");
-                                        Pattern = Pattern.Replace("{DateTimeModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}_[0-9]{2}_[0-9]{2} ");
-                              
+                                        Pattern = Pattern.Replace("{DateTimeModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}_[0-9]{2}_[0-9]{2}");
+
                                         if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
                                         {
                                             gameScreenshots.Items.Add(new Screenshot
