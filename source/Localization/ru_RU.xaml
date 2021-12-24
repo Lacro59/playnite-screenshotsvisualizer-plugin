@@ -24,7 +24,7 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Последний скриншот</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Последний скриншо</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -37,7 +37,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Показать управление одним скриншотом</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Показать управление со списком скриншотов</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Показать управление со списком вертикальных скриншотов</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Добавить границу</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Добавить границ</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Добавить закругленный угол</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Настройка скриншота</sys:String>
