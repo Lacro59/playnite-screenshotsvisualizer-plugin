@@ -14,7 +14,7 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">¿Estás seguro de que deseas mover todas las capturas de pantalla?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -29,7 +29,7 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
+    <sys:String x:Key="LOCSsvUsedThumbnails">Generar miniaturas para mejorar el rendimiento de la carga</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Añadir etiqueta si el juego tiene capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Añadir juego de Steam</sys:String>
@@ -78,6 +78,6 @@ Si tienes la carpeta única {DropboxFolder}\Screenshots\{Name}, después de sele
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Falta la configuración para mover las capturas de pantalla</sys:String>
     
 </ResourceDictionary>
