@@ -449,7 +449,6 @@ namespace ScreenshotsVisualizer.Services
                                     if (ScreenshotsFolder.UsedFilePattern)
                                     {
                                         string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.FilePattern);
-                                        Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
 
                                         Pattern = Pattern.Replace("(", @"\(");
                                         Pattern = Pattern.Replace(")", @"\)");
