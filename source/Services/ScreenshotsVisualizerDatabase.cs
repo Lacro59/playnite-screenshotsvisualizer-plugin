@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace ScreenshotsVisualizer.Services
 {
-    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots>
+    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots, Screenshot>
     {
         public ScreenshotsVisualizerDatabase(IPlayniteAPI PlayniteApi, ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
         {
@@ -559,14 +559,6 @@ namespace ScreenshotsVisualizer.Services
 
             PluginSettings.Settings.HasData = gameScreenshots.HasData;
             PluginSettings.Settings.ListScreenshots = gameScreenshots.Items;
-        }
-
-        public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)
-        {
-            foreach (var GameUpdated in e.UpdatedItems)
-            {
-                Database.SetGameInfo<Screenshot>(PlayniteApi, GameUpdated.NewData.Id);
-            }
         }
 
 
