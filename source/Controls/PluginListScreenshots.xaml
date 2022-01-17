@@ -25,10 +25,10 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </controls:PluginUserControlExtend.Resources>
 
-    <Grid Name="PART_GridContenerListGame">
+    <Grid Name="PART_GridContenerListGame" Tag="{Binding HideInfos}">
         <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"
                  ItemsSource="{Binding ItemsSource}"
-                 Tag="{Binding AddBorder}"
+                 Tag="{Binding}"
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
             <ListBox.ItemsPanel>
@@ -53,14 +53,6 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         
-                        <Border Name="PART_ImageBorder" Grid.Row="0"
-                                BorderThickness="{DynamicResource ControlBorderThickness}" 
-                                BorderBrush="{DynamicResource NormalBorderBrush}" 
-                                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
-                                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
-                                Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        </Border>
-
                         <controls:ImageAsync Grid.Row="0" DecodePixelHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}" Parameter="0"
                                           x:Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
                                           Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
@@ -92,16 +84,26 @@
                             </controls:ImageAsync.Style>
                         </controls:ImageAsync>
 
+                        <Border Name="PART_ImageBorder" Grid.Row="0"
+                                BorderThickness="{DynamicResource ControlBorderThickness}" 
+                                BorderBrush="{DynamicResource NormalBorderBrush}" 
+                                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
+                                Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag.AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        </Border>
+
                         <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 
+                                   Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag.HideInfos, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                                    Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
                             <TextBlock.Effect>
                                 <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
                             </TextBlock.Effect>
                         </TextBlock>
 
-                        <Grid Grid.Row="2" Name="PART_LabelContener">
+                        <Grid Grid.Row="2" Name="PART_LabelContener"
+                              Visibility="{Binding ElementName=PART_ListScreenshots, Path=Tag.HideInfos, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />

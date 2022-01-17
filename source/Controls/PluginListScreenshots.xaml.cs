@@ -81,6 +81,7 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
             ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
             ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
+            ControlDataContext.HideInfos = PluginDatabase.PluginSettings.Settings.HideScreenshotsInfos;
             ControlDataContext.IntegrationShowPicturesHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight;
 
             ControlDataContext.CountItems = 0;
@@ -140,6 +141,9 @@ namespace ScreenshotsVisualizer.Controls
 
         private bool _AddRoundedCorner;
         public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+
+        private bool _HideInfos;
+        public bool HideInfos { get => _HideInfos; set => SetValue(ref _HideInfos, value); }
 
         private double _IntegrationShowPicturesHeight;
         public double IntegrationShowPicturesHeight { get => _IntegrationShowPicturesHeight; set => SetValue(ref _IntegrationShowPicturesHeight, value); }
