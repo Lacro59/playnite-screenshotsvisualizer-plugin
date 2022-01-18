@@ -265,21 +265,28 @@ namespace ScreenshotsVisualizer.Views
         // Search by name
         private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PART_ListGame.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = null;
+            try
+            {
+                PART_ListGame.ItemsSource = null;
+                PART_ListGameScreenshot.ItemsSource = null;
 
 
-            listGames.ForEach(x => x.IsVisible = true);
-            listGames.Where(x => !x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase))
-                     .ForEach(x => x.IsVisible = false);
+                listGames.ForEach(x => x.IsVisible = true);
+                listGames.Where(x => x.Name.IsNullOrEmpty() || !x.Name.Contains(TextboxSearch?.Text ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+                         .ForEach(x => x.IsVisible = false);
 
-            listGameScreenshots.ForEach(x => x.IsVisible = true);
-            listGameScreenshots.Where(x => !x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase))
-                               .ForEach(x => x.IsVisible = false);
+                listGameScreenshots.ForEach(x => x.IsVisible = true);
+                listGameScreenshots.Where(x => x.Name.IsNullOrEmpty() || !x.Name.Contains(TextboxSearch?.Text ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+                                   .ForEach(x => x.IsVisible = false);
 
 
-            PART_ListGame.ItemsSource = listGames;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+                PART_ListGame.ItemsSource = listGames;
+                PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
         }
 
 
