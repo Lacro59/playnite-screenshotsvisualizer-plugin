@@ -95,6 +95,7 @@
                  Tag="{Binding AddBorder}"
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+            
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

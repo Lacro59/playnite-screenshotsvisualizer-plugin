@@ -31,6 +31,7 @@
                  Tag="{Binding}"
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+            
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Horizontal" PreviewMouseWheel="VirtualizingStackPanel_PreviewMouseWheel" />

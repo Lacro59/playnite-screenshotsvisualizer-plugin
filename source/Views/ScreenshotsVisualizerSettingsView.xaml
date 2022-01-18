@@ -19,6 +19,7 @@
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
         <converters:NegateConverter x:Key="NegateConverter" />
         <convertersshared:ListMoreOneBoolConverter x:Key="ListMoreOneBoolConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
     </UserControl.Resources>
 
     <Grid Margin="20">
@@ -132,7 +133,9 @@
                           Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
                                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
-                                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
+                                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}"              
+                                 VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.CacheLength="5">
+
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                     <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
@@ -151,7 +154,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                               Source="{Binding Icon}"/>
+                                               Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}"/>
                                         <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
                                         <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
                                     </Grid>
@@ -165,8 +168,9 @@
                         <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True" MinHeight="100"
                                  Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
                                  Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"              
+                                 VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.CacheLength="5">
+                            
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                                     <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
@@ -196,7 +200,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
-                                                   VerticalAlignment="Center" Source="{Binding Icon}" Stretch="Uniform" />
+                                                   VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" Stretch="Uniform" />
 
                                             <Label Content="{Binding SourceIcon, FallbackValue='X'}" FontFamily="{DynamicResource CommonFont}"
                                                    Grid.Column="2" VerticalAlignment="Center" FontSize="22" Margin="0,-4,0,0" />
