@@ -49,12 +49,6 @@
                             <Binding ElementName="PART_LabelContener" Path="ActualHeight" />
                         </MultiBinding>
                     </controls:ImageAsync.MaxHeight>
-                    <controls:ImageAsync.MaxWidth>
-                        <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
-                            <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />
-                            <Binding ElementName="PART_LabelContener" Path="ActualHeight" />
-                        </MultiBinding>
-                    </controls:ImageAsync.MaxWidth>
 
                     <controls:ImageAsync.Style>
                         <Style TargetType="{x:Type controls:ImageAsync}">
