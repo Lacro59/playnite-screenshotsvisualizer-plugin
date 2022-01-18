@@ -44,6 +44,8 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Параметри списку знімків екрану</sys:String>
 
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Приховати відомості про знімки екрану</sys:String>
+
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Відкрити при виборі зображення</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екрану</sys:String>
     
