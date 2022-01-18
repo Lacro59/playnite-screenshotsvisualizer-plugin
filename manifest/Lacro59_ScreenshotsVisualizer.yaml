@@ -49,3 +49,13 @@ Packages:
     Changelog:
       - Updated localizations
       - Fixed an issue on file pattern
+  - Version: 2.4
+    RequiredApiVersion: 6.2.1
+    ReleaseDate: 2022-01-18
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.4/playnite-screenshotsvisualizer-plugin_2_4.pext
+    Changelog:
+      - Updated localizations
+      - UI tweaks
+      - Fixed some crash
+      - Added a global path for all games
+      - Added an option to hide screenshots infos
