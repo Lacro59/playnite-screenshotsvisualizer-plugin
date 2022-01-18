@@ -44,6 +44,8 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Optionen der Liste von Bildschirmfotos</sys:String>
 
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Bei Bildauswahl öffnen</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Auswahl mit einzelner Bildschirmfoto-Ansicht verknüpfen</sys:String>
     

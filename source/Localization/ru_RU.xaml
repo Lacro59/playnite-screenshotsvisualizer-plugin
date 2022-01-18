@@ -44,6 +44,8 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Список настроек скриншотов</sys:String>
 
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Открыть при выборе изображения</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Выбор ссылки с одиночным просмотром скриншота</sys:String>
     

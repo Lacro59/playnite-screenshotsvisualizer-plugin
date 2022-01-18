@@ -44,6 +44,8 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Elenco delle opzioni schermata</sys:String>
 
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Nascondi informazioni screenshot</sys:String>
+
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Apri nella selezione di immagini</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Collega la selezione con la vista a singola schermata</sys:String>
     
