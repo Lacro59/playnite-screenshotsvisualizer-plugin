@@ -30,6 +30,8 @@
     <!-- ScreenshotsVisualizerSettingsView -->
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Generare miniature per migliorare le prestazioni di caricamento</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Aggiungi etichetta se il gioco ha schermate</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Aggiungi un gioco Steam</sys:String>

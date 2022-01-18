@@ -30,6 +30,8 @@
     <!-- ScreenshotsVisualizerSettingsView -->
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Générer des miniatures pour améliorer les performances</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalPath">Chemin global des captures d'écran</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
@@ -44,7 +46,7 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Options pour la liste des captures d'écran</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Masquer les infos des captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Ouvrir sur la sélection de l'image</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Lier la sélection avec la vue simple de capture d'écran</sys:String>
