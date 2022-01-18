@@ -14,12 +14,12 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove"></sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">¿Estás seguro de que deseas mover todas las capturas de pantalla?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm"></sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">¿Seguro que desea eliminar {0}?</sys:String>
 
     
     <!-- SsvManager -->
@@ -43,6 +43,8 @@
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Opciones de captura de pantalla única</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Opciontes de Lista de de capturas de pantalla</sys:String>
+
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ocultar información de capturas de pantalla</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Abrir al seleccionar la imagen</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Enlazar selección con vista de captura de pantalla única</sys:String>
