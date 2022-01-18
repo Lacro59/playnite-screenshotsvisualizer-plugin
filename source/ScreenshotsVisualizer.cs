@@ -502,8 +502,7 @@ namespace ScreenshotsVisualizer
                 {
                     try
                     {
-                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == args.Game.Id);
-
+                        GameSettings gameSettings = PluginDatabase.GetGameSettings(args.Game.Id);
                         if (gameSettings != null)
                         {
                             PluginDatabase.SetDataFromSettings(gameSettings);

@@ -75,7 +75,7 @@ namespace ScreenshotsVisualizer.Services
                         break;
                     }
 
-                    GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == item.Key);
+                    GameSettings gameSettings = GetGameSettings(item.Key);
                     if (gameSettings != null)
                     {
                         SetDataFromSettings(gameSettings);
@@ -101,7 +101,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 try
                 {
-                    GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
+                    GameSettings gameSettings = GetGameSettings(game.Id);
                     if (gameSettings != null)
                     {
                         SetDataFromSettings(gameSettings);
@@ -140,7 +140,7 @@ namespace ScreenshotsVisualizer.Services
                             break;
                         }
 
-                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
+                        GameSettings gameSettings = GetGameSettings(Id);
                         if (gameSettings != null)
                         {
                             SetDataFromSettings(gameSettings);
@@ -285,7 +285,7 @@ namespace ScreenshotsVisualizer.Services
                     else
                     {
                         // Refresh data
-                        GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == game.Id);
+                        GameSettings gameSettings = GetGameSettings(game.Id);
                         if (gameSettings != null)
                         {
                             SetDataFromSettings(gameSettings);
@@ -382,6 +382,49 @@ namespace ScreenshotsVisualizer.Services
         #endregion
 
 
+        public GameSettings GetGameSettings(Guid Id)
+        {
+            List<FolderSettings> FolderSettingsGlobal = new List<FolderSettings>();
+
+            if (PluginSettings.Settings.EnableFolderToSave && !PluginSettings.Settings.FolderToSave.IsNullOrEmpty())
+            {
+                FolderSettingsGlobal.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = PluginSettings.Settings.FolderToSave,
+                    UsedFilePattern = true,
+                    FilePattern = PluginSettings.Settings.FileSavePattern
+                });
+            }
+
+            if (!PluginSettings.Settings.GlobalScreenshootsPath.IsNullOrEmpty())
+            {
+                FolderSettingsGlobal.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = PluginSettings.Settings.GlobalScreenshootsPath
+                });
+            }
+
+
+            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
+            if (gameSettings == null)
+            {
+                gameSettings = new GameSettings
+                {
+                    Id = Id,
+                    ScreenshotsFolders = FolderSettingsGlobal
+                };
+            }
+            else
+            {
+                foreach(FolderSettings folderSettings in FolderSettingsGlobal)
+                {
+                    gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
+                }
+            }
+            return gameSettings;
+        }
+
+
         public override GameScreenshots Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
@@ -400,14 +443,6 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        public void GetFromSettings()
-        {
-            foreach (var item in PluginSettings.Settings.gameSettings)
-            {
-                SetDataFromSettings(item);
-            }
-        }
-
         public void SetDataFromSettings(GameSettings item)
         {
             System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
@@ -417,16 +452,6 @@ namespace ScreenshotsVisualizer.Services
 
             try
             {
-                if (PluginSettings.Settings.EnableFolderToSave && item.ScreenshotsFolders.Find(x => x.ScreenshotsFolder == PluginSettings.Settings.FolderToSave) == null)
-                {
-                    item.ScreenshotsFolders.Add(new FolderSettings
-                    {
-                        ScreenshotsFolder = PluginSettings.Settings.FolderToSave,
-                        UsedFilePattern = true,
-                        FilePattern = PluginSettings.Settings.FileSavePattern
-                    });
-                }
-
                 gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders(PlayniteApi);
                 gameScreenshots.InSettings = true;
 

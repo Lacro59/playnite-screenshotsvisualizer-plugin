@@ -100,6 +100,8 @@ namespace ScreenshotsVisualizer
         public string FolderToSave { get; set; } = string.Empty;
         public string FileSavePattern { get; set; } = string.Empty;
 
+        public string GlobalScreenshootsPath { get; set; } = string.Empty;
+
         public bool UsedThumbnails { get; set; } = true;
 
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
