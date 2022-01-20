@@ -31,7 +31,7 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Gerar miniaturas para melhorar o desempenho do carregamento</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">Caminho global de capturas de tela</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Adicionar tag se o jogo tem capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Adicionar jogo Steam</sys:String>
