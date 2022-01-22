@@ -46,7 +46,7 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Opções de lista de capturas de tela</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ocultar informações de capturas</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Abrir na seleção de imagens</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Seleção de link com visualização de captura de tela única</sys:String>
