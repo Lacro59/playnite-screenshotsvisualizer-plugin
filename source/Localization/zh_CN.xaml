@@ -3,7 +3,7 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsv">截图可视化-ScreenshotsVisualizer</sys:String>
     <sys:String x:Key="LOCSsvTitle">Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
