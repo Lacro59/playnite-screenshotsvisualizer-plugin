@@ -45,8 +45,6 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -97,9 +95,6 @@
                             </Button>
                         </StackPanel>
 
-                        <Label Grid.Column="4" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
-                               ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
-
                         <Grid Grid.Row="2" Grid.ColumnSpan="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -126,7 +121,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="{DynamicResource LOCSsvGlobalPath}" Grid.Column="0" />
-                        <TextBox Text="{Binding Settings.GlobalScreenshootsPath}" Grid.Column="2" />
+                        <TextBox Text="{Binding Settings.GlobalScreenshootsPath}" Grid.Column="2" ToolTip="{DynamicResource LOCSsvGlobalSearchTooltip}" />
                     </Grid>
 
                     <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
@@ -209,12 +204,12 @@
                                                                        Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
 
                                             <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
-                                                    Name="ButtonAddFolder"
+                                                    Name="ButtonAddFolder" ToolTip="{DynamicResource LOCCommonAddFolder}"
                                                     Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
                                                     VerticalAlignment="Center" Grid.Column="6" />
 
                                             <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
-                                                    Name="ButtonRemove"
+                                                    Name="ButtonRemove" ToolTip="{DynamicResource LOCRemoveTitle}"
                                                     Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
                                                     VerticalAlignment="Center" Grid.Column="8" />
                                         </Grid>
@@ -246,16 +241,16 @@
                                                             </Grid.ColumnDefinitions>
 
                                                             <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
-                                                                    Name="ButtonSelectFolder"                                                                
+                                                                    Name="ButtonSelectFolder" ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"                                                               
                                                                     Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
                                                                     VerticalAlignment="Center" Grid.Column="0" />
 
-                                                            <ToggleButton Name="PART_UsedPattern" Grid.Column="2"
+                                                            <ToggleButton Name="PART_UsedPattern" Grid.Column="2" ToolTip="{DynamicResource LOCCommonAddFilePattern}"
                                                                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;" 
                                                                           IsChecked="{Binding UsedFilePattern, FallbackValue=True}" />
 
                                                             <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
-                                                                    Name="ButtonRemoveFolder"
+                                                                    Name="ButtonRemoveFolder" ToolTip="{DynamicResource LOCCommonRemoveFolder}"
                                                                     IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
                                                                     Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
                                                                     VerticalAlignment="Center" Grid.Column="4" />
@@ -270,7 +265,7 @@
                                                         
                                                             <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
                                                                 <TextBox.ToolTip>
-                                                                    <ToolTip Content="{DynamicResource LOCSsvUsedFilePatternTooltip}" />
+                                                                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
                                                                 </TextBox.ToolTip>
                                                             </TextBox>
                                                         </Grid>
@@ -575,8 +570,6 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
@@ -591,8 +584,6 @@
                                         Name="ButtonSelectFolderToSave" Grid.Column="4" />
                                 <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center" 
                                          Name="PART_FolderToSave" MinWidth="100" Grid.Column="2" Grid.Row="0" />
-                                <Label Grid.Column="6" Content="&#xef19;" HorizontalAlignment="Right" FontSize="20"
-                                       ToolTip="{DynamicResource LOCGameVariablesTooltip}" FontFamily="{DynamicResource FontIcoFont}" />
 
                                 <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
                                 <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center" 
