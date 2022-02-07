@@ -15,6 +15,8 @@ using System.Windows.Controls;
 using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
+using Playnite.SDK.Data;
+using CommonPluginsShared.Extensions;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -418,7 +420,15 @@ namespace ScreenshotsVisualizer.Services
             {
                 foreach(FolderSettings folderSettings in FolderSettingsGlobal)
                 {
-                    gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
+                    var finded = gameSettings.ScreenshotsFolders
+                        .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder) 
+                                    && x.UsedFilePattern == folderSettings.UsedFilePattern
+                                    && x.FilePattern.IsEqual(folderSettings.FilePattern));
+
+                    if (finded == null)
+                    {
+                        gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
+                    }
                 }
             }
             return gameSettings;
