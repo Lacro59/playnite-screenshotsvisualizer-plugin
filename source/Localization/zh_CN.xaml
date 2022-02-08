@@ -52,23 +52,25 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">您可以直接使用正则表达式模式，或使用简化版本。
-
-要使用简化版本，请使用 {digit} 替换数字。
-
-示例：
-GameName_20200107-1=&gt; GameName_{digit}-{digit}</sys:String>
-
     <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移动</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">转换为相对路径</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">您可以使用：（y=年，M=月，d=天，H=时，m=分，s=秒）
-- {DateModified}：yyyy-MM-dd
-- {DateTimeModified}：yyyy-MM-dd HH_mm_ss
-- {digit}：递增的</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+- {DateModified}		yyyy-MM-dd
+- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
+- {digit}			number(s)
+    
+Example:
+GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
+GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    
+Example:
+{PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">此选项添加一个游戏菜单，其将所有截图文件移动到单个文件夹。
 如果 {Name} 没有包含在“文件夹”中，它会自动添加。
