@@ -1,0 +1,89 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- MainView -->
+
+    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsvTitle">لقطات الشاشة</sys:String>
+
+    <sys:String x:Key="LOCSsvLatest">الأحدث</sys:String>
+    
+    <sys:String x:Key="LOCSsvViewScreenshots">عرض لقطات شاشة اللعب</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">فتح مجلد لقطات الشاشة</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">انقل لقطات الشاشة إلى مجلد الحفظ</sys:String>
+    
+    <sys:String x:Key="LOCSsvMovingToSave">جارٍ نقل لقطات الشاشة...</sys:String>
+
+    <sys:String x:Key="LOCSsvWarningToMove">هل أنت متأكد من أنك تريد نقل جميع لقطات الشاشة؟</sys:String>
+
+
+    <!-- ScreenshotsVisualizerView -->
+
+    <sys:String x:Key="LOCSsvDeleteConfirm">هل تريد أن تحذف {0}؟</sys:String>
+
+    
+    <!-- SsvManager -->
+
+    <sys:String x:Key="LOCSsvLastSsv">آخر لقطة للشاشة</sys:String>
+
+
+    <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvUsedThumbnails">إنشاء صور مصغرة لتحسين أداء التحميل البدء</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العالم</sys:String>
+    
+    <sys:String x:Key="LOCSsvAddTag">إضافة علامة عند توفر لقطات الشاشة</sys:String>
+    <sys:String x:Key="LOCSsvAddSteamGame">إضافة ألعاب Steam</sys:String>
+
+    <sys:String x:Key="LOCSsvShowSinglePicture">عرض لقطة شاشة واحدة</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">عرض قائمة لقطات الشاشة</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">عرض قائمة عمودية للقطات الشاشة</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">إضافة الحدود</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">إضافة زاوية مستديرة</sys:String>
+
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">خيارات لقطة شاشة واحدة</sys:String>
+    
+    <sys:String x:Key="LOCSsvShowPicturesOptions">قائمة خيارات لقطات الشاشة</sys:String>
+
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">إخفاء معلومات لقطات الشاشة</sys:String>
+
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصورة</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحدة</sys:String>
+    
+    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط ملف</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واحد</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">نمط الملف</sys:String>
+
+    <sys:String x:Key="LOCSsvSetAbsolute">تحويل إلى المسار المطلق</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">تحويل إلى مسار نسبي</sys:String>
+
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">وبالإضافة إلى ذلك، يمكنك استخدام:
+- {DateModified} yyyy-MM-dd
+- {DateTimeModified} yyyy-MM-dd HH_mm_ss
+- {digit} عدد
+
+مثال:
+GameName_20200107-1 =&gt;   {Name}_{digit}-{digit}
+GameName_2020 =&gt; {Name}_{DateModified}</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">إضافة هذا المجلد لجميع الألعاب.
+ 
+مثال:
+ex: {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
+
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">هذا الخيار يضيف قائمة لعبة لنقل جميع ملفات لقطة الشاشة إلى مجلد واحد.
+إذا كان {Name} غير مضمن في &quot;المجلد&quot;، يتم إضافته تلقائيا.
+    
+مثال:
+لعبة بمجلدين للقطة الشاشة:
+- e1: {Public}\Screenshots
+- e2: {SteamScreenshotsDir}\435790\screenshots
+    
+إذا كان لديك مجلد فريد ex3: {DropboxFolder}\Screenshots\{Name}, بعد تحديد الخيار في قائمة اللعبة، سيتم نقل جميع لقطات الشاشة إلى المجلد الفريد وفقًا لـ &quot;نمط الملف&quot; وسيتم تحديث الرابط في بيانات الإضافة.</sys:String>
+
+    <!-- Notifications -->
+
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">الإعدادات المراد استخدامها لنقل لقطات الشاشة مفقودة</sys:String>
+    
+</ResourceDictionary>
