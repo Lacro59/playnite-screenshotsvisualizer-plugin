@@ -58,18 +58,18 @@
     <sys:String x:Key="LOCSsvSetAbsolute">In absoluten Pfad umwandeln</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">In relativen Pfad umwandeln</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Zusätzlich können Sie verwenden:
 - {DateModified}		yyyy-MM-dd
-- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
+- {DateTimeModified}	yyy-MM-dd HH_mm_ss
+- {digit}			Zahl(en)
     
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+Beispiel:
+GameName_20200107-1=&gt;	{Name}_{digit}-{digit}
+GameName_202020-01-07=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Füge diesen Ordner für alle Spiele hinzu.
     
-Example:
+Beispiel:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Diese Option fügt ein Spielmenü hinzu, um alle Screenshot Dateien in einen einzigen Ordner zu verschieben.
