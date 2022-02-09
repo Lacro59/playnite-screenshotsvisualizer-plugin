@@ -12,7 +12,7 @@
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshots...</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
 
@@ -46,7 +46,7 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots info</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
@@ -84,6 +84,6 @@ If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selectin
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings to use to move the screenshots is missing</sys:String>
     
 </ResourceDictionary>
