@@ -58,18 +58,18 @@
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">转换为相对路径</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">另外，您可使用（y=年，M=月，d=日，H=时，m=分，s=秒）：
 - {DateModified}		yyyy-MM-dd
 - {DateTimeModified}	yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
-    
-Example:
+- {digit}			数字
+
+例子：
 GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
 GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
-    
-Example:
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">为所有游戏添加该文件夹。
+
+例子：
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">此选项添加一个游戏菜单，其将所有截图文件移动到单个文件夹。
