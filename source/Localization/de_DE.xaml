@@ -52,23 +52,25 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Auswahl mit einzelner Bildschirmfoto-Ansicht verknüpfen</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Ein Dateimuster verwendet</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Sie können ein regex Muster direkt verwenden oder eine vereinfachte Version verwenden.
-
-Um die vereinfachte Version zu verwenden, ersetzen Sie die Zahlen mit {digit} und entfernen Sie die Dateiendung.
-
-Beispiel:
-GameName_20200107-1 =&gt; GameName_{digit}-{digit}</sys:String>
-
     <sys:String x:Key="LOCSsvEnableFolderToSave">Verschieben von Screenshots in einen eindeutigen Ordner aktivieren</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Dateimuster</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">In absoluten Pfad umwandeln</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">In relativen Pfad umwandeln</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Sie können verwenden:
-- {DateModified}       yyyy-MM-dd
-- {DateTimeModified}   yyyy-MM-dd HH_mm_ss
-- {digit}              erhöht</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Zusätzlich können Sie verwenden:
+- {DateModified}		yyyy-MM-dd
+- {DateTimeModified}	yyy-MM-dd HH_mm_ss
+- {digit}			Zahl(en)
+    
+Beispiel:
+GameName_20200107-1=&gt;	{Name}_{digit}-{digit}
+GameName_202020-01-07=&gt;	{Name}_{DateModified}</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Füge diesen Ordner für alle Spiele hinzu.
+    
+Beispiel:
+{PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Diese Option fügt ein Spielmenü hinzu, um alle Screenshot Dateien in einen einzigen Ordner zu verschieben.
 Wenn der {Name} nicht in &quot;Ordner&quot; enthalten ist, wird er automatisch hinzugefügt.

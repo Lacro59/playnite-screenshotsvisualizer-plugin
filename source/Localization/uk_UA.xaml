@@ -52,23 +52,25 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Зв'язати обране з видом одного знімку екрану</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Використовується шаблон файлу</sys:String>
-    <sys:String x:Key="LOCSsvUsedFilePatternTooltip" xml:space="preserve">Ви можете безпосередньо використовувати шаблон регулярного виразу або скористатися спрощеною версією.
-
-Щоб скористатися спрощеною версією, замініть цифри на {digit} та видаліть розширення.
-
-Приклад:
-НазваГри_20200107-1 =&gt; НазваГри_{digit}-{digit}</sys:String>
-
     <sys:String x:Key="LOCSsvEnableFolderToSave">Увімкнути пересування знімків екрану унікальну теку</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файлу</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">Перетворити на абсолютний шлях</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Перетворити на відносний шлях</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Ви можете використовувати:
-- {DateModified}       рррр-ММ-дд
-- {DateTimeModified}   рррр-ММ-дд ГГ_хх_сс
-- {digit}             приріст</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Додатково можете використовувати:
+- {DateModified}		рррр-ММ-дд
+- {DateTimeModified}	рррр-ММ-дд ГГ_хх_сс
+- {digit}			номер(и)
+    
+Приклад:
+НазваГри_20200107-1	=&gt;	{Name}_{digit}-{digit}
+НазваГри_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Додати цю теку для всіх ігор.
+    
+Приклад:
+{PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Ця опція додає меню гри для переміщення всіх файлів знімків екрану в одну теку.
 Якщо {Name} не включено в &quot;Теку&quot;, воно додається автоматично.
