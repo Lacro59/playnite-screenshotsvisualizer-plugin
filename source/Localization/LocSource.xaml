@@ -60,7 +60,7 @@
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}&#x09;&#x09;yyyy-MM-dd
-- {DateTimeModified}&#x09;yyyy-MM-dd HH_mm_ss
+- {DateTimeModified}&#x09;&#x09;yyyy-MM-dd HH_mm_ss
 - {digit}&#x09;&#x09;&#x09;number(s)
     
 Example:
