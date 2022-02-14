@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -213,6 +214,21 @@ namespace ScreenshotsVisualizer.Views
 
             PART_ListGameScreenshot.ItemsSource = null;
             listGameScreenshots[ControlIndex].ScreenshotsFolders.Add(new FolderSettings());
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            TextboxSearch_TextChanged(null, null);
+        }
+
+
+        private void PART_BtToDigit_Click(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            var item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+
+            PART_ListGameScreenshot.ItemsSource = null;
+            listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern = Regex.Replace(listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern, @"\d+", "{digit}");
             PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
             TextboxSearch_TextChanged(null, null);
         }

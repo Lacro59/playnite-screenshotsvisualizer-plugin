@@ -262,7 +262,13 @@
                                                                 <ColumnDefinition Width="100" />
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
-                                                        
+
+                                                            <Button Content="&#xe98d;" FontFamily="{DynamicResource CommonFont}" Click="PART_BtToDigit_Click" 
+                                                                    Name="PART_BtToDigit" ToolTip="{DynamicResource LOCSsvNumberToDigit}"
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    HorizontalAlignment="Right"
+                                                                    VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0" />
+
                                                             <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
                                                                 <TextBox.ToolTip>
                                                                     <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />

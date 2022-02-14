@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
