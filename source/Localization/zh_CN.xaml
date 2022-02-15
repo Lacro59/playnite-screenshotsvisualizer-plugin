@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">若游戏有截图则添加标签</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">添加 Steam 游戏</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">将数字转换为 {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制器</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制器</sys:String>
