@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">Добавить тег, если в игре есть скриншоты</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Добавить игру Steam</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Показать управление одним скриншотом</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Показать управление со списком скриншотов</sys:String>
@@ -60,7 +62,7 @@
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}		yyyy-MM-dd
-- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
+- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
 - {digit}			number(s)
     
 Example:
