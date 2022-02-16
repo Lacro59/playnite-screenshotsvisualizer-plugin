@@ -315,7 +315,7 @@ namespace ScreenshotsVisualizer.Services
                             string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
                             string PatternWithDigit = string.Empty;
 
-                            if (File.Exists(screenshot.FileName))
+                            if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(PathFolder, StringComparison.InvariantCultureIgnoreCase))
                             {
                                 string ext = Path.GetExtension(screenshot.FileName);
 
