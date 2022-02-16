@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">Додати тег, якщо у гри є знімки екрану</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Додати гру Steam</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">Перетворити номер на {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Відображення елементи керування з одним знімком екрану</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Відображення елементи керування зі списком знімків екрану</sys:String>

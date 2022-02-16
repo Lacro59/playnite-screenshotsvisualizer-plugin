@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">Adicionar tag se o jogo tem capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Adicionar jogo Steam</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Exibir um controle com uma única captura de tela</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Exibir um controle com uma lista de capturas de tela</sys:String>
@@ -60,7 +62,7 @@
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}		yyyy-MM-dd
-- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
+- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
 - {digit}			number(s)
     
 Example:

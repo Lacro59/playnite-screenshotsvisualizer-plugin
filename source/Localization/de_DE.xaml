@@ -35,6 +35,8 @@
     
     <sys:String x:Key="LOCSsvAddTag">Tag hinzufügen, wenn Bildschirmfotos des Spiels vorhanden sind</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam Spiel hinzufügen</sys:String>
+    
+    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Anzeigen eines Steuerelements mit einem einzelnen Screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Anzeigen eines Steuerelements mit einer Liste von Screenshots</sys:String>
@@ -58,14 +60,14 @@
     <sys:String x:Key="LOCSsvSetAbsolute">In absoluten Pfad umwandeln</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">In relativen Pfad umwandeln</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Zusätzlich können Sie verwenden:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}		yyyy-MM-dd
-- {DateTimeModified}	yyy-MM-dd HH_mm_ss
-- {digit}			Zahl(en)
+- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
+- {digit}			number(s)
     
-Beispiel:
-GameName_20200107-1=&gt;	{Name}_{digit}-{digit}
-GameName_202020-01-07=&gt;	{Name}_{DateModified}</sys:String>
+Example:
+GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
+GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Füge diesen Ordner für alle Spiele hinzu.
     
