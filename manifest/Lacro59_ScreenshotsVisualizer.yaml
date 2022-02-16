@@ -59,3 +59,12 @@ Packages:
       - Fixed some crash
       - Added a global path for all games
       - Added an option to hide screenshots infos
+  - Version: 2.5
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-02-16
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.5/playnite-screenshotsvisualizer-plugin_2_5.pext
+    Changelog:
+      - Updated localizations
+      - UI tweaks
+	  - Fixed many minor issues
+	  - Added new settings options
