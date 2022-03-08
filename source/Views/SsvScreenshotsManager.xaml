@@ -155,12 +155,12 @@
                                         <StackPanel>
                                             <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                     <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding Id}">
-                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                        <controls:TextBlockTrimmed Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
                                                     </Hyperlink>
                                                 </TextBlock>
                                             <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
-                                                </TextBlock>
+                                                <controls:TextBlockTrimmed Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
