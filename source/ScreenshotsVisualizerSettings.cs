@@ -96,6 +96,8 @@ namespace ScreenshotsVisualizer
 
         public bool HideScreenshotsInfos { get; set; } = false;
 
+        public int JpgQuality { get; set; } = 98;
+
         public bool EnableFolderToSave { get; set; } = false;
         public string FolderToSave { get; set; } = string.Empty;
         public string FileSavePattern { get; set; } = string.Empty;

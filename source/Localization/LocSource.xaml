@@ -11,6 +11,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
@@ -61,6 +62,8 @@
 
     <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    
+    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}&#x09;&#x09;yyyy-MM-dd
