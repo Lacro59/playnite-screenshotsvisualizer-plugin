@@ -13,6 +13,7 @@ namespace ScreenshotsVisualizer.Models
         public List<FolderSettings> ScreenshotsFolders { get; set; }
 
         // TODO TEMP
+        public bool ScanSubFolders { get; set; }
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
@@ -26,6 +27,7 @@ namespace ScreenshotsVisualizer.Models
 
     public class FolderSettings
     {
+        public bool ScanSubFolders { get; set; }
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }

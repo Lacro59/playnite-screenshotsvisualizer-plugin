@@ -238,6 +238,8 @@
                                                                 <ColumnDefinition Width="auto" />
                                                                 <ColumnDefinition Width="8" />
                                                                 <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="8" />
+                                                                <ColumnDefinition Width="auto" />
                                                             </Grid.ColumnDefinitions>
 
                                                             <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
@@ -249,11 +251,15 @@
                                                                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;" 
                                                                           IsChecked="{Binding UsedFilePattern, FallbackValue=True}" />
 
+                                                            <ToggleButton Name="PART_ScanSubFolders" Grid.Column="4" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
+                                                                          FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;" 
+                                                                          IsChecked="{Binding ScanSubFolders, FallbackValue=True}" />
+
                                                             <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
                                                                     Name="ButtonRemoveFolder" ToolTip="{DynamicResource LOCCommonRemoveFolder}"
                                                                     IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
                                                                     Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    VerticalAlignment="Center" Grid.Column="4" />
+                                                                    VerticalAlignment="Center" Grid.Column="6" />
                                                         </Grid>
 
                                                         <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,0"

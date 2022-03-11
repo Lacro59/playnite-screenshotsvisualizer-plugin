@@ -474,7 +474,13 @@ namespace ScreenshotsVisualizer.Services
                     string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv" };
                     if (Directory.Exists(PathFolder))
                     {
-                        Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*")
+                        SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                        if (ScreenshotsFolder.ScanSubFolders)
+                        {
+                            searchOption = SearchOption.AllDirectories;
+                        }
+
+                        Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*", searchOption)
                             .Where(s => extensions.Any(ext => ext == Path.GetExtension(s))), (objectFile) =>
                             {
                                 try

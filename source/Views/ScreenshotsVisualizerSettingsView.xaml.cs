@@ -69,7 +69,8 @@ namespace ScreenshotsVisualizer.Views
                         {
                             UsedFilePattern = item.UsedFilePattern,
                             FilePattern = item.FilePattern,
-                            ScreenshotsFolder = item.ScreenshotsFolder
+                            ScreenshotsFolder = item.ScreenshotsFolder,
+                            ScanSubFolders = item.ScanSubFolders
                         });
                     }
                     else
@@ -84,6 +85,7 @@ namespace ScreenshotsVisualizer.Views
                         Name = game.Name,
                         ScreenshotsFolders = ScreenshotsFolders,
                         UsedFilePattern = item.UsedFilePattern,
+                        ScanSubFolders = item.ScanSubFolders,
                         FilePattern = item.FilePattern,
                         SourceName = PlayniteTools.GetSourceName(item.Id),
                         SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(item.Id))
@@ -616,6 +618,7 @@ namespace ScreenshotsVisualizer.Views
         public string SourceName { get; set; }
         public string SourceIcon { get; set; }
         public bool UsedFilePattern { get; set; }
+        public bool ScanSubFolders { get; set; }
         public string FilePattern { get; set; }
         public List<FolderSettings> ScreenshotsFolders { get; set; }
         public bool IsVisible { get; set; } = true;

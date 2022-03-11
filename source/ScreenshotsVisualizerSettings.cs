@@ -198,7 +198,8 @@ namespace ScreenshotsVisualizer
                     Id = item.Id,
                     ScreenshotsFolders = item.ScreenshotsFolders,
                     UsedFilePattern = item.UsedFilePattern,
-                    FilePattern = item.FilePattern
+                    FilePattern = item.FilePattern,
+                    ScanSubFolders = item.ScanSubFolders
                 });
             }
 

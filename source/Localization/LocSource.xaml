@@ -32,6 +32,8 @@
     <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
+
+    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
