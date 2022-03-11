@@ -68,6 +68,7 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPicturesVertical;
             ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
             ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
+            ControlDataContext.HideInfos = PluginDatabase.PluginSettings.Settings.HideScreenshotsInfos;
 
             ControlDataContext.CountItems = 0;
             ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
@@ -113,6 +114,9 @@ namespace ScreenshotsVisualizer.Controls
 
         private bool _AddRoundedCorner;
         public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+
+        private bool _HideInfos;
+        public bool HideInfos { get => _HideInfos; set => SetValue(ref _HideInfos, value); }
 
         private int _CountItems = 10;
         public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }

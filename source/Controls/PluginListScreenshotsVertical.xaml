@@ -68,13 +68,15 @@
                 <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                            Style="{DynamicResource BaseTextBlockStyle}" 
+                           Visibility="{Binding ElementName=PART_GridContenerListGame, Path=Tag.HideInfos, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                            Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
                     <TextBlock.Effect>
                         <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
                     </TextBlock.Effect>
                 </TextBlock>
 
-                <Grid Grid.Row="2" Name="PART_LabelContener">
+                <Grid Grid.Row="2" Name="PART_LabelContener"
+                      Visibility="{Binding ElementName=PART_GridContenerListGame, Path=Tag.HideInfos, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
@@ -88,7 +90,7 @@
         </DataTemplate>
     </controls:PluginUserControlExtend.Resources>
 
-    <Grid Name="PART_GridContenerListGame">
+    <Grid Name="PART_GridContenerListGame" Tag="{Binding HideInfos}">
         <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"
                  ItemsSource="{Binding ItemsSource}"
                  ItemTemplate="{StaticResource ItemTemplate}"     

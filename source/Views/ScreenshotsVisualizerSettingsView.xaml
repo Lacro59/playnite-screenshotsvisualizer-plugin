@@ -533,6 +533,8 @@
                                                     <RowDefinition Height="auto" />
                                                     <RowDefinition Height="10" />
                                                     <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
                                                 </Grid.RowDefinitions>
 
                                                 <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.AddBorder}">
@@ -544,6 +546,10 @@
 
                                                 <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.LinkWithSinglePicture}">
                                                     <Label Content="{DynamicResource LOCSsvLinkWithSinglePicture}" />
+                                                </CheckBox>
+                                                
+                                                <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding Settings.HideScreenshotsInfos}">
+                                                    <Label Content="{DynamicResource LOCSsvHideScreenshotsInfos}" />
                                                 </CheckBox>
                                             </Grid>
                                         </Border>
