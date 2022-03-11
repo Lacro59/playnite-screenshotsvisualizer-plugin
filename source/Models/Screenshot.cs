@@ -93,7 +93,7 @@ namespace ScreenshotsVisualizer.Models
                     return false;
                 }
 
-                return Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi");
+                return Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv");
             }
         }
 

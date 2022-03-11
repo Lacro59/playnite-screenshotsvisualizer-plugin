@@ -471,7 +471,7 @@ namespace ScreenshotsVisualizer.Services
                     PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
 
                     // Get files
-                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi" };
+                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv" };
                     if (Directory.Exists(PathFolder))
                     {
                         Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*")
