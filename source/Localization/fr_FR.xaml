@@ -36,7 +36,7 @@
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
     
-    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
+    <sys:String x:Key="LOCSsvNumberToDigit">Transformer les nombres en {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Afficher un contrôle avec une capture d'écran unique</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Afficher un contrôle avec une liste de captures d'écran</sys:String>
@@ -60,12 +60,12 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Transformer en chemin absolu</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformer en chemin relatif</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">En plus, vous pouvez utiliser :
 - {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
+- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
 - {digit}			number(s)
     
-Example:
+Exemple :
 GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
 GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
