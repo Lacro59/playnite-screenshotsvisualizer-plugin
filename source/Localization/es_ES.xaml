@@ -14,12 +14,12 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">¿Estás seguro de que deseas mover todas las capturas de pantalla?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove"></sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">¿Seguro que desea eliminar {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm"></sys:String>
 
     
     <!-- SsvManager -->
