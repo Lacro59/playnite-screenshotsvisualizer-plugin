@@ -19,27 +19,15 @@ namespace ScreenshotsVisualizer.Controls
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
         }
 
         private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginViewItemDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginViewItemDataContext)_ControlDataContext;
         }
 
 
