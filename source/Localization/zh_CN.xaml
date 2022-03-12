@@ -11,6 +11,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">将图像转换为 JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
@@ -32,6 +33,8 @@
     <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">全局截图路</sys:String>
+
+    <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">若游戏有截图则添加标签</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">添加 Steam 游戏</sys:String>
@@ -59,6 +62,8 @@
 
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">转换为相对路</sys:String>
+    
+    <sys:String x:Key="LOCSsJpgQuality">JPG 质量</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">另外，您可使用（y=年，M=月，d=日，H=时，m=分，s=秒）：
 - {DateModified}		yyyy-MM-dd
