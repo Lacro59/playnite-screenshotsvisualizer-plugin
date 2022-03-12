@@ -11,6 +11,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">عرض لقطات شاشة اللع</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">فتح مجلد لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">انقل لقطات الشاشة إلى مجلد الحفظ</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">جارٍ نقل لقطات الشاشة...</sys:String>
 
@@ -32,6 +33,8 @@
     <sys:String x:Key="LOCSsvUsedThumbnails">إنشاء صور مصغرة لتحسين أداء التحميل البدء</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العال</sys:String>
+
+    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">إضافة علامة عند توفر لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">إضافة ألعاب Steam</sys:String>
@@ -59,6 +62,8 @@
 
     <sys:String x:Key="LOCSsvSetAbsolute">تحويل إلى المسار المطل</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">تحويل إلى مسار نسب</sys:String>
+    
+    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
 - {DateModified}		yyyy-MM-dd
