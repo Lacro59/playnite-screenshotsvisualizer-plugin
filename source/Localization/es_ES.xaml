@@ -11,6 +11,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas del juego</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abre el directorio de capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Mover las capturas de pantalla al directorio de guardado</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
@@ -32,6 +33,8 @@
     <sys:String x:Key="LOCSsvUsedThumbnails">Generar miniaturas para mejorar el rendimiento de la carga</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Ruta global de las capturas de pantalla</sys:String>
+
+    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Añadir etiqueta si el juego tiene capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Añadir juego de Steam</sys:String>
@@ -59,6 +62,8 @@
 
     <sys:String x:Key="LOCSsvSetAbsolute">Transformar en ruta absoluta</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformar en ruta relativa</sys:String>
+    
+    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Además, puedes usar:
 - {DateModified}		aaaa-MM-dd
