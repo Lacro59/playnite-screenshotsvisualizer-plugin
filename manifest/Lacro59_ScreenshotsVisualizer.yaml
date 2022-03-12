@@ -68,3 +68,15 @@ Packages:
       - UI tweaks
       - Fixed many minor issues
       - Added new settings options
+  - Version: 2.6
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-03-12
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.6/playnite-screenshotsvisualizer-plugin_2_6.pext
+    Changelog:
+      - Updated localizations
+      - Added support for MKV video file
+      - Added an options to scan subfolders
+      - Added a JPG converter
+      - UI tweaks
+      - Fixed many minor issues
+      - Added new settings options
