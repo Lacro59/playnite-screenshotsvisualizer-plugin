@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -74,6 +75,13 @@ namespace ScreenshotsVisualizer.Controls
 
             ControlDataContext.CountItems = 0;
             ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
+
+
+            // With PlayerActivities
+            if (this.Tag is DateTime)
+            {
+                ControlDataContext.IsActivated = true;
+            }
         }
 
 
@@ -83,6 +91,16 @@ namespace ScreenshotsVisualizer.Controls
 
             List<Screenshot> screenshots = gameScreenshots.Items;
             screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+
+
+            // With PlayerActivities
+            if (this.Tag is DateTime)
+            {
+                screenshots = screenshots
+                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)this.Tag).ToString("yyyy-MM--dd")))
+                    .ToList();
+            }
+
 
             ControlDataContext.ItemsSource = screenshots.ToObservable();
             ControlDataContext.CountItems = screenshots.Count;
