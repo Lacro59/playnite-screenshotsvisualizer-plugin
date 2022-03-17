@@ -36,6 +36,7 @@
         
         <ListBox Grid.Column="0" Grid.Row="0" 
                  Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged">
+            
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">

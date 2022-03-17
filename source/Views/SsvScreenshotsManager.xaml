@@ -48,12 +48,12 @@
                     <controlsShared:ImageAsync.Style>
                         <Style TargetType="{x:Type controlsShared:ImageAsync}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
-                                    <Setter Property="Source" Value="{Binding ImageThumbnail}" />
+                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                    <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
                                 </DataTrigger>
 
-                                <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
-                                    <Setter Property="Source" Value="{Binding Thumbnail}" />
+                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                    <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -140,7 +140,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                           Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                                           Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -213,12 +213,17 @@
 
             <Grid Name="PART_ListScreenshotsContener" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
                 <ListBox Name="PART_ListScreenshots"
+                         VirtualizingPanel.CacheLengthUnit="Item" 
+                         VirtualizingPanel.ScrollUnit="Pixel" 
+                         VirtualizingPanel.VirtualizationMode="Recycling"
+                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
                          SelectionChanged="PART_ListScreenshots_SelectionChanged"
                          ItemsSource="{Binding Screenshots}"
                          ItemTemplate="{StaticResource ItemTemplate}"     
                          Tag="{Binding AddBorder}"
                          Height="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualHeight}" 
                          Width="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualWidth}">
+                    
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
