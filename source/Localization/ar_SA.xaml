@@ -15,7 +15,7 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">جارٍ نقل لقطات الشاشة...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">هل أنت متأكد من أنك تريد نقل جميع لقطات الشاشة</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">هل أنت متأكد من أنك تريد نقل جميع لقطات الشاش</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
@@ -32,7 +32,7 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">إنشاء صور مصغرة لتحسين أداء التحميل البدء</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العال</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العا</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
     
@@ -41,27 +41,27 @@
     
     <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">عرض لقطة شاشة واحد</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">عرض لقطة شاشة واح</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">عرض قائمة لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">عرض قائمة عمودية للقطات الشاش</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">إضافة الحدو</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">إضافة الحد</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">إضافة زاوية مستدير</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">خيارات لقطة شاشة واحد</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">خيارات لقطة شاشة واح</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">قائمة خيارات لقطات الشاش</sys:String>
 
     <sys:String x:Key="LOCSsvHideScreenshotsInfos">إخفاء معلومات لقطات الشاش</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصور</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحد</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واح</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط مل</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط م</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واح</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">نمط المل</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">نمط الم</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">تحويل إلى المسار المطل</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">تحويل إلى مسار نسب</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">تحويل إلى المسار المط</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">تحويل إلى مسار نس</sys:String>
     
     <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
@@ -91,6 +91,6 @@ ex: {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">الإعدادات المراد استخدامها لنقل لقطات الشاشة مفقود</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">الإعدادات المراد استخدامها لنقل لقطات الشاشة مفقو</sys:String>
     
 </ResourceDictionary>
