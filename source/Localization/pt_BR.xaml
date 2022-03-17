@@ -11,7 +11,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abrir a pasta de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Mover as capturas de tela para o diretório salvo</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Converter imagem para JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Movendo as capturas de tela...</sys:String>
 
@@ -34,7 +34,7 @@
 
     <sys:String x:Key="LOCSsvGlobalPath">Caminho global de capturas de tela</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">Escanear Subpastas</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Adicionar tag se o jogo tem capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Adicionar jogo Steam</sys:String>
