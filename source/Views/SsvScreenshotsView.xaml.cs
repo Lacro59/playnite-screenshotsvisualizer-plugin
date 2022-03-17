@@ -4,6 +4,7 @@ using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -159,15 +160,30 @@ namespace ScreenshotsVisualizer.Views
 
         private void SetInfos()
         {
-            PART_FilesCount.Content = gameScreenshots.Items.Count + " " + resources.GetString("LOCSsvTitle");
-
-            long TotalSize = 0;
-            foreach(var item in gameScreenshots.Items)
+            List<Screenshot> screenOnly = gameScreenshots.Items.FindAll(x => !x.IsVideo);
+            int ScreenshotsCount = screenOnly.Count;
+            long ScreenshotsTotalSize = 0;
+            foreach (Screenshot item in screenOnly)
             {
-                TotalSize += item.FileSize;
+                ScreenshotsTotalSize += item.FileSize;
             }
+            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(resources.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(resources.GetString("LOCSsvScreenshot"), ScreenshotsCount);
+            PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
 
-            PART_FilesSize.Content = Tools.SizeSuffix(TotalSize);
+
+            List<Screenshot> videoOnly = gameScreenshots.Items.FindAll(x => x.IsVideo);
+            int VideosCount = videoOnly.Count;
+            long VideosTotalSize = 0;
+            foreach (Screenshot item in videoOnly)
+            {
+                VideosTotalSize += item.FileSize;
+            }
+            PART_VideosCount.Content = VideosCount > 1 ? string.Format(resources.GetString("LOCSsvVideos"), VideosCount) : string.Format(resources.GetString("LOCSsvVideo"), VideosCount);
+            PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
+
+
+            PART_FilesCount.Content = ScreenshotsCount + VideosCount;
+            PART_FilesSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
         }
 
 

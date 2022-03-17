@@ -33,6 +33,7 @@ namespace ScreenshotsVisualizer.Views
             DataContext = new SsvScreenshotsManagerData();
 
             SetData();
+            SetInfos();
 
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
         }
@@ -74,6 +75,35 @@ namespace ScreenshotsVisualizer.Views
                     PART_Data.Visibility = Visibility.Visible;
                 }));
             });
+        }
+
+
+        private void SetInfos()
+        {
+            List<Screenshot> screenOnly = PluginDatabase.Database.SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
+            int ScreenshotsCount = screenOnly.Count;
+            long ScreenshotsTotalSize = 0;
+            foreach (Screenshot item in screenOnly)
+            {
+                ScreenshotsTotalSize += item.FileSize;
+            }
+            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(resources.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(resources.GetString("LOCSsvScreenshot"), ScreenshotsCount);
+            PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
+
+
+            List<Screenshot> videoOnly = PluginDatabase.Database.SelectMany(x => x.Items).Where(x => x.IsVideo).ToList();
+            int VideosCount = videoOnly.Count;
+            long VideosTotalSize = 0;
+            foreach (Screenshot item in videoOnly)
+            {
+                VideosTotalSize += item.FileSize;
+            }
+            PART_VideosCount.Content = VideosCount > 1 ? string.Format(resources.GetString("LOCSsvVideos"), VideosCount) : string.Format(resources.GetString("LOCSsvVideo"), VideosCount);
+            PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
+
+
+            PART_FilesCount.Content = ScreenshotsCount + VideosCount;
+            PART_FilesSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
         }
 
 

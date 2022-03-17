@@ -128,80 +128,115 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Name="PART_LveGamesContener" Grid.Column="0" Grid.Row="0">
-                <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesContener, Path=ActualHeight}"
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <Grid Name="PART_LveGamesContener" Grid.Row="0">
+                    <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesContener, Path=ActualHeight}"
                                                SelectionChanged="PART_LveGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
                                                SortingEnable="True" SortingSortDirection="Descending" SortingDefaultDataName="LastActivity"
                                                ItemsSource="{Binding LveGames}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="50" x:Name="lvGameIcon">
-                                <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="50" x:Name="lvGameIcon">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
                                            Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="210" x:Name="lvGameName">
-                                <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="210" x:Name="lvGameName">
+                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                     <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding Id}">
                                                         <controls:TextBlockTrimmed Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
                                                     </Hyperlink>
                                                 </TextBlock>
-                                            <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                                 <controls:TextBlockTrimmed Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
-                                <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
-                            </GridViewColumn>
+                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
+                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
+                                </GridViewColumn>
 
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="75" x:Name="lvGamesSource">
-                                <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="75" x:Name="lvGamesSource">
+                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
                                            HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastSsv, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastSsv">
-                                <GridViewColumnHeader Name="lvLastSsv" Content="{DynamicResource LOCSsvLastSsv}" />
-                            </GridViewColumn>
+                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastSsv, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastSsv">
+                                    <GridViewColumnHeader Name="lvLastSsv" Content="{DynamicResource LOCSsvLastSsv}" />
+                                </GridViewColumn>
 
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Total}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="60" x:Name="lvGameSsvCount">
-                                <GridViewColumnHeader Name="lvSsvCount" Content="{DynamicResource LOCCommonTotal}" Tag="Total" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Label Content="{Binding Total}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </controlsShared:ListViewExtend>
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding Total}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="60" x:Name="lvGameSsvCount">
+                                    <GridViewColumnHeader Name="lvSsvCount" Content="{DynamicResource LOCCommonTotal}" Tag="Total" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding Total}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </controlsShared:ListViewExtend>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCGameDetails}" />
+                    <Label Grid.Column="1" Grid.Row="0" Name="PART_ScreenshotsCount" Content="10 screenshots" />
+                    <Label Grid.Column="2" Grid.Row="0" Name="PART_ScreenshotsSize" Content="12.3Mb" HorizontalAlignment="Right" />
+
+                    <Label Grid.Column="1" Grid.Row="2" Name="PART_VideosCount" Content="2 videos" />
+                    <Label Grid.Column="2" Grid.Row="2" Name="PART_VideosSize" Content="102.3Mb" HorizontalAlignment="Right" />
+
+                    <Label Grid.Column="0" Grid.Row="4" Content="{DynamicResource LOCCommonTotal}" />
+                    <Label Grid.Column="1" Grid.Row="4" Name="PART_FilesCount" Content="0" />
+                    <Label Grid.Column="2" Grid.Row="4" Name="PART_FilesSize" Content="12.3Mb" HorizontalAlignment="Right" />
+                </Grid>
             </Grid>
+
 
             <Grid Grid.Column="2" Grid.Row="0">
                 <controlsShared:ImageAsync x:Name="PART_Screenshot" Visibility="{Binding FileNameImage, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
