@@ -15,12 +15,12 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">您确定要移动所有屏幕截图吗</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">您确定要移动所有屏幕截图吗？</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗？</sys:String>
 
     
     <!-- SsvManager -->
@@ -32,7 +32,7 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">全局截图路</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
     
@@ -41,27 +41,27 @@
     
     <sys:String x:Key="LOCSsvNumberToDigit">将数字转换为 {digit}</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">添加边</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">添加边框</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">单截图选项</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">列表截图选项</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信息</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打开</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移动</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">转换为相对路</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">转换为相对</sys:String>
     
     <sys:String x:Key="LOCSsJpgQuality">JPG 质量</sys:String>
 
@@ -87,7 +87,7 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
 
-如果您有特殊的文件夹 {DropboxFolder}\Screenshots\{Name}，在游戏菜单中选择选项后，所有屏幕截图将根据“文件模式”移动到唯一的文件夹，且链接将被更新到插件数据中</sys:String>
+如果您有特殊的文件夹 {DropboxFolder}\Screenshots\{Name}，在游戏菜单中选择选项后，所有屏幕截图将根据“文件模式”移动到唯一的文件夹，且链接将被更新到插件数据中。</sys:String>
 
     <!-- Notifications -->
 
