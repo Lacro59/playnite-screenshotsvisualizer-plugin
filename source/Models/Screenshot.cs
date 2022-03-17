@@ -173,7 +173,7 @@ namespace ScreenshotsVisualizer.Models
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
 
@@ -222,11 +222,11 @@ namespace ScreenshotsVisualizer.Models
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
 
-                return default(TimeSpan);
+                return default;
             }
         }
         #endregion

@@ -111,7 +111,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }, globalProgressOptions);
         }
@@ -152,7 +152,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginName);
                 }
 
                 stopWatch.Stop();
@@ -195,7 +195,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                        Common.LogError(ex, false, true, PluginName);
                     }
                     activateGlobalProgress.CurrentProgressValue++;
                 }
@@ -251,7 +251,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginName);
                 }
 
                 stopWatch.Stop();
@@ -361,7 +361,7 @@ namespace ScreenshotsVisualizer.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                                    Common.LogError(ex, false, true, PluginName);
                                     break;
                                 }
                             }
@@ -377,7 +377,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }
         }
@@ -518,7 +518,7 @@ namespace ScreenshotsVisualizer.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                                    Common.LogError(ex, false, true, PluginName);
                                 }
                             });
                     }
@@ -546,7 +546,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on file load for {game.Name}", true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, $"Error on file load for {game.Name}", true, PluginName);
             }
         }
 

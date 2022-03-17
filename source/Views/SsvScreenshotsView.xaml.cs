@@ -79,7 +79,7 @@ namespace ScreenshotsVisualizer.Views
 
             var RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
                 string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
-                "ScreenshotsVisualizer",
+                PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
             );
 
@@ -112,7 +112,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
 
                 var Items = gameScreenshots.Items;

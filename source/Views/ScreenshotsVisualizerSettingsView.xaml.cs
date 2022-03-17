@@ -467,7 +467,7 @@ namespace ScreenshotsVisualizer.Views
             TextboxSearch.Text = string.Empty;
 
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"ScreenshotsVisualizer",
+                PluginDatabase.PluginName,
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
@@ -508,7 +508,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }, globalProgressOptions);
         }
@@ -518,7 +518,7 @@ namespace ScreenshotsVisualizer.Views
             TextboxSearch.Text = string.Empty;
 
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"ScreenshotsVisualizer",
+                PluginDatabase.PluginName,
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
@@ -559,7 +559,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }, globalProgressOptions);
         }
@@ -594,7 +594,7 @@ namespace ScreenshotsVisualizer.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
     }

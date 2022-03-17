@@ -45,7 +45,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             // Custom theme button
@@ -55,13 +55,13 @@ namespace ScreenshotsVisualizer
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
                 ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginListScreenshotsVertical", "PluginViewItem" },
-                SourceName = "ScreenshotsVisualizer"
+                SourceName = PluginDatabase.PluginName
             });
 
             // Settings integration
             AddSettingsSupport(new AddSettingsSupportArgs
             {
-                SourceName = "ScreenshotsVisualizer",
+                SourceName = PluginDatabase.PluginName,
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
 
@@ -127,7 +127,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
         #endregion
@@ -355,7 +355,7 @@ namespace ScreenshotsVisualizer
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                                 }
 
                                 stopWatch.Stop();
@@ -493,8 +493,8 @@ namespace ScreenshotsVisualizer
                             {
                                 logger.Error("No settings to use folder to save");
                                 PlayniteApi.Notifications.Add(new NotificationMessage(
-                                    $"ScreenshotsVisualizer-MoveToFolderToSave-Errors",
-                                    $"ScreenshotsVisualizer\r\n" + resources.GetString("LOCSsvMoveToFolderToSaveError"),
+                                    $"{PluginDatabase.PluginName}-MoveToFolderToSave-Errors",
+                                    $"{PluginDatabase.PluginName}\r\n" + resources.GetString("LOCSsvMoveToFolderToSaveError"),
                                     NotificationType.Error,
                                     () => this.OpenSettingsView()
                                 ));
@@ -557,7 +557,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -602,7 +602,7 @@ namespace ScreenshotsVisualizer
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
 
                     if (args.Game.Id == PluginDatabase.GameContext.Id)
@@ -613,7 +613,7 @@ namespace ScreenshotsVisualizer
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
         #endregion
