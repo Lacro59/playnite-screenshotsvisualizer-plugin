@@ -80,3 +80,12 @@ Packages:
       - UI tweaks
       - Fixed many minor issues
       - Added new settings options
+  - Version: 2.7
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-03-19
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.7/playnite-screenshotsvisualizer-plugin_2_7.pext
+    Changelog:
+      - Updated localizations
+      - Minors optimizations
+      - Improved performances
+      - Added more informations on plugin data
