@@ -71,14 +71,14 @@
     
     <sys:String x:Key="LOCSsJpgQuality">جودة JPG</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
-    
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">وبالإضافة إلى ذلك، يمكنك استخدام:
+- {DateModified} yyyy-MM-dd
+- {DateTimeModified} yyyy-MM-dd HH_mm_ss
+- {digit} عدد
+
+مثال:
+GameName_20200107-1 =&gt;   {Name}_{digit}-{digit}
+GameName_2020 =&gt; {Name}_{DateModified}</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">إضافة هذا المجلد لجميع الألعاب.
  
