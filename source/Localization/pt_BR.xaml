@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} screenshot</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} screenshots</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">Tela capturada {0}</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} capturas de tela</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} vídeo</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} Vídeos</sys:String>
 
 
     <!-- MainView -->
@@ -69,7 +69,7 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Transformar em caminho absoluto</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformar em caminho relativo</sys:String>
     
-    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
+    <sys:String x:Key="LOCSsJpgQuality">Qualidade de JPG</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Além disso, você pode usar:
 - {DateModified}		yyyy-MM-dd

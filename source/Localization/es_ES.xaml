@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} screenshot</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} screenshots</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} captura de pantalla</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} capturas de pantalla</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} vídeo</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} vídeos</sys:String>
 
 
     <!-- MainView -->
@@ -17,7 +17,7 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas del juego</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abre el directorio de capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Mover las capturas de pantalla al directorio de guardado</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convertir imagen a JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moviendo las capturas de pantalla...</sys:String>
 
@@ -40,7 +40,7 @@
 
     <sys:String x:Key="LOCSsvGlobalPath">Ruta global de las capturas de pantalla</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">Escanear subcarpetas</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Añadir etiqueta si el juego tiene capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Añadir juego de Steam</sys:String>
@@ -69,7 +69,7 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Transformar en ruta absoluta</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformar en ruta relativa</sys:String>
     
-    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
+    <sys:String x:Key="LOCSsJpgQuality">Calidad de JPG</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Además, puedes usar:
 - {DateModified}		aaaa-MM-dd
@@ -80,9 +80,9 @@ Ejemplo:
 GameName_20200107-1=&gt;	{Name}_{digit}-{digit}
 GameName_20-01-07=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Añadir esta carpeta para todos los juegos.
     
-Example:
+Ejemplo:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Esta opción añade un menú de juego para mover todos los archivos de captura de pantalla a una sola carpeta.
