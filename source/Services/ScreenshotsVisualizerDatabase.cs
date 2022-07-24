@@ -458,8 +458,12 @@ namespace ScreenshotsVisualizer.Services
             System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
             Game game = PlayniteApi.Database.Games.Get(item.Id);
-            GameScreenshots gameScreenshots = GetDefault(game);
+            if (game == null)
+            {
+                return;
+            }
 
+            GameScreenshots gameScreenshots = GetDefault(game);
             try
             {
                 gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders(PlayniteApi);
@@ -480,8 +484,9 @@ namespace ScreenshotsVisualizer.Services
                             searchOption = SearchOption.AllDirectories;
                         }
 
-                        Parallel.ForEach(Directory.EnumerateFiles(PathFolder, "*.*", searchOption)
-                            .Where(s => extensions.Any(ext => ext == Path.GetExtension(s))), (objectFile) =>
+                        Directory.EnumerateFiles(PathFolder, "*.*", searchOption)
+                            .Where(s => extensions.Any(ext => ext == Path.GetExtension(s)))
+                            .ForEach(objectFile => 
                             {
                                 try
                                 {
