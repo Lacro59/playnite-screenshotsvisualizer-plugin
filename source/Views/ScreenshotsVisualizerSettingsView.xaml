@@ -10,7 +10,7 @@
              xmlns:ScreenshotsVisualizer="clr-namespace:ScreenshotsVisualizer"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="600"
+             mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance ScreenshotsVisualizer:ScreenshotsVisualizerSettingsViewModel, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
@@ -50,6 +50,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
                         <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}" 
@@ -62,9 +64,10 @@
                                 Click="PART_BtSelectGame_Click" IsEnabled="False" Margin="10,0,0,0"
                                 Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0">
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Name="PART_BtAddSteamGame" HorizontalAlignment="Left" 
                                     Click="PART_BtAddSteamGame_Click"
+                                    ToolTip="Steam"
                                     Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{DynamicResource LOCAddTitle}" 
@@ -75,6 +78,7 @@
                             </Button>
                             <Button Name="PART_BtAddUplay" HorizontalAlignment="Left" 
                                     Click="PART_BtAddUplay_Click" Margin="10,0,0,0"
+                                    ToolTip="Uplay"
                                     Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{DynamicResource LOCAddTitle}" 
@@ -83,8 +87,20 @@
                                            Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
                                 </StackPanel>
                             </Button>
+                            <Button Name="PART_BtAddURetroScummVM" HorizontalAlignment="Left" 
+                                    Click="PART_BtAddURetroScummVM_Click" Margin="10,0,0,0"
+                                    ToolTip="ScummVM"
+                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{DynamicResource LOCAddTitle}" 
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                    <Label Content="&#xea71;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                </StackPanel>
+                            </Button>
                             <Button Name="PART_BtAddURetroArch" HorizontalAlignment="Left" 
                                     Click="PART_BtAddURetroArch_Click" Margin="10,0,0,0"
+                                    ToolTip="RetroArch"
                                     Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{DynamicResource LOCAddTitle}" 
@@ -95,7 +111,7 @@
                             </Button>
                         </StackPanel>
 
-                        <Grid Grid.Row="2" Grid.ColumnSpan="5">
+                        <Grid Grid.Row="4" Grid.ColumnSpan="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />

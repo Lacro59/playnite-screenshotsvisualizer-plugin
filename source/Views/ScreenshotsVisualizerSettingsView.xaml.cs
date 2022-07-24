@@ -32,8 +32,7 @@ namespace ScreenshotsVisualizer.Views
         {
             InitializeComponent();
 
-
-            var TaskView = Task.Run(() =>
+            Task TaskView = Task.Run(() =>
             {
                 LoadData(PluginDatabase.PlayniteApi);
 
@@ -49,7 +48,7 @@ namespace ScreenshotsVisualizer.Views
         private void LoadData(IPlayniteAPI PlayniteApi)
         {
             listGameScreenshots = new List<ListGameScreenshot>();
-            foreach (var item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
+            foreach (GameSettings item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
             {
                 Game game = PlayniteApi.Database.Games.Get(item.Id);
 
@@ -419,6 +418,52 @@ namespace ScreenshotsVisualizer.Views
                     ScreenshotsFolder = "{RetroArchScreenshotsDir}",
                     UsedFilePattern = true,
                     FilePattern = "{ImageNameNoExt}-{digit}-{digit}",
+                });
+
+                listGameScreenshots.Add(new ListGameScreenshot
+                {
+                    Id = game.Id,
+                    Icon = Icon,
+                    Name = game.Name,
+                    ScreenshotsFolders = ScreenshotsFolders,
+                    SourceName = game.SourceName,
+                    SourceIcon = TransformIcon.Get(game.SourceName)
+                });
+            }
+
+            PART_ListGame.ItemsSource = null;
+            PART_ListGame.ItemsSource = listGames;
+
+            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            PART_ListGameScreenshot.ItemsSource = null;
+            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+            TextboxSearch_TextChanged(null, null);
+        }
+
+        // Add ScummVM game automaticly
+        private void PART_BtAddURetroScummVM_Click(object sender, RoutedEventArgs e)
+        {
+            TextboxSearch.Text = string.Empty;
+
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseScummVM(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
+            foreach (ListGame game in tmpList)
+            {
+                int index = listGames.FindIndex(x => x.Id == game.Id);
+                listGames.RemoveAt(index);
+
+                string Icon = string.Empty;
+                if (!game.Icon.IsNullOrEmpty())
+                {
+                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                }
+
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
+                ScreenshotsFolders.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = "{UserProfile}\\Pictures\\ScummVM Screenshots",
+                    UsedFilePattern = true,
+                    FilePattern = "scummvm-{ImageNameNoExt}-{digit}",
                 });
 
                 listGameScreenshots.Add(new ListGameScreenshot
