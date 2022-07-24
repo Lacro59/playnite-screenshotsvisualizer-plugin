@@ -313,8 +313,8 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName == "Steam").ToList();
-            foreach (var game in tmpList)
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName == "Steam").ToList();
+            foreach (ListGame game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
                 listGames.RemoveAt(index);
@@ -357,7 +357,7 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            var tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
             foreach (var game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
@@ -401,8 +401,8 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            var tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
-            foreach (var game in tmpList)
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
+            foreach (ListGame game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
                 listGames.RemoveAt(index);
