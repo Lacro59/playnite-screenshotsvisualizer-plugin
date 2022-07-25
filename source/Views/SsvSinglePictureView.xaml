@@ -18,7 +18,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged">
+    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" Loaded="PART_Contener_Loaded">
         <controls:ZoomBorder ClipToBounds="True"
                              Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown">
@@ -34,5 +34,14 @@
         <controls1:MediaElementExtend MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
                                       Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
                                       Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
+
+        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xea9d;" 
+                Background="Transparent" BorderThickness="0" FontSize="45"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Click="ButtonPrev_Click" Name="ButtonPrev" />
+        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xeaa0;"
+                Background="Transparent" BorderThickness="0" FontSize="45"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Click="ButtonNext_Click" Name="ButtonNext" />
     </Grid>
 </UserControl>    

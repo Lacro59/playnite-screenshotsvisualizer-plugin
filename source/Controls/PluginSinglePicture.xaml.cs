@@ -203,7 +203,7 @@ namespace ScreenshotsVisualizer.Controls
                     Width = 1280
                 };
 
-                var ViewExtension = new SsvSinglePictureView(screenshots[index]);
+                SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshots[index], screenshots);
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
                 windowExtension.ResizeMode = ResizeMode.CanResize;
                 windowExtension.ShowDialog();
