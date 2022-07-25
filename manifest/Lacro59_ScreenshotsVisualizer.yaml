@@ -89,3 +89,12 @@ Packages:
       - Minors optimizations
       - Improved performances
       - Added more informations on plugin data
+  - Version: 2.8
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-07-25
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v2.8/playnite-screenshotsvisualizer-plugin_2_8.pext
+    Changelog:
+      - Updated localizations
+      - Fixed minor bugs
+      - Added auto configuration for ScummVM games
+      - Added controls for moving image when one image is showing
