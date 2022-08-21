@@ -350,7 +350,11 @@ namespace ScreenshotsVisualizer.Services
                                     }
                                     else
                                     {
-                                        destFileName += $"({DateTime.Now.ToString("yyyy-MM-dd HH_mm_ss")})";
+                                        while (File.Exists(destFileName + ext))
+                                        {
+                                            destFileName += $"({DateTime.Now.AddSeconds(digit).ToString("yyyy-MM-dd HH_mm_ss")})";
+                                            digit++;
+                                        }
                                     }
                                 }
 
