@@ -14,19 +14,19 @@
 
     <sys:String x:Key="LOCSsvLatest">الأحدث</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">عرض لقطات شاشة اللع</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">عرض لقطات شاشة اللعب</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">فتح مجلد لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">انقل لقطات الشاشة إلى مجلد الحفظ</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">تحويل الصورة إلى JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">جارٍ نقل لقطات الشاشة...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">هل أنت متأكد من أنك تريد نقل جميع لقطات الشاش</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">هل أنت متأكد من أنك تريد نقل جميع لقطات الشاشة؟</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">هل تريد أن تحذف {0}</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">هل تريد أن تحذف {0}؟</sys:String>
 
     
     <!-- SsvManager -->
@@ -38,7 +38,7 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">إنشاء صور مصغرة لتحسين أداء التحميل البدء</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العا</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العالم</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">فحص المجلدات الفرعية</sys:String>
     
@@ -60,7 +60,7 @@
     <sys:String x:Key="LOCSsvHideScreenshotsInfos">إخفاء معلومات لقطات الشاش</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصور</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واح</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحدة</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط م</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واح</sys:String>
@@ -97,6 +97,6 @@ ex: {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">الإعدادات المراد استخدامها لنقل لقطات الشاشة مفقو</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">الإعدادات المراد استخدامها لنقل لقطات الشاشة مفقودة</sys:String>
     
 </ResourceDictionary>
