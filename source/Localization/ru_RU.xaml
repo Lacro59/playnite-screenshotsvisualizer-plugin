@@ -31,7 +31,7 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Последний скриншо</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Последний скриншот</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
