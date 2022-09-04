@@ -26,7 +26,7 @@
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm"></sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">¿Seguro que desea eliminar {0}?</sys:String>
 
     
     <!-- SsvManager -->
