@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} لقطة شاشة</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} لقطات شاشة</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} فيديو</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} لقطة شاش</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} لقطات شاش</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} فيدي</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} فيديوهات</sys:String>
 
 
@@ -40,7 +40,7 @@
 
     <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العالم</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">فحص المجلدات الفرعية</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">فحص المجلدات الفرعي</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">إضافة علامة عند توفر لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">إضافة ألعاب Steam</sys:String>
@@ -50,7 +50,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">عرض لقطة شاشة واح</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">عرض قائمة لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">عرض قائمة عمودية للقطات الشاش</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">إضافة الحد</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">إضافة الح</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">إضافة زاوية مستدير</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">خيارات لقطة شاشة واح</sys:String>
@@ -62,9 +62,9 @@
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصور</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحدة</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط م</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط </sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واح</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">نمط الم</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">نمط ال</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">تحويل إلى المسار المط</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">تحويل إلى مسار نس</sys:String>
