@@ -98,3 +98,11 @@ Packages:
       - Fixed minor bugs
       - Added auto configuration for ScummVM games
       - Added controls for moving image when one image is showing
+  - Version: 3.0
+    RequiredApiVersion: 6.3.0
+    ReleaseDate: 2022-09-06
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.0/playnite-screenshotsvisualizer-plugin_3_0.pext
+    Changelog:
+      - Only Playnite 10
+      - Updated localizations
+      - Fixed issue when you move screenshots in save folder
