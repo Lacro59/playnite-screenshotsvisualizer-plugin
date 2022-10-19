@@ -15,7 +15,6 @@ using System.Windows.Controls;
 using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
-using Playnite.SDK.Data;
 using CommonPluginsShared.Extensions;
 
 namespace ScreenshotsVisualizer.Services

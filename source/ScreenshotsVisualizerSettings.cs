@@ -145,15 +145,7 @@ namespace ScreenshotsVisualizer
         private ScreenshotsVisualizerSettings EditingClone { get; set; }
 
         private ScreenshotsVisualizerSettings _Settings;
-        public ScreenshotsVisualizerSettings Settings
-        {
-            get => _Settings;
-            set
-            {
-                _Settings = value;
-                OnPropertyChanged();
-            }
-        }
+        public ScreenshotsVisualizerSettings Settings { get => _Settings; set => SetValue(ref _Settings, value); }
 
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
