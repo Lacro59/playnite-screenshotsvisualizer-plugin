@@ -38,7 +38,7 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">全局截图路</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
     
@@ -67,7 +67,7 @@
     <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">转换为相对路</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">转换为相对</sys:String>
     
     <sys:String x:Key="LOCSsJpgQuality">JPG 质量</sys:String>
 
