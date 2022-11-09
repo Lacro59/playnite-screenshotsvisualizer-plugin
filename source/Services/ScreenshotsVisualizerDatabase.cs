@@ -478,7 +478,7 @@ namespace ScreenshotsVisualizer.Services
                     PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
 
                     // Get files
-                    string[] extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv" };
+                    string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv" };
                     if (Directory.Exists(PathFolder))
                     {
                         SearchOption searchOption = SearchOption.TopDirectoryOnly;
