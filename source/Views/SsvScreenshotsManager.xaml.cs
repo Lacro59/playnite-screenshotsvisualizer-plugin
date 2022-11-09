@@ -36,6 +36,7 @@ namespace ScreenshotsVisualizer.Views
             SetInfos();
 
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
+            PART_Copy.Visibility = Visibility.Collapsed;
         }
 
 
