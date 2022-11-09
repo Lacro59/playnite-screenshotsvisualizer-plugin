@@ -15,13 +15,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ScreenshotsVisualizer.Views.StartPage
 {
@@ -70,6 +64,13 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 {
                     PictureSource = screenshot.FileName;
                 }
+
+
+                this.DataContext = new
+                {
+                    PictureSource,
+                    AddBorder = true
+                };
             }
             else
             {
@@ -82,11 +83,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     ButtonPrev_Click(null, null);
                 }
             }
-            this.DataContext = new 
-            { 
-                PictureSource, 
-                AddBorder = true 
-            };
         }
 
 
@@ -175,7 +171,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Screenshots = temp.ToObservable();
-                    if (Screenshots?.Count > 2)
+                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAutoChange)
                     {
                         Timer = new Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);
                         Timer.Start();
@@ -284,6 +280,19 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void PART_Contener_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (((FrameworkElement)sender).IsVisible)
+            {
+                Timer?.Start();
+            }
+            else
+            {
+                Timer?.Stop();
+            }
         }
     }
 }

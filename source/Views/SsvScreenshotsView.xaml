@@ -151,8 +151,10 @@
             <Label Grid.Column="2" Grid.Row="4" Name="PART_FilesSize" Content="12.3Mb" HorizontalAlignment="Right" />
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0">
-            <Image Name="PART_Screenshot" Visibility="Collapsed" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown" />
+        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0" Name="PART_Contener">
+            <Image Name="PART_Screenshot" Visibility="Collapsed" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown"
+                   MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
+                   MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
             <controls:MediaElementExtend Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
                                          Source="{Binding FileName}" LoadedBehavior="Play" x:Name="PART_Video" />
         </Grid>
