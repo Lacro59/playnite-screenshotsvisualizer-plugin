@@ -245,6 +245,12 @@
                 <controls:MediaElementExtend Visibility="{Binding FileNameVideo, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
                                              Source="{Binding FileNameVideo}" LoadedBehavior="Play" x:Name="PART_Video" />
             </Grid>
+            <Grid Grid.Column="2" Grid.Row="0" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Transparent">
+                <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec51;" 
+                    Background="Transparent" BorderThickness="0" FontSize="45"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Click="PART_Copy_Click" Name="PART_Copy" />
+            </Grid>
 
             <Grid Name="PART_ListScreenshotsContener" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
                 <ListBox Name="PART_ListScreenshots"

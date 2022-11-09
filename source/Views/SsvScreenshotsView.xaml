@@ -156,5 +156,13 @@
             <controls:MediaElementExtend Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
                                          Source="{Binding FileName}" LoadedBehavior="Play" x:Name="PART_Video" />
         </Grid>
+        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Transparent">
+            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec51;" 
+                    Background="Transparent" BorderThickness="0" FontSize="45"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Click="PART_Copy_Click" Name="PART_Copy" />            
+        </Grid>
+
+
     </Grid>
 </UserControl>

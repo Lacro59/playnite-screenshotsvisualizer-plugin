@@ -1,7 +1,10 @@
-﻿using CommonPluginsShared;
+﻿using CommonPlayniteShared;
+using CommonPluginsShared;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +18,7 @@ namespace ScreenshotsVisualizer.Views
     public partial class SsvSinglePictureView : UserControl
     {
         private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
+        private Screenshot screenshot { get; set; }
         private int index { get; set; } = 0;
 
 
@@ -30,6 +34,7 @@ namespace ScreenshotsVisualizer.Views
 
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
+            PART_Copy.Visibility = Visibility.Collapsed;
 
             SetImage(screenshot);
         }
@@ -41,8 +46,8 @@ namespace ScreenshotsVisualizer.Views
             if (File.Exists(screenshot.FileName))
             {
                 PictureSource = screenshot.FileName;
+                this.screenshot = screenshot;
             }
-
 
             this.DataContext = new
             {
@@ -156,6 +161,8 @@ namespace ScreenshotsVisualizer.Views
         {
             Window win = UI.FindParent<Window>((FrameworkElement)sender);
             win.KeyDown += new KeyEventHandler(SsvSinglePictureView_KeyDown);
+            win.MouseEnter += PART_Contener_MouseEnter;
+            win.MouseLeave += PART_Contener_MouseLeave;
         }
 
 
@@ -166,12 +173,35 @@ namespace ScreenshotsVisualizer.Views
                 ButtonNext.Visibility = Visibility.Visible;
                 ButtonPrev.Visibility = Visibility.Visible;
             }
+
+            if (!screenshot?.IsVideo ?? true)
+            {
+                PART_Copy.Visibility = Visibility.Visible;
+            }
         }
 
         private void PART_Contener_MouseLeave(object sender, MouseEventArgs e)
         {
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
+            PART_Copy.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void PART_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (!screenshot?.IsVideo ?? true && File.Exists(screenshot.FileName))
+            {
+                try
+                {
+                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
+                    Clipboard.SetDataObject(img);
+                }
+                catch(Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }
         }
     }
 }

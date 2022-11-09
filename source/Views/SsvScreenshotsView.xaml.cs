@@ -38,6 +38,8 @@ namespace ScreenshotsVisualizer.Views
             PART_ListScreenshots.ItemsSource = Items;
 
             SetInfos();
+
+            PART_Copy.Visibility = Visibility.Collapsed;
         }
 
 
@@ -221,6 +223,38 @@ namespace ScreenshotsVisualizer.Views
                     }
                 }
             }
+        }
+
+
+        private void PART_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Screenshot screenshot = PART_ListScreenshots.SelectedItem as Screenshot;
+            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            {
+                try
+                {
+                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
+                    Clipboard.SetDataObject(img);
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }
+        }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
+            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            {
+                PART_Copy.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            PART_Copy.Visibility = Visibility.Collapsed;
         }
     }
 }
