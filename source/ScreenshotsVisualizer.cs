@@ -10,6 +10,7 @@ using ScreenshotsVisualizer.Controls;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
+using StartPage.SDK;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +24,7 @@ using System.Windows.Media;
 
 namespace ScreenshotsVisualizer
 {
-    public class ScreenshotsVisualizer : PluginExtended<ScreenshotsVisualizerSettingsViewModel, ScreenshotsVisualizerDatabase>
+    public class ScreenshotsVisualizer : PluginExtended<ScreenshotsVisualizerSettingsViewModel, ScreenshotsVisualizerDatabase>, StartPage.SDK.IStartPageExtension
     {
         public override Guid Id { get; } = Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
 
@@ -201,6 +202,46 @@ namespace ScreenshotsVisualizer
             {
                 ssvViewSidebar
             };
+        }
+        #endregion
+
+
+        #region StartPageExtension
+        public StartPageExtensionArgs GetAvailableStartPageViews()
+        {
+            List<StartPageViewArgsBase> views = new List<StartPageViewArgsBase> {
+                new StartPageViewArgsBase { Name = resources.GetString("LOCSsvCarousel"), ViewId = "SsvCarousel", HasSettings = true }
+            };
+            return new StartPageExtensionArgs { ExtensionName = PluginDatabase.PluginName, Views = views };
+        }
+
+        public object GetStartPageView(string viewId, Guid instanceId)
+        {
+            switch (viewId)
+            {
+                case "SsvCarousel":
+                    return new Views.StartPage.SsvCarousel();
+
+                default:
+                    return null;
+            }
+        }
+
+        public Control GetStartPageViewSettings(string viewId, Guid instanceId)
+        {
+            switch (viewId)
+            {
+                case "SsvCarousel":
+                    return new Views.StartPage.SsvCarouselSettings(this);
+
+                default:
+                    return null;
+            }
+        }
+
+        public void OnViewRemoved(string viewId, Guid instanceId)
+        {
+
         }
         #endregion
 

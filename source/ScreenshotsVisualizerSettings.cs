@@ -3,6 +3,10 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
 using Playnite.SDK.Data;
 using System.Collections.Generic;
+using ScreenshotsVisualizer.Models.StartPage;
+using System.Linq;
+using CommonPluginsShared.Extensions;
+using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer
 {
@@ -107,7 +111,45 @@ namespace ScreenshotsVisualizer
         public bool UsedThumbnails { get; set; } = true;
 
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
+
+
+        private bool _CarouselAutoChangeEnable { get; set; } = true;
+        public bool CarouselAutoChangeEnable
+        {
+            get => _CarouselAutoChangeEnable;
+            set
+            {
+                _CarouselAutoChangeEnable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _CarouselAutoChangeTimer { get; set; } = 10;
+        public int CarouselAutoChangeTimer
+        {
+            get => _CarouselAutoChangeTimer;
+            set
+            {
+                _CarouselAutoChangeTimer = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
+
+
+        #region Settings StartPage
+        private SsvCarouselOptions _ssvCarouselOptions { get; set; } = new SsvCarouselOptions();
+        public SsvCarouselOptions ssvCarouselOptions
+        {
+            get => _ssvCarouselOptions;
+            set
+            {
+                _ssvCarouselOptions = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
@@ -154,7 +196,7 @@ namespace ScreenshotsVisualizer
             Plugin = plugin;
 
             // Load saved settings.
-            var savedSettings = plugin.LoadPluginSettings<ScreenshotsVisualizerSettings>();
+            ScreenshotsVisualizerSettings savedSettings = plugin.LoadPluginSettings<ScreenshotsVisualizerSettings>();
 
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
@@ -165,6 +207,20 @@ namespace ScreenshotsVisualizer
             {
                 Settings = new ScreenshotsVisualizerSettings();
             }
+
+            // Manage source
+            Task.Run(() => 
+            {
+                System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
+                API.Instance.Database.Sources.ForEach(x =>
+                {
+                    if (!Settings.ssvCarouselOptions.SourcesList.Any(y => y.Name.IsEqual(x.Name)))
+                    {
+                        Settings.ssvCarouselOptions.SourcesList.Add(new CommonPluginsShared.Models.CheckElement { Name = x.Name });
+                    }
+                });
+                Settings.ssvCarouselOptions.SourcesList = Settings.ssvCarouselOptions.SourcesList.OrderBy(x => x.Name).ToList();
+            });
         }
 
         // Code executed when settings view is opened and user starts editing values.
@@ -185,7 +241,7 @@ namespace ScreenshotsVisualizer
         public void EndEdit()
         {
             Settings.gameSettings = new List<GameSettings>();
-            foreach (var item in ScreenshotsVisualizerSettingsView.listGameScreenshots)
+            foreach (ListGameScreenshot item in ScreenshotsVisualizerSettingsView.listGameScreenshots)
             {
                 Settings.gameSettings.Add(new GameSettings
                 {

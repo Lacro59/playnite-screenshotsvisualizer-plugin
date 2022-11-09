@@ -57,6 +57,10 @@
       <HintPath>packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="StartPage.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\StartPage.SDK.dll</HintPath>
+    </Reference>
     <Reference Include="SteamKit2, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ed3ce47ed5aad940, processorArchitecture=MSIL">
       <HintPath>packages\SteamKit2.1.8.3\lib\net45\SteamKit2.dll</HintPath>
     </Reference>
@@ -109,6 +113,7 @@
     <Compile Include="Models\GameSettings.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\ScreeshotsVisualizeCollection.cs" />
+    <Compile Include="Models\StartPage\SsvCarouselOptions.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\MediaElementExtend.xaml.cs">
       <DependentUpon>MediaElementExtend.xaml</DependentUpon>
     </Compile>
@@ -142,6 +147,12 @@
     </Compile>
     <Compile Include="Views\SsvSinglePictureView.xaml.cs">
       <DependentUpon>SsvSinglePictureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartPage\SsvCarousel.xaml.cs">
+      <DependentUpon>SsvCarousel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartPage\SsvCarouselSettings.xaml.cs">
+      <DependentUpon>SsvCarouselSettings.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +321,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StartPage\SsvCarousel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartPage\SsvCarouselSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.png">
@@ -322,8 +341,11 @@
       <Name>CommonPluginsResources</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="Resources\StartPage.SDK.dll" />
+    <None Include="Resources\StartPage.SDK.pdb" />
+    <None Include="Resources\StartPage.SDK.xml" />
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
   <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />

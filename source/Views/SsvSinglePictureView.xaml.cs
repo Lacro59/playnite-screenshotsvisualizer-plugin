@@ -14,12 +14,14 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvSinglePictureView : UserControl
     {
-        private List<Screenshot> screenshots = new List<Screenshot>();
-        private int index = 0;
+        private List<Screenshot> screenshots { get; set; } = new List<Screenshot>();
+        private int index { get; set; } = 0;
 
 
         public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null)
         {
+            InitializeComponent();
+
             this.screenshots = screenshots;
             if (screenshots != null)
             {
@@ -30,8 +32,6 @@ namespace ScreenshotsVisualizer.Views
                 ButtonNext.Visibility = Visibility.Collapsed;
                 ButtonPrev.Visibility = Visibility.Collapsed;
             }
-
-            InitializeComponent();
 
             SetImage(screenshot);
         }
