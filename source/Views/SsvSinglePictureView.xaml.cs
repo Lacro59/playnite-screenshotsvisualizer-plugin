@@ -14,7 +14,7 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvSinglePictureView : UserControl
     {
-        private List<Screenshot> screenshots { get; set; } = new List<Screenshot>();
+        private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
         private int index { get; set; } = 0;
 
 
@@ -22,16 +22,14 @@ namespace ScreenshotsVisualizer.Views
         {
             InitializeComponent();
 
-            this.screenshots = screenshots;
+            this.Screenshots = screenshots;
             if (screenshots != null)
             {
                 index = screenshots.FindIndex(x => x == screenshot);
             }
-            else
-            {
-                ButtonNext.Visibility = Visibility.Collapsed;
-                ButtonPrev.Visibility = Visibility.Collapsed;
-            }
+
+            ButtonNext.Visibility = Visibility.Collapsed;
+            ButtonPrev.Visibility = Visibility.Collapsed;
 
             SetImage(screenshot);
         }
@@ -106,26 +104,26 @@ namespace ScreenshotsVisualizer.Views
         #region Image navigation
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
-            if (screenshots != null)
+            if (Screenshots != null)
             {
                 if (index == 0)
                 {
-                    index = screenshots.Count - 1;
+                    index = Screenshots.Count - 1;
                 }
                 else
                 {
                     index--;
                 }
 
-                SetImage(screenshots[index]);
+                SetImage(Screenshots[index]);
             }
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            if (screenshots != null)
+            if (Screenshots != null)
             {
-                if (index == screenshots.Count - 1)
+                if (index == Screenshots.Count - 1)
                 {
                     index = 0;
                 }
@@ -134,7 +132,7 @@ namespace ScreenshotsVisualizer.Views
                     index++;
                 }
 
-                SetImage(screenshots[index]);
+                SetImage(Screenshots[index]);
             }
         }
         #endregion
@@ -158,6 +156,22 @@ namespace ScreenshotsVisualizer.Views
         {
             Window win = UI.FindParent<Window>((FrameworkElement)sender);
             win.KeyDown += new KeyEventHandler(SsvSinglePictureView_KeyDown);
+        }
+
+
+        private void PART_Contener_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (Screenshots?.Count > 2)
+            {
+                ButtonNext.Visibility = Visibility.Visible;
+                ButtonPrev.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void PART_Contener_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ButtonNext.Visibility = Visibility.Collapsed;
+            ButtonPrev.Visibility = Visibility.Collapsed;
         }
     }
 }

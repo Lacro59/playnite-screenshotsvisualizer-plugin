@@ -48,6 +48,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
             InitializeComponent();
             Update();
+
+            ButtonNext.Visibility = Visibility.Collapsed;
+            ButtonPrev.Visibility = Visibility.Collapsed;
         }
 
 

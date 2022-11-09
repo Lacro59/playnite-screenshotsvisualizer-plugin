@@ -18,7 +18,8 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" Loaded="PART_Contener_Loaded">
+    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" Loaded="PART_Contener_Loaded"
+          MouseEnter="PART_Contener_MouseEnter" MouseLeave="PART_Contener_MouseLeave">
         <controls:ZoomBorder ClipToBounds="True"
                              Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown">
