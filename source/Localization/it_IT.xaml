@@ -36,16 +36,16 @@
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Anteprima usate</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Numero di schermate per gioco</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Numero dei giochi</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Abilitare cambio automatico</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Tempo (secondi)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Mostra solo i giochi preferiti</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Solo alcune fonti</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
