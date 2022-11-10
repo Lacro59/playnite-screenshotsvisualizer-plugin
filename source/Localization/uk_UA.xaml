@@ -36,16 +36,16 @@
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Перемішати список всіх скриншотів</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Використані мініатюри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показувати тільки останні скриншоти для кожної гри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Кількість скриншотів на гру</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Кількість ігор</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Увімкнути автоматичну зміну</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Час (секунди)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Показати лише обрані ігри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Тільки деякі джерела</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
