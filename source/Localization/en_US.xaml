@@ -33,6 +33,20 @@
 
     <sys:String x:Key="LOCSsvLastSsv">Last screenshot</sys:String>
 
+    
+    <!-- StartPage -->
+
+    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
+
 
     <!-- ScreenshotsVisualizerSettingsView -->
 

@@ -33,6 +33,20 @@
 
     <sys:String x:Key="LOCSsvLastSsv">Останній знімок екрану</sys:String>
 
+    
+    <!-- StartPage -->
+
+    <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Перемішати список всіх скриншотів</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Використані мініатюри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показувати тільки останні скриншоти для кожної гри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Кількість скриншотів на гру</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Кількість ігор</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Увімкнути автоматичну зміну</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Час (секунди)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Показати лише обрані ігри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Тільки деякі джерела</sys:String>
+
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
