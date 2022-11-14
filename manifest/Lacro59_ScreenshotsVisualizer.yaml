@@ -106,3 +106,14 @@ Packages:
       - Only Playnite 10
       - Updated localizations
       - Fixed issue when you move screenshots in save folder
+  - Version: 3.1
+    RequiredApiVersion: 6.5.0
+    ReleaseDate: 2022-11-14
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.1/playnite-screenshotsvisualizer-plugin_3_1.pext
+    Changelog:
+      - Updated localizations
+      - Possibilities to copy to clipboard
+      - UI optimizations
+      - Added support for WebP
+      - Added Carousel for StartPage plugin
+      - Fixed many issues
