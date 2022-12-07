@@ -106,6 +106,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void Update()
         {
+            PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Margin);
+
             Task.Run(() =>
             {
                 Application.Current.Dispatcher.Invoke(() =>

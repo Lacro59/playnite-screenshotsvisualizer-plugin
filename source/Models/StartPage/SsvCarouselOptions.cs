@@ -9,6 +9,10 @@ namespace ScreenshotsVisualizer.Models.StartPage
 {
     public class SsvCarouselOptions : ObservableObject
     {
+        private double _Margin = 10;
+        public double Margin { get => _Margin; set => SetValue(ref _Margin, value); }
+
+
         private bool _EnableAllRandom = true;
         public bool EnableAllRandom { get => _EnableAllRandom; set => SetValue(ref _EnableAllRandom, value); }
     
