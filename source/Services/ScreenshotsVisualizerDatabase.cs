@@ -298,7 +298,7 @@ namespace ScreenshotsVisualizer.Services
                             PathFolder = Path.Combine(PathFolder, "{Name}");
                         }
                         PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PathFolder);
-                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
+                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, true);
 
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
@@ -475,7 +475,7 @@ namespace ScreenshotsVisualizer.Services
                 foreach (var ScreenshotsFolder in item.ScreenshotsFolders)
                 {
                     string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
-                    PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder);
+                    PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, true);
 
                     // Get files
                     string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv" };
