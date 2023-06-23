@@ -37,14 +37,14 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Karussell</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Alle Screenshots zufällig</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Zufallsgenerierte Liste aller Screenshots</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Verwendete Vorschaubilder</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Nur die neuesten Screenshots für jedes Spiel anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Anzahl Screenshots pro Spiel</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Anzahl der Spiele</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Auto-Änderung aktivieren</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Automatischer Wechsel einschalten</sys:String>
     <sys:String x:Key="LOCSsvCarouselTime">Zeit (Sekunden)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Zeige nur Favoriten Spiele</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Nur Favoriten Spiele anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Nur bestimmte Quellen</sys:String>
 
 
