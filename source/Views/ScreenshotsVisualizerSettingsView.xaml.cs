@@ -124,10 +124,10 @@ namespace ScreenshotsVisualizer.Views
         #region Action on list games screenshots
         private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
@@ -149,9 +149,9 @@ namespace ScreenshotsVisualizer.Views
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(((Button)sender).Tag.ToString());
 
-            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
@@ -161,7 +161,7 @@ namespace ScreenshotsVisualizer.Views
 
             Task TaskView = Task.Run(() =>
             {
-                var DbWithoutAlready = PluginDatabase.PlayniteApi.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
+                IEnumerable<Game> DbWithoutAlready = PluginDatabase.PlayniteApi.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
                 listGames = new List<ListGame>();
                 foreach (Game game in DbWithoutAlready)
                 {
@@ -194,10 +194,10 @@ namespace ScreenshotsVisualizer.Views
 
         private void ButtonRemoveFolder_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
@@ -208,9 +208,9 @@ namespace ScreenshotsVisualizer.Views
 
         private void ButtonAddFolder_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(((Button)sender).Tag.ToString());
 
-            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
@@ -222,10 +222,10 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_BtToDigit_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource)[index];
+            ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
             if (listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder]?.FilePattern == null)
@@ -617,7 +617,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_SelectVariables_Click(object sender, RoutedEventArgs e)
         {
-            var ViewExtension = new SelectVariable();
+            SelectVariable ViewExtension = new SelectVariable();
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCCommonSelectVariable"), ViewExtension);
             windowExtension.ResizeMode = ResizeMode.CanResize;
             windowExtension.ShowDialog();
@@ -625,14 +625,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PART_TabControl.SelectedIndex == 1)
-            {
-                PART_SelectVariables.Visibility = Visibility.Collapsed;
-            } 
-            else
-            {
-                PART_SelectVariables.Visibility = Visibility.Visible;
-            }
+            PART_SelectVariables.Visibility = PART_TabControl.SelectedIndex == 1 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ButtonClear_Click(object sender, RoutedEventArgs e)

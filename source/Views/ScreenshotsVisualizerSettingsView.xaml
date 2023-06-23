@@ -224,20 +224,19 @@
 
                                             <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
                                                                        Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
-
+                                            
                                             <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
                                                     Name="ButtonAddFolder" ToolTip="{DynamicResource LOCCommonAddFolder}"
-                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    Tag="{Binding Id}"
                                                     VerticalAlignment="Center" Grid.Column="6" />
 
                                             <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
                                                     Name="ButtonRemove" ToolTip="{DynamicResource LOCRemoveTitle}"
-                                                    Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                                    Tag="{Binding Id}"
                                                     VerticalAlignment="Center" Grid.Column="8" />
                                         </Grid>
 
-                                        <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100"
-                                                      Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                                        <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100" Tag="{Binding Id}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <Grid Margin="40,0,0,5">
