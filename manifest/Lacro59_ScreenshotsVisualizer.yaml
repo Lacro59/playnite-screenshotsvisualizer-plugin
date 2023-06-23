@@ -117,3 +117,17 @@ Packages:
       - Added support for WebP
       - Added Carousel for StartPage plugin
       - Fixed many issues
+  - Version: 3.2
+    RequiredApiVersion: 6.9.0
+    ReleaseDate: 2023-06-23
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.2/playnite-screenshotsvisualizer-plugin_3_2.pext
+    Changelog:
+      - Updated localizations
+      - Fixed many crashing issues
+      - UI optimizations
+      - Fixed issue with adding and removing folders
+      - Fixed issue with carroussel on StartPage
+      - Fixed issue with single picture view size
+      - Added support for webm files
+      - Fixed issue with video player size
+      - Added support video for carroussel on StartPage
