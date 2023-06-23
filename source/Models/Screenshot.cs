@@ -47,53 +47,22 @@ namespace ScreenshotsVisualizer.Models
         }
 
         [DontSerialize]
-        public string FileSizeString
-        {
-            get
-            {
-                if (File.Exists(FileName))
-                {
-                    return Tools.SizeSuffix(new FileInfo(FileName).Length);
-                }
-
-                return string.Empty;
-            }
-        }
+        public string FileSizeString => File.Exists(FileName) ? Tools.SizeSuffix(new FileInfo(FileName).Length) : string.Empty;
 
         [DontSerialize]
-        public long FileSize
-        {
-            get
-            {
-                if (File.Exists(FileName))
-                {
-                    return new FileInfo(FileName).Length;
-                }
-
-                return 0;
-            }
-        }
+        public long FileSize => File.Exists(FileName) ? new FileInfo(FileName).Length : 0;
 
         [DontSerialize]
-        public string FileNameOnly
-        {
-            get
-            {
-                return Path.GetFileName(FileName);
-            }
-        }
+        public string FileNameOnly => Path.GetFileName(FileName);
 
         [DontSerialize]
         public bool IsVideo
         {
             get
             {
-                if (!File.Exists(FileName))
-                {
-                    return false;
-                }
-
-                return Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv");
+                return !File.Exists(FileName)
+                    ? false
+                    : Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv");
             }
         }
 
@@ -182,18 +151,7 @@ namespace ScreenshotsVisualizer.Models
         }
 
         [DontSerialize]
-        public string DurationString
-        {
-            get
-            {
-                if (IsVideo)
-                {
-                    return Duration.ToString(@"hh\:mm\:ss");
-                }
-
-                return string.Empty;
-            }
-        }
+        public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
         public TimeSpan _Duration = default(TimeSpan);
         [DontSerialize]
@@ -210,9 +168,8 @@ namespace ScreenshotsVisualizer.Models
 
                     try
                     {
-                        var inputFile = new MediaFile { Filename = FileName };
-
-                        using (var engine = new Engine())
+                        MediaFile inputFile = new MediaFile { Filename = FileName };
+                        using (Engine engine = new Engine())
                         {
                             engine.GetMetadata(inputFile);
                         }
