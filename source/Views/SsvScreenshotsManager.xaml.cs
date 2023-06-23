@@ -179,8 +179,8 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_BtDelete_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(((Button)sender).Tag.ToString());
-            Screenshot screenshot = (Screenshot)PART_ListScreenshots.Items[index];
+            ListBoxItem item = UI.FindParent<ListBoxItem>((Button)sender);
+            Screenshot screenshot = (Screenshot)item.DataContext;
             int indexSelected = PART_LveGames.SelectedIndex;
 
             MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
