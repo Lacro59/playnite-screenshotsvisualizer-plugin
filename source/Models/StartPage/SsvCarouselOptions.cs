@@ -37,6 +37,9 @@ namespace ScreenshotsVisualizer.Models.StartPage
         private bool _OnlyFavorite = false;
         public bool OnlyFavorite { get => _OnlyFavorite; set => SetValue(ref _OnlyFavorite, value); }
     
+        private bool _WithVideo = false;
+        public bool WithVideo { get => _WithVideo; set => SetValue(ref _WithVideo, value); }
+    
         private List<CheckElement> _SourcesList = new List<CheckElement>();
         public List<CheckElement> SourcesList { get => _SourcesList; set => SetValue(ref _SourcesList, value); }
     }

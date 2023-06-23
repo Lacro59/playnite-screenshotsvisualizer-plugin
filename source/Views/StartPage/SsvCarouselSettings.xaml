@@ -33,6 +33,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Label Content="{DynamicResource LOCCommonMargin}" Grid.Column="0" Grid.Row="0" />
@@ -90,6 +92,9 @@
                     </CheckBox>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
-            </ComboBox>
+        </ComboBox>
+
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="20" Content="{DynamicResource LOCSsvCarouselWithVideo}" 
+                  IsChecked="{Binding Settings.ssvCarouselOptions.WithVideo}" />
     </Grid>
 </UserControl>

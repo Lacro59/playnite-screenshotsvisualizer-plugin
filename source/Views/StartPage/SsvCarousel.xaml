@@ -7,7 +7,8 @@
              xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
              xmlns:ssv="clr-namespace:ScreenshotsVisualizer" 
              xmlns:converters1="clr-namespace:CommonPluginsShared.Converters" 
-             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
+             xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -19,8 +20,11 @@
 
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" MouseDown="PART_Contener_MouseDown"
           MouseEnter="PART_Contener_MouseEnter" MouseLeave="PART_Contener_MouseLeave"
+          Loaded="PART_Contener_Loaded"
           IsVisibleChanged="PART_Contener_IsVisibleChanged" Margin="10" Background="Transparent">
-        <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
+        
+        <Image Name="PART_ScreenshotsPicture" Stretch="Uniform"
+               Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
                     <Binding Path="PictureSource" IsAsync="True" />
@@ -29,12 +33,31 @@
             </Image.Source>
         </Image>
 
+        <controls1:MediaElementExtend Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                      Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
+                                      AddBorder="{Binding AddBorder}"
+                                      Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
+
         <Border Name="PART_ImageBorder"
                 BorderThickness="{DynamicResource ControlBorderThickness}" 
                 BorderBrush="{DynamicResource NormalBorderBrush}" 
                 Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
-                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}"
-                Visibility="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}">
+            
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsVideo}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
 
         <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xea9d;" 
                 Background="Transparent" BorderThickness="0" FontSize="45"

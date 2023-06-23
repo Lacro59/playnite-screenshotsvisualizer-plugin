@@ -11,11 +11,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Views.StartPage
 {
@@ -31,7 +33,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private ObservableCollection<Screenshot> Screenshots { get; set; } = new ObservableCollection<Screenshot>();
         private int Index { get; set; } = 0;
-        private Timer Timer { get; set; }
+        private System.Timers.Timer Timer { get; set; }
+        private bool WindowsIsActivated { get; set; } = true;
         private bool IsNext { get; set; } = true;
 
 
@@ -51,24 +54,33 @@ namespace ScreenshotsVisualizer.Views.StartPage
         private void SetImage(Screenshot screenshot)
         {
             string PictureSource = string.Empty;
+            bool IsVideo = screenshot?.IsVideo ?? false;
+
             if (File.Exists(screenshot?.FileName))
             {
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableLowerRezolution)
-                {
-                    bool tmp = PluginDatabase.PluginSettings.Settings.UsedThumbnails;
-                    PluginDatabase.PluginSettings.Settings.UsedThumbnails = true;
-                    PictureSource = screenshot.ImageThumbnail;
-                    PluginDatabase.PluginSettings.Settings.UsedThumbnails = tmp;
-                }
-                else
+                if (IsVideo)
                 {
                     PictureSource = screenshot.FileName;
                 }
-
+                else
+                {
+                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableLowerRezolution)
+                    {
+                        bool tmp = PluginDatabase.PluginSettings.Settings.UsedThumbnails;
+                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = true;
+                        PictureSource = screenshot.ImageThumbnail;
+                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = tmp;
+                    }
+                    else
+                    {
+                        PictureSource = screenshot.FileName;
+                    }
+                }
 
                 this.DataContext = new
                 {
                     PictureSource,
+                    IsVideo,
                     AddBorder = true
                 };
             }
@@ -90,6 +102,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             PART_ScreenshotsPicture.Height = PART_Contener.ActualHeight;
             PART_ScreenshotsPicture.Width = PART_Contener.ActualWidth;
+            PART_Video.Height = PART_Contener.ActualHeight;
+            PART_Video.Width = PART_Contener.ActualWidth;
         }
 
 
@@ -145,7 +159,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 List<Screenshot> temp = Screenshots.ToList();
                 PluginData.Where(x => x.Value.Count > 0 && !x.Value.Hidden).ForEach(x =>
                 {
-                    List<Screenshot> data = Serialization.GetClone(x.Value.Items.Where(y => !y.IsVideo).ToList());
+                    List<Screenshot> data = Serialization.GetClone(x.Value.Items.Where(y => PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
                     if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.OnlyMostRecent)
                     {
                         data = data.OrderByDescending(z => z.Modifed).ToList();
@@ -175,7 +189,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Screenshots = temp.ToObservable();
                     if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAutoChange)
                     {
-                        Timer = new Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);
+                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);
                         Timer.Start();
                         Timer.Elapsed += Timer_Elapsed;
                     }
@@ -191,6 +205,11 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (!WindowsIsActivated)
+            {
+                return;
+            }
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 ButtonNext_Click(null, null);
@@ -294,6 +313,67 @@ namespace ScreenshotsVisualizer.Views.StartPage
             {
                 Timer?.Stop();
             }
+        }
+
+
+        #region Activate/Deactivated carousel
+        private void Application_Deactivated(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+                this.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    WindowsIsActivated = false;
+                    PART_Video.LoadedBehavior = MediaState.Pause;
+
+                    if (Timer != null)
+                    {
+                        Timer.Stop();
+                    }
+                }));
+            });
+        }
+
+        private void Application_Activated(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+                this.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    WindowsIsActivated = true;
+                    PART_Video.LoadedBehavior = MediaState.Pause;
+
+                    if (Timer != null)
+                    {
+                        Timer.Start();
+                    }
+                }));
+            });
+        }
+
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            switch (((Window)sender).WindowState)
+            {
+                case WindowState.Normal:
+                case WindowState.Maximized:
+                    Application_Activated(sender, e);
+                    break;
+                case WindowState.Minimized:
+                    Application_Deactivated(sender, e);
+                    break;
+            }
+        }
+        #endregion
+
+        private void PART_Contener_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Activate/Deactivated animation
+            Application.Current.Activated += Application_Activated;
+            Application.Current.Deactivated += Application_Deactivated;
+            Application.Current.MainWindow.StateChanged += MainWindow_StateChanged;
         }
     }
 }
