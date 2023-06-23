@@ -47,19 +47,27 @@ namespace ScreenshotsVisualizer.Views
 
             Task.Run(() => 
             {
-                ObservableCollection<LveGame> LveGames = PluginDatabase.Database.Where(x => x.HasData)
-                                                                .Select(x => new LveGame
-                                                                {
-                                                                    Id = x.Id,
-                                                                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon),
-                                                                    Name = x.Name,
-                                                                    LastActivity = x.LastActivity,
-                                                                    SourceName = PlayniteTools.GetSourceName(x.Id),
+                try
+                {
+                    ObservableCollection<LveGame> LveGames = PluginDatabase.Database.Where(x => x.HasData)
+                                                                    .Select(x => new LveGame
+                                                                    {
+                                                                        Id = x.Id,
+                                                                        Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon),
+                                                                        Name = x.Name,
+                                                                        LastActivity = x.LastActivity,
+                                                                        SourceName = PlayniteTools.GetSourceName(x.Id),
 
-                                                                    LastSsv = x.Items.Select(y => y.Modifed).Max(),
-                                                                    Total = x.Items.Count
-                                                                }).ToObservable();
-                return LveGames;
+                                                                        LastSsv = x.Items.Select(y => y.Modifed).Max(),
+                                                                        Total = x.Items.Count
+                                                                    }).ToObservable();
+                    return LveGames;
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    return new ObservableCollection<LveGame>();
+                }
             }).ContinueWith(antecedent =>
             {
                 this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
@@ -147,8 +155,7 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
-            var listbox = sender as ListBox;
-
+            ListBox listbox = sender as ListBox;
             if (listbox.SelectedItem is null)
             {
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
@@ -156,8 +163,7 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
-            var item = listbox.SelectedItem as Screenshot;
-
+            Screenshot item = listbox.SelectedItem as Screenshot;
             if (item.IsVideo)
             {
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
@@ -177,7 +183,7 @@ namespace ScreenshotsVisualizer.Views
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.Items[index];
             int indexSelected = PART_LveGames.SelectedIndex;
 
-            var RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
+            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
                 string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
@@ -206,7 +212,7 @@ namespace ScreenshotsVisualizer.Views
                                 Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
                         });
 
-                        var gameScreenshots = PluginDatabase.Get(((LveGame)PART_LveGames.SelectedItem).Id);
+                        GameScreenshots gameScreenshots = PluginDatabase.Get(((LveGame)PART_LveGames.SelectedItem).Id);
                         gameScreenshots.Items.Remove(screenshot);
                         PluginDatabase.Update(gameScreenshots);
 
@@ -243,7 +249,9 @@ namespace ScreenshotsVisualizer.Views
             finally
             {
                 if (stream != null)
+                {
                     stream.Close();
+                }
             }
 
             //file is not locked
@@ -287,55 +295,22 @@ namespace ScreenshotsVisualizer.Views
     public class SsvScreenshotsManagerData : ObservableObject
     {
         private ObservableCollection<LveGame> _LveGames = new ObservableCollection<LveGame>();
-        public ObservableCollection<LveGame> LveGames
-        {
-            get => _LveGames;
-            set
-            {
-                _LveGames = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<LveGame> LveGames { get => _LveGames; set => SetValue(ref _LveGames, value); }
 
-        private ObservableCollection<Screenshot> _Screenshots { get; set; } = new ObservableCollection<Screenshot>();
-        public ObservableCollection<Screenshot> Screenshots
-        {
-            get => _Screenshots;
-            set
-            {
-                _Screenshots = value;
-                OnPropertyChanged();
-            }
-        }
+        private ObservableCollection<Screenshot> _Screenshots = new ObservableCollection<Screenshot>();
+        public ObservableCollection<Screenshot> Screenshots { get => _Screenshots; set => SetValue(ref _Screenshots, value); }
 
         private string _FileNameImage = string.Empty;
-        public string FileNameImage
-        {
-            get => _FileNameImage;
-            set
-            {
-                _FileNameImage = value;
-                OnPropertyChanged();
-            }
-        }
+        public string FileNameImage { get => _FileNameImage; set => SetValue(ref _FileNameImage, value); }
 
         private string _FileNameVideo = string.Empty;
-        public string FileNameVideo
-        {
-            get => _FileNameVideo;
-            set
-            {
-                _FileNameVideo = value;
-                OnPropertyChanged();
-            }
-        }
+        public string FileNameVideo { get => _FileNameVideo; set => SetValue(ref _FileNameVideo, value); }
     }
 
 
     public class LveGame
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
-
 
         public Guid Id { get; set; }
         public string Icon { get; set; }
@@ -347,19 +322,7 @@ namespace ScreenshotsVisualizer.Views
         public DateTime LastSsv { get; set; }
         public int Total { get; set; }
 
-        public RelayCommand<Guid> GoToGame
-        {
-            get
-            {
-                return PluginDatabase.GoToGame;
-            }
-        }
-        public bool GameExist
-        {
-            get
-            {
-                return PluginDatabase.PlayniteApi.Database.Games.Get(Id) != null;
-            }
-        }
+        public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
+        public bool GameExist => PluginDatabase.PlayniteApi.Database.Games.Get(Id) != null;
     }
 }

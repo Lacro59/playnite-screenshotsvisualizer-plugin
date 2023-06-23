@@ -463,6 +463,7 @@ namespace ScreenshotsVisualizer.Services
             Game game = PlayniteApi.Database.Games.Get(item.Id);
             if (game == null)
             {
+                logger.Warn($"Game not found for {item.Id}");
                 return;
             }
 
@@ -476,6 +477,12 @@ namespace ScreenshotsVisualizer.Services
                 {
                     try
                     {
+                        if (ScreenshotsFolder?.ScreenshotsFolder == null || ScreenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
+                        {
+                            logger.Warn($"Screenshots directory is empty for {game.Name}");
+                            return;
+                        }
+
                         string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
                         PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, true);
 
