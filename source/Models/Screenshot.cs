@@ -62,7 +62,7 @@ namespace ScreenshotsVisualizer.Models
             {
                 return !File.Exists(FileName)
                     ? false
-                    : Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv");
+                    : Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv") || Path.GetExtension(FileName).ToLower().Contains("webm");
             }
         }
 
