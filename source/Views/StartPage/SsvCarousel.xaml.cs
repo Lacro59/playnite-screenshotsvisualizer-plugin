@@ -206,7 +206,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 IsGood = true;
             }
 
-
             if (IsGood)
             {
                 WindowOptions windowOptions = new WindowOptions
@@ -214,13 +213,13 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     ShowMinimizeButton = false,
                     ShowMaximizeButton = true,
                     ShowCloseButton = true,
+                    CanBeResizable = true,
                     Height = 720,
                     Width = 1280
                 };
 
                 SsvSinglePictureView ViewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
-                windowExtension.ResizeMode = ResizeMode.CanResize;
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly, ViewExtension, windowOptions);
                 windowExtension.ShowDialog();
             }
         }

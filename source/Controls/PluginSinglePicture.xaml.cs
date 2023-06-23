@@ -199,13 +199,13 @@ namespace ScreenshotsVisualizer.Controls
                     ShowMinimizeButton = false,
                     ShowMaximizeButton = true,
                     ShowCloseButton = true,
+                    CanBeResizable = true,
                     Height = 720,
                     Width = 1280
                 };
 
                 SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshots[index], screenshots);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
-                windowExtension.ResizeMode = ResizeMode.CanResize;
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv") + " - " + screenshots[index].FileNameOnly, ViewExtension, windowOptions);
                 windowExtension.ShowDialog();
             }
         }

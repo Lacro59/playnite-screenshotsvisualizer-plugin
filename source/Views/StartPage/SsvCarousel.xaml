@@ -19,8 +19,7 @@
 
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" MouseDown="PART_Contener_MouseDown"
           MouseEnter="PART_Contener_MouseEnter" MouseLeave="PART_Contener_MouseLeave"
-          IsVisibleChanged="PART_Contener_IsVisibleChanged"
-          Margin="10">
+          IsVisibleChanged="PART_Contener_IsVisibleChanged" Margin="10" Background="Transparent">
         <Image Name="PART_ScreenshotsPicture" Stretch="Uniform">
             <Image.Source>
                 <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
