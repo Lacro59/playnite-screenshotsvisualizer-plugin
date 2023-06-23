@@ -46,6 +46,7 @@
     <sys:String x:Key="LOCSsvCarouselTime">Tiempo (en segundos)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Mostrar sólo juegos favoritos</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Sólo ciertas fuentes</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
