@@ -156,6 +156,8 @@
                    MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
                    MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
             <controls:MediaElementExtend Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
+                                         MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
+                                         MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}"
                                          Source="{Binding FileName}" LoadedBehavior="Play" x:Name="PART_Video" />
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Transparent">
