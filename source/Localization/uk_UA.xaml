@@ -46,7 +46,7 @@
     <sys:String x:Key="LOCSsvCarouselTime">Час (секунди)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Показати лише обрані ігри</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Тільки деякі джерела</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Включити відео</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
