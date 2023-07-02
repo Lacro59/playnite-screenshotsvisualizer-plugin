@@ -19,7 +19,7 @@
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Moving screenshots...</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
 
