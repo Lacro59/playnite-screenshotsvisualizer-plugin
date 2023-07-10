@@ -1,49 +1,49 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} ekran görüntüsü</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} ekran görüntüsü</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} ekran alıntısı</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} ekran alıntısı</sys:String>
     <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} video</sys:String>
 
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">Ekran görüntüleri</sys:String>
+    <sys:String x:Key="LOCSsv">EkranalıntısıGörüntüleyici</sys:String>
+    <sys:String x:Key="LOCSsvTitle">Ekran alıntıları</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">En son</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ekran görüntüleri dizinini aç</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Dizini kaydetmek için ekran görüntülerini taşı</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">Oyun ekran alıntılarını görüntüle</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ekran alıntıları dizinini aç</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Dizini kaydetmek için ekran alıntılarını taşı</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Görseli JPG biçimine dönüştür</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Ekran görüntüleri taşınıyor...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Ekran alıntıları taşınıyor...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">Tüm ekran alıntılarını taşımak istediğinize emin misiniz?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">{0} silmek istediğinize emin misiniz?</sys:String>
 
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Son ekran görüntüsü</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Son ekran alıntısı</sys:String>
 
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Tüm ekran görüntüleri listesini rastgele seç</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">Atlıkarınca</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Tüm ekran alıntıları listesini rastgele seç</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Kullanılan küçük resimler</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Her oyun için yalnızca en yeni ekran görüntülerini göster</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Oyun başına ekran görüntüsü sayısı</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Her oyun için yalnızca en yeni ekran alıntılarını göster</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Oyun başına ekran alıntısı sayısı</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Oyun sayısı</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Otomatik değişikliği etkinleştir</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Zaman (saniye)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Süre (saniye)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Sadece favori oyunları göster</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Sadece belirli kaynaklar</sys:String>
     <sys:String x:Key="LOCSsvCarouselWithVideo">Videoları dahil et</sys:String>
@@ -53,62 +53,62 @@
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Yükleme performansını iyileştirmek için küçük resimler oluştur</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">Genel ekran görüntüleri yolu</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">Genel ekran alıntıları yolu</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">Alt klasörleri tara</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">Alt dizinleri tara</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">Oyun ekran alıntılarına sahipse bir etiket ekle</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam oyunu ekle</sys:String>
     
-    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
+    <sys:String x:Key="LOCSsvNumberToDigit">Sayıyı {digit} biçimine dönüştür</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Tek bir ekran alıntısı içeren bir denetim görüntüle</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Ekran alıntıları listesi içeren bir denetim görüntüle</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Dikey ekran alıntıları listesi içeren bir denetim görüntüle</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Kenarlık ekle</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Yuvarlak köşe ekle</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Yuvarlatılmış köşe ekle</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Tek ekran görüntüsü seçenekleri</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Tek ekran alıntısı seçenekleri</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Ekran alıntıları seçeneklerinin listesi</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ekran görüntüsü bilgilerini gizle</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ekran alıntısı bilgilerini gizle</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Resim seçildiğinde aç</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Tek ekran alıntısı görünümü içeren bağlantı seçimi</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Used a file pattern</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">Bir dosya kalıbı kullanıldı</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Ekran alıntılarını benzersiz bir dizine taşı</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Dosya kalıbı</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">Kesin konuma dönüştür</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Göreceli konuma dönüştür</sys:String>
     
     <sys:String x:Key="LOCSsJpgQuality">JPG kalitesi</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Ek olarak şunları kullanabilirsiniz:
+- {DateModified}		yyyy-AA-gg
+- {DateTimeModified}		yyyy-AA-gg SS_dd_ss
+- {digit}			sayı(lar)
     
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+Örnek:
+OyunAdı_20200107-1	=&gt;	{Name}_{digit}-{digit}
+OyunAdı_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Tüm oyunlar için bu dizini ekle.
     
-Example:
-{PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
+Örnek:
+{PlayniteDir}\ExtraMetadata\{GameId}\EkranAlıntıları</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
-If the {Name} is not included in &quot;Folder&quot;, it is automatically added.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Bu seçenek tüm ekran alıntılarını tek dizine taşımak için bir oyun menüsü ekler.
+&quot;Dizin&quot; içinde {Name} mevcut değilse kendiliğinden eklenir.
     
-Example:
-A game with two screenshot folders:
-- {Public}\Screenshots
+Örnek:
+İki ekran alıntısı dizini olan bir oyun:
+- {Public}\EkranAlıntıları
 - {SteamScreenshotsDir}\435790\screenshots
     
-If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the &quot;File Pattern&quot; and the link will be upated in plugin data.</sys:String>
+Benzersiz {DropboxFolder}\Screenshots\{Name} dizininiz varsa, oyun menüsünden seçeneği işaretledikten sonra, tüm ekran alıntıları &quot;Dosya Kalıbı&quot;na uygun olarak benzersiz dizine taşınacak ve bağlantı eklenti verisinde güncellenecektir.</sys:String>
 
     <!-- Notifications -->
 
