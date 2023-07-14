@@ -12,7 +12,7 @@
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
     <sys:String x:Key="LOCSsvTitle">スクリーンショット</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
+    <sys:String x:Key="LOCSsvLatest">最新</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
@@ -41,7 +41,7 @@
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">ゲーム数</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAutoChange">自動変更を有効にする</sys:String>
     <sys:String x:Key="LOCSsvCarouselTime">時間 (秒)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">お気に入りのゲームのみ表示</sys:String>
