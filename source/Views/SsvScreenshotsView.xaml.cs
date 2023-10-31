@@ -20,9 +20,9 @@ namespace ScreenshotsVisualizer.Views
     public partial class SsvScreenshotsView : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private static readonly IResourceProvider resources = new ResourceProvider();
 
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         private GameScreenshots gameScreenshots;
 

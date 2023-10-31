@@ -15,7 +15,7 @@ namespace ScreenshotsVisualizer.Models
     public class Screenshot
     {
         [DontSerialize]
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
         /// <summary>
         /// Complete path file
@@ -56,15 +56,8 @@ namespace ScreenshotsVisualizer.Models
         public string FileNameOnly => Path.GetFileName(FileName);
 
         [DontSerialize]
-        public bool IsVideo
-        {
-            get
-            {
-                return !File.Exists(FileName)
-                    ? false
-                    : Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv") || Path.GetExtension(FileName).ToLower().Contains("webm");
-            }
-        }
+        public bool IsVideo => File.Exists(FileName) 
+            && (Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv") || Path.GetExtension(FileName).ToLower().Contains("webm"));
 
         [DontSerialize]
         public string ImageThumbnail
@@ -73,7 +66,6 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (PluginDatabase.PluginSettings.Settings.UsedThumbnails)
                 {
-                    string ext = Path.GetExtension(FileName);
                     string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
                     string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
                     string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileNameWithoutExt}_Thumbnail.jpg");
@@ -110,7 +102,6 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (IsVideo)
                 {
-                    string ext = Path.GetExtension(FileName);
                     string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
                     string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
                     string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
@@ -127,14 +118,14 @@ namespace ScreenshotsVisualizer.Models
 
                     try
                     {
-                        var inputFile = new MediaFile { Filename = FileName };
-                        var outputFile = new MediaFile { Filename = FileThumbnail };
+                        MediaFile inputFile = new MediaFile { Filename = FileName };
+                        MediaFile outputFile = new MediaFile { Filename = FileThumbnail };
 
                         using (var engine = new Engine())
                         {
                             engine.GetMetadata(inputFile);
 
-                            var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(Duration.TotalSeconds / 2) };
+                            ConversionOptions options = new ConversionOptions { Seek = TimeSpan.FromSeconds(Duration.TotalSeconds / 2) };
                             engine.GetThumbnail(inputFile, outputFile, options);
                         }
 
@@ -153,7 +144,7 @@ namespace ScreenshotsVisualizer.Models
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
-        public TimeSpan _Duration = default(TimeSpan);
+        public TimeSpan _Duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
@@ -161,7 +152,7 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (IsVideo)
                 {
-                    if (_Duration != default(TimeSpan))
+                    if (_Duration != default)
                     {
                         return _Duration;
                     }

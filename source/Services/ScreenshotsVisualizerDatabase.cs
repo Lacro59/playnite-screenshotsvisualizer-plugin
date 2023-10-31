@@ -458,7 +458,7 @@ namespace ScreenshotsVisualizer.Services
 
         public void SetDataFromSettings(GameSettings item)
         {
-            System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+            SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
             Game game = PlayniteApi.Database.Games.Get(item.Id);
             if (game == null)

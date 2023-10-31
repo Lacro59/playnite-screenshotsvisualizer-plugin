@@ -24,7 +24,7 @@ namespace ScreenshotsVisualizer.Views
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static IResourceProvider resources = new ResourceProvider();
 
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
 
         public SsvScreenshotsManager()
