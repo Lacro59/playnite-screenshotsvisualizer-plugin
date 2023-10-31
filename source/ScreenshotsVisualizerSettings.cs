@@ -21,76 +21,28 @@ namespace ScreenshotsVisualizer
         public bool EnableIntegrationButtonHeader { get; set; } = false;
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
-        private bool _EnableIntegrationViewItem { get; set; } = true;
-        public bool EnableIntegrationViewItem
-        {
-            get => _EnableIntegrationViewItem;
-            set
-            {
-                _EnableIntegrationViewItem = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationViewItem = true;
+        public bool EnableIntegrationViewItem { get => _EnableIntegrationViewItem; set => SetValue(ref _EnableIntegrationViewItem, value); }
 
-        private bool _EnableIntegrationButton { get; set; } = true;
-        public bool EnableIntegrationButton
-        {
-            get => _EnableIntegrationButton;
-            set
-            {
-                _EnableIntegrationButton = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationButton = true;
+        public bool EnableIntegrationButton { get => _EnableIntegrationButton; set => SetValue(ref _EnableIntegrationButton, value); }
 
-        private bool _EnableIntegrationButtonDetails { get; set; } = false;
-        public bool EnableIntegrationButtonDetails
-        {
-            get => _EnableIntegrationButtonDetails;
-            set
-            {
-                _EnableIntegrationButtonDetails = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationButtonDetails = false;
+        public bool EnableIntegrationButtonDetails { get => _EnableIntegrationButtonDetails; set => SetValue(ref _EnableIntegrationButtonDetails, value); }
 
-        private bool _EnableIntegrationShowSinglePicture { get; set; } = true;
-        public bool EnableIntegrationShowSinglePicture
-        {
-            get => _EnableIntegrationShowSinglePicture;
-            set
-            {
-                _EnableIntegrationShowSinglePicture = value;
-                OnPropertyChanged();
-            }
-        }
-        
+        private bool _EnableIntegrationShowSinglePicture = true;
+        public bool EnableIntegrationShowSinglePicture { get => _EnableIntegrationShowSinglePicture; set => SetValue(ref _EnableIntegrationShowSinglePicture, value); }
+
         public double IntegrationShowSinglePictureHeight { get; set; } = 150;
         public bool OpenViewerWithOnSelectionSinglePicture { get; set; } = false;
         public bool AddBorderSinglePicture { get; set; } = true;
         public bool AddRoundedCornerSinglePicture { get; set; } = false;
 
-        private bool _EnableIntegrationShowPictures { get; set; } = true;
-        public bool EnableIntegrationShowPictures
-        {
-            get => _EnableIntegrationShowPictures;
-            set
-            {
-                _EnableIntegrationShowPictures = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationShowPictures = true;
+        public bool EnableIntegrationShowPictures { get => _EnableIntegrationShowPictures; set => SetValue(ref _EnableIntegrationShowPictures, value); }
 
-        private bool _EnableIntegrationShowPicturesVertical { get; set; } = true;
-        public bool EnableIntegrationShowPicturesVertical
-        {
-            get => _EnableIntegrationShowPicturesVertical;
-            set
-            {
-                _EnableIntegrationShowPicturesVertical = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationShowPicturesVertical = true;
+        public bool EnableIntegrationShowPicturesVertical { get => _EnableIntegrationShowPicturesVertical; set => SetValue(ref _EnableIntegrationShowPicturesVertical, value); }
 
         public double IntegrationShowPicturesHeight { get; set; } = 150;
         public bool LinkWithSinglePicture { get; set; } = false;
@@ -113,27 +65,11 @@ namespace ScreenshotsVisualizer
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
 
-        private bool _CarouselAutoChangeEnable { get; set; } = true;
-        public bool CarouselAutoChangeEnable
-        {
-            get => _CarouselAutoChangeEnable;
-            set
-            {
-                _CarouselAutoChangeEnable = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _CarouselAutoChangeEnable = true;
+        public bool CarouselAutoChangeEnable { get => _CarouselAutoChangeEnable; set => SetValue(ref _CarouselAutoChangeEnable, value); }
 
-        private int _CarouselAutoChangeTimer { get; set; } = 10;
-        public int CarouselAutoChangeTimer
-        {
-            get => _CarouselAutoChangeTimer;
-            set
-            {
-                _CarouselAutoChangeTimer = value;
-                OnPropertyChanged();
-            }
-        }
+        private int _CarouselAutoChangeTimer = 10;
+        public int CarouselAutoChangeTimer { get => _CarouselAutoChangeTimer; set => SetValue(ref _CarouselAutoChangeTimer, value); }
         #endregion
 
 
@@ -154,29 +90,13 @@ namespace ScreenshotsVisualizer
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        private bool _HasData { get; set; } = false;
+        private bool _HasData = false;
         [DontSerialize]
-        public bool HasData
-        {
-            get => _HasData;
-            set
-            {
-                _HasData = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool HasData { get => _HasData; set => SetValue(ref _HasData, value); }
 
-        private List<Screenshot> _ListScreenshots { get; set; } = new List<Screenshot>();
+        private List<Screenshot> _ListScreenshots = new List<Screenshot>();
         [DontSerialize]
-        public List<Screenshot> ListScreenshots
-        {
-            get => _ListScreenshots;
-            set
-            {
-                _ListScreenshots = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<Screenshot> ListScreenshots { get => _ListScreenshots; set => SetValue(ref _ListScreenshots, value); }
         #endregion  
     }
 
@@ -199,14 +119,7 @@ namespace ScreenshotsVisualizer
             ScreenshotsVisualizerSettings savedSettings = plugin.LoadPluginSettings<ScreenshotsVisualizerSettings>();
 
             // LoadPluginSettings returns null if not saved data is available.
-            if (savedSettings != null)
-            {
-                Settings = savedSettings;
-            }
-            else
-            {
-                Settings = new ScreenshotsVisualizerSettings();
-            }
+            Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
 
             // Manage source
             Task.Run(() => 
