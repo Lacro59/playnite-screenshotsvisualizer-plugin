@@ -11,8 +11,8 @@
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:controls1="clr-namespace:CommonPluginsShared.Controls"
-             mc:Ignorable="d" 
-             MinHeight="700" MinWidth="1280" Background="{DynamicResource WindowBackgourndBrush}">
+             mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1200" 
+             Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
@@ -23,7 +23,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10"> 
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
@@ -33,10 +33,8 @@
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        
-        <ListBox Grid.Column="0" Grid.Row="0" 
-                 Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged">
-            
+
+        <ListBox Grid.Column="0" Grid.Row="0" Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">
@@ -65,11 +63,11 @@
                                 <Style TargetType="{x:Type controls1:ImageAsync}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
-                                            <Setter Property="Source" Value="{Binding ImageThumbnail}" />
+                                            <Setter Property="Source" Value="{Binding ImageThumbnail, FallbackValue=''}" />
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
-                                            <Setter Property="Source" Value="{Binding Thumbnail}" />
+                                            <Setter Property="Source" Value="{Binding Thumbnail, FallbackValue=''}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -79,7 +77,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
                                    Style="{DynamicResource BaseTextBlockStyle}" 
-                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
+                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}, FallbackValue=''}">
                             <TextBlock.Effect>
                                 <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
                             </TextBlock.Effect>
@@ -151,22 +149,43 @@
             <Label Grid.Column="2" Grid.Row="4" Name="PART_FilesSize" Content="12.3Mb" HorizontalAlignment="Right" />
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0" Name="PART_Contener">
-            <Image Name="PART_Screenshot" Visibility="Collapsed" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown"
-                   MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
-                   MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
-            <controls:MediaElementExtend Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
-                                         MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
-                                         MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}"
-                                         Source="{Binding FileName}" LoadedBehavior="Play" x:Name="PART_Video" />
+        <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Margin="10,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Name="PART_Contener" Grid.Row="0">
+                <Image Name="PART_Screenshot" Visibility="Collapsed" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown"
+                       MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
+                       MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
+            
+                <controls:MediaElementExtend Visibility="Collapsed" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
+                                             MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
+                                             MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}"
+                                             LoadedBehavior="Play" x:Name="PART_Video" />
+            </Grid>
         </Grid>
+
         <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Transparent">
+            <Grid VerticalAlignment="Bottom" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="&#xEF35;" Name="PART_BtFolder" FontFamily="{DynamicResource FontIcoFont}" Click="PART_BtFolder_Click"
+                        ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}"/>
+                
+                <Label Grid.Column="2" Content="Image path" Name="PART_ImgPath" />
+            </Grid>
+            
             <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec51;" 
                     Background="Transparent" BorderThickness="0" FontSize="45"
                     HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                    Click="PART_Copy_Click" Name="PART_Copy" />            
+                    Click="PART_Copy_Click" Name="PART_Copy" />
         </Grid>
-
-
     </Grid>
 </UserControl>

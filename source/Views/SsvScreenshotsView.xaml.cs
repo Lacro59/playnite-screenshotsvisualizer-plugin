@@ -5,6 +5,7 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,8 +32,11 @@ namespace ScreenshotsVisualizer.Views
         {
             InitializeComponent();
 
+            PART_BtFolder.Visibility = Visibility.Collapsed;
+            PART_ImgPath.Content = string.Empty;
+
             gameScreenshots = PluginDatabase.Get(GameSelected);
-            var Items = gameScreenshots.Items;
+            List<Screenshot> Items = gameScreenshots.Items;
             Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
             PART_ListScreenshots.ItemsSource = Items;
@@ -48,6 +52,9 @@ namespace ScreenshotsVisualizer.Views
             if (PART_ListScreenshots.SelectedItem != null)
             {
                 Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
+                PART_BtFolder.Visibility = Visibility.Visible;
+                PART_BtFolder.Tag = screenshot.FileName;
+                PART_ImgPath.Content = screenshot.FileName;
 
                 if (File.Exists(screenshot.FileName))
                 {
@@ -80,7 +87,7 @@ namespace ScreenshotsVisualizer.Views
 
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.Items[index];
 
-            var RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
+            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
                 string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
@@ -118,7 +125,7 @@ namespace ScreenshotsVisualizer.Views
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
 
-                var Items = gameScreenshots.Items;
+                List<Screenshot> Items = gameScreenshots.Items;
                 Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
                 PART_ListScreenshots.SelectedIndex = -1;
@@ -152,7 +159,9 @@ namespace ScreenshotsVisualizer.Views
             finally
             {
                 if (stream != null)
+                {
                     stream.Close();
+                }
             }
 
             //file is not locked
@@ -191,37 +200,17 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_Video_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
+            if (e.ClickCount == 2 && this.Parent is Window)
             {
-                if (this.Parent is Window)
-                {
-                    if (((Window)this.Parent).WindowState == WindowState.Maximized)
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Normal;
-                    }
-                    else
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Maximized;
-                    }
-                }
+                ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             }
         }
 
         private void PART_Screenshot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
-            {
-                if (this.Parent is Window)
-                {
-                    if (((Window)this.Parent).WindowState == WindowState.Maximized)
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Normal;
-                    }
-                    else
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Maximized;
-                    }
-                }
+            if (e.ClickCount == 2 && this.Parent is Window)
+            { 
+                ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             }
         }
 
@@ -255,6 +244,16 @@ namespace ScreenshotsVisualizer.Views
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
             PART_Copy.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void PART_BtFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string dirPath = Path.GetDirectoryName(PART_BtFolder.Tag.ToString());
+            if (Directory.Exists(dirPath))
+            {
+                Process.Start(dirPath);
+            }
         }
     }
 }

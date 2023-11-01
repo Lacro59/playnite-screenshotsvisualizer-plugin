@@ -80,7 +80,7 @@ namespace ScreenshotsVisualizer
                     Title = resources.GetString("LOCSsv"),
                     Activated = () =>
                     {
-                        var windowOptions = new WindowOptions
+                        WindowOptions windowOptions = new WindowOptions
                         {
                             ShowMinimizeButton = false,
                             ShowMaximizeButton = true,
@@ -89,7 +89,7 @@ namespace ScreenshotsVisualizer
                             Height = 740
                         };
 
-                        var ViewExtension = new SsvScreenshotsManager();
+                        SsvScreenshotsManager ViewExtension = new SsvScreenshotsManager();
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv"), ViewExtension, windowOptions);
                         windowExtension.ResizeMode = ResizeMode.CanResize;
                         windowExtension.ShowDialog();
@@ -105,10 +105,9 @@ namespace ScreenshotsVisualizer
         #region Custom event
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
         {
-            string ButtonName = string.Empty;
             try
             {
-                ButtonName = ((Button)sender).Name;
+                string ButtonName = ((Button)sender).Name;
                 if (ButtonName == "PART_CustomSsvButton")
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");
@@ -117,12 +116,14 @@ namespace ScreenshotsVisualizer
                     {
                         ShowMinimizeButton = false,
                         ShowMaximizeButton = true,
-                        ShowCloseButton = true
+                        ShowCloseButton = true,
+                        CanBeResizable = true,
+                        Height = 720,
+                        Width = 1200
                     };
 
-                    var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+                    SsvScreenshotsView ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
-                    windowExtension.ResizeMode = ResizeMode.CanResize;
                     windowExtension.ShowDialog();
                 }
             }
@@ -269,12 +270,14 @@ namespace ScreenshotsVisualizer
                         {
                             ShowMinimizeButton = false,
                             ShowMaximizeButton = true,
-                            ShowCloseButton = true
+                            ShowCloseButton = true,
+                            CanBeResizable = true,
+                            Height = 720,
+                            Width = 1200
                         };
 
-                        var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+                        SsvScreenshotsView ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
-                        windowExtension.ResizeMode = ResizeMode.CanResize;
                         windowExtension.ShowDialog();
                     }
                 });
@@ -442,7 +445,7 @@ namespace ScreenshotsVisualizer
             {
                 MenuSection = resources.GetString("LOCSsv"),
                 Description = "Test",
-                Action = (mainMenuItem) => 
+                Action = (mainMenuItem) =>
                 {
 
                 }

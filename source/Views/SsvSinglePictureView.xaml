@@ -19,16 +19,15 @@
     </UserControl.Resources>
 
     <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" Loaded="PART_Contener_Loaded">
-        <controls:ZoomBorder ClipToBounds="True"
-                             Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+        <controls:ZoomBorder ClipToBounds="True" Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" MouseLeftButtonDown="PART_Screenshot_MouseLeftButtonDown">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
-                            <Binding Path="PictureSource" IsAsync="True" />
-                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
+                        <Binding Path="PictureSource" IsAsync="True" />
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </controls:ZoomBorder>
 
         <controls1:MediaElementExtend MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"

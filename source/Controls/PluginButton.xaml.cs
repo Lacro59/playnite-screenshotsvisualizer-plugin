@@ -81,7 +81,7 @@ namespace ScreenshotsVisualizer.Controls
             {
                 if (gameScreenshots.HasData)
                 {
-                    var tmp = gameScreenshots.Items;
+                    List<Screenshot> tmp = gameScreenshots.Items;
                     tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
                     DateTime SsvDateLast = tmp[0].Modifed;
 
@@ -109,12 +109,14 @@ namespace ScreenshotsVisualizer.Controls
             {
                 ShowMinimizeButton = false,
                 ShowMaximizeButton = true,
-                ShowCloseButton = true
+                ShowCloseButton = true,
+                CanBeResizable = true,
+                Height = 720,
+                Width = 1200
             };
 
-            var ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
+            SsvScreenshotsView ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
-            windowExtension.ResizeMode = ResizeMode.CanResize;
             windowExtension.ShowDialog();
         }
         #endregion
