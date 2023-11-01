@@ -498,7 +498,7 @@ namespace ScreenshotsVisualizer.Services
 
                             Directory.EnumerateFiles(PathFolder, "*.*", searchOption)
                                 .Where(s => extensions.Any(ext => ext == Path.GetExtension(s)))
-                                .ForEach(objectFile => 
+                                .ForEach(objectFile =>
                                 {
                                     try
                                     {
@@ -547,13 +547,15 @@ namespace ScreenshotsVisualizer.Services
                         IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
                         if (elements?.Count() > 0)
                         {
+                            elements = elements?.GroupBy(x => x.FileName)?.Select(g => g.First());
+
                             gameScreenshots.DateLastRefresh = DateTime.Now;
                             gameScreenshots.Items = elements.ToList();
 
                             Task.Run(() =>
                             {
                                 // Force generation of video thumbnail
-                                var VideoElements = gameScreenshots.Items.Where(x => x.IsVideo).Select(x => x.Thumbnail);
+                                IEnumerable<string> VideoElements = gameScreenshots.Items.Where(x => x.IsVideo).Select(x => x.Thumbnail);
                             });
                             Thread.Sleep(500 * gameScreenshots.Items.Where(x => x.IsVideo).Count());
                         }

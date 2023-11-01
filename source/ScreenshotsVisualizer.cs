@@ -41,7 +41,7 @@ namespace ScreenshotsVisualizer
                 string PathDLL = Path.Combine(PluginPath, "VirtualizingWrapPanel.dll");
                 if (File.Exists(PathDLL))
                 {
-                    var DLL = Assembly.LoadFile(PathDLL);
+                    Assembly DLL = Assembly.LoadFile(PathDLL);
                 }
             }
             catch (Exception ex)

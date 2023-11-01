@@ -176,7 +176,7 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="&#xEF35;" Name="PART_BtFolder" FontFamily="{DynamicResource FontIcoFont}" Click="PART_BtFolder_Click"
+                <Button Grid.Column="0" Content="&#xEC5B;" Name="PART_BtFolder" FontFamily="{DynamicResource FontIcoFont}" Click="PART_BtFolder_Click"
                         ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}"/>
                 
                 <Label Grid.Column="2" Content="Image path" Name="PART_ImgPath" />
