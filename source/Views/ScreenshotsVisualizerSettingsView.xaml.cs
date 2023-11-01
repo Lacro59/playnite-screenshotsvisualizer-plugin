@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace ScreenshotsVisualizer.Views
 {
@@ -26,6 +27,28 @@ namespace ScreenshotsVisualizer.Views
 
         public static List<ListGameScreenshot> listGameScreenshots = new List<ListGameScreenshot>();
         public static List<ListGame> listGames = new List<ListGame>();
+
+        private bool UserFilter(object item)
+        {
+            if (string.IsNullOrEmpty(TextboxSearch.Text))
+            {
+                return true;
+            }
+            else
+            {
+                if (item is ListGame lg)
+                {
+                    return lg.Name.IndexOf(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+
+                if (item is ListGameScreenshot lgs)
+                {
+                    return lgs.Name.IndexOf(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+            }
+
+            return true;
+        }
 
 
         public ScreenshotsVisualizerSettingsView()
@@ -40,6 +63,12 @@ namespace ScreenshotsVisualizer.Views
                 {
                     PART_ListGame.ItemsSource = listGames;
                     PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+
+                    CollectionView viewGame = (CollectionView)CollectionViewSource.GetDefaultView(PART_ListGame.ItemsSource);
+                    viewGame.Filter = UserFilter;
+
+                    CollectionView viewGameScreenshot = (CollectionView)CollectionViewSource.GetDefaultView(PART_ListGameScreenshot.ItemsSource);
+                    viewGameScreenshot.Filter = UserFilter;
                 });
             });
         }
@@ -287,28 +316,8 @@ namespace ScreenshotsVisualizer.Views
         // Search by name
         private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                PART_ListGame.ItemsSource = null;
-                PART_ListGameScreenshot.ItemsSource = null;
-
-
-                listGames.ForEach(x => x.IsVisible = true);
-                listGames.Where(x => x.Name.IsNullOrEmpty() || !x.Name.Contains(TextboxSearch?.Text ?? string.Empty, StringComparison.OrdinalIgnoreCase))
-                         .ForEach(x => x.IsVisible = false);
-
-                listGameScreenshots.ForEach(x => x.IsVisible = true);
-                listGameScreenshots.Where(x => x.Name.IsNullOrEmpty() || !x.Name.Contains(TextboxSearch?.Text ?? string.Empty, StringComparison.OrdinalIgnoreCase))
-                                   .ForEach(x => x.IsVisible = false);
-
-
-                PART_ListGame.ItemsSource = listGames;
-                PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false);
-            }
+            CollectionViewSource.GetDefaultView(PART_ListGame.ItemsSource).Refresh();
+            CollectionViewSource.GetDefaultView(PART_ListGameScreenshot.ItemsSource).Refresh();
         }
 
 
