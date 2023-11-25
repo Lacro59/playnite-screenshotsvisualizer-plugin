@@ -23,7 +23,7 @@
     </UserControl.Resources>
 
     <Grid Margin="20">
-        <TabControl Name="PART_TabControl" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl Name="PART_TabControl">
             <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
                 <Grid Name="PART_Settings" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
@@ -666,6 +666,7 @@
         </TabControl>
         
         <Button Content="{DynamicResource LOCCommonSelectVariable}" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Visibility="{Binding ElementName=PART_Settings, Path=IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Name="PART_SelectVariables" Margin="0,5,0,0" Click="PART_SelectVariables_Click" />
     </Grid>
 </UserControl>

@@ -632,11 +632,6 @@ namespace ScreenshotsVisualizer.Views
             windowExtension.ShowDialog();
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PART_SelectVariables.Visibility = PART_TabControl.SelectedIndex == 1 ? Visibility.Collapsed : Visibility.Visible;
-        }
-
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
         {
             try
