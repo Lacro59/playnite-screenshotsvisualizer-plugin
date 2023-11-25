@@ -53,11 +53,11 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void SetImage(Screenshot screenshot)
         {
-            string PictureSource = string.Empty;
             bool IsVideo = screenshot?.IsVideo ?? false;
 
             if (File.Exists(screenshot?.FileName))
             {
+                string PictureSource;
                 if (IsVideo)
                 {
                     PictureSource = screenshot.FileName;
@@ -109,12 +109,18 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void SettingsViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Update();
+            if (this.IsVisible)
+            {
+                Update();
+            }
         }
 
         private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Update();
+            if (this.IsVisible)
+            {
+                Update();
+            }
         }
 
 
@@ -129,6 +135,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     if (Timer != null)
                     {
                         Timer.Stop();
+                        Timer.Dispose();
                         Timer = null;
                     }
 
@@ -259,8 +266,13 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Index--;
                 }
 
-                Timer?.Stop();
-                Timer?.Start();
+                if (Timer != null)
+                {
+                    Timer.Stop();
+                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Start();
+                }
+
                 SetImage(Screenshots[Index]);
             }
         }
@@ -279,8 +291,13 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Index++;
                 }
 
-                Timer?.Stop();
-                Timer?.Start();
+                if (Timer != null)
+                {
+                    Timer.Stop();
+                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Start();
+                }
+
                 SetImage(Screenshots[Index]);
             }
         }
@@ -327,10 +344,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     WindowsIsActivated = false;
                     PART_Video.LoadedBehavior = MediaState.Pause;
 
-                    if (Timer != null)
-                    {
-                        Timer.Stop();
-                    }
+                    Timer?.Stop();
                 }));
             });
         }
@@ -345,10 +359,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     WindowsIsActivated = true;
                     PART_Video.LoadedBehavior = MediaState.Pause;
 
-                    if (Timer != null)
-                    {
-                        Timer.Start();
-                    }
+                    Timer?.Start();
                 }));
             });
         }
@@ -361,8 +372,12 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 case WindowState.Maximized:
                     Application_Activated(sender, e);
                     break;
+
                 case WindowState.Minimized:
                     Application_Deactivated(sender, e);
+                    break;
+
+                default:
                     break;
             }
         }
