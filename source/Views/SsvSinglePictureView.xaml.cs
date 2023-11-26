@@ -1,7 +1,9 @@
 ﻿using CommonPlayniteShared;
 using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
+using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,12 +19,15 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvSinglePictureView : UserControl
     {
+        internal static IResourceProvider resources => new ResourceProvider();
+        internal ScreenshotsVisualizerDatabase PluginDatabase { get; set; } = ScreenshotsVisualizer.PluginDatabase;
+
         private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
         private Screenshot screenshot { get; set; }
         private int index { get; set; } = 0;
 
 
-        public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null)
+        public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null, Game game = null)
         {
             InitializeComponent();
 
@@ -35,6 +40,7 @@ namespace ScreenshotsVisualizer.Views
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
             PART_Copy.Visibility = Visibility.Collapsed;
+            PART_Game.Visibility = Visibility.Collapsed;
 
             SetImage(screenshot);
         }
@@ -43,16 +49,29 @@ namespace ScreenshotsVisualizer.Views
         private void SetImage(Screenshot screenshot)
         {
             string PictureSource = string.Empty;
+            Game game = API.Instance.Database.Games.Get(screenshot.gameId);
+
             if (File.Exists(screenshot.FileName))
             {
                 PictureSource = screenshot.FileName;
                 this.screenshot = screenshot;
+
+                if (this.Parent is Window)
+                {
+                    ((Window)this.Parent).Title = game != null
+                        ? resources.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
+                        : resources.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
+                }
             }
 
             this.DataContext = new
             {
                 PictureSource,
-                IsVideo = screenshot.IsVideo
+                IsVideo = screenshot.IsVideo,
+                Icon = !game?.Icon.IsNullOrEmpty() ?? false ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon) : string.Empty,
+                GameName = game?.Name,
+                GameId = game?.Id,
+                GoToGame = PluginDatabase.GoToGame
             };
         }
 
@@ -72,14 +91,7 @@ namespace ScreenshotsVisualizer.Views
 
                 if (this.Parent is Window)
                 {
-                    if (((Window)this.Parent).WindowState == WindowState.Maximized)
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Normal;
-                    }
-                    else
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Maximized;
-                    }
+                    ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                 }
             }
         }
@@ -93,14 +105,7 @@ namespace ScreenshotsVisualizer.Views
 
                 if (this.Parent is Window)
                 {
-                    if (((Window)this.Parent).WindowState == WindowState.Maximized)
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Normal;
-                    }
-                    else
-                    {
-                        ((Window)this.Parent).WindowState = WindowState.Maximized;
-                    }
+                    ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                 }
             }
         }
@@ -151,8 +156,12 @@ namespace ScreenshotsVisualizer.Views
                 case Key.Right:
                     ButtonNext_Click(null, null);
                     break;
+
                 case Key.Left:
                     ButtonPrev_Click(null, null);
+                    break;
+
+                default:
                     break;
             }
         }
@@ -177,6 +186,7 @@ namespace ScreenshotsVisualizer.Views
             if (!screenshot?.IsVideo ?? true)
             {
                 PART_Copy.Visibility = Visibility.Visible;
+                PART_Game.Visibility = Visibility.Visible;
             }
         }
 
@@ -185,6 +195,7 @@ namespace ScreenshotsVisualizer.Views
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
             PART_Copy.Visibility = Visibility.Collapsed;
+            PART_Game.Visibility = Visibility.Collapsed;
         }
 
 

@@ -18,54 +18,65 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" MouseDown="PART_Contener_MouseDown"
-          MouseEnter="PART_Contener_MouseEnter" MouseLeave="PART_Contener_MouseLeave"
-          Loaded="PART_Contener_Loaded"
-          IsVisibleChanged="PART_Contener_IsVisibleChanged" Margin="10" Background="Transparent">
+    <DockPanel Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" MouseDown="PART_Contener_MouseDown"
+               MouseEnter="PART_Contener_MouseEnter" MouseLeave="PART_Contener_MouseLeave"
+               Loaded="PART_Contener_Loaded"
+               LastChildFill="True"
+               IsVisibleChanged="PART_Contener_IsVisibleChanged" Margin="10" Background="Transparent">
         
-        <Image Name="PART_ScreenshotsPicture" Stretch="Uniform"
-               Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-            <Image.Source>
-                <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
-                    <Binding Path="PictureSource" IsAsync="True" />
-                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
-                </MultiBinding>
-            </Image.Source>
-        </Image>
+        <TextBlock Margin="10,5,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                   DockPanel.Dock="Bottom"
+                   Visibility="{Binding AddGameName, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                <controls1:TextBlockTrimmed Text="{Binding GameName, FallbackValue='GameName'}" />
+            </Hyperlink>
+        </TextBlock>
 
-        <controls1:MediaElementExtend Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                      Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
-                                      AddBorder="{Binding AddBorder}"
-                                      Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
+        <Grid>
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform"
+                   Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
+                        <Binding Path="PictureSource" IsAsync="True" />
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid}" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
 
-        <Border Name="PART_ImageBorder"
-                BorderThickness="{DynamicResource ControlBorderThickness}" 
-                BorderBrush="{DynamicResource NormalBorderBrush}" 
-                Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
-                Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}">
-            
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Visibility" Value="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsVideo}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
+            <controls1:MediaElementExtend Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
+                                          AddBorder="{Binding AddBorder}"
+                                          Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
 
-        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xea9d;" 
+            <Border Name="PART_ImageBorder"
+                    BorderThickness="{DynamicResource ControlBorderThickness}" 
+                    BorderBrush="{DynamicResource NormalBorderBrush}" 
+                    Height="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualHeight}"
+                    Width="{Binding ElementName=PART_ScreenshotsPicture, Path=ActualWidth}">
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="{Binding AddBorder, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsVideo}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+
+            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xea9d;" 
                 Background="Transparent" BorderThickness="0" FontSize="45"
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Click="ButtonPrev_Click" Name="ButtonPrev" />
-        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xeaa0;"
+            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xeaa0;"
                 Background="Transparent" BorderThickness="0" FontSize="45"
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 Click="ButtonNext_Click" Name="ButtonNext" />
-    </Grid>
+        </Grid>
+    </DockPanel>
 </UserControl>

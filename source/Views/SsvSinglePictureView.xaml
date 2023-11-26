@@ -9,7 +9,7 @@
              xmlns:controls="clr-namespace:ScreenshotsVisualizer.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
-             xmlns:converters1="clr-namespace:CommonPluginsShared.Converters"
+             xmlns:converters1="clr-namespace:CommonPluginsShared.Converters" xmlns:controls2="clr-namespace:CommonPluginsShared.Controls"
              mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="500">
 
     <UserControl.Resources>
@@ -47,5 +47,14 @@
                 Background="Transparent" BorderThickness="0" FontSize="45"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Click="PART_Copy_Click" Name="PART_Copy" />
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Name="PART_Game" Margin="10">
+            <controls2:ImageAsync Source="{Binding Icon}" Height="24" MinWidth="24" />
+            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
+                <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                    <TextBlock Text="{Binding GameName}" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>    

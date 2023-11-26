@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type ssv:ScreenshotsVisualizerSettings}}">
     
-    <Grid Unloaded="Grid_Unloaded">
+    <Grid Unloaded="Grid_Unloaded" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="10" />
@@ -35,55 +35,60 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Content="{DynamicResource LOCCommonMargin}" Grid.Column="0" Grid.Row="0" />
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Content="{DynamicResource LOCSsvCarouselAddGameName}" 
+                  IsChecked="{Binding Settings.ssvCarouselOptions.AddGameName}" />
+
+        <Label Content="{DynamicResource LOCCommonMargin}" Grid.Column="0" Grid.Row="2" />
         <Slider Minimum="0" Maximum="50" Value="{Binding Settings.ssvCarouselOptions.Margin, FallbackValue=10}" 
                 IsSnapToTickEnabled="True" TickFrequency="1"
                 AutoToolTipPlacement="TopLeft"
                 Width="200" 
-                Grid.Column="2" Grid.Row="0" />
+                Grid.Column="2" Grid.Row="2" />
         
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Content="{DynamicResource LOCSsvCarouselEnableAutoChange}" 
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Content="{DynamicResource LOCSsvCarouselEnableAutoChange}" 
                   Name="PART_EnableAutoChange"
                   IsChecked="{Binding Settings.ssvCarouselOptions.EnableAutoChange}" />
 
-        <Label Content="{DynamicResource LOCSsvCarouselTime}" Grid.Column="0" Grid.Row="4" />
+        <Label Content="{DynamicResource LOCSsvCarouselTime}" Grid.Column="0" Grid.Row="6" />
         <Slider Minimum="10" Maximum="120" Value="{Binding Settings.ssvCarouselOptions.Time, FallbackValue=10}" 
                 IsEnabled="{Binding ElementName=PART_EnableAutoChange, Path=IsChecked}"
                 IsSnapToTickEnabled="True" TickFrequency="1"
                 AutoToolTipPlacement="TopLeft"
                 Width="200" 
-                Grid.Column="2" Grid.Row="4" />
-
-        <Label Content="{DynamicResource LOCSsvCarouselLimitPerGame}" Grid.Column="0" Grid.Row="6" />
-        <Slider Minimum="0" Maximum="50" Value="{Binding Settings.ssvCarouselOptions.LimitPerGame, FallbackValue=10}" 
-                IsSnapToTickEnabled="True" TickFrequency="1"
-                AutoToolTipPlacement="TopLeft"
-                Width="200" 
                 Grid.Column="2" Grid.Row="6" />
 
-        <Label Content="{DynamicResource LOCSsvCarouselLimitGame}" Grid.Column="0" Grid.Row="8" />
-        <Slider Minimum="0" Maximum="20" Value="{Binding Settings.ssvCarouselOptions.LimitGame, FallbackValue=0}" 
+        <Label Content="{DynamicResource LOCSsvCarouselLimitPerGame}" Grid.Column="0" Grid.Row="8" />
+        <Slider Minimum="0" Maximum="50" Value="{Binding Settings.ssvCarouselOptions.LimitPerGame, FallbackValue=10}" 
                 IsSnapToTickEnabled="True" TickFrequency="1"
                 AutoToolTipPlacement="TopLeft"
                 Width="200" 
                 Grid.Column="2" Grid.Row="8" />
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" Content="{DynamicResource LOCSsvCarouselEnableLowerRezolution}" 
+        <Label Content="{DynamicResource LOCSsvCarouselLimitGame}" Grid.Column="0" Grid.Row="10" />
+        <Slider Minimum="0" Maximum="20" Value="{Binding Settings.ssvCarouselOptions.LimitGame, FallbackValue=0}" 
+                IsSnapToTickEnabled="True" TickFrequency="1"
+                AutoToolTipPlacement="TopLeft"
+                Width="200" 
+                Grid.Column="2" Grid.Row="10" />
+
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="12" Content="{DynamicResource LOCSsvCarouselEnableLowerRezolution}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.EnableLowerRezolution}" />
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="12" Content="{DynamicResource LOCSsvCarouselEnableAllRandom}" 
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="14" Content="{DynamicResource LOCSsvCarouselEnableAllRandom}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.EnableAllRandom}" />
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="14" Content="{DynamicResource LOCSsvCarouselOnlyMostRecent}" 
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="16" Content="{DynamicResource LOCSsvCarouselOnlyMostRecent}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.OnlyMostRecent}" />
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="16" Content="{DynamicResource LOCSsvCarouselOnlyFavorite}" 
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="18" Content="{DynamicResource LOCSsvCarouselOnlyFavorite}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.OnlyFavorite}" />
 
-        <Label Content="{DynamicResource LOCSsvCarouselSourcesList}" Grid.Column="0" Grid.Row="18" />
-        <ComboBox Grid.Column="2" Grid.Row="18" ItemsSource="{Binding Settings.ssvCarouselOptions.SourcesList}" 
+        <Label Content="{DynamicResource LOCSsvCarouselSourcesList}" Grid.Column="0" Grid.Row="20" />
+        <ComboBox Grid.Column="2" Grid.Row="20" ItemsSource="{Binding Settings.ssvCarouselOptions.SourcesList}" 
                   IsEditable="True" IsReadOnly="True" Name="FilterSource">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -94,7 +99,7 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="20" Content="{DynamicResource LOCSsvCarouselWithVideo}" 
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="22" Content="{DynamicResource LOCSsvCarouselWithVideo}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.WithVideo}" />
     </Grid>
 </UserControl>

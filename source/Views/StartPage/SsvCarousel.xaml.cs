@@ -2,6 +2,7 @@
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Data;
+using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
@@ -81,7 +82,11 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 {
                     PictureSource,
                     IsVideo,
-                    AddBorder = true
+                    AddBorder = true,
+                    AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
+                    GameName = API.Instance.Database.Games.Get(screenshot.gameId)?.Name,
+                    GameId = API.Instance.Database.Games.Get(screenshot.gameId)?.Id,
+                    GoToGame = PluginDatabase.GoToGame
                 };
             }
             else
@@ -182,6 +187,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                         data = data.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame).ToList();
                     }
 
+                    data.ForEach(c => c.gameId = x.Key);
                     temp.AddRange(data);
                 });
 
@@ -244,8 +250,13 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Width = 1280
                 };
 
+                Game game = API.Instance.Database.Games.Get(Screenshots[Index].gameId);
+                string Title = game != null
+                    ? resources.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
+                    : resources.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
+
                 SsvSinglePictureView ViewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly, ViewExtension, windowOptions);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, Title, ViewExtension, windowOptions);
                 windowExtension.ShowDialog();
             }
         }

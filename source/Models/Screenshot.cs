@@ -17,6 +17,9 @@ namespace ScreenshotsVisualizer.Models
         [DontSerialize]
         private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
 
+        [DontSerialize]
+        public Guid gameId { get; set; }
+
         /// <summary>
         /// Complete path file
         /// </summary>
@@ -56,8 +59,7 @@ namespace ScreenshotsVisualizer.Models
         public string FileNameOnly => Path.GetFileName(FileName);
 
         [DontSerialize]
-        public bool IsVideo => File.Exists(FileName) 
-            && (Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv") || Path.GetExtension(FileName).ToLower().Contains("webm"));
+        public bool IsVideo => File.Exists(FileName) && (Path.GetExtension(FileName).ToLower().Contains("mp4") || Path.GetExtension(FileName).ToLower().Contains("avi") || Path.GetExtension(FileName).ToLower().Contains("mkv") || Path.GetExtension(FileName).ToLower().Contains("webm"));
 
         [DontSerialize]
         public string ImageThumbnail

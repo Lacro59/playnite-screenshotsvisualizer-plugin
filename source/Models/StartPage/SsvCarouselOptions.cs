@@ -40,6 +40,9 @@ namespace ScreenshotsVisualizer.Models.StartPage
         private bool _WithVideo = false;
         public bool WithVideo { get => _WithVideo; set => SetValue(ref _WithVideo, value); }
     
+        private bool _AddGameName = true;
+        public bool AddGameName { get => _AddGameName; set => SetValue(ref _AddGameName, value); }
+    
         private List<CheckElement> _SourcesList = new List<CheckElement>();
         public List<CheckElement> SourcesList { get => _SourcesList; set => SetValue(ref _SourcesList, value); }
     }
