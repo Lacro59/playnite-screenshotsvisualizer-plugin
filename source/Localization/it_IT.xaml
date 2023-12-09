@@ -37,6 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Anteprima usate</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
