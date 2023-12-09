@@ -32,8 +32,8 @@
             </Hyperlink>
         </TextBlock>
 
-        <Grid>
-            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform"
+        <Grid Name="PART">
+            <Image Name="PART_ScreenshotsPicture" Stretch="Uniform" Height="{Binding ElementName=PART, Path=ActualHeight}"
                    Visibility="{Binding IsVideo, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource ImageConverter}" ConverterParameter="-">
@@ -44,8 +44,9 @@
             </Image>
 
             <controls1:MediaElementExtend Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                          Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
+                                          MaxHeight="{Binding ElementName=PART, Path=ActualHeight}"
                                           AddBorder="{Binding AddBorder}"
+                                          NoSound="True"
                                           Source="{Binding PictureSource}" LoadedBehavior="Play" x:Name="PART_Video" />
 
             <Border Name="PART_ImageBorder"
