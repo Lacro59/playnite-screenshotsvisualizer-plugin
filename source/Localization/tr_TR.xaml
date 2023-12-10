@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Atlıkarınca</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Oyun adını göster</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Tüm ekran alıntıları listesini rastgele seç</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Kullanılan küçük resimler</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Her oyun için yalnızca en yeni ekran alıntılarını göster</sys:String>
