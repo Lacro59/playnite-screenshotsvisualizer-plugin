@@ -16,6 +16,7 @@
         <converters1:ImageConverter x:Key="ImageConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
     </UserControl.Resources>
 
     <DockPanel Name="PART_Contener" SizeChanged="PART_Contener_SizeChanged" MouseDown="PART_Contener_MouseDown"
@@ -24,9 +25,18 @@
                LastChildFill="True"
                IsVisibleChanged="PART_Contener_IsVisibleChanged" Margin="10" Background="Transparent">
         
-        <TextBlock Margin="10,5,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                   DockPanel.Dock="Bottom"
-                   Visibility="{Binding AddGameName, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <TextBlock Margin="10,5,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Visibility" Value="{Binding GameName, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AddGameName}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>        
+                </Style>
+            </TextBlock.Style>
+            
             <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
                 <controls1:TextBlockTrimmed Text="{Binding GameName, FallbackValue='GameName'}" />
             </Hyperlink>

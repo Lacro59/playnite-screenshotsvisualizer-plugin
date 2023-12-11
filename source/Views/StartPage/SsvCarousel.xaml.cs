@@ -45,6 +45,12 @@ namespace ScreenshotsVisualizer.Views.StartPage
             PluginDatabase.PluginSettings.PropertyChanged += SettingsViewModel_PropertyChanged;
 
             InitializeComponent();
+
+            this.DataContext = new
+            {
+                GameName = string.Empty
+            };
+
             Update();
 
             ButtonNext.Visibility = Visibility.Collapsed;
@@ -199,7 +205,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Screenshots = temp.ToObservable();
+                    Screenshots = temp.Where(x => File.Exists(x.FileName)).ToObservable();
                     if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAutoChange)
                     {
                         Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);

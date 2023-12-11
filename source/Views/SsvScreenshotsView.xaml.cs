@@ -209,7 +209,7 @@ namespace ScreenshotsVisualizer.Views
         private void PART_Screenshot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2 && this.Parent is Window)
-            { 
+            {
                 ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             }
         }
