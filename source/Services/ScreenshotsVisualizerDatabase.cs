@@ -179,7 +179,7 @@ namespace ScreenshotsVisualizer.Services
                 string CancelText = string.Empty;
                 activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
 
-                foreach (var item in Database.Items)
+                foreach (KeyValuePair<Guid, GameScreenshots> item in Database.Items)
                 {
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
@@ -189,8 +189,7 @@ namespace ScreenshotsVisualizer.Services
 
                     try
                     {
-                        MoveToFolderToSaveWithNoLoader(item.Key);
-
+                        MoveToFolderToSaveWithNoLoader(item.Key, activateGlobalProgress);
                     }
                     catch (Exception ex)
                     {
@@ -245,7 +244,8 @@ namespace ScreenshotsVisualizer.Services
                             break;
                         }
 
-                        MoveToFolderToSaveWithNoLoader(Id);
+                        MoveToFolderToSaveWithNoLoader(Id, activateGlobalProgress);
+                        activateGlobalProgress.CurrentProgressValue++;
                     }
                 }
                 catch (Exception ex)
@@ -259,11 +259,12 @@ namespace ScreenshotsVisualizer.Services
             }, globalProgressOptions);
         }
 
-        public void MoveToFolderToSaveWithNoLoader(Guid id)
+        public void MoveToFolderToSaveWithNoLoader(Guid id, GlobalProgressActionArgs globalProgressActionArgs)
         {
             Game game = PlayniteApi.Database.Games.Get(id);
             if (game != null)
             {
+                globalProgressActionArgs.Text = game.Name;
                 MoveToFolderToSaveWithNoLoader(game);
             }
         }
@@ -423,7 +424,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 foreach(FolderSettings folderSettings in FolderSettingsGlobal)
                 {
-                    var finded = gameSettings.ScreenshotsFolders
+                    FolderSettings finded = gameSettings.ScreenshotsFolders
                         .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder) 
                                     && x.UsedFilePattern == folderSettings.UsedFilePattern
                                     && x.FilePattern.IsEqual(folderSettings.FilePattern));
@@ -638,7 +639,7 @@ namespace ScreenshotsVisualizer.Services
                     return;
                 }
 
-                Screenshot screenshot = ((Screenshot)listBox.Items[index]);
+                Screenshot screenshot = (Screenshot)listBox.Items[index];
 
                 bool IsGood = false;
 

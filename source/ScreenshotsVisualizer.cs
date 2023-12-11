@@ -33,7 +33,7 @@ namespace ScreenshotsVisualizer
 
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
-        {            
+        {
             // Manual dll load
             try
             {
