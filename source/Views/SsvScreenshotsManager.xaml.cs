@@ -5,6 +5,7 @@ using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -160,6 +161,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
                 ((SsvScreenshotsManagerData)DataContext).FileNameVideo = string.Empty;
+                ((SsvScreenshotsManagerData)DataContext).FilePath = string.Empty;
                 return;
             }
 
@@ -174,6 +176,7 @@ namespace ScreenshotsVisualizer.Views
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = item.FileName;
                 ((SsvScreenshotsManagerData)DataContext).FileNameVideo = string.Empty;
             }
+            ((SsvScreenshotsManagerData)DataContext).FilePath = item.FileName;
         }
 
 
@@ -289,6 +292,16 @@ namespace ScreenshotsVisualizer.Views
         {
             PART_Copy.Visibility = Visibility.Collapsed;
         }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = Path.GetDirectoryName(((SsvScreenshotsManagerData)DataContext).FilePath);
+            if (Directory.Exists(filePath))
+            {
+                Process.Start(filePath);
+            }
+        }
     }
 
 
@@ -305,6 +318,9 @@ namespace ScreenshotsVisualizer.Views
 
         private string _FileNameVideo = string.Empty;
         public string FileNameVideo { get => _FileNameVideo; set => SetValue(ref _FileNameVideo, value); }
+
+        private string _FilePath = string.Empty;
+        public string FilePath { get => _FilePath; set => SetValue(ref _FilePath, value); }
     }
 
 
