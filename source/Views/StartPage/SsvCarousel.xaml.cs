@@ -103,15 +103,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
         }
 
 
-        private void PART_Contener_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            PART_ScreenshotsPicture.Height = PART_Contener.ActualHeight;
-            PART_ScreenshotsPicture.Width = PART_Contener.ActualWidth;
-            PART_Video.Height = PART_Contener.ActualHeight;
-            PART_Video.Width = PART_Contener.ActualWidth;
-        }
-
-
         private void SettingsViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.IsVisible)
