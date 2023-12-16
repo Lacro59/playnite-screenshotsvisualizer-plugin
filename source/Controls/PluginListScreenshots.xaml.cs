@@ -78,9 +78,11 @@ namespace ScreenshotsVisualizer.Controls
 
 
             // With PlayerActivities
+            ControlDataContext.dt = default;
             if (this.Tag is DateTime)
             {
                 ControlDataContext.IsActivated = true;
+                ControlDataContext.dt = (DateTime)this.Tag;
             }
         }
 
@@ -94,10 +96,10 @@ namespace ScreenshotsVisualizer.Controls
 
 
             // With PlayerActivities
-            if (this.Tag is DateTime)
+            if (ControlDataContext.dt != default)
             {
                 screenshots = screenshots
-                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)this.Tag).ToString("yyyy-MM--dd")))
+                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual((ControlDataContext.dt).ToString("yyyy-MM--dd")))
                     .ToList();
             }
 
@@ -141,6 +143,9 @@ namespace ScreenshotsVisualizer.Controls
     {
         private bool _IsActivated;
         public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+
+        private DateTime _dt;
+        public DateTime dt { get => _dt; set => SetValue(ref _dt, value); }
 
         private bool _AddBorder;
         public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
