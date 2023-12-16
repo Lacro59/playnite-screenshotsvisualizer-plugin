@@ -37,6 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carrousel</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Aléatoire sur toutes les captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Utiliser une miniature ?</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">N'afficher que les captures d'écran les plus récentes pour chaque jeu</sys:String>
@@ -46,7 +47,7 @@
     <sys:String x:Key="LOCSsvCarouselTime">Temps (secondes)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Afficher uniquement les jeux favoris</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Seulement certaines sources</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Inclure les vidéos</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
