@@ -37,6 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Случайный порядок всех скриншотов</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Используемые эскизы</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показывать только самые последние скриншоты для каждой игры</sys:String>

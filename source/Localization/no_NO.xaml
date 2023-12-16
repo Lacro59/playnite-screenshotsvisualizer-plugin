@@ -37,6 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Vis spillnavnet</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
