@@ -15,9 +15,9 @@
     <sys:String x:Key="LOCSsvLatest">Legutóbbi</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">Játék képernyőképeinek megtekintése</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Nyissa meg a képernyőfotók könyvtárát</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Kép konvertálása JPG-be</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
@@ -26,7 +26,7 @@
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">Valóban törölni szeretné &quot;{0}&quot;?</sys:String>
 
     
     <!-- SsvManager -->
@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">A játék nevének megjelenítése</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Használt miniatűrök</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
