@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carrousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Afficher le nom du jeu</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Aléatoire sur toutes les captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Utiliser une miniature ?</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">N'afficher que les captures d'écran les plus récentes pour chaque jeu</sys:String>
