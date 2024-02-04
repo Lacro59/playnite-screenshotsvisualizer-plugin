@@ -66,6 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">添加边</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 
