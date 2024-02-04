@@ -66,6 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Anzeigen eines Steuerelements mit einem einzelnen Screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Anzeigen eines Steuerelements mit einer Liste von Screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Anzeigen eines Steuerelements mit einer Liste vertikaler Screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Rahmen hinzufügen</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Abgerundeten Ecken hinzufügen</sys:String>
 
