@@ -55,7 +55,7 @@ namespace ScreenshotsVisualizer
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginListScreenshots", "PluginListScreenshotsVertical", "PluginViewItem" },
+                ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginScreenshots", "PluginListScreenshots", "PluginListScreenshotsVertical", "PluginViewItem" },
                 SourceName = PluginDatabase.PluginName
             });
 
@@ -153,6 +153,11 @@ namespace ScreenshotsVisualizer
             if (args.Name == "PluginSinglePicture")
             {
                 return new PluginSinglePicture();
+            }
+
+            if (args.Name == "PluginScreenshots")
+            {
+                return new PluginScreenshots();
             }
 
             if (args.Name == "PluginListScreenshots")

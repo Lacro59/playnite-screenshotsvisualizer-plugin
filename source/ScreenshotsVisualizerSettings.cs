@@ -44,6 +44,9 @@ namespace ScreenshotsVisualizer
         private bool _EnableIntegrationShowPicturesVertical = true;
         public bool EnableIntegrationShowPicturesVertical { get => _EnableIntegrationShowPicturesVertical; set => SetValue(ref _EnableIntegrationShowPicturesVertical, value); }
 
+        private bool _EnableIntegrationPicturesList = true;
+        public bool EnableIntegrationPicturesList { get => _EnableIntegrationPicturesList; set => SetValue(ref _EnableIntegrationPicturesList, value); }
+
         public double IntegrationShowPicturesHeight { get; set; } = 150;
         public bool LinkWithSinglePicture { get; set; } = false;
         public bool OpenViewerWithOnSelection { get; set; } = false;

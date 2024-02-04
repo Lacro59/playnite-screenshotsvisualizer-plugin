@@ -9,20 +9,26 @@ using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace ScreenshotsVisualizer.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour PluginListScreenshots.xaml
+    /// Logique d'interaction pour PluginScreenshots.xaml
     /// </summary>
-    public partial class PluginListScreenshots : PluginUserControlExtend
+    public partial class PluginScreenshots : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
@@ -31,15 +37,15 @@ namespace ScreenshotsVisualizer.Controls
             set => PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
         }
 
-        private PluginListScreenshotsDataContext ControlDataContext = new PluginListScreenshotsDataContext();
+        private PluginScreenshotsDataContext ControlDataContext = new PluginScreenshotsDataContext();
         internal override IDataContext _ControlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginListScreenshotsDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginScreenshotsDataContext)_ControlDataContext;
         }
 
 
-        public PluginListScreenshots()
+        public PluginScreenshots()
         {
             InitializeComponent();
             this.DataContext = ControlDataContext;
@@ -71,19 +77,8 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
             ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
             ControlDataContext.HideInfos = PluginDatabase.PluginSettings.Settings.HideScreenshotsInfos;
-            ControlDataContext.IntegrationShowPicturesHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowPicturesHeight;
 
-            ControlDataContext.CountItems = 0;
             ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
-
-
-            // With PlayerActivities
-            ControlDataContext.dt = default;
-            if (this.Tag is DateTime)
-            {
-                ControlDataContext.IsActivated = true;
-                ControlDataContext.dt = (DateTime)this.Tag;
-            }
         }
 
 
@@ -94,35 +89,11 @@ namespace ScreenshotsVisualizer.Controls
             List<Screenshot> screenshots = gameScreenshots.Items;
             screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-
-            // With PlayerActivities
-            if (ControlDataContext.dt != default)
-            {
-                screenshots = screenshots
-                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual((ControlDataContext.dt).ToString("yyyy-MM--dd")))
-                    .ToList();
-            }
-
-
             ControlDataContext.ItemsSource = screenshots.ToObservable();
-            ControlDataContext.CountItems = screenshots.Count;
         }
 
 
         #region Events
-        private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (e.Delta > 0)
-            {
-                ((VirtualizingStackPanel)sender).LineLeft();
-            }
-            else
-            {
-                ((VirtualizingStackPanel)sender).LineRight();
-            }
-            e.Handled = true;
-        }
-
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
@@ -135,17 +106,92 @@ namespace ScreenshotsVisualizer.Controls
                 }
             }
         }
+
+        private void PART_BtDelete_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem item = UI.FindParent<ListBoxItem>((Button)sender);
+            Screenshot screenshot = (Screenshot)item.DataContext;
+
+            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
+                string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
+                PluginDatabase.PluginName,
+                MessageBoxButton.YesNo
+            );
+
+            if (RessultDialog == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    if (File.Exists(screenshot.FileName))
+                    {
+                        Task.Run(() =>
+                        {
+                            // TODO do better
+                            while (IsFileLocked(new FileInfo(screenshot.FileName)))
+                            {
+
+                            }
+
+                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                screenshot.FileName,
+                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
+                        });
+
+                        GameScreenshots gameScreenshots = PluginDatabase.Get(GameContext);
+                        gameScreenshots.Items.Remove(screenshot);
+                        PluginDatabase.Update(gameScreenshots);
+
+                        SetData(GameContext, gameScreenshots);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+            }
+            else
+            {
+
+            }
+        }
         #endregion
+
+        protected bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
+
+            //file is not locked
+            return false;
+        }
     }
 
 
-    public class PluginListScreenshotsDataContext : ObservableObject, IDataContext
+    public class PluginScreenshotsDataContext : ObservableObject, IDataContext
     {
         private bool _IsActivated;
         public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
-
-        private DateTime _dt;
-        public DateTime dt { get => _dt; set => SetValue(ref _dt, value); }
 
         private bool _AddBorder;
         public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
@@ -156,12 +202,6 @@ namespace ScreenshotsVisualizer.Controls
         private bool _HideInfos;
         public bool HideInfos { get => _HideInfos; set => SetValue(ref _HideInfos, value); }
 
-        private double _IntegrationShowPicturesHeight;
-        public double IntegrationShowPicturesHeight { get => _IntegrationShowPicturesHeight; set => SetValue(ref _IntegrationShowPicturesHeight, value); }
-
-        private int _CountItems = 10;
-        public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }
-
         private ObservableCollection<Screenshot> _ItemsSource = new ObservableCollection<Screenshot>
         {
             new Screenshot
@@ -171,21 +211,5 @@ namespace ScreenshotsVisualizer.Controls
             }
         };
         public ObservableCollection<Screenshot> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
-    }
-
-    public class TwoSizeMultiValueConverter : IMultiValueConverter
-    {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            double returnValue = parameter == null || ((parameter is string && (string)parameter == "+"))
-                ? (double)values[0] + (double)values[1]
-                : (double)values[0] - (double)values[1] - 25;
-            return returnValue;
-        }
-
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
