@@ -66,6 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Vezérlő megjelenítése egyetlen képernyőképpel</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Vezérlő megjelenítése a képernyőképek listájával</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Vezérlő megjelenítése a függőleges képernyőképek listájával</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Keret hozzáadása</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Lekerekített sarok hozzáadása</sys:String>
 
