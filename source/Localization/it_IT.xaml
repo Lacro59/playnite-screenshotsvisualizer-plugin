@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Mostra il nome del gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Anteprima usate</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
@@ -66,6 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Visualizza un controllo con una singola schermata</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Mostra un controllo con un elenco di schermate</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Mostra un controllo con un elenco di schermate verticali</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Mostra un controllo con una grande lista di screenshot</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Aggiungi bordo</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Aggiungi angolo arrotondato</sys:String>
 

@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Показывать название игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Случайный порядок всех скриншотов</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Используемые эскизы</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показывать только самые последние скриншоты для каждой игры</sys:String>
@@ -47,7 +47,7 @@
     <sys:String x:Key="LOCSsvCarouselTime">Время (секунды)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Показывать только избранные игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Только определённые источники</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Использовать видео</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -66,6 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Показать управление одним скриншотом</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Показать управление со списком скриншотов</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Показать управление со списком вертикальных скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Добавить грани</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Добавить закругленный угол</sys:String>
 
