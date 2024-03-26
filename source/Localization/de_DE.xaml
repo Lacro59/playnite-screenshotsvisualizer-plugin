@@ -37,7 +37,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Karussell</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Spielname anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Zufallsgenerierte Liste aller Screenshots</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Verwendete Vorschaubilder</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Nur die neuesten Screenshots für jedes Spiel anzeigen</sys:String>
@@ -66,7 +66,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Anzeigen eines Steuerelements mit einem einzelnen Screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Anzeigen eines Steuerelements mit einer Liste von Screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Anzeigen eines Steuerelements mit einer Liste vertikaler Screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Zeigt eine Steuerung mit einer großen Liste von Screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Rahmen hinzufügen</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Abgerundeten Ecken hinzufügen</sys:String>
 
