@@ -400,6 +400,117 @@ namespace ScreenshotsVisualizer.Services
         #endregion
 
 
+        #region Convert data
+        private bool ConvertToJpg(Screenshot screenshot)
+        {
+            try
+            {
+                if (!screenshot.IsVideo)
+                {
+                    string oldFile = screenshot.FileName;
+                    string newFile = ImageTools.ConvertToJpg(oldFile, PluginSettings.Settings.JpgQuality);
+
+                    if (!newFile.IsNullOrEmpty())
+                    {
+                        DateTime dt = File.GetLastWriteTime(oldFile);
+                        File.SetLastWriteTime(newFile, dt);
+                        FileSystem.DeleteFileSafe(oldFile);
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, false, PluginName);
+            }
+
+            return false;
+        }
+
+        private bool ConvertGameSsvToJpg(Guid id)
+        {
+            return ConvertGameSsvToJpg(API.Instance.Database.Games.Get(id));
+        }
+
+        public void ConvertGameSsvToJpg(List<Guid> ids)
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonConverting")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = ids.Count == 1;
+
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                string CancelText = string.Empty;
+                activateGlobalProgress.IsIndeterminate = true;
+                if (ids.Count > 1)
+                {
+                    activateGlobalProgress.IsIndeterminate = false;
+                    activateGlobalProgress.ProgressMaxValue = ids.Count;
+                }
+
+                Database.BeginBufferUpdate();
+
+                try
+                {
+                    ids.ForEach(y =>
+                    {
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            CancelText = " canceled";
+                            return;
+                        }
+
+                        activateGlobalProgress.Text = API.Instance.Database.Games.Get(y)?.Name;
+                        if (ConvertGameSsvToJpg(y))
+                        {
+                            GameSettings gameSettings = GetGameSettings(y);
+                            if (gameSettings != null)
+                            {
+                                SetDataFromSettings(gameSettings);
+                            }
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginName);
+                }
+
+                Database.EndBufferUpdate();
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                Logger.Info($"Task ConvertGameSsvToJpg(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {ids.Count} items");
+            }, globalProgressOptions);
+        }
+
+        public bool ConvertGameSsvToJpg(Game game)
+        {
+            bool hasConverted = false;
+            if (game != null)
+            {
+                GameScreenshots data = Get(game);
+                if (data.HasData)
+                {
+                    data.Items.ForEach(x =>
+                    {
+                        if (ConvertToJpg(x))
+                        {
+                            hasConverted = true;
+                        }
+                    });
+                }
+            }
+            return hasConverted;
+        }
+        #endregion
+
+
         public GameSettings GetGameSettings(Guid Id)
         {
             List<FolderSettings> FolderSettingsGlobal = new List<FolderSettings>();
@@ -554,7 +665,7 @@ namespace ScreenshotsVisualizer.Services
                         }
                         else
                         {
-                            Logger.Warn($"Screenshots directory not found for {game.Name}");
+                            Logger.Warn($"Screenshots directory not found for {game.Name} - {PathFolder}");
                         }
 
                         IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);

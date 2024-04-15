@@ -288,85 +288,7 @@ namespace ScreenshotsVisualizer
                         Description = ResourceProvider.GetString("LOCSsvConvertToJPG"),
                         Action = (gameMenuItem) =>
                         {
-                            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                                $"{PluginDatabase.PluginName} - {ResourceProvider.GetString("LOCCommonConverting")}",
-                                true
-                            );
-                            globalProgressOptions.IsIndeterminate = Ids.Count == 1;
-
-                            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
-                            {
-                                Stopwatch stopWatch = new Stopwatch();
-                                stopWatch.Start();
-
-                                string CancelText = string.Empty;
-                                if (Ids.Count > 1)
-                                {
-                                    activateGlobalProgress.ProgressMaxValue = Ids.Count;
-                                }
-
-                                try
-                                {
-                                    Ids.ForEach(y =>
-                                    {
-                                        GameScreenshots data = PluginDatabase.Get(y);
-                                        if (data.HasData)
-                                        {
-                                            bool HasConvert = false;
-                                            data.Items.ForEach(x =>
-                                            {
-                                                if (activateGlobalProgress.CancelToken.IsCancellationRequested)
-                                                {
-                                                    CancelText = " canceled";
-                                                    return;
-                                                }
-
-                                                if (!x.IsVideo)
-                                                {
-                                                    string oldFile = x.FileName;
-                                                    string newFile = ImageTools.ConvertToJpg(oldFile, PluginDatabase.PluginSettings.Settings.JpgQuality);
-
-                                                    if (!newFile.IsNullOrEmpty())
-                                                    {
-                                                        DateTime dt = File.GetLastWriteTime(oldFile);
-                                                        File.SetLastWriteTime(newFile, dt);
-                                                        FileSystem.DeleteFileSafe(oldFile);
-                                                        HasConvert = true;
-                                                    }
-                                                }
-                                            });
-
-                                            if (HasConvert)
-                                            {
-                                                GameSettings gameSettings = PluginDatabase.GetGameSettings(y);
-                                                if (gameSettings != null)
-                                                {
-                                                    PluginDatabase.SetDataFromSettings(gameSettings);
-                                                }
-                                            }
-
-                                            if (activateGlobalProgress.CancelToken.IsCancellationRequested)
-                                            {
-                                                CancelText = " canceled";
-                                                return;
-                                            }
-
-                                            if (Ids.Count > 1)
-                                            {
-                                                activateGlobalProgress.CurrentProgressValue++;
-                                            }
-                                        }
-                                    });
-                                }
-                                catch (Exception ex)
-                                {
-                                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                                }
-
-                                stopWatch.Stop();
-                                TimeSpan ts = stopWatch.Elapsed;
-                                Logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
-                            }, globalProgressOptions);
+                            PluginDatabase.ConvertGameSsvToJpg(Ids);
                         }
                     });
                 }
@@ -477,14 +399,25 @@ namespace ScreenshotsVisualizer
                 });
             }
 
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
+                Description = "-"
+            });
+
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
+                Description = ResourceProvider.GetString("LOCSsvConvertToJPGForAll"),
+                Action = (gameMenuItem) =>
+                {
+                    PluginDatabase.ConvertGameSsvToJpg(PluginDatabase.Database.Items.Select(x => x.Key).ToList());
+                }
+            });
+
+
             if (PluginDatabase.PluginSettings.Settings.EnableFolderToSave)
             {
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = "-"
-                });
-
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
