@@ -17,7 +17,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Скриншоты игры</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Открыть каталог скриншотов</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Переместить скриншоты в каталог</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Преобразовать изображение в JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Перемещение скриншотов...</sys:String>
 
