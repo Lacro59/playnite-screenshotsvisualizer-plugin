@@ -17,7 +17,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">画像を JPG に変換</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
 
