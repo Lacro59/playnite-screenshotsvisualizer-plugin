@@ -59,8 +59,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="StartPage.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\StartPage.SDK.dll</HintPath>
+      <HintPath>packages\StartPage.SDK.1.0.0\lib\net462\StartPage.SDK.dll</HintPath>
     </Reference>
     <Reference Include="SteamKit2, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ed3ce47ed5aad940, processorArchitecture=MSIL">
       <HintPath>packages\SteamKit2.1.8.3\lib\net45\SteamKit2.dll</HintPath>
@@ -446,11 +445,8 @@
       <Name>CommonPluginsResources</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\StartPage.SDK.dll" />
-    <None Include="Resources\StartPage.SDK.pdb" />
-    <None Include="Resources\StartPage.SDK.xml" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
   <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />
