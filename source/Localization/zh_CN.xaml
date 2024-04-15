@@ -17,7 +17,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">将图像转换为 JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
