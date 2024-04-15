@@ -33,17 +33,27 @@ namespace ScreenshotsVisualizer.Views
             SetData();
             SetInfos();
 
+            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
             PART_Copy.Visibility = Visibility.Collapsed;
         }
 
+        private void Database_ItemUpdated(object sender, ItemUpdatedEventArgs<GameScreenshots> e)
+        {
+            _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+            {
+                SetData();
+                SetInfos();
+            }));
+        }
 
         private void SetData(int index = -1)
         {
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            Task.Run(() => 
+            _ = Task.Run(() => 
             {
                 try
                 {
@@ -68,7 +78,7 @@ namespace ScreenshotsVisualizer.Views
                 }
             }).ContinueWith(antecedent =>
             {
-                this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                _= Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     ((SsvScreenshotsManagerData)DataContext).LveGames = antecedent.Result;
 
@@ -130,14 +140,14 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 GameScreenshots gameScreenshots = PluginDatabase.Get(lveGame.Id, true);
 
                 List<Screenshot> Screenshots = gameScreenshots.Items;
                 Screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     ((SsvScreenshotsManagerData)DataContext).Screenshots = Screenshots.ToObservable();
                 }));

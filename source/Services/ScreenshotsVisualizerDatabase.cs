@@ -16,6 +16,7 @@ using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
 using CommonPluginsShared.Extensions;
+using CommonPlayniteShared.Common;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -60,29 +61,35 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 string CancelText = string.Empty;
-                activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
+                activateGlobalProgress.ProgressMaxValue = API.Instance.Database.Games.Count;
 
-                foreach (var item in Database.Items)
+                Database.BeginBufferUpdate();
+
+                API.Instance.Database.Games.ForEach(x =>
                 {
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
-                        break;
+                        return;
                     }
 
-                    GameSettings gameSettings = GetGameSettings(item.Key);
+                    activateGlobalProgress.Text = x.Name;
+
+                    GameSettings gameSettings = GetGameSettings(x.Id);
                     if (gameSettings != null)
                     {
                         SetDataFromSettings(gameSettings);
                     }
                     activateGlobalProgress.CurrentProgressValue++;
-                }
+                });
+
+                Database.EndBufferUpdate();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
@@ -98,7 +105,7 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = true;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -123,13 +130,15 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 string CancelText = string.Empty;
                 activateGlobalProgress.ProgressMaxValue = Ids.Count;
+
+                Database.BeginBufferUpdate();
 
                 try
                 {
@@ -140,6 +149,8 @@ namespace ScreenshotsVisualizer.Services
                             CancelText = " canceled";
                             break;
                         }
+
+                        activateGlobalProgress.Text = API.Instance.Database.Games.Get(Id)?.Name;
 
                         GameSettings gameSettings = GetGameSettings(Id);
                         if (gameSettings != null)
@@ -153,6 +164,8 @@ namespace ScreenshotsVisualizer.Services
                 {
                     Common.LogError(ex, false, true, PluginName);
                 }
+
+                Database.EndBufferUpdate();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
@@ -171,7 +184,7 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -212,7 +225,7 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = true;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 MoveToFolderToSaveWithNoLoader(game);
             }, globalProgressOptions);
@@ -226,13 +239,15 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 string CancelText = string.Empty;
                 activateGlobalProgress.ProgressMaxValue = Ids.Count;
+
+                Database.BeginBufferUpdate();
 
                 try
                 {
@@ -252,6 +267,8 @@ namespace ScreenshotsVisualizer.Services
                 {
                     Common.LogError(ex, false, true, PluginName);
                 }
+
+                Database.EndBufferUpdate();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
@@ -304,10 +321,7 @@ namespace ScreenshotsVisualizer.Services
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
 
-                        if (!Directory.Exists(PathFolder))
-                        {
-                            Directory.CreateDirectory(PathFolder);
-                        }
+                        FileSystem.CreateDirectory(PathFolder);
 
                         bool HaveDigit = false;
                         foreach (Screenshot screenshot in gameScreenshots.Items)
@@ -358,7 +372,6 @@ namespace ScreenshotsVisualizer.Services
                                     }
                                 }
 
-
                                 try
                                 {
                                     File.Move(screenshot.FileName, destFileName + ext);
@@ -370,7 +383,6 @@ namespace ScreenshotsVisualizer.Services
                                 }
                             }
                         }
-
 
                         // Refresh data
                         if (gameSettings != null)
@@ -431,7 +443,7 @@ namespace ScreenshotsVisualizer.Services
 
                     if (finded == null)
                     {
-                        gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
+                        _ = gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
                     }
                 }
             }
@@ -452,14 +464,14 @@ namespace ScreenshotsVisualizer.Services
                     Add(gameScreenshots);
                 }
             }
-            
+
             return gameScreenshots;
         }
 
 
         public void SetDataFromSettings(GameSettings item)
         {
-            SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
+            _ = SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
 
             Game game = API.Instance.Database.Games.Get(item.Id);
             if (game == null)
@@ -553,12 +565,12 @@ namespace ScreenshotsVisualizer.Services
                             gameScreenshots.DateLastRefresh = DateTime.Now;
                             gameScreenshots.Items = elements.ToList();
 
-                            Task.Run(() =>
+                            _ = Task.Run(() =>
                             {
                                 // Force generation of video thumbnail
                                 IEnumerable<string> VideoElements = gameScreenshots.Items.Where(x => x.IsVideo).Select(x => x.Thumbnail);
                             });
-                            Thread.Sleep(500 * gameScreenshots.Items.Where(x => x.IsVideo).Count());
+                            Thread.Sleep(300 * gameScreenshots.Items.Where(x => x.IsVideo).Count());
                         }
 
                         AddOrUpdate(gameScreenshots);
@@ -588,7 +600,7 @@ namespace ScreenshotsVisualizer.Services
                 {
                     Guid? TagId = FindGoodPluginTags(ResourceProvider.GetString("LOCSsvTitle"));
                     if (TagId != null)
-                    {                        
+                    {
                         if (game.TagIds != null)
                         {
                             game.TagIds.Add((Guid)TagId);
@@ -613,17 +625,8 @@ namespace ScreenshotsVisualizer.Services
         public override void SetThemesResources(Game game)
         {
             GameScreenshots gameScreenshots = Get(game, true);
-
-            if (gameScreenshots == null)
-            {
-                PluginSettings.Settings.HasData = false;
-                PluginSettings.Settings.ListScreenshots = new List<Screenshot>();
-
-                return;
-            }
-
-            PluginSettings.Settings.HasData = gameScreenshots.HasData;
-            PluginSettings.Settings.ListScreenshots = gameScreenshots.Items;
+            PluginSettings.Settings.HasData = gameScreenshots?.HasData ?? false;
+            PluginSettings.Settings.ListScreenshots = gameScreenshots?.Items ?? new List<Screenshot>();
         }
 
 
@@ -655,7 +658,6 @@ namespace ScreenshotsVisualizer.Services
                     }
                 }
 
-
                 if (IsGood)
                 {
                     WindowOptions windowOptions = new WindowOptions
@@ -670,12 +672,8 @@ namespace ScreenshotsVisualizer.Services
 
                     SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, ViewExtension, windowOptions);
-                    windowExtension.ShowDialog();
+                    _ = windowExtension.ShowDialog();
                 }
-            }
-            else
-            {
-
             }
         }
     }
