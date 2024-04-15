@@ -21,7 +21,7 @@ namespace ScreenshotsVisualizer.Services
 {
     public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots, Screenshot>
     {
-        public ScreenshotsVisualizerDatabase(IPlayniteAPI PlayniteApi, ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
+        public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
         {
             TagBefore = "[SSV]";
         }
@@ -35,11 +35,11 @@ namespace ScreenshotsVisualizer.Services
                 stopWatch.Start();
 
                 Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
-                Database.SetGameInfo<Screenshot>(PlayniteApi);
+                Database.SetGameInfo<Screenshot>();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }
             catch (Exception ex)
             {
@@ -55,12 +55,12 @@ namespace ScreenshotsVisualizer.Services
         public void RefreshDataAll()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -86,19 +86,19 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"RefreshDataAll(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                Logger.Info($"RefreshDataAll(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }, globalProgressOptions);
         }
 
         public void RefreshData(Game game)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
                 false
             );
             globalProgressOptions.IsIndeterminate = true;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -118,12 +118,12 @@ namespace ScreenshotsVisualizer.Services
         public void RefreshData(List<Guid> Ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonRefreshGameData")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -156,7 +156,7 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                Logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
         #endregion
@@ -166,12 +166,12 @@ namespace ScreenshotsVisualizer.Services
         public void MoveToFolderToSaveAll()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -200,19 +200,19 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"MoveToFolderToSaveAll{CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                Logger.Info($"MoveToFolderToSaveAll{CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }, globalProgressOptions);
         }
 
         public void MoveToFolderToSave(Game game)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
                 false
             );
             globalProgressOptions.IsIndeterminate = true;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 MoveToFolderToSaveWithNoLoader(game);
             }, globalProgressOptions);
@@ -221,12 +221,12 @@ namespace ScreenshotsVisualizer.Services
         public void MoveToFolderToSave(List<Guid> Ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCSsvMovingToSave")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -255,13 +255,13 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task MoveToFolderToSave(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                Logger.Info($"Task MoveToFolderToSave(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
         public void MoveToFolderToSaveWithNoLoader(Guid id, GlobalProgressActionArgs globalProgressActionArgs)
         {
-            Game game = PlayniteApi.Database.Games.Get(id);
+            Game game = API.Instance.Database.Games.Get(id);
             if (game != null)
             {
                 globalProgressActionArgs.Text = game.Name;
@@ -277,10 +277,10 @@ namespace ScreenshotsVisualizer.Services
                 {
                     if (PluginSettings.Settings.FolderToSave.IsNullOrEmpty() || PluginSettings.Settings.FileSavePattern.IsNullOrEmpty())
                     {
-                        logger.Error("No settings to use folder to save");
-                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                        Logger.Error("No settings to use folder to save");
+                        API.Instance.Notifications.Add(new NotificationMessage(
                             $"{PluginName}-MoveToFolderToSave-Errors",
-                            $"{PluginName}\r\n" + resources.GetString("LOCSsvMoveToFolderToSaveError"),
+                            $"{PluginName}\r\n" + ResourceProvider.GetString("LOCSsvMoveToFolderToSaveError"),
                             NotificationType.Error
                         ));
                     }
@@ -445,7 +445,7 @@ namespace ScreenshotsVisualizer.Services
 
             if (gameScreenshots == null)
             {
-                Game game = PlayniteApi.Database.Games.Get(Id);
+                Game game = API.Instance.Database.Games.Get(Id);
                 if (game != null)
                 {
                     gameScreenshots = GetDefault(game);
@@ -459,19 +459,19 @@ namespace ScreenshotsVisualizer.Services
 
         public void SetDataFromSettings(GameSettings item)
         {
-            SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+            SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
 
-            Game game = PlayniteApi.Database.Games.Get(item.Id);
+            Game game = API.Instance.Database.Games.Get(item.Id);
             if (game == null)
             {
-                logger.Warn($"Game not found for {item.Id}");
+                Logger.Warn($"Game not found for {item.Id}");
                 return;
             }
 
             GameScreenshots gameScreenshots = GetDefault(game);
             try
             {
-                gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders(PlayniteApi);
+                gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders();
                 gameScreenshots.InSettings = true;
 
                 foreach (FolderSettings ScreenshotsFolder in item.ScreenshotsFolders)
@@ -480,7 +480,7 @@ namespace ScreenshotsVisualizer.Services
                     {
                         if (ScreenshotsFolder?.ScreenshotsFolder == null || ScreenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
                         {
-                            logger.Warn($"Screenshots directory is empty for {game.Name}");
+                            Logger.Warn($"Screenshots directory is empty for {game.Name}");
                             return;
                         }
 
@@ -542,7 +542,7 @@ namespace ScreenshotsVisualizer.Services
                         }
                         else
                         {
-                            logger.Warn($"Screenshots directory not found for {game.Name}");
+                            Logger.Warn($"Screenshots directory not found for {game.Name}");
                         }
 
                         IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
@@ -586,7 +586,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 try
                 {
-                    Guid? TagId = FindGoodPluginTags(resources.GetString("LOCSsvTitle"));
+                    Guid? TagId = FindGoodPluginTags(ResourceProvider.GetString("LOCSsvTitle"));
                     if (TagId != null)
                     {                        
                         if (game.TagIds != null)
@@ -598,12 +598,12 @@ namespace ScreenshotsVisualizer.Services
                             game.TagIds = new List<Guid> { (Guid)TagId };
                         }
 
-                        PlayniteApi.Database.Games.Update(game);
+                        API.Instance.Database.Games.Update(game);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(resources.GetString("LOCCommonNotificationTagError"), game.Name));
+                    Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
                 }
             }
         }
@@ -669,7 +669,7 @@ namespace ScreenshotsVisualizer.Services
                     };
 
                     SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, ViewExtension, windowOptions);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, ViewExtension, windowOptions);
                     windowExtension.ShowDialog();
                 }
             }

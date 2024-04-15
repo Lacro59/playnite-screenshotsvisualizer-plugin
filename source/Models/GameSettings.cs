@@ -18,9 +18,11 @@ namespace ScreenshotsVisualizer.Models
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
 
-        public List<string> GetScreenshotsFolders(IPlayniteAPI PlayniteApi)
+        public List<string> GetScreenshotsFolders()
         {
-            return ScreenshotsFolders.Select(x => PlayniteTools.StringExpandWithStores(PlayniteApi.Database.Games.Get(Id), x.ScreenshotsFolder)).ToList();
+            return ScreenshotsFolders
+                .Select(x => PlayniteTools.StringExpandWithStores(API.Instance.Database.Games.Get(Id), x.ScreenshotsFolder))
+                .ToList();
         }
     }
 

@@ -77,16 +77,8 @@ namespace ScreenshotsVisualizer
 
 
         #region Settings StartPage
-        private SsvCarouselOptions _ssvCarouselOptions { get; set; } = new SsvCarouselOptions();
-        public SsvCarouselOptions ssvCarouselOptions
-        {
-            get => _ssvCarouselOptions;
-            set
-            {
-                _ssvCarouselOptions = value;
-                OnPropertyChanged();
-            }
-        }
+        private SsvCarouselOptions _ssvCarouselOptions = new SsvCarouselOptions();
+        public SsvCarouselOptions ssvCarouselOptions { get => _ssvCarouselOptions; set => SetValue(ref _ssvCarouselOptions, value); }
         #endregion
 
 
@@ -125,7 +117,7 @@ namespace ScreenshotsVisualizer
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
 
             // Manage source
-            Task.Run(() => 
+            _ = Task.Run(() => 
             {
                 System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
                 API.Instance.Database.Sources.ForEach(x =>
@@ -174,8 +166,8 @@ namespace ScreenshotsVisualizer
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
-                Plugin.ssvViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
+                Plugin.TopPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
+                Plugin.SidebarItem.Visible = Settings.EnableIntegrationButtonSide;
             }
 
             this.OnPropertyChanged();

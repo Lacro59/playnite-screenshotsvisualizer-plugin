@@ -20,12 +20,9 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvScreenshotsView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static readonly IResourceProvider resources = new ResourceProvider();
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
-        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
-
-        private GameScreenshots gameScreenshots;
+        private GameScreenshots gameScreenshots { get; set; }
 
 
         public SsvScreenshotsView(Game GameSelected)
@@ -87,8 +84,8 @@ namespace ScreenshotsVisualizer.Views
 
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.Items[index];
 
-            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
-                string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
+            MessageBoxResult RessultDialog = API.Instance.Dialogs.ShowMessage(
+                string.Format(ResourceProvider.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
             );
@@ -102,7 +99,7 @@ namespace ScreenshotsVisualizer.Views
                         PART_Screenshot.Source = null;
                         PART_Screenshot.UpdateLayout();
 
-                        Task.Run(() => 
+                        _ = Task.Run(() => 
                         {
                             while(IsFileLocked(new FileInfo(screenshot.FileName)))
                             {
@@ -114,9 +111,9 @@ namespace ScreenshotsVisualizer.Views
                                 Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
                                 Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
                                 Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
-                            });
+                        });
 
-                        gameScreenshots.Items.Remove(screenshot);
+                        _ = gameScreenshots.Items.Remove(screenshot);
                         PluginDatabase.Update(gameScreenshots);
                     }
                 }
@@ -178,7 +175,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 ScreenshotsTotalSize += item.FileSize;
             }
-            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(resources.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(resources.GetString("LOCSsvScreenshot"), ScreenshotsCount);
+            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
             PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
 
 
@@ -189,7 +186,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 VideosTotalSize += item.FileSize;
             }
-            PART_VideosCount.Content = VideosCount > 1 ? string.Format(resources.GetString("LOCSsvVideos"), VideosCount) : string.Format(resources.GetString("LOCSsvVideo"), VideosCount);
+            PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
             PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
 
 

@@ -139,6 +139,8 @@
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
+    <Compile Include="Services\ScreenshotsVisualizerTopPanelItem.cs" />
+    <Compile Include="Services\ScreenshotsVisualizerViewSidebar.cs" />
     <Compile Include="Views\ScreenshotsVisualizerSettingsView.xaml.cs">
       <DependentUpon>ScreenshotsVisualizerSettingsView.xaml</DependentUpon>
     </Compile>

@@ -3,6 +3,7 @@ using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -30,12 +31,8 @@ namespace ScreenshotsVisualizer.Controls
     /// </summary>
     public partial class PluginScreenshots : PluginUserControlExtend
     {
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
-        }
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
 
         private PluginScreenshotsDataContext ControlDataContext = new PluginScreenshotsDataContext();
         internal override IDataContext _ControlDataContext
@@ -60,7 +57,7 @@ namespace ScreenshotsVisualizer.Controls
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -112,8 +109,8 @@ namespace ScreenshotsVisualizer.Controls
             ListBoxItem item = UI.FindParent<ListBoxItem>((Button)sender);
             Screenshot screenshot = (Screenshot)item.DataContext;
 
-            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
-                string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
+            MessageBoxResult RessultDialog = API.Instance.Dialogs.ShowMessage(
+                string.Format(ResourceProvider.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
             );

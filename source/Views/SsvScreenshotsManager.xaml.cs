@@ -22,10 +22,7 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvScreenshotsManager : UserControl
     {
-        internal static readonly ILogger logger = LogManager.GetLogger();
-        internal static IResourceProvider resources = new ResourceProvider();
-
-        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
 
         public SsvScreenshotsManager()
@@ -54,7 +51,7 @@ namespace ScreenshotsVisualizer.Views
                                                                     .Select(x => new LveGame
                                                                     {
                                                                         Id = x.Id,
-                                                                        Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon),
+                                                                        Icon = API.Instance.Database.GetFullFilePath(x.Icon),
                                                                         Name = x.Name,
                                                                         LastActivity = x.LastActivity,
                                                                         SourceName = PlayniteTools.GetSourceName(x.Id),
@@ -97,7 +94,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 ScreenshotsTotalSize += item.FileSize;
             }
-            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(resources.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(resources.GetString("LOCSsvScreenshot"), ScreenshotsCount);
+            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
             PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
 
 
@@ -108,7 +105,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 VideosTotalSize += item.FileSize;
             }
-            PART_VideosCount.Content = VideosCount > 1 ? string.Format(resources.GetString("LOCSsvVideos"), VideosCount) : string.Format(resources.GetString("LOCSsvVideo"), VideosCount);
+            PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
             PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
 
 
@@ -186,8 +183,8 @@ namespace ScreenshotsVisualizer.Views
             Screenshot screenshot = (Screenshot)item.DataContext;
             int indexSelected = PART_LveGames.SelectedIndex;
 
-            MessageBoxResult RessultDialog = PluginDatabase.PlayniteApi.Dialogs.ShowMessage(
-                string.Format(resources.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
+            MessageBoxResult RessultDialog = API.Instance.Dialogs.ShowMessage(
+                string.Format(ResourceProvider.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
                 PluginDatabase.PluginName,
                 MessageBoxButton.YesNo
             );
@@ -200,7 +197,7 @@ namespace ScreenshotsVisualizer.Views
                     {
                         ((SsvScreenshotsManagerData)DataContext).Screenshots = new ObservableCollection<Screenshot>();
 
-                        Task.Run(() =>
+                        _ = Task.Run(() =>
                         {
                             // TODO do better
                             while (IsFileLocked(new FileInfo(screenshot.FileName)))
@@ -216,7 +213,7 @@ namespace ScreenshotsVisualizer.Views
                         });
 
                         GameScreenshots gameScreenshots = PluginDatabase.Get(((LveGame)PART_LveGames.SelectedItem).Id);
-                        gameScreenshots.Items.Remove(screenshot);
+                        _ = gameScreenshots.Items.Remove(screenshot);
                         PluginDatabase.Update(gameScreenshots);
 
                         SetData(indexSelected);
@@ -299,7 +296,7 @@ namespace ScreenshotsVisualizer.Views
             string filePath = Path.GetDirectoryName(((SsvScreenshotsManagerData)DataContext).FilePath);
             if (Directory.Exists(filePath))
             {
-                Process.Start(filePath);
+                _ = Process.Start(filePath);
             }
         }
     }
@@ -326,19 +323,19 @@ namespace ScreenshotsVisualizer.Views
 
     public class LveGame
     {
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         public Guid Id { get; set; }
         public string Icon { get; set; }
         public string Name { get; set; } 
         public DateTime? LastActivity { get; set; }
-        public string SourceName { get; set; } 
-        public string SourceIcon { get => TransformIcon.Get(SourceName); }
+        public string SourceName { get; set; }
+        public string SourceIcon => TransformIcon.Get(SourceName);
 
         public DateTime LastSsv { get; set; }
         public int Total { get; set; }
 
         public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
-        public bool GameExist => PluginDatabase.PlayniteApi.Database.Games.Get(Id) != null;
+        public bool GameExist => API.Instance.Database.Games.Get(Id) != null;
     }
 }

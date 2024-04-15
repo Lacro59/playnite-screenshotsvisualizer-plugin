@@ -1,12 +1,10 @@
-﻿using CommonPlayniteShared;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,12 +17,11 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvSinglePictureView : UserControl
     {
-        internal static IResourceProvider resources => new ResourceProvider();
-        internal ScreenshotsVisualizerDatabase PluginDatabase { get; set; } = ScreenshotsVisualizer.PluginDatabase;
+        internal ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
-        private Screenshot screenshot { get; set; }
-        private int index { get; set; } = 0;
+        private Screenshot Screenshot { get; set; }
+        private int Index { get; set; } = 0;
 
 
         public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null, Game game = null)
@@ -34,7 +31,7 @@ namespace ScreenshotsVisualizer.Views
             this.Screenshots = screenshots;
             if (screenshots != null)
             {
-                index = screenshots.FindIndex(x => x == screenshot);
+                Index = screenshots.FindIndex(x => x == screenshot);
             }
 
             ButtonNext.Visibility = Visibility.Collapsed;
@@ -49,18 +46,18 @@ namespace ScreenshotsVisualizer.Views
         private void SetImage(Screenshot screenshot)
         {
             string PictureSource = string.Empty;
-            Game game = API.Instance.Database.Games.Get(screenshot.gameId);
+            Game game = API.Instance.Database.Games.Get(screenshot.GameId);
 
             if (File.Exists(screenshot.FileName))
             {
                 PictureSource = screenshot.FileName;
-                this.screenshot = screenshot;
+                this.Screenshot = screenshot;
 
                 if (this.Parent is Window)
                 {
                     ((Window)this.Parent).Title = game != null
-                        ? resources.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
-                        : resources.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
+                        ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
+                        : ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
                 }
             }
 
@@ -68,7 +65,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 PictureSource,
                 IsVideo = screenshot.IsVideo,
-                Icon = !game?.Icon.IsNullOrEmpty() ?? false ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon) : string.Empty,
+                Icon = !game?.Icon.IsNullOrEmpty() ?? false ? API.Instance.Database.GetFullFilePath(game.Icon) : string.Empty,
                 GameName = game?.Name,
                 GameId = game?.Id,
                 GoToGame = PluginDatabase.GoToGame
@@ -116,16 +113,16 @@ namespace ScreenshotsVisualizer.Views
         {
             if (Screenshots != null)
             {
-                if (index == 0)
+                if (Index == 0)
                 {
-                    index = Screenshots.Count - 1;
+                    Index = Screenshots.Count - 1;
                 }
                 else
                 {
-                    index--;
+                    Index--;
                 }
 
-                SetImage(Screenshots[index]);
+                SetImage(Screenshots[Index]);
             }
         }
 
@@ -133,16 +130,16 @@ namespace ScreenshotsVisualizer.Views
         {
             if (Screenshots != null)
             {
-                if (index == Screenshots.Count - 1)
+                if (Index == Screenshots.Count - 1)
                 {
-                    index = 0;
+                    Index = 0;
                 }
                 else
                 {
-                    index++;
+                    Index++;
                 }
 
-                SetImage(Screenshots[index]);
+                SetImage(Screenshots[Index]);
             }
         }
         #endregion
@@ -183,7 +180,7 @@ namespace ScreenshotsVisualizer.Views
                 ButtonPrev.Visibility = Visibility.Visible;
             }
 
-            if (!screenshot?.IsVideo ?? true)
+            if (!Screenshot?.IsVideo ?? true)
             {
                 PART_Copy.Visibility = Visibility.Visible;
                 PART_Game.Visibility = Visibility.Visible;
@@ -201,11 +198,11 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
-            if (!screenshot?.IsVideo ?? true && File.Exists(screenshot.FileName))
+            if (!Screenshot?.IsVideo ?? true && File.Exists(Screenshot.FileName))
             {
                 try
                 {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
+                    System.Drawing.Image img = System.Drawing.Image.FromFile(Screenshot.FileName);
                     Clipboard.SetDataObject(img);
                 }
                 catch(Exception ex)

@@ -15,10 +15,10 @@ namespace ScreenshotsVisualizer.Models
     public class Screenshot
     {
         [DontSerialize]
-        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         [DontSerialize]
-        public Guid gameId { get; set; }
+        public Guid GameId { get; set; }
 
         /// <summary>
         /// Complete path file
@@ -79,7 +79,7 @@ namespace ScreenshotsVisualizer.Models
 
                     try
                     {
-                        ImageTools.Resize(FileName, 200, FileThumbnail);
+                        _ = ImageTools.Resize(FileName, 200, FileThumbnail);
                     }
                     catch (Exception ex)
                     {
@@ -112,18 +112,14 @@ namespace ScreenshotsVisualizer.Models
                     {
                         return FileThumbnail;
                     }
-
-                    if (!Directory.Exists(PathThumbnail))
-                    {
-                        Directory.CreateDirectory(PathThumbnail);
-                    }
+                    FileSystem.CreateDirectory(PathThumbnail);
 
                     try
                     {
                         MediaFile inputFile = new MediaFile { Filename = FileName };
                         MediaFile outputFile = new MediaFile { Filename = FileThumbnail };
 
-                        using (var engine = new Engine())
+                        using (Engine engine = new Engine())
                         {
                             engine.GetMetadata(inputFile);
 

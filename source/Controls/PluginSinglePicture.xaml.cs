@@ -3,6 +3,7 @@ using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -24,12 +25,8 @@ namespace ScreenshotsVisualizer.Controls
     /// </summary>
     public partial class PluginSinglePicture : PluginUserControlExtend
     {
-        private ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (ScreenshotsVisualizerDatabase)_PluginDatabase;
-        }
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
 
         private PluginSinglePictureDataContext ControlDataContext = new PluginSinglePictureDataContext();
         internal override IDataContext _ControlDataContext
@@ -57,7 +54,7 @@ namespace ScreenshotsVisualizer.Controls
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -205,7 +202,7 @@ namespace ScreenshotsVisualizer.Controls
                 };
 
                 SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshots[index], screenshots);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSsv") + " - " + screenshots[index].FileNameOnly, ViewExtension, windowOptions);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshots[index].FileNameOnly, ViewExtension, windowOptions);
                 windowExtension.ShowDialog();
             }
         }

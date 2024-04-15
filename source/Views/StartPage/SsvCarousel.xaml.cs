@@ -27,10 +27,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
     /// </summary>
     public partial class SsvCarousel : UserControl
     {
-        internal static readonly ILogger logger = LogManager.GetLogger();
-        internal static IResourceProvider resources = new ResourceProvider();
-
-        internal ScreenshotsVisualizerDatabase PluginDatabase { get; set; } = ScreenshotsVisualizer.PluginDatabase;
+        internal ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private ObservableCollection<Screenshot> Screenshots { get; set; } = new ObservableCollection<Screenshot>();
         private int Index { get; set; } = 0;
@@ -90,8 +87,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     IsVideo,
                     AddBorder = true,
                     AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
-                    GameName = API.Instance.Database.Games.Get(screenshot.gameId)?.Name,
-                    GameId = API.Instance.Database.Games.Get(screenshot.gameId)?.Id,
+                    GameName = API.Instance.Database.Games.Get(screenshot.GameId)?.Name,
+                    GameId = API.Instance.Database.Games.Get(screenshot.GameId)?.Id,
                     GoToGame = PluginDatabase.GoToGame
                 };
             }
@@ -130,7 +127,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Margin);
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -184,7 +181,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                         data = data.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame).ToList();
                     }
 
-                    data.ForEach(c => c.gameId = x.Key);
+                    data.ForEach(c => c.GameId = x.Key);
                     temp.AddRange(data);
                 });
 
@@ -247,14 +244,14 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Width = 1280
                 };
 
-                Game game = API.Instance.Database.Games.Get(Screenshots[Index].gameId);
+                Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
                 string Title = game != null
-                    ? resources.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
-                    : resources.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
+                    ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
+                    : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
 
                 SsvSinglePictureView ViewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, Title, ViewExtension, windowOptions);
-                windowExtension.ShowDialog();
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(Title, ViewExtension, windowOptions);
+                _ = windowExtension.ShowDialog();
             }
         }
 

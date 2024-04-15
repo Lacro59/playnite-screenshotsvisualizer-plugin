@@ -20,10 +20,9 @@ namespace ScreenshotsVisualizer.Views
 {
     public partial class ScreenshotsVisualizerSettingsView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static readonly IResourceProvider resources = new ResourceProvider();
+        private static ILogger Logger => LogManager.GetLogger();
 
-        private readonly ScreenshotsVisualizerDatabase PluginDatabase = ScreenshotsVisualizer.PluginDatabase;
+        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         public static List<ListGameScreenshot> listGameScreenshots = new List<ListGameScreenshot>();
         public static List<ListGame> listGames = new List<ListGame>();
@@ -57,7 +56,7 @@ namespace ScreenshotsVisualizer.Views
 
             Task TaskView = Task.Run(() =>
             {
-                LoadData(PluginDatabase.PlayniteApi);
+                LoadData();
 
                 this.Dispatcher.BeginInvoke((Action)delegate 
                 {
@@ -74,19 +73,19 @@ namespace ScreenshotsVisualizer.Views
         }
 
 
-        private void LoadData(IPlayniteAPI PlayniteApi)
+        private void LoadData()
         {
             listGameScreenshots = new List<ListGameScreenshot>();
             foreach (GameSettings item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
             {
-                Game game = PlayniteApi.Database.Games.Get(item.Id);
+                Game game = API.Instance.Database.Games.Get(item.Id);
 
                 if (game != null)
                 {
                     string Icon = string.Empty;
                     if (!game.Icon.IsNullOrEmpty())
                     {
-                        Icon = PlayniteApi.Database.GetFullFilePath(game.Icon);
+                        Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                     }
 
                     // TEMP
@@ -121,18 +120,18 @@ namespace ScreenshotsVisualizer.Views
                 }
                 else
                 {
-                    logger.Warn($"Game is deleted - {item.Id}");
+                    Logger.Warn($"Game is deleted - {item.Id}");
                 }
             }
 
-            IEnumerable<Game> DbWithoutAlready = PlayniteApi.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
+            IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
             listGames = new List<ListGame>();
             foreach (Game item in DbWithoutAlready)
             {
                 string Icon = string.Empty;
                 if (!item.Icon.IsNullOrEmpty())
                 {
-                    Icon = PlayniteApi.Database.GetFullFilePath(item.Icon);
+                    Icon = API.Instance.Database.GetFullFilePath(item.Icon);
                 }
 
                 listGames.Add(new ListGame
@@ -159,7 +158,7 @@ namespace ScreenshotsVisualizer.Views
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
             int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
 
-            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 TextBox TextBox = UI.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
@@ -190,14 +189,14 @@ namespace ScreenshotsVisualizer.Views
 
             Task TaskView = Task.Run(() =>
             {
-                IEnumerable<Game> DbWithoutAlready = PluginDatabase.PlayniteApi.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
+                IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
                 listGames = new List<ListGame>();
                 foreach (Game game in DbWithoutAlready)
                 {
                     string Icon = string.Empty;
                     if (!game.Icon.IsNullOrEmpty())
                     {
-                        Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                        Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                     }
 
                     listGames.Add(new ListGame
@@ -289,7 +288,7 @@ namespace ScreenshotsVisualizer.Views
             string Icon = string.Empty;
             if (!SelectedItem.Icon.IsNullOrEmpty())
             {
-                Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(SelectedItem.Icon);
+                Icon = API.Instance.Database.GetFullFilePath(SelectedItem.Icon);
             }
 
             listGameScreenshots.Add(new ListGameScreenshot
@@ -335,13 +334,13 @@ namespace ScreenshotsVisualizer.Views
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
                 {
-                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                    Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
                 List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
                 ScreenshotsFolders.Add(new FolderSettings
                 {
-                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + PluginDatabase.PlayniteApi.Database.Games.Get(game.Id).GameId + "\\screenshots"
+                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + API.Instance.Database.Games.Get(game.Id).GameId + "\\screenshots"
                 });
 
                 listGameScreenshots.Add(new ListGameScreenshot
@@ -379,7 +378,7 @@ namespace ScreenshotsVisualizer.Views
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
                 {
-                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                    Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
                 List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
@@ -414,7 +413,7 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(API.Instance.Database.Games.Get(x.Id))).ToList();
             foreach (ListGame game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
@@ -423,7 +422,7 @@ namespace ScreenshotsVisualizer.Views
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
                 {
-                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                    Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
                 List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
@@ -460,7 +459,7 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseScummVM(PluginDatabase.PlayniteApi.Database.Games.Get(x.Id))).ToList();
+            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseScummVM(API.Instance.Database.Games.Get(x.Id))).ToList();
             foreach (ListGame game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
@@ -469,7 +468,7 @@ namespace ScreenshotsVisualizer.Views
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
                 {
-                    Icon = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.Icon);
+                    Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
                 List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
@@ -505,7 +504,7 @@ namespace ScreenshotsVisualizer.Views
         #region FolderToSave
         private void ButtonSelectFolderToSave_Click(object sender, RoutedEventArgs e)
         {
-            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_FolderToSave.Text = SelectedFolder;
@@ -531,7 +530,7 @@ namespace ScreenshotsVisualizer.Views
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PluginDatabase.PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -548,7 +547,7 @@ namespace ScreenshotsVisualizer.Views
                         {
                             screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.PathToRelativeWithStores
                             (
-                                PluginDatabase.PlayniteApi.Database.Games.Get(game.Id),
+                                API.Instance.Database.Games.Get(game.Id),
                                 screenshotsFolders.ScreenshotsFolder
                             );
                         }
@@ -582,7 +581,7 @@ namespace ScreenshotsVisualizer.Views
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PluginDatabase.PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -599,7 +598,7 @@ namespace ScreenshotsVisualizer.Views
                         {
                             screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores
                             (
-                                PluginDatabase.PlayniteApi.Database.Games.Get(game.Id),
+                                API.Instance.Database.Games.Get(game.Id),
                                 screenshotsFolders.ScreenshotsFolder
                             );
                         }
@@ -627,7 +626,7 @@ namespace ScreenshotsVisualizer.Views
         private void PART_SelectVariables_Click(object sender, RoutedEventArgs e)
         {
             SelectVariable ViewExtension = new SelectVariable();
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCCommonSelectVariable"), ViewExtension);
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCCommonSelectVariable"), ViewExtension);
             windowExtension.ResizeMode = ResizeMode.CanResize;
             windowExtension.ShowDialog();
         }
