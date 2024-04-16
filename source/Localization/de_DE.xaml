@@ -17,8 +17,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Bildschirmfotos ansehen</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Verzeichnis der Bildschirmfotos öffnen</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Verschieben der Screenshots in das Speicherverzeichnis</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Bilder in JPG konvertieren</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Alle Screenshots in JPG konvertieren</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Verschieben der Screenshots...</sys:String>
 
