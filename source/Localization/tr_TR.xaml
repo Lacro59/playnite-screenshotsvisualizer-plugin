@@ -17,8 +17,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Oyun ekran alıntılarını görüntüle</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ekran alıntıları dizinini aç</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Dizini kaydetmek için ekran alıntılarını taşı</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Görselleri JPG biçimine dönüştür</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Tüm oyunların ekran görüntülerini JPG biçimine dönüştür</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Ekran alıntıları taşınıyor...</sys:String>
 
