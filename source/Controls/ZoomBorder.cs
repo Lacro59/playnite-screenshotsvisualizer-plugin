@@ -28,11 +28,14 @@ namespace ScreenshotsVisualizer.Controls
 
         public override UIElement Child
         {
-            get { return base.Child; }
+            get => base.Child;
             set
             {
                 if (value != null && value != this.Child)
+                {
                     this.Initialize(value);
+                }
+
                 base.Child = value;
             }
         }
@@ -49,12 +52,12 @@ namespace ScreenshotsVisualizer.Controls
                 group.Children.Add(tt);
                 child.RenderTransform = group;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
-                this.MouseWheel += child_MouseWheel;
-                this.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                this.MouseLeftButtonUp += child_MouseLeftButtonUp;
-                this.MouseMove += child_MouseMove;
+                this.MouseWheel += Child_MouseWheel;
+                this.MouseLeftButtonDown += Child_MouseLeftButtonDown;
+                this.MouseLeftButtonUp += Child_MouseLeftButtonUp;
+                this.MouseMove += Child_MouseMove;
                 this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
-                  child_PreviewMouseRightButtonDown);
+                  Child_PreviewMouseRightButtonDown);
             }
         }
 
@@ -63,12 +66,12 @@ namespace ScreenshotsVisualizer.Controls
             if (child != null)
             {
                 // reset zoom
-                var st = GetScaleTransform(child);
+                ScaleTransform st = GetScaleTransform(child);
                 st.ScaleX = 1.0;
                 st.ScaleY = 1.0;
 
                 // reset pan
-                var tt = GetTranslateTransform(child);
+                TranslateTransform tt = GetTranslateTransform(child);
                 tt.X = 0.0;
                 tt.Y = 0.0;
             }
@@ -76,16 +79,18 @@ namespace ScreenshotsVisualizer.Controls
 
 
         #region Child Events
-        private void child_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (child != null)
             {
-                var st = GetScaleTransform(child);
-                var tt = GetTranslateTransform(child);
+                ScaleTransform st = GetScaleTransform(child);
+                TranslateTransform tt = GetTranslateTransform(child);
 
                 double zoom = e.Delta > 0 ? .2 : -.2;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
+                {
                     return;
+                }
 
                 Point relative = e.GetPosition(child);
                 double absoluteX;
@@ -102,19 +107,19 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (child != null)
             {
-                var tt = GetTranslateTransform(child);
+                TranslateTransform tt = GetTranslateTransform(child);
                 start = e.GetPosition(this);
                 origin = new Point(tt.X, tt.Y);
                 this.Cursor = Cursors.Hand;
-                child.CaptureMouse();
+                _ = child.CaptureMouse();
             }
         }
 
-        private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (child != null)
             {
@@ -123,18 +128,18 @@ namespace ScreenshotsVisualizer.Controls
             }
         }
 
-        void child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        void Child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Reset();
         }
 
-        private void child_MouseMove(object sender, MouseEventArgs e)
+        private void Child_MouseMove(object sender, MouseEventArgs e)
         {
             if (child != null)
             {
                 if (child.IsMouseCaptured)
                 {
-                    var tt = GetTranslateTransform(child);
+                    TranslateTransform tt = GetTranslateTransform(child);
                     Vector v = start - e.GetPosition(this);
                     tt.X = origin.X - v.X;
                     tt.Y = origin.Y - v.Y;

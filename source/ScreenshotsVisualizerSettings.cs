@@ -7,6 +7,7 @@ using ScreenshotsVisualizer.Models.StartPage;
 using System.Linq;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
+using System;
 
 namespace ScreenshotsVisualizer
 {
@@ -73,6 +74,13 @@ namespace ScreenshotsVisualizer
 
         private int _CarouselAutoChangeTimer = 10;
         public int CarouselAutoChangeTimer { get => _CarouselAutoChangeTimer; set => SetValue(ref _CarouselAutoChangeTimer, value); }
+
+
+        private string _FfmpegPath;
+        public string FfmpegPath { get => _FfmpegPath; set => SetValue(ref _FfmpegPath, value); }
+
+        private string _FfprobePath;
+        public string FfprobePath { get => _FfprobePath; set => SetValue(ref _FfprobePath, value); }
         #endregion
 
 
@@ -180,6 +188,31 @@ namespace ScreenshotsVisualizer
         {
             errors = new List<string>();
             return true;
+        }
+
+
+        public RelayCommand<object> BrowseSelectFfmpegCommand
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                var filePath = API.Instance.Dialogs.SelectFile("ffmpeg|ffmpeg.exe");
+                if (!filePath.IsNullOrEmpty())
+                {
+                    Settings.FfmpegPath = filePath;
+                }
+            });
+        }
+
+        public RelayCommand<object> BrowseSelectFfprobeCommand
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                var filePath = API.Instance.Dialogs.SelectFile("ffProbe|ffProbe.exe");
+                if (!filePath.IsNullOrEmpty())
+                {
+                    Settings.FfprobePath = filePath;
+                }
+            });
         }
     }
 }

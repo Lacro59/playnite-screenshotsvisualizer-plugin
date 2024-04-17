@@ -1,19 +1,23 @@
 ﻿using CommonPlayniteShared.Common;
 using CommonPluginsShared;
-using MediaToolkit;
-using MediaToolkit.Model;
-using MediaToolkit.Options;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Models
 {
-    public class Screenshot
+    public class Screenshot : ObservableObject
     {
+        [DontSerialize]
+        private static ILogger Logger => LogManager.GetLogger();
+
         [DontSerialize]
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
@@ -26,27 +30,54 @@ namespace ScreenshotsVisualizer.Models
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
+        public string sizeString;
         [DontSerialize]
         public string SizeString
         {
             get
             {
-                if (File.Exists(FileName))
+                if (sizeString.IsNullOrEmpty())
                 {
-                    if (IsVideo)
+                    if (File.Exists(FileName))
                     {
-                        ImageProperties imageProperties = Images.GetImageProperties(Thumbnail);
-                        return imageProperties.Width + "x" + imageProperties.Height;
-                    }
-                    else
-                    {
-                        ImageProperties imageProperties = Images.GetImageProperties(FileName);
-                        return imageProperties.Width + "x" + imageProperties.Height;
+                        if (IsVideo)
+                        {
+                            try
+                            {
+                                if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
+                                {
+                                    string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
+                                    _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
+
+                                    sizeString = stdOut.Trim();
+                                    return sizeString;
+                                }
+                                else
+                                {
+                                    Logger.Warn("No ffprobe executable");
+                                    API.Instance.Notifications.Add(new NotificationMessage(
+                                        $"{PluginDatabase.PluginName}-FfprobePath-Error",
+                                        $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
+                                        NotificationType.Error
+                                    ));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
+                        }
+                        else
+                        {
+                            ImageProperties imageProperties = Images.GetImageProperties(FileName);
+                            return imageProperties.Width + "x" + imageProperties.Height;
+                        }
                     }
                 }
-
-                return string.Empty;
+                return sizeString;
             }
+
+            set => SetValue(ref sizeString, value);
         }
 
         [DontSerialize]
@@ -79,7 +110,7 @@ namespace ScreenshotsVisualizer.Models
 
                     try
                     {
-                        _ = ImageTools.Resize(FileName, 200, FileThumbnail);
+                        _ = ImageTools.Resize(FileName, 320, FileThumbnail);
                     }
                     catch (Exception ex)
                     {
@@ -97,83 +128,102 @@ namespace ScreenshotsVisualizer.Models
         }
 
         #region Video
+        public string thumbnail;
         [DontSerialize]
         public string Thumbnail
         {
             get
             {
-                if (IsVideo)
+                if (thumbnail.IsNullOrEmpty())
                 {
-                    string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                    string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                    string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
-
-                    if (File.Exists(FileThumbnail))
+                    if (IsVideo)
                     {
-                        return FileThumbnail;
-                    }
-                    FileSystem.CreateDirectory(PathThumbnail);
+                        string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
+                        string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                        string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
 
-                    try
-                    {
-                        MediaFile inputFile = new MediaFile { Filename = FileName };
-                        MediaFile outputFile = new MediaFile { Filename = FileThumbnail };
-
-                        using (Engine engine = new Engine())
+                        if (File.Exists(FileThumbnail))
                         {
-                            engine.GetMetadata(inputFile);
-
-                            ConversionOptions options = new ConversionOptions { Seek = TimeSpan.FromSeconds(Duration.TotalSeconds / 2) };
-                            engine.GetThumbnail(inputFile, outputFile, options);
+                            thumbnail = FileThumbnail;
+                            return FileThumbnail;
                         }
+                        FileSystem.CreateDirectory(PathThumbnail);
 
-                        return FileThumbnail;
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                        try
+                        {
+                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfmpegPath))
+                            {
+                                string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
+                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfmpegPath, string.Format(thumbArgs, FileName, FileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfmpegPath), true, out string stdOut, out string stdErr);
+                            }
+                            else
+                            {
+                                Logger.Warn("No ffmpeg executable");
+                                API.Instance.Notifications.Add(new NotificationMessage(
+                                    $"{PluginDatabase.PluginName}-FfmpegPath-Error",
+                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsvFfmpegNotFound"),
+                                    NotificationType.Error
+                                ));
+                            }
+
+                            thumbnail = FileThumbnail;
+                            return FileThumbnail;
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                        }
                     }
                 }
-
-                return string.Empty;
+                return thumbnail;
             }
+
+            set => SetValue(ref thumbnail, value);
         }
 
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
-        public TimeSpan _Duration = default;
+        public TimeSpan duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
             get
             {
-                if (IsVideo)
+                if (duration == default)
                 {
-                    if (_Duration != default)
+                    if (IsVideo)
                     {
-                        return _Duration;
-                    }
-
-                    try
-                    {
-                        MediaFile inputFile = new MediaFile { Filename = FileName };
-                        using (Engine engine = new Engine())
+                        try
                         {
-                            engine.GetMetadata(inputFile);
-                        }
+                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
+                            {
+                                string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
+                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
+                                _ = TimeSpan.TryParse(stdOut, out duration);
+                            }
+                            else
+                            {
+                                Logger.Warn("No ffprobe executable");
+                                API.Instance.Notifications.Add(new NotificationMessage(
+                                    $"{PluginDatabase.PluginName}-FfprobePath-Error",
+                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
+                                    NotificationType.Error
+                                ));
+                            }
 
-                        _Duration = inputFile.Metadata.Duration;
-                        return _Duration;
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            return duration == null ? default : duration;
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                        }
                     }
                 }
-
-                return default;
+                return duration;
             }
+
+            set => SetValue(ref duration, value);
         }
         #endregion
     }

@@ -104,7 +104,7 @@
                                        Text="{Binding Modifed, Converter={StaticResource LocalDateTimeConverter}, FallbackValue='2021/03/18 11:14'}" />
                             <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"
                                        Style="{DynamicResource BaseTextBlockStyle}" Name="PART_SizePicture"
-                                       Text="{Binding SizeString, FallbackValue='1280x720'}" />
+                                       Text="{Binding SizeString, FallbackValue='16x9'}" />
                             <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"
                                        Style="{DynamicResource BaseTextBlockStyle}" Name="PART_Duration"
                                        Text="{Binding DurationString, FallbackValue='00:00:00'}" />

@@ -78,7 +78,7 @@ namespace ScreenshotsVisualizer.Views
                 }
             }).ContinueWith(antecedent =>
             {
-                _= Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     ((SsvScreenshotsManagerData)DataContext).LveGames = antecedent.Result;
 

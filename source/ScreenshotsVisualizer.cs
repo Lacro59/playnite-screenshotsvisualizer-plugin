@@ -26,7 +26,7 @@ namespace ScreenshotsVisualizer
 {
     public class ScreenshotsVisualizer : PluginExtended<ScreenshotsVisualizerSettingsViewModel, ScreenshotsVisualizerDatabase>, StartPage.SDK.IStartPageExtension
     {
-        public override Guid Id { get; } = Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
+        public override Guid Id => Guid.Parse("c6c8276f-91bf-48e5-a1d1-4bee0b493488");
 
         internal TopPanelItem TopPanelItem { get; set; }
         internal SidebarItem SidebarItem { get; set; }

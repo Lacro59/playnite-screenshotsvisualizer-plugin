@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
-             xmlns:pcmd="clr-namespace:CommonPluginsShared"
+             xmlns:pcmd="clr-namespace:CommonPlayniteShared.Commands"
              xmlns:ScreenshotsVisualizer="clr-namespace:ScreenshotsVisualizer"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
@@ -623,9 +623,30 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid>
+                        <StackPanel Grid.Row="0">
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBlock Text="{DynamicResource LOCSsvFfmpegPathLabel}" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150" />
+                                <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOCBrowse}" Command="{Binding BrowseSelectFfmpegCommand}" />
+                                <TextBox Margin="10,0,0,0" Text="{Binding Settings.FfmpegPath}" />
+                            </DockPanel>
+
+                            <DockPanel Margin="0,0,0,10">
+                                <TextBlock Text="{DynamicResource LOCSsvFfprobePathLabel}" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150" />
+                                <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOCBrowse}" Command="{Binding BrowseSelectFfprobeCommand}" />
+                                <TextBox Margin="10,0,0,0" Text="{Binding Settings.FfprobePath}" />
+                            </DockPanel>
+
+                            <Button HorizontalAlignment="Left" Margin="0,0,0,0"
+                                    Content="{DynamicResource LOCSsvDownloadFfmpegLabel}"
+                                    Command="{x:Static pcmd:GlobalCommands.NavigateUrlCommand}"
+                                    CommandParameter="https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z" />
+                        </StackPanel>
+
+                        <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="10" />
@@ -643,7 +664,7 @@
                                    Grid.Column="4"/>
                         </Grid>
 
-                        <GroupBox Grid.Row="2">
+                        <GroupBox Grid.Row="4">
                             <GroupBox.Header>
                                 <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
                                     <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />

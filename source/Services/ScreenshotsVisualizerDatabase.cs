@@ -676,12 +676,13 @@ namespace ScreenshotsVisualizer.Services
                             gameScreenshots.DateLastRefresh = DateTime.Now;
                             gameScreenshots.Items = elements.ToList();
 
-                            _ = Task.Run(() =>
+                            // Force generation of data from video
+                            gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
                             {
-                                // Force generation of video thumbnail
-                                IEnumerable<string> VideoElements = gameScreenshots.Items.Where(x => x.IsVideo).Select(x => x.Thumbnail);
+                                string thumb = x.Thumbnail;
+                                string duration = x.DurationString;
+                                string size = x.SizeString;
                             });
-                            Thread.Sleep(300 * gameScreenshots.Items.Where(x => x.IsVideo).Count());
                         }
 
                         AddOrUpdate(gameScreenshots);
