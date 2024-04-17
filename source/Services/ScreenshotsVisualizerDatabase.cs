@@ -440,7 +440,7 @@ namespace ScreenshotsVisualizer.Services
             );
             globalProgressOptions.IsIndeterminate = ids.Count == 1;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();

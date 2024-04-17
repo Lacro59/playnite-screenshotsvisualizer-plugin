@@ -252,7 +252,7 @@ namespace ScreenshotsVisualizer
                         Description = ResourceProvider.GetString("LOCSsvOpenScreenshotsDirectory"),
                         Action = (gameMenuItem) =>
                         {
-                            foreach(string Folder in gameScreenshots.ScreenshotsFolders)
+                            foreach (string Folder in gameScreenshots.ScreenshotsFolders)
                             {
                                 Process.Start(Folder);
                             }

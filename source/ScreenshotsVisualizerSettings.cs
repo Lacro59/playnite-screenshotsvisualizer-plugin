@@ -117,9 +117,9 @@ namespace ScreenshotsVisualizer
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
 
             // Manage source
-            _ = Task.Run(() => 
+            _ = Task.Run(() =>
             {
-                System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
                 API.Instance.Database.Sources.ForEach(x =>
                 {
                     if (!Settings.ssvCarouselOptions.SourcesList.Any(y => y.Name.IsEqual(x.Name)))
