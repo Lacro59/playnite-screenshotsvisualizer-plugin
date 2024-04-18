@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">Nie znaleziono pliku wykonywalnego ffmpeg</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">Nie znaleziono pliku wykonywalnego ffprobe</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
@@ -17,8 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Konwertuj obrazy do JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Konwertuj obrazy na JPG dla wszystkich zrzutów ekranu gier</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
@@ -52,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">Ścieżka do ffmpeg:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">Ścieżka do ffprobe:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Pobierz pakiet ffmpeg</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
 
