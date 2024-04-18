@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} video</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg yürütülebilir dosyası bulunamadı</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe yürütülebilir dosyası bulunamadı</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">EkranalıntısıGörüntüleyici</sys:String>
@@ -52,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg yolu:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe yolu:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg paketini indir</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Yükleme performansını iyileştirmek için küçük resimler oluştur</sys:String>
 
