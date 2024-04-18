@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} Videos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg nicht auffindbar</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe nicht auffindbar</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Bildschirmfoto-Visualisierer</sys:String>
@@ -52,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg Dateipfad:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe Pfad:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg Paket herunterladen</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Erstelle Vorschaubilder, um die Ladeleistung zu verbessern</sys:String>
 
