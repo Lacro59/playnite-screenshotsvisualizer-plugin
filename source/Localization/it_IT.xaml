@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} video</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">eseguibile ffmpeg non trovato</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">eseguibile ffprobe non trovato</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Visualizzatore Schermate</sys:String>
@@ -52,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">percorso ffmpeg:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">percorso ffprobe:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Scarica pacchetto ffmpeg</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Generare miniature per migliorare le prestazioni di caricamento</sys:String>
 
