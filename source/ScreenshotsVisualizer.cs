@@ -243,7 +243,7 @@ namespace ScreenshotsVisualizer
                     }
                 });
 
-                if (gameScreenshots.ScreenshotsFolders != null && gameScreenshots.ScreenshotsFolders.Count != 0 && gameScreenshots.FoldersExist)
+                if (gameScreenshots.ScreenshotsFolders?.Count != 0 && gameScreenshots.FoldersExist)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
@@ -254,7 +254,10 @@ namespace ScreenshotsVisualizer
                         {
                             foreach (string Folder in gameScreenshots.ScreenshotsFolders)
                             {
-                                Process.Start(Folder);
+                                if (Directory.Exists(Folder))
+                                {
+                                    Process.Start(Folder);
+                                }
                             }
                         }
                     });

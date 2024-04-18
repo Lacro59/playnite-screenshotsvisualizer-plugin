@@ -21,13 +21,13 @@ namespace ScreenshotsVisualizer.Models
             {
                 foreach(string Folder in ScreenshotsFolders)
                 {
-                    if (!Directory.Exists(Folder))
+                    if (Directory.Exists(Folder))
                     {
-                        return false;
+                        return true;
                     }
                 }
 
-                return true;
+                return false;
             }
         }
 
