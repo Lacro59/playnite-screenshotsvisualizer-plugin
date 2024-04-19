@@ -7,8 +7,8 @@
     <sys:String x:Key="LOCSsvVideos">{0} Vídeos</sys:String>
 
 
-    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
-    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegNotFound">executável do ffmpeg não encontrado</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">executável do ffprobe não encontrado</sys:String>
 
 
     <!-- MainView -->
@@ -21,8 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abrir a pasta de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Mover as capturas de tela para o diretório salvo</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Converter imagens para JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Converter imagens para JPG para todas as capturas de tela</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Movendo as capturas de tela...</sys:String>
 
@@ -57,9 +57,9 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
-    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
-    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">caminho do ffmpeg:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">caminho do ffprobe:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Baixar pacote ffmpeg</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Gerar miniaturas para melhorar o desempenho do carregamento</sys:String>
 
