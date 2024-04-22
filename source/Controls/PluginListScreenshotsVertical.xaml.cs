@@ -24,13 +24,13 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginListScreenshotsVertical : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginListScreenshotsVerticalDataContext ControlDataContext = new PluginListScreenshotsVerticalDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginListScreenshotsVerticalDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginListScreenshotsVerticalDataContext)controlDataContext;
         }
 
 
@@ -39,12 +39,12 @@ namespace ScreenshotsVisualizer.Controls
             InitializeComponent();
             this.DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -103,22 +103,22 @@ namespace ScreenshotsVisualizer.Controls
 
     public class PluginListScreenshotsVerticalDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _AddBorder;
-        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
+        private bool addBorder;
+        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
 
-        private bool _AddRoundedCorner;
-        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+        private bool addRoundedCorner;
+        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
 
-        private bool _HideInfos;
-        public bool HideInfos { get => _HideInfos; set => SetValue(ref _HideInfos, value); }
+        private bool hideInfos;
+        public bool HideInfos { get => hideInfos; set => SetValue(ref hideInfos, value); }
 
-        private int _CountItems = 10;
-        public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }
+        private int countItems = 10;
+        public int CountItems { get => countItems; set => SetValue(ref countItems, value); }
 
-        private ObservableCollection<Screenshot> _ItemsSource = new ObservableCollection<Screenshot>
+        private ObservableCollection<Screenshot> itemsSource = new ObservableCollection<Screenshot>
         {
             new Screenshot
             {
@@ -126,6 +126,6 @@ namespace ScreenshotsVisualizer.Controls
                 Modifed = DateTime.Now
             }
         };
-        public ObservableCollection<Screenshot> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
+        public ObservableCollection<Screenshot> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 }

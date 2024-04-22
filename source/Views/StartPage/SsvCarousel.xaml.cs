@@ -344,7 +344,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
-                this.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     WindowsIsActivated = false;
                     PART_Video.LoadedBehavior = MediaState.Pause;
@@ -359,7 +359,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
-                this.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     WindowsIsActivated = true;
                     PART_Video.LoadedBehavior = MediaState.Pause;

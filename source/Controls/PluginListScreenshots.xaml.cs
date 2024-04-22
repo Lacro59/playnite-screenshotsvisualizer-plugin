@@ -26,13 +26,13 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginListScreenshots : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginListScreenshotsDataContext ControlDataContext = new PluginListScreenshotsDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginListScreenshotsDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginListScreenshotsDataContext)controlDataContext;
         }
 
 
@@ -41,12 +41,12 @@ namespace ScreenshotsVisualizer.Controls
             InitializeComponent();
             this.DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -75,11 +75,11 @@ namespace ScreenshotsVisualizer.Controls
 
 
             // With PlayerActivities
-            ControlDataContext.dt = default;
+            ControlDataContext.DateTaked = default;
             if (this.Tag is DateTime)
             {
                 ControlDataContext.IsActivated = true;
-                ControlDataContext.dt = (DateTime)this.Tag;
+                ControlDataContext.DateTaked = (DateTime)this.Tag;
             }
         }
 
@@ -93,10 +93,10 @@ namespace ScreenshotsVisualizer.Controls
 
 
             // With PlayerActivities
-            if (ControlDataContext.dt != default)
+            if (ControlDataContext.DateTaked != default)
             {
                 screenshots = screenshots
-                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual((ControlDataContext.dt).ToString("yyyy-MM--dd")))
+                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(ControlDataContext.DateTaked.ToString("yyyy-MM--dd")))
                     .ToList();
             }
 
@@ -138,28 +138,28 @@ namespace ScreenshotsVisualizer.Controls
 
     public class PluginListScreenshotsDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private DateTime _dt;
-        public DateTime dt { get => _dt; set => SetValue(ref _dt, value); }
+        private DateTime dateTaked;
+        public DateTime DateTaked { get => dateTaked; set => SetValue(ref dateTaked, value); }
 
-        private bool _AddBorder;
-        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
+        private bool addBorder;
+        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
 
-        private bool _AddRoundedCorner;
-        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+        private bool addRoundedCorner;
+        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
 
-        private bool _HideInfos;
-        public bool HideInfos { get => _HideInfos; set => SetValue(ref _HideInfos, value); }
+        private bool hideInfos;
+        public bool HideInfos { get => hideInfos; set => SetValue(ref hideInfos, value); }
 
-        private double _IntegrationShowPicturesHeight;
-        public double IntegrationShowPicturesHeight { get => _IntegrationShowPicturesHeight; set => SetValue(ref _IntegrationShowPicturesHeight, value); }
+        private double integrationShowPicturesHeight;
+        public double IntegrationShowPicturesHeight { get => integrationShowPicturesHeight; set => SetValue(ref integrationShowPicturesHeight, value); }
 
-        private int _CountItems = 10;
-        public int CountItems { get => _CountItems; set => SetValue(ref _CountItems, value); }
+        private int countItems = 10;
+        public int CountItems { get => countItems; set => SetValue(ref countItems, value); }
 
-        private ObservableCollection<Screenshot> _ItemsSource = new ObservableCollection<Screenshot>
+        private ObservableCollection<Screenshot> itemsSource = new ObservableCollection<Screenshot>
         {
             new Screenshot
             {
@@ -167,14 +167,14 @@ namespace ScreenshotsVisualizer.Controls
                 Modifed = DateTime.Now
             }
         };
-        public ObservableCollection<Screenshot> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
+        public ObservableCollection<Screenshot> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 
     public class TwoSizeMultiValueConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            double returnValue = parameter == null || ((parameter is string && (string)parameter == "+"))
+            double returnValue = parameter == null || (parameter is string && (string)parameter == "+")
                 ? (double)values[0] + (double)values[1]
                 : (double)values[0] - (double)values[1] - 25;
             return returnValue;

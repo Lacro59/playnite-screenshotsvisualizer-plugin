@@ -26,13 +26,13 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginSinglePicture : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginSinglePictureDataContext ControlDataContext = new PluginSinglePictureDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginSinglePictureDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginSinglePictureDataContext)controlDataContext;
         }
 
         private List<Screenshot> screenshots = new List<Screenshot>();
@@ -44,12 +44,12 @@ namespace ScreenshotsVisualizer.Controls
             InitializeComponent();
             this.DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -109,7 +109,7 @@ namespace ScreenshotsVisualizer.Controls
             string PictureSource = string.Empty;
             string PictureInfos = string.Empty;
 
-            var Converters = new LocalDateTimeConverter();
+            LocalDateTimeConverter Converters = new LocalDateTimeConverter();
 
             if (File.Exists(screenshot.FileName))
             {
@@ -133,7 +133,7 @@ namespace ScreenshotsVisualizer.Controls
 
                 SetPicture(screenshots[index]);
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;

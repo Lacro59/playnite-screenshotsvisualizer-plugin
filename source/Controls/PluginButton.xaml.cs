@@ -23,13 +23,13 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginButton : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase => PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginButtonDataContext ControlDataContext = new PluginButtonDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginButtonDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginButtonDataContext)controlDataContext;
         }
 
 
@@ -40,12 +40,12 @@ namespace ScreenshotsVisualizer.Controls
             InitializeComponent();
             this.DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -122,22 +122,22 @@ namespace ScreenshotsVisualizer.Controls
 
     public class PluginButtonDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _DisplayDetails;
-        public bool DisplayDetails { get => _DisplayDetails; set => SetValue(ref _DisplayDetails, value); }
+        private bool displayDetails;
+        public bool DisplayDetails { get => displayDetails; set => SetValue(ref displayDetails, value); }
 
-        private bool _ButtonContextMenu;
-        public bool ButtonContextMenu { get => _ButtonContextMenu; set => SetValue(ref _ButtonContextMenu, value); }
+        private bool buttonContextMenu;
+        public bool ButtonContextMenu { get => buttonContextMenu; set => SetValue(ref buttonContextMenu, value); }
 
-        private string _Text = "\uea38";
-        public string Text { get => _Text; set => SetValue(ref _Text, value); }
+        private string text = "\uea38";
+        public string Text { get => text; set => SetValue(ref text, value); }
 
-        private DateTime _SsvDateLast = DateTime.Now;
-        public DateTime SsvDateLast { get => _SsvDateLast; set => SetValue(ref _SsvDateLast, value); }
+        private DateTime ssvDateLast = DateTime.Now;
+        public DateTime SsvDateLast { get => ssvDateLast; set => SetValue(ref ssvDateLast, value); }
 
-        private int _SsvTotal = 7;
-        public int SsvTotal { get => _SsvTotal; set => SetValue(ref _SsvTotal, value); }
+        private int ssvTotal = 7;
+        public int SsvTotal { get => ssvTotal; set => SetValue(ref ssvTotal, value); }
     }
 }

@@ -58,7 +58,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 LoadData();
 
-                this.Dispatcher.BeginInvoke((Action)delegate 
+                Application.Current.Dispatcher.BeginInvoke((Action)delegate 
                 {
                     PART_ListGame.ItemsSource = listGames;
                     PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
@@ -208,7 +208,7 @@ namespace ScreenshotsVisualizer.Views
                     });
                 }
                 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     listGames.Sort((x, y) => x.Name.CompareTo(y.Name));
                     PART_ListGame.ItemsSource = null;
@@ -555,7 +555,7 @@ namespace ScreenshotsVisualizer.Views
                         activateGlobalProgress.CurrentProgressValue++;
                     }
 
-                    this.Dispatcher.BeginInvoke((Action)delegate
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
                     {
                         listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
@@ -606,7 +606,7 @@ namespace ScreenshotsVisualizer.Views
                         activateGlobalProgress.CurrentProgressValue++;
                     }
 
-                    this.Dispatcher.BeginInvoke((Action)delegate
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
                     {
                         listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
