@@ -81,14 +81,14 @@
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Opciones de captura de pantalla única</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">Opciontes de Lista de de capturas de pantalla</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Lista de opciones de captura de pantalla</sys:String>
 
     <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ocultar información de capturas de pantalla</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Abrir al seleccionar la imagen</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Enlazar selección con vista de captura de pantalla única</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Se utilizo un patrón de archivo</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">Utilizado un patrón de archivo</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">Activar el movimiento de las capturas de pantalla en una carpeta única</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Patrón de archivo</sys:String>
 
