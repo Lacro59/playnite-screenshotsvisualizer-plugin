@@ -56,8 +56,7 @@ namespace ScreenshotsVisualizer.Controls
                 this.MouseLeftButtonDown += Child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += Child_MouseLeftButtonUp;
                 this.MouseMove += Child_MouseMove;
-                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
-                  Child_PreviewMouseRightButtonDown);
+                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Child_PreviewMouseRightButtonDown);
             }
         }
 

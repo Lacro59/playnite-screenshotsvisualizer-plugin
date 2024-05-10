@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using ScreenshotsVisualizer.Controls;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ScreenshotsVisualizer.Views
 {
@@ -36,7 +38,7 @@ namespace ScreenshotsVisualizer.Views
 
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
-            PART_Copy.Visibility = Visibility.Collapsed;
+            PART_Bt.Visibility = Visibility.Collapsed;
             PART_Game.Visibility = Visibility.Collapsed;
 
             SetImage(screenshot);
@@ -182,7 +184,7 @@ namespace ScreenshotsVisualizer.Views
 
             if (!Screenshot?.IsVideo ?? true)
             {
-                PART_Copy.Visibility = Visibility.Visible;
+                PART_Bt.Visibility = Visibility.Visible;
                 PART_Game.Visibility = Visibility.Visible;
             }
         }
@@ -191,14 +193,14 @@ namespace ScreenshotsVisualizer.Views
         {
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
-            PART_Copy.Visibility = Visibility.Collapsed;
+            PART_Bt.Visibility = Visibility.Collapsed;
             PART_Game.Visibility = Visibility.Collapsed;
         }
 
 
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
-            if (!Screenshot?.IsVideo ?? true && File.Exists(Screenshot.FileName))
+            if ((!Screenshot?.IsVideo ?? true) && File.Exists(Screenshot.FileName))
             {
                 try
                 {
@@ -208,6 +210,18 @@ namespace ScreenshotsVisualizer.Views
                 catch(Exception ex)
                 {
                     Common.LogError(ex, false);
+                }
+            }
+        }
+
+        private void PART_Expand_Click(object sender, RoutedEventArgs e)
+        {
+            if ((!Screenshot?.IsVideo ?? true) && File.Exists(Screenshot.FileName))
+            {
+                ZoomBorder parent = UI.FindParent<ZoomBorder>(PART_ScreenshotsPicture);
+                if (parent != null)
+                {
+                    parent.Reset();
                 }
             }
         }
