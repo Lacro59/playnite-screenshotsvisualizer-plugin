@@ -58,7 +58,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 LoadData();
 
-                Application.Current.Dispatcher.BeginInvoke((Action)delegate 
+                _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate 
                 {
                     PART_ListGame.ItemsSource = listGames;
                     PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
@@ -370,7 +370,7 @@ namespace ScreenshotsVisualizer.Views
             TextboxSearch.Text = string.Empty;
 
             List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
-            foreach (var game in tmpList)
+            foreach (ListGame game in tmpList)
             {
                 int index = listGames.FindIndex(x => x.Id == game.Id);
                 listGames.RemoveAt(index);
@@ -530,20 +530,20 @@ namespace ScreenshotsVisualizer.Views
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
                     activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
 
-                    foreach (var game in listGameScreenshots)
+                    foreach (ListGameScreenshot game in listGameScreenshots)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
                             break;
                         }
 
-                        foreach (var screenshotsFolders in game.ScreenshotsFolders)
+                        foreach (FolderSettings screenshotsFolders in game.ScreenshotsFolders)
                         {
                             screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.PathToRelativeWithStores
                             (
@@ -555,7 +555,7 @@ namespace ScreenshotsVisualizer.Views
                         activateGlobalProgress.CurrentProgressValue++;
                     }
 
-                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                    _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                     {
                         listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
@@ -581,20 +581,20 @@ namespace ScreenshotsVisualizer.Views
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
                     activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
 
-                    foreach (var game in listGameScreenshots)
+                    foreach (ListGameScreenshot game in listGameScreenshots)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
                             break;
                         }
 
-                        foreach (var screenshotsFolders in game.ScreenshotsFolders)
+                        foreach (FolderSettings screenshotsFolders in game.ScreenshotsFolders)
                         {
                             screenshotsFolders.ScreenshotsFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores
                             (
@@ -606,7 +606,7 @@ namespace ScreenshotsVisualizer.Views
                         activateGlobalProgress.CurrentProgressValue++;
                     }
 
-                    Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                    _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                     {
                         listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
@@ -628,7 +628,7 @@ namespace ScreenshotsVisualizer.Views
             SelectVariable ViewExtension = new SelectVariable();
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCCommonSelectVariable"), ViewExtension);
             windowExtension.ResizeMode = ResizeMode.CanResize;
-            windowExtension.ShowDialog();
+            _ = windowExtension.ShowDialog();
         }
 
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
@@ -655,7 +655,7 @@ namespace ScreenshotsVisualizer.Views
         public string SourceIcon { get; set; }
         public bool IsVisible { get; set; } = true;
     }
-    
+
     public class ListGameScreenshot
     {
         public Guid Id { get; set; }

@@ -140,10 +140,15 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label Content="{DynamicResource LOCSsvGlobalPath}" Grid.Column="0" />
-                        <TextBox Text="{Binding Settings.GlobalScreenshootsPath}" Grid.Column="2" ToolTip="{DynamicResource LOCSsvGlobalSearchTooltip}" />
+                        <TextBox Text="{Binding Settings.GlobalScreenshootsPath}" Grid.Column="2" />
+                        <Button Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" Grid.Column="4"
+                                Command="{x:Static pcmd:GlobalCommands.NavigateUrlCommand}" 
+                                CommandParameter="https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/wiki/Global-screenshots-path" />
                     </Grid>
 
                     <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
