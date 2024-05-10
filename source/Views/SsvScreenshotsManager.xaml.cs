@@ -43,8 +43,15 @@ namespace ScreenshotsVisualizer.Views
         {
             _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
-                SetData();
-                SetInfos();
+                try
+                {
+                    SetData();
+                    SetInfos();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }));
         }
 

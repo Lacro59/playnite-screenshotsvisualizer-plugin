@@ -7,13 +7,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls" 
     xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel" 
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=local:PluginScreenshotsDataContext, IsDesignTimeCreatable=True}"
-    MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight, FallbackValue=100}"
-    Height="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualHeight}"
-    MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight, FallbackValue=200}"
-    Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualWidth}">
+    MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
+    MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}"
+    Height="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Height}"
+    MinWidth="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinWidth}"
+    Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Width}"
+    MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxWidth}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -26,72 +28,61 @@
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
         
         <DataTemplate x:Key="ItemTemplate">
-            <Grid Margin="0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+            <DockPanel Margin="0,5">
+                <controls1:TextBlockTrimmed MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
+                                            DockPanel.Dock="Top" 
+                                            Margin="0,0,0,5"
+                                            Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" 
+                                            FontWeight="Bold"
+                                            Style="{DynamicResource BaseTextBlockStyle}"
+                                            TextTrimming="CharacterEllipsis" 
+                                            VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Name="PART_GridText">
-                    <TextBlock MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
-                                       Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" MinWidth="200" FontWeight="Bold"
-                                       Style="{DynamicResource BaseTextBlockStyle}"
-                                       TextTrimming="CharacterEllipsis" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <Grid Margin="0,0,5,0">
+                    <controls:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
+                                         Parameter="2" RenderOptions.BitmapScalingMode="Fant">
+                        <controls:ImageAsync.Style>
+                            <Style TargetType="{x:Type controls:ImageAsync}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                        <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                        <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:ImageAsync.Style>
+                    </controls:ImageAsync>
+
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                               FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
+                               Style="{DynamicResource BaseTextBlockStyle}" 
+                               Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+                        </TextBlock.Effect>
+                    </TextBlock>
                 </Grid>
 
-                <controls:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                           Parameter="2" RenderOptions.BitmapScalingMode="Fant">
-                    <controls:ImageAsync.Style>
-                        <Style TargetType="{x:Type controls:ImageAsync}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                    <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                    <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:ImageAsync.Style>
-                </controls:ImageAsync>
-
-                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                   FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                                   Style="{DynamicResource BaseTextBlockStyle}" 
-                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
-                    <TextBlock.Effect>
-                        <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                    </TextBlock.Effect>
-                </TextBlock>
-
                 <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
-                                    Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
-                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
-                                    VerticalAlignment="Bottom" />
-            </Grid>
+                        ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                        VerticalAlignment="Bottom" />
+            </DockPanel>
         </DataTemplate>
     </UserControl.Resources>
-    
-    <Grid Name="PART_ListScreenshotsContener">
+
+    <DockPanel LastChildFill="True">
         <ListBox Name="PART_ListScreenshots"
-                         VirtualizingPanel.CacheLengthUnit="Item" 
-                         VirtualizingPanel.ScrollUnit="Pixel" 
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
-                         SelectionChanged="PART_ListScreenshots_SelectionChanged"
-                         ItemsSource="{Binding ItemsSource}"
-                         ItemTemplate="{StaticResource ItemTemplate}"     
-                         Tag="{Binding AddBorder}"
-                         Height="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualHeight}" 
-                         Width="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualWidth}">
+                 VirtualizingPanel.CacheLengthUnit="Item" 
+                 VirtualizingPanel.ScrollUnit="Pixel" 
+                 VirtualizingPanel.VirtualizationMode="Recycling"
+                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
+                 SelectionChanged="PART_ListScreenshots_SelectionChanged"
+                 ItemsSource="{Binding ItemsSource}"
+                 ItemTemplate="{StaticResource ItemTemplate}"     
+                 Tag="{Binding AddBorder}">
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
@@ -106,5 +97,5 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-    </Grid>
+    </DockPanel>
 </controls:PluginUserControlExtend>

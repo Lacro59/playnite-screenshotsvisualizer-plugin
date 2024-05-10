@@ -70,7 +70,7 @@ namespace ScreenshotsVisualizer.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationPicturesList;
             ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
             ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
             ControlDataContext.HideInfos = PluginDatabase.PluginSettings.Settings.HideScreenshotsInfos;
