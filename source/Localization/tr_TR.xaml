@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} video</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg yürütülebilir dosyası bulunamadı</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe yürütülebilir dosyası bulunamadı</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">EkranalıntısıGörüntüleyici</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Oyun ekran alıntılarını görüntüle</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ekran alıntıları dizinini aç</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Dizini kaydetmek için ekran alıntılarını taşı</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Görseli JPG biçimine dönüştür</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Görselleri JPG biçimine dönüştür</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Tüm oyunların ekran görüntülerini JPG biçimine dönüştür</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Ekran alıntıları taşınıyor...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg yolu:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe yolu:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg paketini indir</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">Yükleme performansını iyileştirmek için küçük resimler oluştur</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Genel ekran alıntıları yolu</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Tek bir ekran alıntısı içeren bir denetim görüntüle</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Ekran alıntıları listesi içeren bir denetim görüntüle</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Dikey ekran alıntıları listesi içeren bir denetim görüntüle</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Geniş bir ekran görüntüsü listesi içeren bir kontrolü görüntüleyin</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Kenarlık ekle</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Yuvarlatılmış köşe ekle</sys:String>
 

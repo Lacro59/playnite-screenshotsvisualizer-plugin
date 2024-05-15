@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} Vídeos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">executável do ffmpeg não encontrado</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">executável do ffprobe não encontrado</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Visualizador de capturas de tela</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Ver capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Abrir a pasta de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Mover as capturas de tela para o diretório salvo</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Converter imagem para JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Converter imagens para JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Converter imagens para JPG para todas as capturas de tela</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Movendo as capturas de tela...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">caminho do ffmpeg:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">caminho do ffprobe:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Baixar pacote ffmpeg</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">Gerar miniaturas para melhorar o desempenho do carregamento</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Caminho global de capturas de tela</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Exibir um controle com uma única captura de tela</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Exibir um controle com uma lista de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Exibir um controle com uma lista de capturas de tela verticais</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Exibir um controle com uma grande lista de capturas de tela</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Adicionar borda</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Adicionar canto arredondado</sys:String>
 

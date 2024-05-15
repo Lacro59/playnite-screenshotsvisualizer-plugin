@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} video</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">eseguibile ffmpeg non trovato</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">eseguibile ffprobe non trovato</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Visualizzatore Schermate</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Visualizza schermate di gioco</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Apri la directory degli screenshot</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Sposta le schermate nella cartella di salvataggio</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Converti immagine in JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Converti immagini in JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Converti immagini in JPG per tutti gli screenshot dei giochi</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Spostamento delle schermate...</sys:String>
 
@@ -37,7 +42,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Mostra il nome del gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Anteprima usate</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
@@ -51,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">percorso ffmpeg:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">percorso ffprobe:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Scarica pacchetto ffmpeg</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Generare miniature per migliorare le prestazioni di caricamento</sys:String>
 
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Visualizza un controllo con una singola schermata</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Mostra un controllo con un elenco di schermate</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Mostra un controllo con un elenco di schermate verticali</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Mostra un controllo con una grande lista di screenshot</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Aggiungi bordo</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Aggiungi angolo arrotondato</sys:String>
 

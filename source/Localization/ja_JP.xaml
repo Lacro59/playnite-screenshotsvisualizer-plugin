@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} 動画</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">画像を JPG に変換</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">サムネイルを生成して読み込みパフォーマンスを向上させる</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">グローバルスクリーンショットのパス</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">外枠を追加</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">角丸を追加</sys:String>
 

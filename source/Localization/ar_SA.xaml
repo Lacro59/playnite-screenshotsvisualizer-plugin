@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} فيديوهات</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">عرض لقطات شاشة اللعب</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">فتح مجلد لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">انقل لقطات الشاشة إلى مجلد الحفظ</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">تحويل الصورة إلى JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">جارٍ نقل لقطات الشاشة...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">إنشاء صور مصغرة لتحسين أداء التحميل البدء</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">مسار لقطات الشاشة العالم</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">عرض لقطة شاشة واح</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">عرض قائمة لقطات الشاش</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">عرض قائمة عمودية للقطات الشاش</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">إضافة الح</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">إضافة زاوية مستدير</sys:String>
 

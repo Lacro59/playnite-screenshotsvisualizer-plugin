@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} vidéos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">L'exécutable ffmpeg n'a pas été trouvé</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">L'exécutable ffprobe n'a pas été trouvé</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Visualiseur de captures d'écran</sys:String>
@@ -18,6 +22,7 @@
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ouvrir le répertoire des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Déplacer les captures d'écran vers le répertoire de sauvegarde</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">Convertir les images en JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convertir les images en JPG pour toutes les captures d'écran des jeux</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
 
@@ -37,7 +42,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carrousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Afficher le nom du jeu</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Aléatoire sur toutes les captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Utiliser une miniature ?</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">N'afficher que les captures d'écran les plus récentes pour chaque jeu</sys:String>
@@ -51,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">Chemin ffmpeg :</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">Chemin ffprobe :</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Télécharger le paquet ffmpeg</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Générer des miniatures pour améliorer les performances</sys:String>
 
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Afficher un contrôle avec une capture d'écran unique</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Afficher un contrôle avec une liste de captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Afficher un contrôle avec une liste de captures d'écran verticales</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Afficher un contrôle avec une grande liste de captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Ajouter une bordure</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Ajouter un coin arrondi</sys:String>
 

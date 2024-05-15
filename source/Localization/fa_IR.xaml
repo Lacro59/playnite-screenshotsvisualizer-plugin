@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert image to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
 

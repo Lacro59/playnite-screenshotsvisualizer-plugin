@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} 个视频</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">截图可视化-ScreenshotsVisualizer</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">将图像转换为 JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
@@ -52,6 +57,10 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+
     <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">添加边</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 

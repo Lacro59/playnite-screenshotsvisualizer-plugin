@@ -7,6 +7,10 @@
     <sys:String x:Key="LOCSsvVideos">{0} Videos</sys:String>
 
 
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg nicht auffindbar</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe nicht auffindbar</sys:String>
+
+
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">Bildschirmfoto-Visualisierer</sys:String>
@@ -17,7 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Bildschirmfotos ansehen</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Verzeichnis der Bildschirmfotos öffnen</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Verschieben der Screenshots in das Speicherverzeichnis</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Bild in JPG konvertieren</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">Bilder in JPG konvertieren</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">Bilder in JPG für alle Spiele Screenshots konvertieren</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Verschieben der Screenshots...</sys:String>
 
@@ -37,7 +42,7 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Karussell</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Spielname anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Zufallsgenerierte Liste aller Screenshots</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Verwendete Vorschaubilder</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Nur die neuesten Screenshots für jedes Spiel anzeigen</sys:String>
@@ -51,6 +56,10 @@
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
+
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg Dateipfad:</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe Pfad:</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg Paket herunterladen</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">Erstelle Vorschaubilder, um die Ladeleistung zu verbessern</sys:String>
 
@@ -66,6 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Anzeigen eines Steuerelements mit einem einzelnen Screenshot</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Anzeigen eines Steuerelements mit einer Liste von Screenshots</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Anzeigen eines Steuerelements mit einer Liste vertikaler Screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Zeigt eine Steuerung mit einer großen Liste von Screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Rahmen hinzufügen</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Abgerundeten Ecken hinzufügen</sys:String>
 
