@@ -212,34 +212,34 @@ namespace ScreenshotsVisualizer.Controls
 
     public class PluginSinglePictureDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _AddBorder;
-        public bool AddBorder { get => _AddBorder; set => SetValue(ref _AddBorder, value); }
+        private bool addBorder;
+        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
 
-        private bool _AddRoundedCorner;
-        public bool AddRoundedCorner { get => _AddRoundedCorner; set => SetValue(ref _AddRoundedCorner, value); }
+        private bool addRoundedCorner;
+        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
 
-        private double _IntegrationShowSinglePictureHeight;
-        public double IntegrationShowSinglePictureHeight { get => _IntegrationShowSinglePictureHeight; set => SetValue(ref _IntegrationShowSinglePictureHeight, value); }
+        private double integrationShowSinglePictureHeight;
+        public double IntegrationShowSinglePictureHeight { get => integrationShowSinglePictureHeight; set => SetValue(ref integrationShowSinglePictureHeight, value); }
 
-        private bool _EnablePrev;
-        public bool EnablePrev { get => _EnablePrev; set => SetValue(ref _EnablePrev, value); }
+        private bool enablePrev;
+        public bool EnablePrev { get => enablePrev; set => SetValue(ref enablePrev, value); }
 
-        private bool _EnableNext;
-        public bool EnableNext { get => _EnableNext; set => SetValue(ref _EnableNext, value); }
+        private bool enableNext;
+        public bool EnableNext { get => enableNext; set => SetValue(ref enableNext, value); }
 
-        private bool _IsVideo;
-        public bool IsVideo { get => _IsVideo; set => SetValue(ref _IsVideo, value); }
+        private bool isVideo;
+        public bool IsVideo { get => isVideo; set => SetValue(ref isVideo, value); }
 
-        private string _Thumbnail;
-        public string Thumbnail { get => _Thumbnail; set => SetValue(ref _Thumbnail, value); }
+        private string thumbnail;
+        public string Thumbnail { get => thumbnail; set => SetValue(ref thumbnail, value); }
 
-        private string _PictureSource;
-        public string PictureSource { get => _PictureSource; set => SetValue(ref _PictureSource, value); }
+        private string pictureSource;
+        public string PictureSource { get => pictureSource; set => SetValue(ref pictureSource, value); }
 
-        private string _PictureInfos;
-        public string PictureInfos { get => _PictureInfos; set => SetValue(ref _PictureInfos, value); }
+        private string pictureInfos;
+        public string PictureInfos { get => pictureInfos; set => SetValue(ref pictureInfos, value); }
     }
 }

@@ -50,7 +50,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-
+                    Common.LogError(ex, true);
                 }
             }));
         }

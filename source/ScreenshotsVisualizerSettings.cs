@@ -22,31 +22,31 @@ namespace ScreenshotsVisualizer
         public bool EnableIntegrationButtonHeader { get; set; } = false;
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
-        private bool _EnableIntegrationViewItem = true;
-        public bool EnableIntegrationViewItem { get => _EnableIntegrationViewItem; set => SetValue(ref _EnableIntegrationViewItem, value); }
+        private bool enableIntegrationViewItem = true;
+        public bool EnableIntegrationViewItem { get => enableIntegrationViewItem; set => SetValue(ref enableIntegrationViewItem, value); }
 
-        private bool _EnableIntegrationButton = true;
-        public bool EnableIntegrationButton { get => _EnableIntegrationButton; set => SetValue(ref _EnableIntegrationButton, value); }
+        private bool enableIntegrationButton = true;
+        public bool EnableIntegrationButton { get => enableIntegrationButton; set => SetValue(ref enableIntegrationButton, value); }
 
-        private bool _EnableIntegrationButtonDetails = false;
-        public bool EnableIntegrationButtonDetails { get => _EnableIntegrationButtonDetails; set => SetValue(ref _EnableIntegrationButtonDetails, value); }
+        private bool enableIntegrationButtonDetails = false;
+        public bool EnableIntegrationButtonDetails { get => enableIntegrationButtonDetails; set => SetValue(ref enableIntegrationButtonDetails, value); }
 
-        private bool _EnableIntegrationShowSinglePicture = true;
-        public bool EnableIntegrationShowSinglePicture { get => _EnableIntegrationShowSinglePicture; set => SetValue(ref _EnableIntegrationShowSinglePicture, value); }
+        private bool enableIntegrationShowSinglePicture = true;
+        public bool EnableIntegrationShowSinglePicture { get => enableIntegrationShowSinglePicture; set => SetValue(ref enableIntegrationShowSinglePicture, value); }
 
         public double IntegrationShowSinglePictureHeight { get; set; } = 150;
         public bool OpenViewerWithOnSelectionSinglePicture { get; set; } = false;
         public bool AddBorderSinglePicture { get; set; } = true;
         public bool AddRoundedCornerSinglePicture { get; set; } = false;
 
-        private bool _EnableIntegrationShowPictures = true;
-        public bool EnableIntegrationShowPictures { get => _EnableIntegrationShowPictures; set => SetValue(ref _EnableIntegrationShowPictures, value); }
+        private bool enableIntegrationShowPictures = true;
+        public bool EnableIntegrationShowPictures { get => enableIntegrationShowPictures; set => SetValue(ref enableIntegrationShowPictures, value); }
 
-        private bool _EnableIntegrationShowPicturesVertical = true;
-        public bool EnableIntegrationShowPicturesVertical { get => _EnableIntegrationShowPicturesVertical; set => SetValue(ref _EnableIntegrationShowPicturesVertical, value); }
+        private bool enableIntegrationShowPicturesVertical = true;
+        public bool EnableIntegrationShowPicturesVertical { get => enableIntegrationShowPicturesVertical; set => SetValue(ref enableIntegrationShowPicturesVertical, value); }
 
-        private bool _EnableIntegrationPicturesList = true;
-        public bool EnableIntegrationPicturesList { get => _EnableIntegrationPicturesList; set => SetValue(ref _EnableIntegrationPicturesList, value); }
+        private bool enableIntegrationPicturesList = true;
+        public bool EnableIntegrationPicturesList { get => enableIntegrationPicturesList; set => SetValue(ref enableIntegrationPicturesList, value); }
 
         public double IntegrationShowPicturesHeight { get; set; } = 150;
         public bool LinkWithSinglePicture { get; set; } = false;
@@ -69,18 +69,18 @@ namespace ScreenshotsVisualizer
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
 
-        private bool _CarouselAutoChangeEnable = true;
-        public bool CarouselAutoChangeEnable { get => _CarouselAutoChangeEnable; set => SetValue(ref _CarouselAutoChangeEnable, value); }
+        private bool carouselAutoChangeEnable = true;
+        public bool CarouselAutoChangeEnable { get => carouselAutoChangeEnable; set => SetValue(ref carouselAutoChangeEnable, value); }
 
-        private int _CarouselAutoChangeTimer = 10;
-        public int CarouselAutoChangeTimer { get => _CarouselAutoChangeTimer; set => SetValue(ref _CarouselAutoChangeTimer, value); }
+        private int carouselAutoChangeTimer = 10;
+        public int CarouselAutoChangeTimer { get => carouselAutoChangeTimer; set => SetValue(ref carouselAutoChangeTimer, value); }
 
 
-        private string _FfmpegPath;
-        public string FfmpegPath { get => _FfmpegPath; set => SetValue(ref _FfmpegPath, value); }
+        private string ffmpegPath;
+        public string FfmpegPath { get => ffmpegPath; set => SetValue(ref ffmpegPath, value); }
 
-        private string _FfprobePath;
-        public string FfprobePath { get => _FfprobePath; set => SetValue(ref _FfprobePath, value); }
+        private string ffprobePath;
+        public string FfprobePath { get => ffprobePath; set => SetValue(ref ffprobePath, value); }
         #endregion
 
 
@@ -109,8 +109,8 @@ namespace ScreenshotsVisualizer
         private readonly ScreenshotsVisualizer Plugin;
         private ScreenshotsVisualizerSettings EditingClone { get; set; }
 
-        private ScreenshotsVisualizerSettings _Settings;
-        public ScreenshotsVisualizerSettings Settings { get => _Settings; set => SetValue(ref _Settings, value); }
+        private ScreenshotsVisualizerSettings settings;
+        public ScreenshotsVisualizerSettings Settings { get => settings; set => SetValue(ref settings, value); }
 
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
