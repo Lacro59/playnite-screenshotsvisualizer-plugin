@@ -140,3 +140,14 @@ Packages:
       - Fixed many bugs
       - UI optimizations
       - Added new option for Carousel in StartPage
+  - Version: 3.4
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-05-15
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.4/playnite-screenshotsvisualizer-plugin_3_4.pext
+    Changelog:
+      - Updated localizations
+      - Added new control button in picture view
+      - UI optimizations
+      - Used FFmpeg for video data
+      - Added an option to convert to jpg for all games
+      - 
