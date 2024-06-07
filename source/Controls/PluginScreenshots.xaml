@@ -7,7 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls" 
     xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel" 
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
+    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" 
+    xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
+    xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=local:PluginScreenshotsDataContext, IsDesignTimeCreatable=True}"
     MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
@@ -28,7 +30,7 @@
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
         
         <DataTemplate x:Key="ItemTemplate">
-            <DockPanel Margin="0,5">
+            <DockPanel Margin="0,5" Width="220">
                 <controls1:TextBlockTrimmed MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
                                             DockPanel.Dock="Top" 
                                             Margin="0,0,0,5"

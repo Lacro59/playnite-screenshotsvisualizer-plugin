@@ -121,7 +121,7 @@ namespace ScreenshotsVisualizer.Controls
                 {
                     if (File.Exists(screenshot.FileName))
                     {
-                        Task.Run(() =>
+                        _ = Task.Run(() =>
                         {
                             // TODO do better
                             while (IsFileLocked(new FileInfo(screenshot.FileName)))
