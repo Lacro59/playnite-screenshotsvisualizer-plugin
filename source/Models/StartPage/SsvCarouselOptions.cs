@@ -9,41 +9,41 @@ namespace ScreenshotsVisualizer.Models.StartPage
 {
     public class SsvCarouselOptions : ObservableObject
     {
-        private double _Margin = 10;
-        public double Margin { get => _Margin; set => SetValue(ref _Margin, value); }
+        private double margin = 10;
+        public double Margin { get => margin; set => SetValue(ref margin, value); }
 
 
-        private bool _EnableAllRandom = true;
-        public bool EnableAllRandom { get => _EnableAllRandom; set => SetValue(ref _EnableAllRandom, value); }
+        private bool enableAllRandom = true;
+        public bool EnableAllRandom { get => enableAllRandom; set => SetValue(ref enableAllRandom, value); }
 
-        private bool _EnableLowerRezolution = true;
-        public bool EnableLowerRezolution { get => _EnableLowerRezolution; set => SetValue(ref _EnableLowerRezolution, value); }
+        private bool enableLowerRezolution = true;
+        public bool EnableLowerRezolution { get => enableLowerRezolution; set => SetValue(ref enableLowerRezolution, value); }
 
-        private bool _EnableAutoChange = true;
-        public bool EnableAutoChange { get => _EnableAutoChange; set => SetValue(ref _EnableAutoChange, value); }
+        private bool enableAutoChange = true;
+        public bool EnableAutoChange { get => enableAutoChange; set => SetValue(ref enableAutoChange, value); }
 
-        private int _Time = 10;
-        public int Time { get => _Time; set => SetValue(ref _Time, value); }
+        private int time = 10;
+        public int Time { get => time; set => SetValue(ref time, value); }
 
-        private int _LimitPerGame = 10;
-        public int LimitPerGame { get => _LimitPerGame; set => SetValue(ref _LimitPerGame, value); }
+        private int limitPerGame = 10;
+        public int LimitPerGame { get => limitPerGame; set => SetValue(ref limitPerGame, value); }
 
-        private int _LimitGame = 0;
-        public int LimitGame { get => _LimitGame; set => SetValue(ref _LimitGame, value); }
+        private int limitGame = 0;
+        public int LimitGame { get => limitGame; set => SetValue(ref limitGame, value); }
 
-        private bool _OnlyMostRecent = true;
-        public bool OnlyMostRecent { get => _OnlyMostRecent; set => SetValue(ref _OnlyMostRecent, value); }
+        private bool onlyMostRecent = true;
+        public bool OnlyMostRecent { get => onlyMostRecent; set => SetValue(ref onlyMostRecent, value); }
 
-        private bool _OnlyFavorite = false;
-        public bool OnlyFavorite { get => _OnlyFavorite; set => SetValue(ref _OnlyFavorite, value); }
+        private bool onlyFavorite = false;
+        public bool OnlyFavorite { get => onlyFavorite; set => SetValue(ref onlyFavorite, value); }
 
-        private bool _WithVideo = false;
-        public bool WithVideo { get => _WithVideo; set => SetValue(ref _WithVideo, value); }
+        private bool withVideo = false;
+        public bool WithVideo { get => withVideo; set => SetValue(ref withVideo, value); }
 
-        private bool _AddGameName = true;
-        public bool AddGameName { get => _AddGameName; set => SetValue(ref _AddGameName, value); }
+        private bool addGameName = true;
+        public bool AddGameName { get => addGameName; set => SetValue(ref addGameName, value); }
 
-        private List<CheckElement> _SourcesList = new List<CheckElement>();
-        public List<CheckElement> SourcesList { get => _SourcesList; set => SetValue(ref _SourcesList, value); }
+        private List<CheckElement> sourcesList = new List<CheckElement>();
+        public List<CheckElement> SourcesList { get => sourcesList; set => SetValue(ref sourcesList, value); }
     }
 }

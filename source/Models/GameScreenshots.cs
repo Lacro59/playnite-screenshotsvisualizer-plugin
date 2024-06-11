@@ -9,8 +9,8 @@ namespace ScreenshotsVisualizer.Models
 {
     public class GameScreenshots : PluginDataBaseGame<Screenshot>
     {
-        private List<Screenshot> _Items = new List<Screenshot>();
-        public override List<Screenshot> Items { get => _Items; set => SetValue(ref _Items, value); }
+        private List<Screenshot> items = new List<Screenshot>();
+        public override List<Screenshot> Items { get => items; set => SetValue(ref items, value); }
 
         public List<string> ScreenshotsFolders { get; set; }
 

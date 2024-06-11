@@ -44,7 +44,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "ScreenshotsVisualizaer");
+                Common.LogError(ex, false, true, PluginName);
                 return false;
             }
 
