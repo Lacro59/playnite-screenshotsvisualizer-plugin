@@ -2,6 +2,12 @@
 
 changelog:
   categories:
+    - title: 'Fixed:'
+      labels:
+        - bug
+    - title: 'Added:'
+      labels:
+        - enhancement
     - title: 'Other Changes:'
       labels:
         - "*"
