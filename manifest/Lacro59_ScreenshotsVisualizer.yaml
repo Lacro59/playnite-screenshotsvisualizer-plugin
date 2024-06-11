@@ -151,3 +151,11 @@ Packages:
       - Used FFmpeg for video data
       - Added an option to convert to jpg for all games
       - Added new theme element
+  - Version: 3.4.1
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-06-11
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.4.1/playnite-screenshotsvisualizer-plugin_3_4_1.pext
+    Changelog:
+      - 'Updated: Localizations'
+      - 'Fixed: Item size of PluginScreenshots'
+      - 'Fixed: Error with external RetroArch (custom) screenshot location'
