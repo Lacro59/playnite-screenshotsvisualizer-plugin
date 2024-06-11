@@ -75,7 +75,7 @@
     <sys:String x:Key="LOCSsvShowSinglePicture">Mostrar control con una sola captura de pantalla</sys:String>
     <sys:String x:Key="LOCSsvShowPictures">Mostrar control con una lista de capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Mostrar control con una lista de capturas de pantalla verticales</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Mostrar un control con una gran lista de capturas de pantalla</sys:String>
     <sys:String x:Key="LOCSsvAddBorder">Añadir borde</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Añadir esquina redondeada</sys:String>
 
