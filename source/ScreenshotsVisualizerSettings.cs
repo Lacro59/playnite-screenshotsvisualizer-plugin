@@ -157,7 +157,7 @@ namespace ScreenshotsVisualizer
         public void EndEdit()
         {
             Settings.gameSettings = new List<GameSettings>();
-            foreach (ListGameScreenshot item in ScreenshotsVisualizerSettingsView.listGameScreenshots)
+            foreach (ListGameScreenshot item in ScreenshotsVisualizerSettingsView.ListGameScreenshots)
             {
                 Settings.gameSettings.Add(new GameSettings
                 {

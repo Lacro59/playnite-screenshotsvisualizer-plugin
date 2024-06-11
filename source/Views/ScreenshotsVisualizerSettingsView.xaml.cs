@@ -24,8 +24,8 @@ namespace ScreenshotsVisualizer.Views
 
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
-        public static List<ListGameScreenshot> listGameScreenshots = new List<ListGameScreenshot>();
-        public static List<ListGame> listGames = new List<ListGame>();
+        public static List<ListGameScreenshot> ListGameScreenshots { get; set; } = new List<ListGameScreenshot>();
+        private List<ListGame> ListGames { get; set; } = new List<ListGame>();
 
         private bool UserFilter(object item)
         {
@@ -60,8 +60,8 @@ namespace ScreenshotsVisualizer.Views
 
                 _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate 
                 {
-                    PART_ListGame.ItemsSource = listGames;
-                    PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+                    PART_ListGame.ItemsSource = ListGames;
+                    PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
                     CollectionView viewGame = (CollectionView)CollectionViewSource.GetDefaultView(PART_ListGame.ItemsSource);
                     viewGame.Filter = UserFilter;
@@ -75,7 +75,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void LoadData()
         {
-            listGameScreenshots = new List<ListGameScreenshot>();
+            ListGameScreenshots = new List<ListGameScreenshot>();
             foreach (GameSettings item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
             {
                 Game game = API.Instance.Database.Games.Get(item.Id);
@@ -105,7 +105,7 @@ namespace ScreenshotsVisualizer.Views
                         ScreenshotsFolders = item.ScreenshotsFolders;
                     }
 
-                    listGameScreenshots.Add(new ListGameScreenshot
+                    ListGameScreenshots.Add(new ListGameScreenshot
                     {
                         Id = item.Id,
                         Icon = Icon,
@@ -124,8 +124,8 @@ namespace ScreenshotsVisualizer.Views
                 }
             }
 
-            IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
-            listGames = new List<ListGame>();
+            IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !ListGameScreenshots.Any(y => x.Id == y.Id));
+            ListGames = new List<ListGame>();
             foreach (Game item in DbWithoutAlready)
             {
                 string Icon = string.Empty;
@@ -134,7 +134,7 @@ namespace ScreenshotsVisualizer.Views
                     Icon = API.Instance.Database.GetFullFilePath(item.Icon);
                 }
 
-                listGames.Add(new ListGame
+                ListGames.Add(new ListGame
                 {
                     Id = item.Id,
                     Icon = Icon,
@@ -144,8 +144,8 @@ namespace ScreenshotsVisualizer.Views
                 });
             }
 
-            listGames.Sort((x, y) => x.Name.CompareTo(y.Name));
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGames.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
         }
 
 
@@ -156,7 +156,7 @@ namespace ScreenshotsVisualizer.Views
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
 
             string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
@@ -166,12 +166,12 @@ namespace ScreenshotsVisualizer.Views
                 if (TextBox != null)
                 {
                     TextBox.Text = SelectedFolder;
-                    listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].ScreenshotsFolder = SelectedFolder;
+                    ListGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].ScreenshotsFolder = SelectedFolder;
                 }
             }
 
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
         }
 
@@ -180,17 +180,17 @@ namespace ScreenshotsVisualizer.Views
             Guid Id = Guid.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
-            listGameScreenshots.RemoveAt(ControlIndex);
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            ListGameScreenshots.RemoveAt(ControlIndex);
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
 
             Task TaskView = Task.Run(() =>
             {
-                IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !listGameScreenshots.Any(y => x.Id == y.Id));
-                listGames = new List<ListGame>();
+                IEnumerable<Game> DbWithoutAlready = API.Instance.Database.Games.Where(x => !ListGameScreenshots.Any(y => x.Id == y.Id));
+                ListGames = new List<ListGame>();
                 foreach (Game game in DbWithoutAlready)
                 {
                     string Icon = string.Empty;
@@ -199,7 +199,7 @@ namespace ScreenshotsVisualizer.Views
                         Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                     }
 
-                    listGames.Add(new ListGame
+                    ListGames.Add(new ListGame
                     {
                         Id = game.Id,
                         Icon = Icon,
@@ -210,12 +210,12 @@ namespace ScreenshotsVisualizer.Views
                 
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
-                    listGames.Sort((x, y) => x.Name.CompareTo(y.Name));
+                    ListGames.Sort((x, y) => x.Name.CompareTo(y.Name));
                     PART_ListGame.ItemsSource = null;
-                    PART_ListGame.ItemsSource = listGames;
+                    PART_ListGame.ItemsSource = ListGames;
 
                     PART_ListGameScreenshot.ItemsSource = null;
-                    PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+                    PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
                 });
             });
         }
@@ -226,11 +226,11 @@ namespace ScreenshotsVisualizer.Views
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
-            listGameScreenshots[ControlIndex].ScreenshotsFolders.RemoveAt(indexFolder);
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            ListGameScreenshots[ControlIndex].ScreenshotsFolders.RemoveAt(indexFolder);
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
         }
 
@@ -239,11 +239,11 @@ namespace ScreenshotsVisualizer.Views
             Guid Id = Guid.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
 
             PART_ListGameScreenshot.ItemsSource = null;
-            listGameScreenshots[ControlIndex].ScreenshotsFolders.Add(new FolderSettings());
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            ListGameScreenshots[ControlIndex].ScreenshotsFolders.Add(new FolderSettings());
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
         }
 
@@ -254,16 +254,16 @@ namespace ScreenshotsVisualizer.Views
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = listGameScreenshots.FindIndex(x => x == item);
+            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
 
-            if (listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder]?.FilePattern == null)
+            if (ListGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder]?.FilePattern == null)
             {
                 return;
             }
 
             PART_ListGameScreenshot.ItemsSource = null;
-            listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern = Regex.Replace(listGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern, @"\d+", "{digit}");
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            ListGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern = Regex.Replace(ListGameScreenshots[ControlIndex].ScreenshotsFolders[indexFolder].FilePattern, @"\d+", "{digit}");
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
         }
         #endregion
@@ -281,8 +281,8 @@ namespace ScreenshotsVisualizer.Views
             ListGame SelectedItem = (ListGame)PART_ListGame.SelectedItem;
 
             PART_ListGame.ItemsSource = null;
-            listGames.RemoveAt(index);
-            PART_ListGame.ItemsSource = listGames;
+            ListGames.RemoveAt(index);
+            PART_ListGame.ItemsSource = ListGames;
 
 
             string Icon = string.Empty;
@@ -291,7 +291,7 @@ namespace ScreenshotsVisualizer.Views
                 Icon = API.Instance.Database.GetFullFilePath(SelectedItem.Icon);
             }
 
-            listGameScreenshots.Add(new ListGameScreenshot
+            ListGameScreenshots.Add(new ListGameScreenshot
             {
                 Id = SelectedItem.Id,
                 Icon = Icon,
@@ -303,9 +303,9 @@ namespace ScreenshotsVisualizer.Views
                 SourceIcon = TransformIcon.Get(SelectedItem.SourceName)
             });
             
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
             TextboxSearch_TextChanged(null, null);
         }
@@ -325,11 +325,11 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName == "Steam").ToList();
+            List<ListGame> tmpList = Serialization.GetClone(ListGames).Where(x => x.SourceName == "Steam").ToList();
             foreach (ListGame game in tmpList)
             {
-                int index = listGames.FindIndex(x => x.Id == game.Id);
-                listGames.RemoveAt(index);
+                int index = ListGames.FindIndex(x => x.Id == game.Id);
+                ListGames.RemoveAt(index);
 
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
@@ -337,13 +337,15 @@ namespace ScreenshotsVisualizer.Views
                     Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
-                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
-                ScreenshotsFolders.Add(new FolderSettings
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>
                 {
-                    ScreenshotsFolder = "{SteamScreenshotsDir}\\" + API.Instance.Database.Games.Get(game.Id).GameId + "\\screenshots"
-                });
+                    new FolderSettings
+                    {
+                        ScreenshotsFolder = "{SteamScreenshotsDir}\\" + API.Instance.Database.Games.Get(game.Id).GameId + "\\screenshots"
+                    }
+                };
 
-                listGameScreenshots.Add(new ListGameScreenshot
+                ListGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
@@ -355,11 +357,11 @@ namespace ScreenshotsVisualizer.Views
             }
 
             PART_ListGame.ItemsSource = null;
-            PART_ListGame.ItemsSource = listGames;
+            PART_ListGame.ItemsSource = ListGames;
 
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
             TextboxSearch_TextChanged(null, null);
         }
@@ -369,11 +371,11 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
+            List<ListGame> tmpList = Serialization.GetClone(ListGames).Where(x => x.SourceName.ToLower() == "ubisoft connect" || x.SourceName.ToLower() == "uplay").ToList();
             foreach (ListGame game in tmpList)
             {
-                int index = listGames.FindIndex(x => x.Id == game.Id);
-                listGames.RemoveAt(index);
+                int index = ListGames.FindIndex(x => x.Id == game.Id);
+                ListGames.RemoveAt(index);
 
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
@@ -387,7 +389,7 @@ namespace ScreenshotsVisualizer.Views
                     ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name
                 });
 
-                listGameScreenshots.Add(new ListGameScreenshot
+                ListGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
@@ -399,11 +401,11 @@ namespace ScreenshotsVisualizer.Views
             }
 
             PART_ListGame.ItemsSource = null;
-            PART_ListGame.ItemsSource = listGames;
+            PART_ListGame.ItemsSource = ListGames;
 
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
             TextboxSearch_TextChanged(null, null);
         }
@@ -413,11 +415,11 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseRetroArch(API.Instance.Database.Games.Get(x.Id))).ToList();
+            List<ListGame> tmpList = Serialization.GetClone(ListGames).Where(x => PlayniteTools.GameUseRetroArch(API.Instance.Database.Games.Get(x.Id))).ToList();
             foreach (ListGame game in tmpList)
             {
-                int index = listGames.FindIndex(x => x.Id == game.Id);
-                listGames.RemoveAt(index);
+                int index = ListGames.FindIndex(x => x.Id == game.Id);
+                ListGames.RemoveAt(index);
 
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
@@ -425,15 +427,17 @@ namespace ScreenshotsVisualizer.Views
                     Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
-                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
-                ScreenshotsFolders.Add(new FolderSettings
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>
                 {
-                    ScreenshotsFolder = "{RetroArchScreenshotsDir}",
-                    UsedFilePattern = true,
-                    FilePattern = "{ImageNameNoExt}-{digit}-{digit}",
-                });
+                    new FolderSettings
+                    {
+                        ScreenshotsFolder = "{RetroArchScreenshotsDir}",
+                        UsedFilePattern = true,
+                        FilePattern = "{ImageNameNoExt}-{digit}-{digit}",
+                    }
+                };
 
-                listGameScreenshots.Add(new ListGameScreenshot
+                ListGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
@@ -445,11 +449,11 @@ namespace ScreenshotsVisualizer.Views
             }
 
             PART_ListGame.ItemsSource = null;
-            PART_ListGame.ItemsSource = listGames;
+            PART_ListGame.ItemsSource = ListGames;
 
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
             TextboxSearch_TextChanged(null, null);
         }
@@ -459,11 +463,11 @@ namespace ScreenshotsVisualizer.Views
         {
             TextboxSearch.Text = string.Empty;
 
-            List<ListGame> tmpList = Serialization.GetClone(listGames).Where(x => PlayniteTools.GameUseScummVM(API.Instance.Database.Games.Get(x.Id))).ToList();
+            List<ListGame> tmpList = Serialization.GetClone(ListGames).Where(x => PlayniteTools.GameUseScummVM(API.Instance.Database.Games.Get(x.Id))).ToList();
             foreach (ListGame game in tmpList)
             {
-                int index = listGames.FindIndex(x => x.Id == game.Id);
-                listGames.RemoveAt(index);
+                int index = ListGames.FindIndex(x => x.Id == game.Id);
+                ListGames.RemoveAt(index);
 
                 string Icon = string.Empty;
                 if (!game.Icon.IsNullOrEmpty())
@@ -471,15 +475,17 @@ namespace ScreenshotsVisualizer.Views
                     Icon = API.Instance.Database.GetFullFilePath(game.Icon);
                 }
 
-                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>();
-                ScreenshotsFolders.Add(new FolderSettings
+                List<FolderSettings> ScreenshotsFolders = new List<FolderSettings>
                 {
-                    ScreenshotsFolder = "{UserProfile}\\Pictures\\ScummVM Screenshots",
-                    UsedFilePattern = true,
-                    FilePattern = "scummvm-{ImageNameNoExt}-{digit}",
-                });
+                    new FolderSettings
+                    {
+                        ScreenshotsFolder = "{UserProfile}\\Pictures\\ScummVM Screenshots",
+                        UsedFilePattern = true,
+                        FilePattern = "scummvm-{ImageNameNoExt}-{digit}",
+                    }
+                };
 
-                listGameScreenshots.Add(new ListGameScreenshot
+                ListGameScreenshots.Add(new ListGameScreenshot
                 {
                     Id = game.Id,
                     Icon = Icon,
@@ -491,11 +497,11 @@ namespace ScreenshotsVisualizer.Views
             }
 
             PART_ListGame.ItemsSource = null;
-            PART_ListGame.ItemsSource = listGames;
+            PART_ListGame.ItemsSource = ListGames;
 
-            listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+            ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
-            PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+            PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
             TextboxSearch_TextChanged(null, null);
         }
@@ -534,9 +540,9 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
+                    activateGlobalProgress.ProgressMaxValue = ListGameScreenshots.Count;
 
-                    foreach (ListGameScreenshot game in listGameScreenshots)
+                    foreach (ListGameScreenshot game in ListGameScreenshots)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
@@ -557,9 +563,9 @@ namespace ScreenshotsVisualizer.Views
 
                     _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                     {
-                        listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+                        ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
-                        PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+                        PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
                         TextboxSearch_TextChanged(null, null);
                     });
@@ -585,9 +591,9 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    activateGlobalProgress.ProgressMaxValue = listGameScreenshots.Count;
+                    activateGlobalProgress.ProgressMaxValue = ListGameScreenshots.Count;
 
-                    foreach (ListGameScreenshot game in listGameScreenshots)
+                    foreach (ListGameScreenshot game in ListGameScreenshots)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
@@ -608,9 +614,9 @@ namespace ScreenshotsVisualizer.Views
 
                     _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                     {
-                        listGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
+                        ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
                         PART_ListGameScreenshot.ItemsSource = null;
-                        PART_ListGameScreenshot.ItemsSource = listGameScreenshots;
+                        PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
 
                         TextboxSearch_TextChanged(null, null);
                     });
