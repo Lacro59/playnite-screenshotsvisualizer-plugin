@@ -89,7 +89,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
                     GameName = API.Instance.Database.Games.Get(screenshot.GameId)?.Name,
                     GameId = API.Instance.Database.Games.Get(screenshot.GameId)?.Id,
-                    GoToGame = PluginDatabase.GoToGame
+                    GoToGame = Commands.GoToGame
                 };
             }
             else

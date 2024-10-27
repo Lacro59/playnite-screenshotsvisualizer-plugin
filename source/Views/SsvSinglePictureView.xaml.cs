@@ -70,7 +70,7 @@ namespace ScreenshotsVisualizer.Views
                 Icon = !game?.Icon.IsNullOrEmpty() ?? false ? API.Instance.Database.GetFullFilePath(game.Icon) : string.Empty,
                 GameName = game?.Name,
                 GameId = game?.Id,
-                GoToGame = PluginDatabase.GoToGame
+                GoToGame = Commands.GoToGame
             };
         }
 

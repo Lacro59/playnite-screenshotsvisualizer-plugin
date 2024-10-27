@@ -352,7 +352,7 @@ namespace ScreenshotsVisualizer.Views
         public DateTime LastSsv { get; set; }
         public int Total { get; set; }
 
-        public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
+        public RelayCommand<Guid> GoToGame => Commands.GoToGame;
         public bool GameExist => API.Instance.Database.Games.Get(Id) != null;
     }
 }

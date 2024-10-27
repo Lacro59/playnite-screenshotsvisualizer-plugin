@@ -8,17 +8,13 @@ using System.Linq;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
 using System;
+using CommonPluginsShared.Plugins;
 
 namespace ScreenshotsVisualizer
 {
-    public class ScreenshotsVisualizerSettings : ObservableObject
+    public class ScreenshotsVisualizerSettings : PluginSettings
     {
         #region Settings variables
-        public bool MenuInExtensions { get; set; } = true;
-
-        public bool EnableTag { get; set; } = false;
-
-
         public bool EnableIntegrationButtonHeader { get; set; } = false;
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
@@ -93,10 +89,6 @@ namespace ScreenshotsVisualizer
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        private bool _HasData = false;
-        [DontSerialize]
-        public bool HasData { get => _HasData; set => SetValue(ref _HasData, value); }
-
         private List<Screenshot> _ListScreenshots = new List<Screenshot>();
         [DontSerialize]
         public List<Screenshot> ListScreenshots { get => _ListScreenshots; set => SetValue(ref _ListScreenshots, value); }

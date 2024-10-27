@@ -545,10 +545,10 @@ namespace ScreenshotsVisualizer.Services
             }
             else
             {
-                foreach(FolderSettings folderSettings in FolderSettingsGlobal)
+                foreach (FolderSettings folderSettings in FolderSettingsGlobal)
                 {
                     FolderSettings finded = gameSettings.ScreenshotsFolders
-                        .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder) 
+                        .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder)
                                     && x.UsedFilePattern == folderSettings.UsedFilePattern
                                     && x.FilePattern.IsEqual(folderSettings.FilePattern));
 
@@ -701,12 +701,10 @@ namespace ScreenshotsVisualizer.Services
 
 
         #region Tag
-        public override void AddTag(Game game, bool noUpdate = false)
+        public override void AddTag(Game game)
         {
-            GetPluginTags();
-            GameScreenshots gameScreenshots = Get(game, true);
-
-            if (gameScreenshots.HasData)
+            GameScreenshots item = Get(game, true);
+            if (item.HasData)
             {
                 try
                 {
@@ -721,15 +719,31 @@ namespace ScreenshotsVisualizer.Services
                         {
                             game.TagIds = new List<Guid> { (Guid)TagId };
                         }
-
-                        API.Instance.Database.Games.Update(game);
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
+                    return;
                 }
             }
+            else if (TagMissing)
+            {
+                if (game.TagIds != null)
+                {
+                    game.TagIds.Add((Guid)AddNoDataTag());
+                }
+                else
+                {
+                    game.TagIds = new List<Guid> { (Guid)AddNoDataTag() };
+                }
+            }
+
+            API.Instance.MainView.UIDispatcher?.Invoke(() =>
+            {
+                API.Instance.Database.Games.Update(game);
+                game.OnPropertyChanged();
+            });
         }
         #endregion
 
