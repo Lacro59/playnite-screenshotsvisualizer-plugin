@@ -632,9 +632,6 @@ namespace ScreenshotsVisualizer.Services
                                         {
                                             string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.FilePattern);
 
-                                            Pattern = Pattern.Replace("(", @"\(");
-                                            Pattern = Pattern.Replace(")", @"\)");
-
                                             Pattern = Pattern.Replace("{digit}", @"\d*");
                                             Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");
                                             Pattern = Pattern.Replace("{DateTimeModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}_[0-9]{2}_[0-9]{2}");
