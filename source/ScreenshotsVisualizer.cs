@@ -212,9 +212,9 @@ namespace ScreenshotsVisualizer
         // To add new game menu items override GetGameMenuItems
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
-            Game GameMenu = args.Games.First();
-            List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
-            GameScreenshots gameScreenshots = PluginDatabase.Get(GameMenu);
+            Game gameMenu = args.Games.First();
+            List<Guid> ids = args.Games.Select(x => x.Id).ToList();
+            GameScreenshots gameScreenshots = PluginDatabase.Get(gameMenu);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
@@ -271,13 +271,13 @@ namespace ScreenshotsVisualizer
                         Description = ResourceProvider.GetString("LOCSsvMoveToSave"),
                         Action = (gameMenuItem) =>
                         {
-                            if (Ids.Count == 1)
+                            if (ids.Count == 1)
                             {
-                                PluginDatabase.MoveToFolderToSave(GameMenu);
+                                PluginDatabase.MoveToFolderToSave(gameMenu);
                             }
                             else
                             {
-                                PluginDatabase.MoveToFolderToSave(Ids);
+                                PluginDatabase.MoveToFolderToSave(ids);
                             }
                         }
                     });
@@ -291,7 +291,7 @@ namespace ScreenshotsVisualizer
                         Description = ResourceProvider.GetString("LOCSsvConvertToJPG"),
                         Action = (gameMenuItem) =>
                         {
-                            PluginDatabase.ConvertGameSsvToJpg(Ids);
+                            PluginDatabase.ConvertGameSsvToJpg(ids);
                         }
                     });
                 }
@@ -310,13 +310,13 @@ namespace ScreenshotsVisualizer
                 Description = ResourceProvider.GetString("LOCCommonRefreshGameData"),
                 Action = (gameMenuItem) =>
                 {
-                    if (Ids.Count == 1)
+                    if (ids.Count == 1)
                     {
-                        PluginDatabase.RefreshData(GameMenu);
+                        PluginDatabase.RefreshData(gameMenu);
                     }
                     else
                     {
-                        PluginDatabase.RefreshData(Ids);
+                        PluginDatabase.RefreshData(ids);
                     }
                 }
             });
@@ -504,25 +504,21 @@ namespace ScreenshotsVisualizer
         // Add code to be executed when game is finished installing.
         public override void OnGameInstalled(OnGameInstalledEventArgs args)
         {
-
         }
 
         // Add code to be executed when game is uninstalled.
         public override void OnGameUninstalled(OnGameUninstalledEventArgs args)
         {
-
         }
 
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStarting(OnGameStartingEventArgs args)
         {
-
         }
 
         // Add code to be executed when game is started running.
         public override void OnGameStarted(OnGameStartedEventArgs args)
         {
-
         }
 
         // Add code to be executed when game is preparing to be started.
@@ -563,13 +559,11 @@ namespace ScreenshotsVisualizer
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-
         }
 
         // Add code to be executed when Playnite is shutting down.
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
-
         }
         #endregion
 
@@ -577,7 +571,6 @@ namespace ScreenshotsVisualizer
         // Add code to be executed when library is updated.
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
-
         }
 
 
