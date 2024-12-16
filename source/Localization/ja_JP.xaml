@@ -26,7 +26,7 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">すべてのスクリーンショットを移動してもよろしいですか？</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->

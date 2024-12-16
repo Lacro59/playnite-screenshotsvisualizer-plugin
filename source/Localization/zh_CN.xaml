@@ -7,8 +7,8 @@
     <sys:String x:Key="LOCSsvVideos">{0} 个视频</sys:String>
 
 
-    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
-    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegNotFound">找不到 ffmpeg 可执行文件</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">找不到 ffprobe 可执行文件</sys:String>
 
 
     <!-- MainView -->
@@ -21,8 +21,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPG">将图像转换为 JPG</sys:String>
+    <sys:String x:Key="LOCSsvConvertToJPGForAll">将所有游戏屏幕截图的图像转换为 JPG</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
@@ -41,10 +41,10 @@
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">轮盘</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">显示游戏名称</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">随机整理所有截图列表</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">使用缩略图？</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
