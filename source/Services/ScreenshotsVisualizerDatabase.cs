@@ -17,6 +17,7 @@ using ScreenshotsVisualizer.Views;
 using System.Threading;
 using CommonPluginsShared.Extensions;
 using CommonPlayniteShared.Common;
+using System.Text;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -646,13 +647,15 @@ namespace ScreenshotsVisualizer.Services
 
                                         if (screenshotsFolder.UsedFilePattern)
                                         {
-                                            string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.FilePattern);
+                                            string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.FilePattern);
+                                            pattern = EscapeRegexSpecialChars(pattern);
+                                            pattern = pattern.Replace("{digit}", @"\d*");
+                                            pattern = pattern.Replace("{DateModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
+                                            pattern = pattern.Replace("{DateTimeModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]");
 
-                                            Pattern = Pattern.Replace("{digit}", @"\d*");
-                                            Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");
-                                            Pattern = Pattern.Replace("{DateTimeModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}_[0-9]{2}_[0-9]{2}");
+                                            string fileName = Path.GetFileNameWithoutExtension(objectFile);
 
-                                            if (Regex.IsMatch(Path.GetFileNameWithoutExtension(objectFile), Pattern, RegexOptions.IgnoreCase))
+                                            if (Regex.IsMatch(fileName, pattern, RegexOptions.IgnoreCase))
                                             {
                                                 gameScreenshots.Items.Add(new Screenshot
                                                 {
@@ -708,9 +711,44 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, PluginName);
             }
         }
+
+
+        public string GetPatternExample(Game game, string pattern)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+
+            return null;
+        }
+
+
+        static string EscapeRegexSpecialChars(string input)
+        {
+            string specialChars = @".^$*+?()[]|\";
+            StringBuilder escapedString = new StringBuilder();
+
+            foreach (char c in input)
+            {
+                if (specialChars.Contains(c))
+                {
+                    _ = escapedString.Append('\\');
+                }
+                _ = escapedString.Append(c);
+            }
+
+            return escapedString.ToString();
+        }
+
+
 
 
         #region Tag
