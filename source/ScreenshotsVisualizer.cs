@@ -312,11 +312,11 @@ namespace ScreenshotsVisualizer
                 {
                     if (ids.Count == 1)
                     {
-                        PluginDatabase.RefreshData(gameMenu);
+                        PluginDatabase.Refresh(gameMenu);
                     }
                     else
                     {
-                        PluginDatabase.RefreshData(ids);
+                        PluginDatabase.Refresh(ids);
                     }
                 }
             });
@@ -358,7 +358,7 @@ namespace ScreenshotsVisualizer
                 Description = ResourceProvider.GetString("LOCCommonRefreshAllData"),
                 Action = (mainMenuItem) =>
                 {
-                    PluginDatabase.RefreshDataAll();
+                    PluginDatabase.Refresh(API.Instance.Database.Games?.Select(x => x.Id));
                 }
             });
 

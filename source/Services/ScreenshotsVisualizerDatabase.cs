@@ -52,6 +52,22 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
+        public override void RefreshNoLoader(Guid id)
+        {
+            Game game = API.Instance.Database.Games.Get(id);
+            Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
+
+            GameSettings gameSettings = GetGameSettings(game.Id);
+            if (gameSettings != null)
+            {
+                SetDataFromSettings(gameSettings);
+            }
+
+            GameScreenshots gameScreenshots = Get(game, true);
+            ActionAfterRefresh(gameScreenshots);
+        }
+
+
         #region Refresh data
         public void RefreshDataAll()
         {
@@ -511,7 +527,7 @@ namespace ScreenshotsVisualizer.Services
         #endregion
 
 
-        public GameSettings GetGameSettings(Guid Id)
+        public GameSettings GetGameSettings(Guid id)
         {
             List<FolderSettings> FolderSettingsGlobal = new List<FolderSettings>();
 
@@ -534,12 +550,12 @@ namespace ScreenshotsVisualizer.Services
             }
 
 
-            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == Id);
+            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == id);
             if (gameSettings == null)
             {
                 gameSettings = new GameSettings
                 {
-                    Id = Id,
+                    Id = id,
                     ScreenshotsFolders = FolderSettingsGlobal
                 };
             }
@@ -562,13 +578,13 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        public override GameScreenshots Get(Guid Id, bool OnlyCache = false, bool Force = false)
+        public override GameScreenshots Get(Guid id, bool onlyCache = false, bool force = false)
         {
-            GameScreenshots gameScreenshots = base.GetOnlyCache(Id);
+            GameScreenshots gameScreenshots = base.GetOnlyCache(id);
 
             if (gameScreenshots == null)
             {
-                Game game = API.Instance.Database.Games.Get(Id);
+                Game game = API.Instance.Database.Games.Get(id);
                 if (game != null)
                 {
                     gameScreenshots = GetDefault(game);
@@ -597,30 +613,30 @@ namespace ScreenshotsVisualizer.Services
                 gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders();
                 gameScreenshots.InSettings = true;
 
-                foreach (FolderSettings ScreenshotsFolder in item.ScreenshotsFolders)
+                foreach (FolderSettings screenshotsFolder in item.ScreenshotsFolders)
                 {
                     try
                     {
-                        if (ScreenshotsFolder?.ScreenshotsFolder == null || ScreenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
+                        if (screenshotsFolder?.ScreenshotsFolder == null || screenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
                         {
                             Logger.Warn($"Screenshots directory is empty for {game.Name}");
                             return;
                         }
 
-                        string PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.ScreenshotsFolder);
-                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, true);
+                        string pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.ScreenshotsFolder);
+                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, true);
 
                         // Get files
                         string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv", ".webm" };
-                        if (Directory.Exists(PathFolder))
+                        if (Directory.Exists(pathFolder))
                         {
                             SearchOption searchOption = SearchOption.TopDirectoryOnly;
-                            if (ScreenshotsFolder.ScanSubFolders)
+                            if (screenshotsFolder.ScanSubFolders)
                             {
                                 searchOption = SearchOption.AllDirectories;
                             }
 
-                            Directory.EnumerateFiles(PathFolder, "*.*", searchOption)
+                            Directory.EnumerateFiles(pathFolder, "*.*", searchOption)
                                 .Where(s => extensions.Any(ext => ext == Path.GetExtension(s)))
                                 .ForEach(objectFile =>
                                 {
@@ -628,9 +644,9 @@ namespace ScreenshotsVisualizer.Services
                                     {
                                         DateTime Modified = File.GetLastWriteTime(objectFile);
 
-                                        if (ScreenshotsFolder.UsedFilePattern)
+                                        if (screenshotsFolder.UsedFilePattern)
                                         {
-                                            string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, ScreenshotsFolder.FilePattern);
+                                            string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.FilePattern);
 
                                             Pattern = Pattern.Replace("{digit}", @"\d*");
                                             Pattern = Pattern.Replace("{DateModified}", @"[0-9]{4}-[0-9]{2}-[0-9]{2}");
@@ -662,7 +678,7 @@ namespace ScreenshotsVisualizer.Services
                         }
                         else
                         {
-                            Logger.Warn($"Screenshots directory not found for {game.Name} - {PathFolder}");
+                            Logger.Warn($"Screenshots directory not found for {game.Name} - {pathFolder}");
                         }
 
                         IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
@@ -686,7 +702,7 @@ namespace ScreenshotsVisualizer.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Error on {game.Name} for {ScreenshotsFolder.ScreenshotsFolder}", true, PluginName);
+                        Common.LogError(ex, false, $"Error on {game.Name} for {screenshotsFolder.ScreenshotsFolder}", true, PluginName);
                     }
                 }
             }
