@@ -333,7 +333,7 @@ namespace ScreenshotsVisualizer.Services
                             PathFolder = Path.Combine(PathFolder, "{Name}");
                         }
                         PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PathFolder);
-                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, true);
+                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, false);
 
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
@@ -625,7 +625,7 @@ namespace ScreenshotsVisualizer.Services
                         }
 
                         string pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.ScreenshotsFolder);
-                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, true);
+                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, false);
 
                         // Get files
                         string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv", ".webm" };
@@ -651,7 +651,11 @@ namespace ScreenshotsVisualizer.Services
                                             pattern = EscapeRegexSpecialChars(pattern);
                                             pattern = pattern.Replace("{digit}", @"\d*");
                                             pattern = pattern.Replace("{DateModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
-                                            pattern = pattern.Replace("{DateTimeModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]");
+                                            pattern = pattern.Replace("{DateTimeModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
+
+                                            string gameName = API.Instance.ExpandGameVariables(game, "{Name}");
+                                            string goodName = CommonPluginsShared.Paths.GetSafePathName(gameName).Replace(" ", "[ ]*");
+                                            pattern = pattern.Replace(gameName, goodName);
 
                                             string fileName = Path.GetFileNameWithoutExtension(objectFile);
 
