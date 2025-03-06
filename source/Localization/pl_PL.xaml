@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} screenshot</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} screenshots</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} zrzut ekranu</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} zrzutów ekranu</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} film</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} filmów</sys:String>
 
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">Nie znaleziono pliku wykonywalnego ffmpeg</sys:String>
@@ -14,45 +14,45 @@
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">Screenshots</sys:String>
+    <sys:String x:Key="LOCSsvTitle">Zrzuty ekranu</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
+    <sys:String x:Key="LOCSsvLatest">Ostatni</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">Wyświetl zrzuty ekranu gry</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Otwórz katalog zrzutów ekranu</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Przenieś zrzuty ekranu do katalogu zapisu</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">Konwertuj obrazy do JPG</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPGForAll">Konwertuj obrazy na JPG dla wszystkich zrzutów ekranu gier</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Przenoszenie zrzutów ekranu...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">Czy na pewno chcesz przenieść wszystkie zrzuty ekranu?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">Czy na pewno usunąć {0}?</sys:String>
 
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Ostatni zrzut ekranu</sys:String>
 
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Show the game name</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Used thumbnails</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">Karuzela</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Pokaż nazwę gry</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Losowo ustaw wszystkie zrzuty ekranu na liście</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Użyte miniatury</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Pokaż tylko najnowsze zrzuty ekranu dla każdej gry</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Liczba zrzutów ekranu na grę</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Liczba gier</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Włącz automatyczną zmianę</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Czas (sekundy)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Pokaż tylko ulubione gry</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Tylko niektóre źródła</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Dołącz filmy</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -61,68 +61,68 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">Ścieżka do ffprobe:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Pobierz pakiet ffmpeg</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
+    <sys:String x:Key="LOCSsvUsedThumbnails">Generuj miniatury, aby poprawić wydajność ładowania</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">Globalna ścieżka zrzutów ekranu</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">Skanuj podfoldery</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">Dodaj tag, jeśli gra ma zrzuty ekranu</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Dodaj grę na Steam</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Przekształć numer na {digit}</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">Wyświetl kontrolkę z pojedynczym zrzutem ekranu</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">Wyświetl kontrolkę z listą zrzutów ekranu</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">Wyświetl kontrolkę z listą pionowych zrzutów ekranu</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">Wyświetl kontrolkę z dużą listą zrzutów ekranu</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Dodaj obramowanie</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">Dodaj zaokrąglony narożnik</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Opcje pojedynczego zrzutu ekranu</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">Lista opcji zrzutów ekranu</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Ukryj informacje o zrzutach ekranu</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Otwórz przy wyborze obrazu</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Powiąż wybór z widokiem pojedynczego zrzutu ekranu</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Used a file pattern</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">Użyto wzorca pliku</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Włącz przenoszenie zrzutów ekranu w unikalnym folderze</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">Wzorzec pliku</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">Przekształć na ścieżkę bezwzględną</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">Przekształć na ścieżkę względną</sys:String>
     
-    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
+    <sys:String x:Key="LOCSsJpgQuality">Jakość JPG</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Dodatkowo możesz użyć:
 - {DateModified}		yyyy-MM-dd
 - {DateTimeModified}		yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
+- {digit}			liczba(y)
     
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+Przykład:
+NazwaGry_20200107-1	=&gt;	{Name}_{digit}-{digit}
+NazwaGry_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Dodaj ten folder do wszystkich gier.
     
-Example:
+Przykład:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
-If the {Name} is not included in &quot;Folder&quot;, it is automatically added.
-    
-Example:
-A game with two screenshot folders:
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Ta opcja dodaje menu gry umożliwiające przeniesienie wszystkich plików zrzutów ekranu do jednego folderu.
+Jeśli {Name} nie jest uwzględniona w 'Folderze', zostanie automatycznie dodana.
+
+Przykład:
+Gra z dwoma folderami zrzutów ekranu:
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
-    
-If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the &quot;File Pattern&quot; and the link will be upated in plugin data.</sys:String>
+
+Jeśli masz unikalny folder {DropboxFolder}\Screenshots\{Name}, po wybraniu opcji w menu gry wszystkie zrzuty ekranu zostaną przeniesione do tego folderu zgodnie ze wzorcem pliku, a link zostanie zaktualizowany w danych wtyczki.</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Brakuje ustawień do przenoszenia zrzutów ekranu</sys:String>
     
 </ResourceDictionary>
