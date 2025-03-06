@@ -22,9 +22,33 @@ foreach ($path in $PlaynitePaths) {
 
 if ($null -eq $PlaynitePath) {
     Write-Host "No Playnite path valid found"
-} else {
+} 
+else {
     $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
     $OutDirPath = (Join-Path $OutDir "..")
+
+    if ($ConfigurationName -eq "debug-release") {
+		if (Test-Path $ToolboxPath) {
+			$string = & $ToolboxPath "pack" $OutDir $OutDirPath
+            Write-Host $string
+
+            if ($string -match '"([^"]+)"') {
+                $fullPath = $matches[1]
+                $fileName = Split-Path -Path $fullPath -Leaf
+                $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
+                
+                $zipPath = Join-Path $OutDirPath ($fileNameWithoutExt + ".zip")
+                if (Test-Path $zipPath) {
+                    Remove-Item $zipPath -Force
+                }
+                Compress-Archive -Path $fullPath -DestinationPath $zipPath
+                Write-Host "Compressed as ""$zipPath"""
+            }
+		} 
+		else {
+			Write-Host "toolbox.exe not found."
+		}		
+	}
 
     if ($ConfigurationName -eq "release") {
         $Version = ""
@@ -51,10 +75,12 @@ if ($null -eq $PlaynitePath) {
                 } else {
                     Write-Host $Result
                 }
-            } else {
+            } 
+			else {
                 Write-Host "toolbox.exe not found."
             }
-        } else {
+        } 
+		else {
             Write-Host "Manifest does not contain the actual version"
         }
     }
