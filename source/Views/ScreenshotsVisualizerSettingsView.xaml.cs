@@ -58,7 +58,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 LoadData();
 
-                _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate 
+                _ = Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PART_ListGame.ItemsSource = ListGames;
                     PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
@@ -180,10 +180,8 @@ namespace ScreenshotsVisualizer.Views
             Guid Id = Guid.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
-            int ControlIndex = ListGameScreenshots.FindIndex(x => x == item);
-
             PART_ListGameScreenshot.ItemsSource = null;
-            ListGameScreenshots.RemoveAt(ControlIndex);
+            _ = ListGameScreenshots.Remove(item);
             PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
             TextboxSearch_TextChanged(null, null);
 
@@ -207,7 +205,7 @@ namespace ScreenshotsVisualizer.Views
                         SourceName = PlayniteTools.GetSourceName(game.Id)
                     });
                 }
-                
+
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     ListGames.Sort((x, y) => x.Name.CompareTo(y.Name));
@@ -278,10 +276,15 @@ namespace ScreenshotsVisualizer.Views
         private void PART_BtSelectGame_Click(object sender, RoutedEventArgs e)
         {
             int index = PART_ListGame.SelectedIndex;
+            if (index < 0)
+            {
+                return;
+            }
+
             ListGame SelectedItem = (ListGame)PART_ListGame.SelectedItem;
 
             PART_ListGame.ItemsSource = null;
-            ListGames.RemoveAt(index);
+            _ = ListGames.Remove(SelectedItem);
             PART_ListGame.ItemsSource = ListGames;
 
 
@@ -302,7 +305,7 @@ namespace ScreenshotsVisualizer.Views
                 SourceName = SelectedItem.SourceName,
                 SourceIcon = TransformIcon.Get(SelectedItem.SourceName)
             });
-            
+
             ListGameScreenshots.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_ListGameScreenshot.ItemsSource = null;
             PART_ListGameScreenshot.ItemsSource = ListGameScreenshots;
