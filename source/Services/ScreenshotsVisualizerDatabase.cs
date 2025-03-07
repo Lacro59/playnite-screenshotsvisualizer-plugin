@@ -649,9 +649,9 @@ namespace ScreenshotsVisualizer.Services
                                         {
                                             string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.FilePattern);
                                             pattern = EscapeRegexSpecialChars(pattern);
-                                            pattern = pattern.Replace("{digit}", @"\d*");
-                                            pattern = pattern.Replace("{DateModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
-                                            pattern = pattern.Replace("{DateTimeModified}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
+                                            pattern = pattern.Replace("\\{digit\\}", @"\d*");
+                                            pattern = pattern.Replace("\\{DateModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
+                                            pattern = pattern.Replace("\\{DateTimeModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
 
                                             string gameName = API.Instance.ExpandGameVariables(game, "{Name}");
                                             string goodName = CommonPluginsShared.Paths.GetSafePathName(gameName).Replace(" ", "[ ]*");
@@ -735,9 +735,9 @@ namespace ScreenshotsVisualizer.Services
         }
 
 
-        static string EscapeRegexSpecialChars(string input)
+        private static string EscapeRegexSpecialChars(string input)
         {
-            string specialChars = @".^$*+?()[]|\";
+            string specialChars = @".^$*+?(){}[]|\";
             StringBuilder escapedString = new StringBuilder();
 
             foreach (char c in input)
@@ -751,7 +751,6 @@ namespace ScreenshotsVisualizer.Services
 
             return escapedString.ToString();
         }
-
 
 
 
