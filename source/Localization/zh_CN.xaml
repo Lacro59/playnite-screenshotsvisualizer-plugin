@@ -26,12 +26,12 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">您确定要移动所有屏幕截图吗</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">您确定要移动所有屏幕截图吗？</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗？</sys:String>
 
     
     <!-- SsvManager -->
@@ -41,29 +41,29 @@
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">轮盘</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">轮播</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">显示游戏名称</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">随机整理所有截图列表</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">使用缩略图？</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">已使用的缩略图</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">仅显示每个游戏的最新截图</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">每个游戏截图数量</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">游戏数量</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">启用自动变更</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">时间 (秒)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">仅显示收藏夹游戏</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">仅限特定来源</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">包含视频</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
-    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
-    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg 路径：</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe 路径：</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">下载 ffmpeg 包</sys:String>
 
     <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">全局截图路径</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
     
@@ -72,20 +72,20 @@
     
     <sys:String x:Key="LOCSsvNumberToDigit">将数字转换为 {digit}</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">添加边</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">显示具有一个大型列表的截图的控制器</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">添加边框</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">单截图选项</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">列表截图选项</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信息</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打开</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
