@@ -7,8 +7,8 @@
     <sys:String x:Key="LOCSsvVideos">{0} vidéos</sys:String>
 
 
-    <sys:String x:Key="LOCSsvFfmpegNotFound">L'exécutable ffmpeg n'a pas été trouvé</sys:String>
-    <sys:String x:Key="LOCSsFfprobeNotFound">L'exécutable ffprobe n'a pas été trouvé</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegNotFound">L'exécutable ffmpeg n'a pas été trouv</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">L'exécutable ffprobe n'a pas été trouv</sys:String>
 
 
     <!-- MainView -->
