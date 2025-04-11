@@ -98,8 +98,8 @@
     <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}&#x09;&#x09;yyyy-MM-dd
-- {DateTimeModified}&#x09;&#x09;yyyy-MM-dd HH_mm_ss
+- {DateModified}&#x09;&#x09;yyyy[-_]MM[-_]dd
+- {DateTimeModified}&#x09;&#x09;yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss
 - {digit}&#x09;&#x09;&#x09;number(s)
     
 Example:
