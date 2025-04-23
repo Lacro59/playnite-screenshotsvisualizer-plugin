@@ -3,7 +3,7 @@
 
     <sys:String x:Key="LOCSsvScreenshot">{0} لقطة شاش</sys:String>
     <sys:String x:Key="LOCSsvScreenshots">{0} لقطات شاش</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} في</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} ف</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} فيديوهات</sys:String>
 
 
@@ -88,7 +88,7 @@
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصور</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحدة</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط </sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واح</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">نمط ا</sys:String>
 
