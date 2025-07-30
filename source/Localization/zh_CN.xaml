@@ -89,11 +89,11 @@
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移动</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">转换为相对</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">转换为相对路径</sys:String>
     
     <sys:String x:Key="LOCSsJpgQuality">JPG 质量</sys:String>
 
