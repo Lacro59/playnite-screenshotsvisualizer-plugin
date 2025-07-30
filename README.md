@@ -54,5 +54,4 @@ The extension contains elements that can fit into a custom theme.
 [More informations](https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/wiki/Addition-in-a-custom-theme)
 
 ## More
-Remember to support [Playnite](https://www.patreon.com/playnite).  
-<a href='https://ko-fi.com/lacro59'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+Remember to support [Playnite](https://www.patreon.com/playnite).
