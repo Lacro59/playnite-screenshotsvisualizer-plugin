@@ -88,7 +88,7 @@
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">فتح عند اختيار الصور</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">ربط الإختيار مع عرض لقطة الشاشة واحدة</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط </sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">تم استخدام نمط</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">تفعيل نقل لقطات الشاشة إلى مجلد واح</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">نمط ا</sys:String>
 
