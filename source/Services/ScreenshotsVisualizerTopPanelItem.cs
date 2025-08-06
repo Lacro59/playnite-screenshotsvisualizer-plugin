@@ -2,11 +2,6 @@
 using Playnite.SDK;
 using Playnite.SDK.Plugins;
 using ScreenshotsVisualizer.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -32,12 +27,12 @@ namespace ScreenshotsVisualizer.Services
                     ShowMaximizeButton = true,
                     ShowCloseButton = true,
                     CanBeResizable = true,
-                    Width = 1280,
-                    Height = 740
+                    Width = 1200,
+                    Height = 720
                 };
 
-                SsvScreenshotsManager ViewExtension = new SsvScreenshotsManager();
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv"), ViewExtension, windowOptions);
+                SsvScreenshotsManager viewExtension = new SsvScreenshotsManager();
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv"), viewExtension, windowOptions);
                 _ = windowExtension.ShowDialog();
             };
             Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonHeader;

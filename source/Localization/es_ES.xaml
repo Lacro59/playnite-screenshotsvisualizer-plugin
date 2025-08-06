@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Carrusel</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Mostrar el nombre del juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Aleatorizar todas las capturas de pantalla</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Usar miniaturas</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Usar miniaturas</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostrar sólo la captura de pantalla más recientes de cada juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Número de capturas de pantalla por juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Número de juegos</sys:String>

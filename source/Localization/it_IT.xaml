@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Mostra il nome del gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Anteprima usate</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Anteprima usate</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Numero di schermate per gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Numero dei giochi</sys:String>

@@ -75,8 +75,8 @@
                 Width="200" 
                 Grid.Column="2" Grid.Row="10" />
 
-        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="12" Content="{DynamicResource LOCSsvCarouselEnableLowerRezolution}" 
-                  IsChecked="{Binding Settings.ssvCarouselOptions.EnableLowerRezolution}" />
+        <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="12" Content="{DynamicResource LOCSsvCarouselEnableLowerResolution}" 
+                  IsChecked="{Binding Settings.ssvCarouselOptions.EnableLowerResolution}" />
 
         <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="14" Content="{DynamicResource LOCSsvCarouselEnableAllRandom}" 
                   IsChecked="{Binding Settings.ssvCarouselOptions.EnableAllRandom}" />

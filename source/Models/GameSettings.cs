@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CommonPluginsStores;
 using Playnite.SDK;
 
@@ -18,12 +17,9 @@ namespace ScreenshotsVisualizer.Models
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
 
-        public List<string> GetScreenshotsFolders()
-        {
-            return ScreenshotsFolders
+        public List<string> GetScreenshotsFolders() => ScreenshotsFolders
                 .Select(x => PlayniteTools.StringExpandWithStores(API.Instance.Database.Games.Get(Id), x.ScreenshotsFolder))
                 .ToList();
-        }
     }
 
 

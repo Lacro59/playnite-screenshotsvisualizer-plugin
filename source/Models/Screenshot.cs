@@ -7,9 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Models
 {
@@ -30,13 +27,13 @@ namespace ScreenshotsVisualizer.Models
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
-        public string sizeString;
+        private string _sizeString;
         [DontSerialize]
         public string SizeString
         {
             get
             {
-                if (sizeString.IsNullOrEmpty())
+                if (_sizeString.IsNullOrEmpty())
                 {
                     if (File.Exists(FileName))
                     {
@@ -49,8 +46,8 @@ namespace ScreenshotsVisualizer.Models
                                     string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
                                     _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
 
-                                    sizeString = stdOut.Trim();
-                                    return sizeString;
+                                    _sizeString = stdOut.Trim();
+                                    return _sizeString;
                                 }
                                 else
                                 {
@@ -74,10 +71,10 @@ namespace ScreenshotsVisualizer.Models
                         }
                     }
                 }
-                return sizeString;
+                return _sizeString;
             }
 
-            set => SetValue(ref sizeString, value);
+            set => SetValue(ref _sizeString, value);
         }
 
         [DontSerialize]
@@ -99,27 +96,27 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (PluginDatabase.PluginSettings.Settings.UsedThumbnails)
                 {
-                    string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                    string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                    string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileNameWithoutExt}_Thumbnail.jpg");
+                    string fileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
+                    string pathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                    string fileThumbnail = Path.Combine(pathThumbnail, fileNameWithoutExt + $"_{fileNameWithoutExt}_Thumbnail.jpg");
 
-                    if (File.Exists(FileThumbnail))
+                    if (File.Exists(fileThumbnail))
                     {
-                        return FileThumbnail;
+                        return fileThumbnail;
                     }
 
                     try
                     {
-                        _ = ImageTools.Resize(FileName, 320, FileThumbnail);
+                        _ = ImageTools.Resize(FileName, 320, fileThumbnail);
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "ScreenshootsVisualizer");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
 
-                    if (File.Exists(FileThumbnail))
+                    if (File.Exists(fileThumbnail))
                     {
-                        return FileThumbnail;
+                        return fileThumbnail;
                     }
                 }
 
@@ -128,33 +125,34 @@ namespace ScreenshotsVisualizer.Models
         }
 
         #region Video
-        public string thumbnail;
+
+        private string _thumbnail;
         [DontSerialize]
         public string Thumbnail
         {
             get
             {
-                if (thumbnail.IsNullOrEmpty())
+                if (_thumbnail.IsNullOrEmpty())
                 {
                     if (IsVideo)
                     {
-                        string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                        string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                        string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
+                        string fileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
+                        string pathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                        string fileThumbnail = Path.Combine(pathThumbnail, fileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
 
-                        if (File.Exists(FileThumbnail))
+                        if (File.Exists(fileThumbnail))
                         {
-                            thumbnail = FileThumbnail;
-                            return FileThumbnail;
+                            _thumbnail = fileThumbnail;
+                            return fileThumbnail;
                         }
-                        FileSystem.CreateDirectory(PathThumbnail);
+                        FileSystem.CreateDirectory(pathThumbnail);
 
                         try
                         {
                             if (File.Exists(PluginDatabase.PluginSettings.Settings.FfmpegPath))
                             {
                                 string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfmpegPath, string.Format(thumbArgs, FileName, FileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfmpegPath), true, out string stdOut, out string stdErr);
+                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfmpegPath, string.Format(thumbArgs, FileName, fileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfmpegPath), true, out string stdOut, out string stdErr);
                             }
                             else
                             {
@@ -166,8 +164,8 @@ namespace ScreenshotsVisualizer.Models
                                 ));
                             }
 
-                            thumbnail = FileThumbnail;
-                            return FileThumbnail;
+                            _thumbnail = fileThumbnail;
+                            return fileThumbnail;
                         }
                         catch (Exception ex)
                         {
@@ -175,22 +173,22 @@ namespace ScreenshotsVisualizer.Models
                         }
                     }
                 }
-                return thumbnail;
+                return _thumbnail;
             }
 
-            set => SetValue(ref thumbnail, value);
+            set => SetValue(ref _thumbnail, value);
         }
 
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
-        public TimeSpan duration = default;
+        private TimeSpan _duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
             get
             {
-                if (duration == default)
+                if (_duration == default)
                 {
                     if (IsVideo)
                     {
@@ -200,7 +198,7 @@ namespace ScreenshotsVisualizer.Models
                             {
                                 string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
                                 _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
-                                _ = TimeSpan.TryParse(stdOut, out duration);
+                                _ = TimeSpan.TryParse(stdOut, out _duration);
                             }
                             else
                             {
@@ -212,7 +210,7 @@ namespace ScreenshotsVisualizer.Models
                                 ));
                             }
 
-                            return duration == null ? default : duration;
+                            return _duration == null ? default : _duration;
                         }
                         catch (Exception ex)
                         {
@@ -220,11 +218,12 @@ namespace ScreenshotsVisualizer.Models
                         }
                     }
                 }
-                return duration;
+                return _duration;
             }
 
-            set => SetValue(ref duration, value);
+            set => SetValue(ref _duration, value);
         }
+
         #endregion
     }
 }

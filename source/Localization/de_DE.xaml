@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Karussell</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Spielname anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Zufallsgenerierte Liste aller Screenshots</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Verwendete Vorschaubilder</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Verwendete Vorschaubilder</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Nur die neuesten Screenshots für jedes Spiel anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Anzahl Screenshots pro Spiel</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Anzahl der Spiele</sys:String>

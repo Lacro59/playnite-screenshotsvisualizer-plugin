@@ -23,35 +23,10 @@ namespace ScreenshotsVisualizer.Services
 {
     public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots, Screenshot>
     {
-        public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettingsViewModel PluginSettings, string PluginUserDataPath) : base(PluginSettings, "ScreenshotsVisualizer", PluginUserDataPath)
+        public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettingsViewModel pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
             TagBefore = "[SSV]";
         }
-
-
-        protected override bool LoadDatabase()
-        {
-            try
-            {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                Database = new ScreeshotsVisualizeCollection(Paths.PluginDatabasePath);
-                Database.SetGameInfo<Screenshot>();
-
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-                return false;
-            }
-
-            return true;
-        }
-
 
         public override void RefreshNoLoader(Guid id)
         {
@@ -68,152 +43,35 @@ namespace ScreenshotsVisualizer.Services
             ActionAfterRefresh(gameScreenshots);
         }
 
-
-        #region Refresh data
-        public void RefreshDataAll()
-        {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
-            {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                string CancelText = string.Empty;
-                activateGlobalProgress.ProgressMaxValue = API.Instance.Database.Games.Count;
-
-                Database.BeginBufferUpdate();
-
-                API.Instance.Database.Games.ForEach(x =>
-                {
-                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
-                    {
-                        CancelText = " canceled";
-                        return;
-                    }
-
-                    activateGlobalProgress.Text = x.Name;
-
-                    GameSettings gameSettings = GetGameSettings(x.Id);
-                    if (gameSettings != null)
-                    {
-                        SetDataFromSettings(gameSettings);
-                    }
-                    activateGlobalProgress.CurrentProgressValue++;
-                });
-
-                Database.EndBufferUpdate();
-
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"RefreshDataAll(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-            }, globalProgressOptions);
-        }
-
-        public void RefreshData(Game game)
-        {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
-                false
-            );
-            globalProgressOptions.IsIndeterminate = true;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
-            {
-                try
-                {
-                    GameSettings gameSettings = GetGameSettings(game.Id);
-                    if (gameSettings != null)
-                    {
-                        SetDataFromSettings(gameSettings);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginName);
-                }
-            }, globalProgressOptions);
-        }
-
-        public void RefreshData(List<Guid> Ids)
-        {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonRefreshGameData")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
-            {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                string CancelText = string.Empty;
-                activateGlobalProgress.ProgressMaxValue = Ids.Count;
-
-                Database.BeginBufferUpdate();
-
-                try
-                {
-                    foreach (Guid Id in Ids)
-                    {
-                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
-                        {
-                            CancelText = " canceled";
-                            break;
-                        }
-
-                        activateGlobalProgress.Text = API.Instance.Database.Games.Get(Id)?.Name;
-
-                        GameSettings gameSettings = GetGameSettings(Id);
-                        if (gameSettings != null)
-                        {
-                            SetDataFromSettings(gameSettings);
-                        }
-                        activateGlobalProgress.CurrentProgressValue++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginName);
-                }
-
-                Database.EndBufferUpdate();
-
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
-            }, globalProgressOptions);
-        }
-        #endregion
-
-
         #region Move data
+
+        /// <summary>
+        /// Moves all screenshots in the database to their designated save folders.
+        /// This operation displays a global progress dialog, allowing the user to cancel the process.
+        /// For each item in the database, the method attempts to move the screenshots using MoveToFolderToSaveWithNoLoader.
+        /// Any exceptions encountered are logged. The total operation time is also logged.
+        /// </summary>
         public void MoveToFolderToSaveAll()
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}")
+            {
+                Cancelable = true,
+                IsIndeterminate = false
+            };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                string CancelText = string.Empty;
+                string cancelText = string.Empty;
                 activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
 
                 foreach (KeyValuePair<Guid, GameScreenshots> item in Database.Items)
                 {
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
-                        CancelText = " canceled";
+                        cancelText = " canceled";
                         break;
                     }
 
@@ -230,17 +88,23 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"MoveToFolderToSaveAll{CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                Logger.Info($"MoveToFolderToSaveAll{cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }, globalProgressOptions);
         }
 
+        /// <summary>
+        /// Moves all screenshots associated with the specified game to their configured save folder.
+        /// This operation is performed within a global progress dialog, which is shown to the user.
+        /// The actual move logic is handled by <see cref="MoveToFolderToSaveWithNoLoader(Game)"/>.
+        /// </summary>
+        /// <param name="game">The game whose screenshots will be moved.</param>
         public void MoveToFolderToSave(Game game)
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
-                false
-            );
-            globalProgressOptions.IsIndeterminate = true;
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}")
+            {
+                Cancelable = false,
+                IsIndeterminate = true
+            };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
@@ -248,7 +112,14 @@ namespace ScreenshotsVisualizer.Services
             }, globalProgressOptions);
         }
 
-        public void MoveToFolderToSave(List<Guid> Ids)
+        /// <summary>
+        /// Moves all screenshots for the specified list of game IDs to their configured save folders.
+        /// This operation is performed within a global progress dialog, which allows the user to cancel the process.
+        /// For each game ID, the method attempts to move the screenshots using <see cref="MoveToFolderToSaveWithNoLoader(Guid, GlobalProgressActionArgs)"/>.
+        /// Any exceptions encountered are logged. The total operation time and the number of processed items are also logged.
+        /// </summary>
+        /// <param name="ids">The list of game IDs whose screenshots will be moved.</param>
+        public void MoveToFolderToSave(List<Guid> ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
                 $"{PluginName} - {ResourceProvider.GetString("LOCSsvMovingToSave")}",
@@ -261,18 +132,18 @@ namespace ScreenshotsVisualizer.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                string CancelText = string.Empty;
-                activateGlobalProgress.ProgressMaxValue = Ids.Count;
+                string cancelText = string.Empty;
+                activateGlobalProgress.ProgressMaxValue = ids.Count;
 
                 Database.BeginBufferUpdate();
 
                 try
                 {
-                    foreach (Guid Id in Ids)
+                    foreach (Guid Id in ids)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
-                            CancelText = " canceled";
+                            cancelText = " canceled";
                             break;
                         }
 
@@ -289,10 +160,17 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task MoveToFolderToSave(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                Logger.Info($"Task MoveToFolderToSave(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{ids.Count} items");
             }, globalProgressOptions);
         }
 
+        /// <summary>
+        /// Moves all screenshots for the specified game ID to its configured save folder without displaying a loader.
+        /// Updates the progress dialog text with the game's name during the operation.
+        /// The actual move logic is handled by <see cref="MoveToFolderToSaveWithNoLoader(Game)"/>.
+        /// </summary>
+        /// <param name="id">The unique identifier of the game whose screenshots will be moved.</param>
+        /// <param name="globalProgressActionArgs">The progress dialog arguments, used to update progress and display the current game name.</param>
         public void MoveToFolderToSaveWithNoLoader(Guid id, GlobalProgressActionArgs globalProgressActionArgs)
         {
             Game game = API.Instance.Database.Games.Get(id);
@@ -303,6 +181,14 @@ namespace ScreenshotsVisualizer.Services
             }
         }
 
+        /// <summary>
+        /// Moves all screenshots for the specified game to its configured save folder without displaying a loader or progress dialog.
+        /// The method checks if the folder-to-save feature is enabled and if the necessary settings are present.
+        /// For each screenshot, it generates the destination path and moves the file if it is not already in the target folder.
+        /// Handles file name conflicts and updates the game data after the move.
+        /// Any errors encountered during the process are logged, and notifications are shown if settings are missing.
+        /// </summary>
+        /// <param name="game">The game whose screenshots will be moved.</param>
         public void MoveToFolderToSaveWithNoLoader(Game game)
         {
             if (PluginSettings.Settings.EnableFolderToSave)
@@ -327,55 +213,55 @@ namespace ScreenshotsVisualizer.Services
                             SetDataFromSettings(gameSettings);
                         }
 
-                        string PathFolder = PluginSettings.Settings.FolderToSave;
+                        string pathFolder = PluginSettings.Settings.FolderToSave;
                         if (!PluginSettings.Settings.FolderToSave.Contains("{Name}"))
                         {
-                            PathFolder = Path.Combine(PathFolder, "{Name}");
+                            pathFolder = Path.Combine(pathFolder, "{Name}");
                         }
-                        PathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PathFolder);
-                        PathFolder = CommonPluginsShared.Paths.GetSafePath(PathFolder, false);
+                        pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, pathFolder);
+                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, false);
 
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
 
-                        FileSystem.CreateDirectory(PathFolder);
+                        FileSystem.CreateDirectory(pathFolder);
 
-                        bool HaveDigit = false;
+                        bool haveDigit = false;
                         foreach (Screenshot screenshot in gameScreenshots.Items)
                         {
-                            string Pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
-                            string PatternWithDigit = string.Empty;
+                            string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
+                            string patternWithDigit = string.Empty;
 
-                            if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(PathFolder, StringComparison.InvariantCultureIgnoreCase))
+                            if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(pathFolder, StringComparison.InvariantCultureIgnoreCase))
                             {
                                 string ext = Path.GetExtension(screenshot.FileName);
 
-                                Pattern = Pattern.Replace("{DateModified}", screenshot.Modifed.ToString("yyyy-MM-dd"));
-                                Pattern = Pattern.Replace("{DateTimeModified}", screenshot.Modifed.ToString("yyyy-MM-dd HH_mm_ss"));
+                                pattern = pattern.Replace("{DateModified}", screenshot.Modifed.ToString("yyyy-MM-dd"));
+                                pattern = pattern.Replace("{DateTimeModified}", screenshot.Modifed.ToString("yyyy-MM-dd HH_mm_ss"));
 
-                                if (Pattern.Contains("{digit}"))
+                                if (pattern.Contains("{digit}"))
                                 {
-                                    HaveDigit = true;
-                                    PatternWithDigit = Pattern;
-                                    Pattern = PatternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
+                                    haveDigit = true;
+                                    patternWithDigit = pattern;
+                                    pattern = patternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
                                     digit++;
                                 }
 
-                                Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
+                                pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(pattern);
 
-                                string destFileName = Path.Combine(PathFolder, Pattern);
+                                string destFileName = Path.Combine(pathFolder, pattern);
 
 
                                 // If file exists
                                 if (File.Exists(destFileName + ext))
                                 {
-                                    if (HaveDigit)
+                                    if (haveDigit)
                                     {
                                         while (File.Exists(destFileName + ext))
                                         {
-                                            Pattern = PatternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
-                                            Pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(Pattern);
-                                            destFileName = Path.Combine(PathFolder, Pattern);
+                                            pattern = patternWithDigit.Replace("{digit}", string.Format("{0:0000}", digit));
+                                            pattern = CommonPlayniteShared.Common.Paths.GetSafePathName(pattern);
+                                            destFileName = Path.Combine(pathFolder, pattern);
                                             digit++;
                                         }
                                     }
@@ -414,10 +300,19 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
         }
+
         #endregion
 
-
         #region Convert data
+
+        /// <summary>
+        /// Converts the specified screenshot image file to JPEG format using the configured JPEG quality.
+        /// If the screenshot is not a video, the method attempts the conversion and preserves the original file's last write time.
+        /// The original file is deleted after a successful conversion.
+        /// Any errors encountered during the process are logged.
+        /// </summary>
+        /// <param name="screenshot">The screenshot to convert to JPEG format.</param>
+        /// <returns>True if the conversion was successful; otherwise, false.</returns>
         private bool ConvertToJpg(Screenshot screenshot)
         {
             try
@@ -444,25 +339,39 @@ namespace ScreenshotsVisualizer.Services
             return false;
         }
 
+        /// <summary>
+        /// Converts all screenshots associated with the specified game ID to JPEG format.
+        /// This method retrieves the game by its ID and delegates the conversion logic to <see cref="ConvertGameSsvToJpg(Game)"/>.
+        /// </summary>
+        /// <param name="id">The unique identifier of the game whose screenshots will be converted.</param>
+        /// <returns>True if at least one screenshot was successfully converted; otherwise, false.</returns>
         private bool ConvertGameSsvToJpg(Guid id)
         {
             return ConvertGameSsvToJpg(API.Instance.Database.Games.Get(id));
         }
 
+        /// <summary>
+        /// Converts all screenshots for the specified list of game IDs to JPEG format.
+        /// This operation is performed within a global progress dialog, which allows the user to cancel the process.
+        /// For each game ID, the method attempts to convert the screenshots using <see cref="ConvertGameSsvToJpg(Guid)"/>.
+        /// After a successful conversion, the game data is refreshed from settings.
+        /// Any exceptions encountered are logged. The total operation time and the number of processed items are also logged.
+        /// </summary>
+        /// <param name="ids">The list of game IDs whose screenshots will be converted to JPEG format.</param>
         public void ConvertGameSsvToJpg(List<Guid> ids)
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonConverting")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = ids.Count == 1;
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonConverting")}")
+            {
+                Cancelable = true,
+                IsIndeterminate = ids.Count == 1
+            };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                string CancelText = string.Empty;
+                string cancelText = string.Empty;
                 activateGlobalProgress.IsIndeterminate = true;
                 if (ids.Count > 1)
                 {
@@ -478,7 +387,7 @@ namespace ScreenshotsVisualizer.Services
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
-                            CancelText = " canceled";
+                            cancelText = " canceled";
                             return;
                         }
 
@@ -502,10 +411,17 @@ namespace ScreenshotsVisualizer.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task ConvertGameSsvToJpg(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {ids.Count} items");
+                Logger.Info($"Task ConvertGameSsvToJpg(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {ids.Count} items");
             }, globalProgressOptions);
         }
 
+        /// <summary>
+        /// Converts all screenshots associated with the specified game to JPEG format.
+        /// For each screenshot that is not a video, the method attempts the conversion using <see cref="ConvertToJpg(Screenshot)"/>.
+        /// Returns true if at least one screenshot was successfully converted; otherwise, false.
+        /// </summary>
+        /// <param name="game">The game whose screenshots will be converted to JPEG format.</param>
+        /// <returns>True if at least one screenshot was converted; otherwise, false.</returns>
         public bool ConvertGameSsvToJpg(Game game)
         {
             bool hasConverted = false;
@@ -525,16 +441,23 @@ namespace ScreenshotsVisualizer.Services
             }
             return hasConverted;
         }
+
         #endregion
 
-
+        /// <summary>
+        /// Retrieves the <see cref="GameSettings"/> object for the specified game ID.
+        /// If no specific settings exist for the game, a new <see cref="GameSettings"/> instance is created using global folder settings.
+        /// Ensures that all relevant global folder settings are present in the returned object.
+        /// </summary>
+        /// <param name="id">The unique identifier of the game.</param>
+        /// <returns>The <see cref="GameSettings"/> for the specified game.</returns>
         public GameSettings GetGameSettings(Guid id)
         {
-            List<FolderSettings> FolderSettingsGlobal = new List<FolderSettings>();
+            List<FolderSettings> folderSettingsGlobal = new List<FolderSettings>();
 
             if (PluginSettings.Settings.EnableFolderToSave && !PluginSettings.Settings.FolderToSave.IsNullOrEmpty())
             {
-                FolderSettingsGlobal.Add(new FolderSettings
+                folderSettingsGlobal.Add(new FolderSettings
                 {
                     ScreenshotsFolder = PluginSettings.Settings.FolderToSave,
                     UsedFilePattern = true,
@@ -544,7 +467,7 @@ namespace ScreenshotsVisualizer.Services
 
             if (!PluginSettings.Settings.GlobalScreenshootsPath.IsNullOrEmpty())
             {
-                FolderSettingsGlobal.Add(new FolderSettings
+                folderSettingsGlobal.Add(new FolderSettings
                 {
                     ScreenshotsFolder = PluginSettings.Settings.GlobalScreenshootsPath
                 });
@@ -557,12 +480,12 @@ namespace ScreenshotsVisualizer.Services
                 gameSettings = new GameSettings
                 {
                     Id = id,
-                    ScreenshotsFolders = FolderSettingsGlobal
+                    ScreenshotsFolders = folderSettingsGlobal
                 };
             }
             else
             {
-                foreach (FolderSettings folderSettings in FolderSettingsGlobal)
+                foreach (FolderSettings folderSettings in folderSettingsGlobal)
                 {
                     FolderSettings finded = gameSettings.ScreenshotsFolders
                         .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder)
@@ -577,7 +500,6 @@ namespace ScreenshotsVisualizer.Services
             }
             return gameSettings;
         }
-
 
         public override GameScreenshots Get(Guid id, bool onlyCache = false, bool force = false)
         {
@@ -596,7 +518,14 @@ namespace ScreenshotsVisualizer.Services
             return gameScreenshots;
         }
 
-
+        /// <summary>
+        /// Updates the screenshot data for the specified game based on the provided <see cref="GameSettings"/>.
+        /// For each configured screenshots folder, the method scans for supported image and video files,
+        /// applies file pattern matching if enabled, and updates the game's screenshot collection accordingly.
+        /// Also ensures that video metadata (thumbnail, duration, size) is generated.
+        /// Any errors encountered during the process are logged.
+        /// </summary>
+        /// <param name="item">The <see cref="GameSettings"/> containing folder and pattern information for the game.</param>
         public void SetDataFromSettings(GameSettings item)
         {
             _ = SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
@@ -719,22 +648,6 @@ namespace ScreenshotsVisualizer.Services
             }
         }
 
-
-        public string GetPatternExample(Game game, string pattern)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-            }
-
-            return null;
-        }
-
-
         private static string EscapeRegexSpecialChars(string input)
         {
             string specialChars = @".^$*+?(){}[]|\";
@@ -752,9 +665,8 @@ namespace ScreenshotsVisualizer.Services
             return escapedString.ToString();
         }
 
-
-
         #region Tag
+
         public override void AddTag(Game game)
         {
             GameScreenshots item = Get(game, true);
@@ -799,8 +711,8 @@ namespace ScreenshotsVisualizer.Services
                 game.OnPropertyChanged();
             });
         }
-        #endregion
 
+        #endregion
 
         public override void SetThemesResources(Game game)
         {
@@ -809,12 +721,17 @@ namespace ScreenshotsVisualizer.Services
             PluginSettings.Settings.ListScreenshots = gameScreenshots?.Items ?? new List<Screenshot>();
         }
 
-
+        /// <summary>
+        /// Handles the mouse left button down event on a ListBox item containing screenshots.
+        /// If the selection or a double-click is detected (depending on settings), opens a window to display the selected screenshot in a viewer.
+        /// The viewer allows navigation through all screenshots in the ListBox.
+        /// </summary>
+        /// <param name="sender">The ListBox control that triggered the event.</param>
+        /// <param name="e">The mouse button event arguments.</param>
         public void ListBoxItem_MouseLeftButtonDownClick(object sender, MouseButtonEventArgs e)
         {
             ListBox listBox = (ListBox)sender;
-            ListBoxItem item = ItemsControl.ContainerFromElement(listBox, e.OriginalSource as DependencyObject) as ListBoxItem;
-            if (item != null)
+            if (ItemsControl.ContainerFromElement(listBox, e.OriginalSource as DependencyObject) is ListBoxItem)
             {
                 int index = listBox.SelectedIndex;
                 if (index == -1)
@@ -824,21 +741,21 @@ namespace ScreenshotsVisualizer.Services
 
                 Screenshot screenshot = (Screenshot)listBox.Items[index];
 
-                bool IsGood = false;
+                bool isGood = false;
 
                 if (PluginSettings.Settings.OpenViewerWithOnSelection)
                 {
-                    IsGood = true;
+                    isGood = true;
                 }
                 else
                 {
                     if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                     {
-                        IsGood = true;
+                        isGood = true;
                     }
                 }
 
-                if (IsGood)
+                if (isGood)
                 {
                     WindowOptions windowOptions = new WindowOptions
                     {
@@ -850,8 +767,8 @@ namespace ScreenshotsVisualizer.Services
                         Width = 1280
                     };
 
-                    SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, ViewExtension, windowOptions);
+                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, viewExtension, windowOptions);
                     _ = windowExtension.ShowDialog();
                 }
             }

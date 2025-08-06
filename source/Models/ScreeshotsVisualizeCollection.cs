@@ -1,8 +1,5 @@
 ﻿using CommonPluginsShared.Collections;
 using Playnite.SDK;
-using System;
-using System.Linq;
-using System.Text;
 
 namespace ScreenshotsVisualizer.Models
 {

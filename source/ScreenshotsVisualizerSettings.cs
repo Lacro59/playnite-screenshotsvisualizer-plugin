@@ -15,6 +15,7 @@ namespace ScreenshotsVisualizer
     public class ScreenshotsVisualizerSettings : PluginSettings
     {
         #region Settings variables
+
         public bool EnableIntegrationButtonHeader { get; set; } = false;
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
@@ -77,21 +78,24 @@ namespace ScreenshotsVisualizer
 
         private string _ffprobePath;
         public string FfprobePath { get => _ffprobePath; set => SetValue(ref _ffprobePath, value); }
-        #endregion
 
+        #endregion
 
         #region Settings StartPage
+
         private SsvCarouselOptions _ssvCarouselOptions = new SsvCarouselOptions();
         public SsvCarouselOptions ssvCarouselOptions { get => _ssvCarouselOptions; set => SetValue(ref _ssvCarouselOptions, value); }
+        
         #endregion
-
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
+
         private List<Screenshot> _listScreenshots = new List<Screenshot>();
         [DontSerialize]
         public List<Screenshot> ListScreenshots { get => _listScreenshots; set => SetValue(ref _listScreenshots, value); }
+        
         #endregion  
     }
 
@@ -181,7 +185,6 @@ namespace ScreenshotsVisualizer
             errors = new List<string>();
             return true;
         }
-
 
         public RelayCommand<object> BrowseSelectFfmpegCommand
         {

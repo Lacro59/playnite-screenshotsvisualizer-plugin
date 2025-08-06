@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,11 +24,11 @@ namespace ScreenshotsVisualizer.Controls
     /// </summary>
     public partial class PluginListScreenshots : PluginUserControlExtend
     {
-        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        private static ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginListScreenshotsDataContext ControlDataContext = new PluginListScreenshotsDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginListScreenshotsDataContext)controlDataContext;
@@ -61,7 +60,6 @@ namespace ScreenshotsVisualizer.Controls
             });
         }
 
-
         public override void SetDefaultDataContext()
         {
             ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPictures;
@@ -75,28 +73,27 @@ namespace ScreenshotsVisualizer.Controls
 
 
             // With PlayerActivities
-            ControlDataContext.DateTaked = default;
+            ControlDataContext.DateTaken = default;
             if (this.Tag is DateTime)
             {
                 ControlDataContext.IsActivated = true;
-                ControlDataContext.DateTaked = (DateTime)this.Tag;
+                ControlDataContext.DateTaken = (DateTime)this.Tag;
             }
         }
 
-
-        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase pluginGameData)
         {
-            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
             List<Screenshot> screenshots = gameScreenshots.Items;
             screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
 
             // With PlayerActivities
-            if (ControlDataContext.DateTaked != default)
+            if (ControlDataContext.DateTaken != default)
             {
                 screenshots = screenshots
-                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(ControlDataContext.DateTaked.ToString("yyyy-MM--dd")))
+                    .Where(x => x.Modifed.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(ControlDataContext.DateTaken.ToString("yyyy-MM--dd")))
                     .ToList();
             }
 
@@ -105,8 +102,8 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.CountItems = screenshots.Count;
         }
 
-
         #region Events
+
         private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
@@ -125,50 +122,48 @@ namespace ScreenshotsVisualizer.Controls
             if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
             {
                 PluginSinglePicture ssvSinglePicture = UI.FindVisualChildren<PluginSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
-
-                if (ssvSinglePicture != null)
-                {
-                    ssvSinglePicture.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
-                }
+                ssvSinglePicture?.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
             }
         }
+        
         #endregion
     }
 
 
     public class PluginListScreenshotsDataContext : ObservableObject, IDataContext
     {
-        private bool isActivated;
-        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+        private bool _isActivated;
+        public bool IsActivated { get => _isActivated; set => SetValue(ref _isActivated, value); }
 
-        private DateTime dateTaked;
-        public DateTime DateTaked { get => dateTaked; set => SetValue(ref dateTaked, value); }
+        private DateTime _dateTaken;
+        public DateTime DateTaken { get => _dateTaken; set => SetValue(ref _dateTaken, value); }
 
-        private bool addBorder;
-        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
+        private bool _addBorder;
+        public bool AddBorder { get => _addBorder; set => SetValue(ref _addBorder, value); }
 
-        private bool addRoundedCorner;
-        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
+        private bool _addRoundedCorner;
+        public bool AddRoundedCorner { get => _addRoundedCorner; set => SetValue(ref _addRoundedCorner, value); }
 
-        private bool hideInfos;
-        public bool HideInfos { get => hideInfos; set => SetValue(ref hideInfos, value); }
+        private bool _hideInfos;
+        public bool HideInfos { get => _hideInfos; set => SetValue(ref _hideInfos, value); }
 
-        private double integrationShowPicturesHeight;
-        public double IntegrationShowPicturesHeight { get => integrationShowPicturesHeight; set => SetValue(ref integrationShowPicturesHeight, value); }
+        private double _integrationShowPicturesHeight;
+        public double IntegrationShowPicturesHeight { get => _integrationShowPicturesHeight; set => SetValue(ref _integrationShowPicturesHeight, value); }
 
-        private int countItems = 10;
-        public int CountItems { get => countItems; set => SetValue(ref countItems, value); }
+        private int _countItems = 10;
+        public int CountItems { get => _countItems; set => SetValue(ref _countItems, value); }
 
-        private ObservableCollection<Screenshot> itemsSource = new ObservableCollection<Screenshot>
+        private ObservableCollection<Screenshot> _itemsSource = new ObservableCollection<Screenshot>
+    {
+        new Screenshot
         {
-            new Screenshot
-            {
-                FileName = @"icon.png",
-                Modifed = DateTime.Now
-            }
-        };
-        public ObservableCollection<Screenshot> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+            FileName = @"icon.png",
+            Modifed = DateTime.Now
+        }
+    };
+        public ObservableCollection<Screenshot> ItemsSource { get => _itemsSource; set => SetValue(ref _itemsSource, value); }
     }
+
 
     public class TwoSizeMultiValueConverter : IMultiValueConverter
     {
