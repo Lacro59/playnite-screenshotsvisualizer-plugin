@@ -83,8 +83,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                 this.DataContext = new
                 {
-                    pictureSource,
-                    isVideo,
+                    PictureSource = pictureSource,
+                    IsVideo = isVideo,
                     AddBorder = true,
                     AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
                     GameName = API.Instance.Database.Games.Get(screenshot.GameId)?.Name,
@@ -142,7 +142,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                 Random r = new Random();
 
-                List<KeyValuePair<Guid, GameScreenshots>> pluginData = PluginDatabase.Database.Items.Where(x => x.Value.Count > 0).ToList();
+                List<KeyValuePair<Guid, GameScreenshots>> pluginData = PluginDatabase.Database.Items.Where(x => x.Value.ScreenshotsCount > 0).ToList();
                 pluginData.Sort((z, y) => r.Next(-1, 1));
 
                 if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)

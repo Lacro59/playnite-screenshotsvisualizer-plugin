@@ -15,5 +15,18 @@ namespace ScreenshotsVisualizer.Models
 
         [DontSerialize]
         public bool InSettings { get; set; }
+
+        [DontSerialize]
+        public uint ScreenshotsCount
+        {
+            get
+            {
+                if (Items == null || Items.Count == 0)
+                {
+                    return 0;
+                }
+                return (uint)Items.Count(s => s.FileName != null && File.Exists(s.FileName));
+            }
+        }
     }
 }
