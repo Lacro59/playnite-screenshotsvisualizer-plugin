@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>

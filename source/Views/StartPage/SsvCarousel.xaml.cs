@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -26,6 +27,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
     /// </summary>
     public partial class SsvCarousel : UserControl
     {
+        private static ILogger Logger => LogManager.GetLogger();
         private static ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private ObservableCollection<Screenshot> Screenshots { get; set; } = new ObservableCollection<Screenshot>();
@@ -228,24 +230,32 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
             if (isGood)
             {
-                WindowOptions windowOptions = new WindowOptions
+                if (PluginDatabase.PluginSettings.Settings.UseExternalViewer)
                 {
-                    ShowMinimizeButton = false,
-                    ShowMaximizeButton = true,
-                    ShowCloseButton = true,
-                    CanBeResizable = true,
-                    Height = 720,
-                    Width = 1280
-                };
+                    Logger.Info($"Open screenshot with external viewer");
+                    _ = Process.Start(Screenshots[Index].FileName);
+                }
+                else
+                {
+                    WindowOptions windowOptions = new WindowOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true,
+                        CanBeResizable = true,
+                        Height = 720,
+                        Width = 1280
+                    };
 
-                Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
-                string title = game != null
-                    ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
-                    : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
+                    Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
+                    string title = game != null
+                        ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
+                        : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
 
-                SsvSinglePictureView viewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(title, viewExtension, windowOptions);
-                _ = windowExtension.ShowDialog();
+                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(Screenshots[Index], null);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(title, viewExtension, windowOptions);
+                    _ = windowExtension.ShowDialog();
+                }
             }
         }
 

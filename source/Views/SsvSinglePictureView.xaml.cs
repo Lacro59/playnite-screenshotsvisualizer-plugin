@@ -10,7 +10,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace ScreenshotsVisualizer.Views
 {
@@ -19,18 +18,18 @@ namespace ScreenshotsVisualizer.Views
     /// </summary>
     public partial class SsvSinglePictureView : UserControl
     {
-        internal ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        private static ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
         private Screenshot Screenshot { get; set; }
         private int Index { get; set; } = 0;
 
 
-        public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null, Game game = null)
+        public SsvSinglePictureView(Screenshot screenshot, List<Screenshot> screenshots = null)
         {
             InitializeComponent();
 
-            this.Screenshots = screenshots;
+            Screenshots = screenshots;
             if (screenshots != null)
             {
                 Index = screenshots.FindIndex(x => x == screenshot);
@@ -44,28 +43,27 @@ namespace ScreenshotsVisualizer.Views
             SetImage(screenshot);
         }
 
-
         private void SetImage(Screenshot screenshot)
         {
-            string PictureSource = string.Empty;
+            string pictureSource = string.Empty;
             Game game = API.Instance.Database.Games.Get(screenshot.GameId);
 
             if (File.Exists(screenshot.FileName))
             {
-                PictureSource = screenshot.FileName;
-                this.Screenshot = screenshot;
+                pictureSource = screenshot.FileName;
+                Screenshot = screenshot;
 
-                if (this.Parent is Window)
+                if (Parent is Window window)
                 {
-                    ((Window)this.Parent).Title = game != null
+                    window.Title = game != null
                         ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
                         : ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
                 }
             }
 
-            this.DataContext = new
+            DataContext = new
             {
-                PictureSource,
+                PictureSource = pictureSource,
                 IsVideo = screenshot.IsVideo,
                 Icon = !game?.Icon.IsNullOrEmpty() ?? false ? API.Instance.Database.GetFullFilePath(game.Icon) : string.Empty,
                 GameName = game?.Name,
@@ -74,13 +72,11 @@ namespace ScreenshotsVisualizer.Views
             };
         }
 
-
         private void PART_Contener_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             PART_ScreenshotsPicture.Height = PART_Contener.ActualHeight;
             PART_ScreenshotsPicture.Width = PART_Contener.ActualWidth;
         }
-
 
         private void PART_Video_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -88,13 +84,12 @@ namespace ScreenshotsVisualizer.Views
             {
                 e.Handled = true;
 
-                if (this.Parent is Window)
+                if (Parent is Window window)
                 {
-                    ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+                    window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                 }
             }
         }
-
 
         private void PART_Screenshot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -102,15 +97,15 @@ namespace ScreenshotsVisualizer.Views
             {
                 e.Handled = true;
 
-                if (this.Parent is Window)
+                if (Parent is Window window)
                 {
-                    ((Window)this.Parent).WindowState = ((Window)this.Parent).WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+                    window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                 }
             }
         }
 
-
         #region Image navigation
+
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
             if (Screenshots != null)
@@ -144,8 +139,8 @@ namespace ScreenshotsVisualizer.Views
                 SetImage(Screenshots[Index]);
             }
         }
-        #endregion
 
+        #endregion
 
         private void SsvSinglePictureView_KeyDown(object sender, KeyEventArgs e)
         {
@@ -167,12 +162,11 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_Contener_Loaded(object sender, RoutedEventArgs e)
         {
-            Window win = UI.FindParent<Window>((FrameworkElement)sender);
-            win.KeyDown += new KeyEventHandler(SsvSinglePictureView_KeyDown);
-            win.MouseEnter += PART_Contener_MouseEnter;
-            win.MouseLeave += PART_Contener_MouseLeave;
+            Window window = UI.FindParent<Window>((FrameworkElement)sender);
+            window.KeyDown += new KeyEventHandler(SsvSinglePictureView_KeyDown);
+            window.MouseEnter += PART_Contener_MouseEnter;
+            window.MouseLeave += PART_Contener_MouseLeave;
         }
-
 
         private void PART_Contener_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -196,7 +190,6 @@ namespace ScreenshotsVisualizer.Views
             PART_Bt.Visibility = Visibility.Collapsed;
             PART_Game.Visibility = Visibility.Collapsed;
         }
-
 
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {

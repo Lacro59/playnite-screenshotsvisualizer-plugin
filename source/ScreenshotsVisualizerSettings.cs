@@ -79,6 +79,8 @@ namespace ScreenshotsVisualizer
         private string _ffprobePath;
         public string FfprobePath { get => _ffprobePath; set => SetValue(ref _ffprobePath, value); }
 
+        public bool UseExternalViewer { get; set; } = false;
+
         #endregion
 
         #region Settings StartPage

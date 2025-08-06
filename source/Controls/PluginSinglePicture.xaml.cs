@@ -10,6 +10,7 @@ using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,14 +35,14 @@ namespace ScreenshotsVisualizer.Controls
             set => ControlDataContext = (PluginSinglePictureDataContext)controlDataContext;
         }
 
-        private List<Screenshot> screenshots = new List<Screenshot>();
-        private int index = 0;
+        private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
+        private int Index { get; set; } = 0;
 
 
         public PluginSinglePicture()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
             _ = Task.Run(() =>
             {
@@ -81,20 +82,20 @@ namespace ScreenshotsVisualizer.Controls
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
-            this.screenshots = gameScreenshots.Items;
-            this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            Screenshots = gameScreenshots.Items;
+            Screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-            index = 0;
+            Index = 0;
 
-            if (screenshots.Count > 1)
+            if (Screenshots.Count > 1)
             {
                 ControlDataContext.EnablePrev = true;
                 ControlDataContext.EnableNext = true;
             }
 
-            if (screenshots.Count > 0)
+            if (Screenshots.Count > 0)
             {
-                SetPicture(screenshots[index]);
+                SetPicture(Screenshots[Index]);
             }
         }
 
@@ -125,14 +126,14 @@ namespace ScreenshotsVisualizer.Controls
         {
             if (index != -1)
             {
-                this.index = index;
+                Index = index;
 
-                SetPicture(screenshots[index]);
+                SetPicture(Screenshots[index]);
 
-                Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
+                    DataContext = null;
+                    DataContext = ControlDataContext;
                 }));
             }
         }
@@ -141,30 +142,30 @@ namespace ScreenshotsVisualizer.Controls
 
         private void PART_Prev_Click(object sender, RoutedEventArgs e)
         {
-            if (index == 0)
+            if (Index == 0)
             {
-                index = screenshots.Count - 1;
+                Index = Screenshots.Count - 1;
             }
             else
             {
-                index--;
+                Index--;
             }
 
-            SetPictureFromList(index);
+            SetPictureFromList(Index);
         }
 
         private void PART_Next_Click(object sender, RoutedEventArgs e)
         {
-            if (index == screenshots.Count - 1)
+            if (Index == Screenshots.Count - 1)
             {
-                index = 0;
+                Index = 0;
             }
             else
             {
-                index++;
+                Index++;
             }
 
-            SetPictureFromList(index);
+            SetPictureFromList(Index);
         }
 
         private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
@@ -185,19 +186,27 @@ namespace ScreenshotsVisualizer.Controls
 
             if (isGood)
             {
-                WindowOptions windowOptions = new WindowOptions
+                if (PluginDatabase.PluginSettings.Settings.UseExternalViewer)
                 {
-                    ShowMinimizeButton = false,
-                    ShowMaximizeButton = true,
-                    ShowCloseButton = true,
-                    CanBeResizable = true,
-                    Height = 720,
-                    Width = 1280
-                };
+                    Logger.Info($"Open screenshot with external viewer");
+                    _ = Process.Start(Screenshots[Index].FileName);
+                }
+                else
+                {
+                    WindowOptions windowOptions = new WindowOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true,
+                        CanBeResizable = true,
+                        Height = 720,
+                        Width = 1280
+                    };
 
-                SsvSinglePictureView viewExtension = new SsvSinglePictureView(screenshots[index], screenshots);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshots[index].FileNameOnly, viewExtension, windowOptions);
-                windowExtension.ShowDialog();
+                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(Screenshots[Index], Screenshots);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly, viewExtension, windowOptions);
+                    _ = windowExtension.ShowDialog();
+                }
             }
         }
 

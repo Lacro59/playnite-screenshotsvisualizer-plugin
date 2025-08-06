@@ -757,19 +757,27 @@ namespace ScreenshotsVisualizer.Services
 
                 if (isGood)
                 {
-                    WindowOptions windowOptions = new WindowOptions
+                    if (PluginSettings.Settings.UseExternalViewer)
                     {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        CanBeResizable = true,
-                        Height = 720,
-                        Width = 1280
-                    };
+                        Logger.Info($"Open screenshot with external viewer");
+                        _ = Process.Start(screenshot.FileName);
+                    }
+                    else
+                    {
+                        WindowOptions windowOptions = new WindowOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true,
+                            CanBeResizable = true,
+                            Height = 720,
+                            Width = 1280
+                        };
 
-                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, viewExtension, windowOptions);
-                    _ = windowExtension.ShowDialog();
+                        SsvSinglePictureView viewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, viewExtension, windowOptions);
+                        _ = windowExtension.ShowDialog();
+                    }
                 }
             }
         }
