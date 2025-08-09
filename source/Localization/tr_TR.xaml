@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Atlıkarınca</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Oyun adını göster</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Tüm ekran alıntıları listesini rastgele seç</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Kullanılan küçük resimler</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Her oyun için yalnızca en yeni ekran alıntılarını göster</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Oyun başına ekran alıntısı sayısı</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Oyun sayısı</sys:String>
@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg yolu:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe yolu:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg paketini indir</sys:String>
