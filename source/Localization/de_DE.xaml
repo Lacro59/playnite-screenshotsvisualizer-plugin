@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Karussell</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Spielname anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Zufallsgenerierte Liste aller Screenshots</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Verwendete Vorschaubilder</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Nur die neuesten Screenshots für jedes Spiel anzeigen</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Anzahl Screenshots pro Spiel</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Anzahl der Spiele</sys:String>
@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg Dateipfad:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe Pfad:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg Paket herunterladen</sys:String>
