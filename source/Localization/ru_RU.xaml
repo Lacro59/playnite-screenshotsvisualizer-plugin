@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Показывать название игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Случайный порядок всех скриншотов</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Используемые эскизы</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показывать только самые последние скриншоты для каждой игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Количество скриншотов на игру</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Кол-во игр</sys:String>
@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
