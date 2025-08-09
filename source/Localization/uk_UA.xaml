@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Показати назву гри</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Перемішати список всіх скриншотів</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Використані мініатюри</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Використані мініатюри</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показувати тільки останні скриншоти для кожної гри</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Кількість скриншотів на гру</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Кількість ігор</sys:String>
@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Використовувати зовнішній переглядач</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">Шлях до ffmpeg:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">Шлях до ffprobe:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Завантажити пакет ffmpeg</sys:String>
