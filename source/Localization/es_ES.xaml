@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Carrusel</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Mostrar el nombre del juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Aleatorizar todas las capturas de pantalla</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerRezolution">Usar miniaturas</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Used thumbnails</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostrar sólo la captura de pantalla más recientes de cada juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Número de capturas de pantalla por juego</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Número de juegos</sys:String>
@@ -57,6 +57,8 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
+    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    
     <sys:String x:Key="LOCSsvFfmpegPathLabel">Ruta de ffmpeg:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">Ruta de ffprobe:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Descargar paquete de ffmpeg</sys:String>
