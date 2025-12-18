@@ -44,7 +44,7 @@
     <sys:String x:Key="LOCSsvCarousel">Carosello</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">Mostra il nome del gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Rendi causale tutte le liste di schermate</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Used thumbnails</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Miniature usate</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Mostra solo le schermate più recenti per ogni gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Numero di schermate per gioco</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Numero dei giochi</sys:String>
@@ -57,7 +57,7 @@
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    <sys:String x:Key="LOCSsvUseExternalViever">Utilizza un visualizzatore esterno</sys:String>
     
     <sys:String x:Key="LOCSsvFfmpegPathLabel">percorso ffmpeg:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">percorso ffprobe:</sys:String>
