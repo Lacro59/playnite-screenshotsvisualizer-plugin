@@ -24,7 +24,7 @@
     <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving screenshots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
 
@@ -36,7 +36,7 @@
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
 
     
     <!-- StartPage -->
@@ -85,7 +85,7 @@
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots info</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
@@ -100,8 +100,8 @@
     <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
+- {DateModified}		yyyy[-_]MM[-_]dd
+- {DateTimeModified}		yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss
 - {digit}			number(s)
     
 Example:
@@ -125,6 +125,6 @@ If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selectin
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings to use to move the screenshots is missing</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
     
 </ResourceDictionary>
