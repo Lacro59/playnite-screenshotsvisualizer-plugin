@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} screenshot</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} screenshots</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} 张截图</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} 张截图</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} 个视频</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} 个视频</sys:String>
 
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
@@ -13,30 +13,30 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">Screenshots</sys:String>
+    <sys:String x:Key="LOCSsv">截图可视化-ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsvTitle">截图</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">Latest</sys:String>
+    <sys:String x:Key="LOCSsvLatest">最新</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">View game screenshots</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Open the screenshots directory</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Move the screenshoots to save directory</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">Convert images to JPG</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPGForAll">Convert images to JPG for all games screenshots</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">您确定要移动所有屏幕截图吗</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Are you sure to delete {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗</sys:String>
 
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">Last screenshoot</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">上一张截图</sys:String>
 
     
     <!-- StartPage -->
@@ -63,68 +63,68 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">Generate thumbnails to improve loading performance</sys:String>
+    <sys:String x:Key="LOCSsvUsedThumbnails">生成缩略图以改善加载性能</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
-    <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">若游戏有截图则添加标签</sys:String>
+    <sys:String x:Key="LOCSsvAddSteamGame">添加 Steam 游戏</sys:String>
     
-    <sys:String x:Key="LOCSsvNumberToDigit">Transform number to {digit}</sys:String>
+    <sys:String x:Key="LOCSsvNumberToDigit">将数字转换为 {digit}</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">Display a control with a  single screenshot</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">Display a control with a list of screenshots</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">Display a control with a list of vertical screenshots</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">显示具有一个列表的截图的控制</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">显示具有一个列表的纵向截图的控制</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesList">Display a control with a large list of screenshoots</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Add border</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">Add rounded corner</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">添加边</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Single screenshot options</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">单截图选项</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">List of screenshots options</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">列表截图选项</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Hide screenshots infos</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Open on picture selection</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">Link selection with single screenshot view</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">Used a file pattern</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Enable move of screenshots in unique folder</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">File pattern</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">转换为相对</sys:String>
     
-    <sys:String x:Key="LOCSsJpgQuality">JPG quality</sys:String>
+    <sys:String x:Key="LOCSsJpgQuality">JPG 质量</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy[-_]MM[-_]dd
-- {DateTimeModified}		yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss
-- {digit}			number(s)
-    
-Example:
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">另外，您可使用（y=年，M=月，d=日，H=时，m=分，s=秒）：
+- {DateModified}		yyyy-MM-dd
+- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
+- {digit}			数字
+
+例子：
 GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
 GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
-    
-Example:
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">为所有游戏添加该文件夹。
+
+例子：
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
-If the {Name} is not included in &quot;Folder&quot;, it is automatically added.
-    
-Example:
-A game with two screenshot folders:
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">此选项添加一个游戏菜单，其将所有截图文件移动到单个文件夹。
+如果 {Name} 没有包含在“文件夹”中，它会自动添加。
+
+示例：
+某游戏有两个截图文件夹：
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
-    
-If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the &quot;File Pattern&quot; and the link will be upated in plugin data.</sys:String>
+
+如果您有特殊的文件夹 {DropboxFolder}\Screenshots\{Name}，在游戏菜单中选择选项后，所有屏幕截图将根据“文件模式”移动到唯一的文件夹，且链接将被更新到插件数据中。</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Settings is missing to use to move the screenshoots</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">缺失用于移动截图的设置</sys:String>
     
 </ResourceDictionary>
