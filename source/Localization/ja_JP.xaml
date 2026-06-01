@@ -3,8 +3,8 @@
 
     <sys:String x:Key="LOCSsvScreenshot">{0} スクリーンショット</sys:String>
     <sys:String x:Key="LOCSsvScreenshots">{0} スクリーンショット</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} 個の動画</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} 個の動画</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} 動画</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} 動画</sys:String>
 
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg の実行ファイルが見つかりません</sys:String>
@@ -19,12 +19,12 @@
     <sys:String x:Key="LOCSsvLatest">最新</sys:String>
     
     <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットディレクトリを開く</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">スクリーンショットを保存ディレクトリに移動</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">画像を JPG に変換</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPGForAll">すべてのゲームのスクリーンショット画像を JPG に変換</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中…</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">すべてのスクリーンショットを移動してもよろしいですか？</sys:String>
 
@@ -43,13 +43,13 @@
 
     <sys:String x:Key="LOCSsvCarousel">カルーセル</sys:String>
     <sys:String x:Key="LOCSsvCarouselAddGameName">ゲーム名を表示</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">すべてのスクリーンショット一覧をランダム化</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">すべてのスクリーンショットリストをランダム化</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">サムネイルを使用</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">各ゲームの最新スクリーンショットのみ表示</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">ゲームごとのスクリーンショット数</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">ゲーム数</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">自動切り替えを有効にする</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">時間（秒）</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">自動変更を有効にする</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">時間 (秒)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">お気に入りのゲームのみ表示</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">特定のソースのみ</sys:String>
     <sys:String x:Key="LOCSsvCarouselWithVideo">動画を含める</sys:String>
@@ -63,13 +63,13 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe パス：</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">ffmpeg パッケージをダウンロード</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">読み込みパフォーマンスを向上させるためにサムネイルを生成</sys:String>
+    <sys:String x:Key="LOCSsvUsedThumbnails">サムネイルを生成して読み込みパフォーマンスを向上させる</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">グローバルスクリーンショットパス</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">グローバルスクリーンショットのパス</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">サブフォルダーをスキャン</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">サブフォルダをスキャン</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">スクリーンショットがあるゲームにタグを追加</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">ゲームにスクリーンショットがある場合はタグを追加</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam ゲームを追加</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">数値を {digit} 桁に変換</sys:String>
@@ -78,7 +78,7 @@
     <sys:String x:Key="LOCSsvShowPictures">スクリーンショット一覧のコントロールを表示</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">縦向きスクリーンショット一覧のコントロールを表示</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesList">大量のスクリーンショット一覧のコントロールを表示</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">枠線を追加</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">外枠を追加</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">角丸を追加</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">単一スクリーンショットのオプション</sys:String>
@@ -99,12 +99,12 @@
     
     <sys:String x:Key="LOCSsJpgQuality">JPG 品質</sys:String>
 
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">さらに、以下も使用できます：
-- {DateModified}		yyyy[-_]MM[-_]dd
-- {DateTimeModified}		yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss
-- {digit}			数字
-
-例：
+    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
+- {DateModified}		yyyy-MM-dd
+- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
+- {digit}			number(s)
+    
+Example:
 GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
 GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
