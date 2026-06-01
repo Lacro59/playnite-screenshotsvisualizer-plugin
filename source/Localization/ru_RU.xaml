@@ -2,7 +2,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="LOCSsvScreenshot">{0} скриншот</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} скриншоты</sys:String>
     <sys:String x:Key="LOCSsvVideo">{0} видео</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} видео</sys:String>
 
@@ -13,25 +13,25 @@
 
     <!-- MainView -->
 
-    <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
+    <sys:String x:Key="LOCSsv">Визуализация скриншотов</sys:String>
     <sys:String x:Key="LOCSsvTitle">Скриншоты</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Последние</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">Посмотреть скриншоты</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Открыть папку скриншотов</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">Переместить скриншоты в сохраненную директорию</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">Скриншоты игры</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Открыть каталог скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">Переместить скриншоты в каталог</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPG">Конвертировать изображения в JPG</sys:String>
     <sys:String x:Key="LOCSsvConvertToJPGForAll">Конвертировать изображения в JPG для всех скриншотов игр</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Перемещение скриншотов...</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Вы уверены, что хотите переместить все скриншоты?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">Вы уверены, что хотите удалить этот скриншот?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Вы уверены, что хотите удалить {0}?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">Действительно хотите удалить {0}?</sys:String>
 
     
     <!-- SsvManager -->
@@ -42,9 +42,9 @@
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Карусель</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">Показать название игры</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Случайный порядок списка скриншотов</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Используемые миниатюры</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">Показывать название игры</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Случайный порядок всех скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Используемые эскизы</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Показывать только самые последние скриншоты для каждой игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitPerGame">Количество скриншотов на игру</sys:String>
     <sys:String x:Key="LOCSsvCarouselLimitGame">Кол-во игр</sys:String>
@@ -52,7 +52,7 @@
     <sys:String x:Key="LOCSsvCarouselTime">Время (секунды)</sys:String>
     <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Показывать только избранные игры</sys:String>
     <sys:String x:Key="LOCSsvCarouselSourcesList">Только определённые источники</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">Включать видео</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">Использовать видео</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
@@ -70,7 +70,7 @@
     <sys:String x:Key="LOCSsvScanSubFolders">Сканировать подпапки</sys:String>
     
     <sys:String x:Key="LOCSsvAddTag">Добавить тег, если в игре есть скриншоты</sys:String>
-    <sys:String x:Key="LOCSsvAddSteamGame">Добавить Steam игру</sys:String>
+    <sys:String x:Key="LOCSsvAddSteamGame">Добавить игру Steam</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Преобразовать номер в {digit}</sys:String>
 
@@ -78,20 +78,20 @@
     <sys:String x:Key="LOCSsvShowPictures">Показать управление со списком скриншотов</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesVertical">Показать управление со списком вертикальных скриншотов</sys:String>
     <sys:String x:Key="LOCSsvShowPicturesList">Показать управление с большим списком скриншотов</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">Добавить рамку</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">Добавить грани</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">Добавить закругленный угол</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Настройки одного скриншота</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">Настройка скриншота</sys:String>
     
     <sys:String x:Key="LOCSsvShowPicturesOptions">Список настроек скриншотов</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Скрыть информацию о скриншотах</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">Скрыть скриншоты</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Открыть при выборе изображения</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Выбор ссылки с одиночным просмотром скриншота</sys:String>
     
     <sys:String x:Key="LOCSsvUsedFilePattern">Используется шаблон файла</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">Включить перемещение скриншотов в уникальную папку</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">Включить перемещение скриншотов в уникальной папке</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Шаблон файла</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">Преобразовать в абсолютный путь</sys:String>
@@ -100,20 +100,20 @@
     <sys:String x:Key="LOCSsJpgQuality">Качество JPG</sys:String>
 
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Кроме того, вы можете использовать:
-- {DateModified}		yyyy[-_]MM[-_]dd
-- {DateTimeModified}		yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss
+- {DateModified}		yyyy-MM-dd
+- {DateTimeModified}		yyy-MM-dd HH_mm_ss
 - {digit}			number(s)
     
 Пример:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+GameName_20200107-1=&gt;	{Name}_{digit}-{digit}
+GameName_2020-01-07=&gt;	{Name}_{DateModified}</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Добавьте эту папку для всех игр.
     
 Пример:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Эта опция добавляет меню игры для перемещения всех файлов скриншотов в одну папку.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Эта опция добавляет меню для перемещения всех файлов скриншотов в одну папку.
 Если {Name} не входит в &quot;Папку&quot;, он будет автоматически добавлен.
     
 Пример:
