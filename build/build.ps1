@@ -1,8 +1,35 @@
-param(
+ï»¿param(
     [string]$ConfigurationName, 
     [string]$OutDir,
     [string]$SolutionDir 
 )
+
+function Get-RepoRelativePath {
+    param(
+        [string]$Path,
+        [string]$SolutionDir
+    )
+
+    $repoRoot = (Resolve-Path (Join-Path $SolutionDir "..")).Path
+    $resolved = (Resolve-Path $Path).Path
+
+    if ($resolved.StartsWith($repoRoot, [StringComparison]::OrdinalIgnoreCase)) {
+        return $resolved.Substring($repoRoot.Length).TrimStart('\')
+    }
+
+    return $resolved
+}
+
+function Write-PackagedArtifact {
+    param(
+        [string]$Label,
+        [string]$Path,
+        [string]$SolutionDir
+    )
+
+    $displayPath = Get-RepoRelativePath -Path $Path -SolutionDir $SolutionDir
+    Write-Host ("  {0,-5} {1}" -f $Label, $displayPath)
+}
 
 $PlaynitePaths = @(
     "C:\Playnite_dev", "C:\Projects\Playnite_dev",
@@ -30,10 +57,9 @@ else {
     if ($ConfigurationName -eq "debug-release") {
 		if (Test-Path $ToolboxPath) {
 			$string = & $ToolboxPath "pack" $OutDir $OutDirPath
-            Write-Host $string
 
-            if ($string -match '"([^"]+)"') {
-                $fullPath = $matches[1]
+            if ($string -match '"([^"]+\.pext)"') {
+                $fullPath = (Resolve-Path $Matches[1]).Path
                 $fileName = Split-Path -Path $fullPath -Leaf
                 $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
                 
@@ -42,7 +68,13 @@ else {
                     Remove-Item $zipPath -Force
                 }
                 Compress-Archive -Path $fullPath -DestinationPath $zipPath
-                Write-Host "Compressed as ""$zipPath"""
+
+                Write-Host "  Packaging"
+                Write-PackagedArtifact -Label "PEXT" -Path $fullPath -SolutionDir $SolutionDir
+                Write-PackagedArtifact -Label "ZIP" -Path $zipPath -SolutionDir $SolutionDir
+            }
+            else {
+                Write-Host "Packaging failed: $string"
             }
 		} 
 		else {
@@ -67,13 +99,21 @@ else {
 
         if ($Result -imatch $Version) {
             if (Test-Path $ToolboxPath) {
-                & $ToolboxPath "pack" $OutDir $OutDirPath
+                $packResult = & $ToolboxPath "pack" $OutDir $OutDirPath
 
-                $Result = & $ToolboxPath "verify" "installer" $Manifest
-                if ($Result -imatch "Installer manifest passed verification") {
-                    # Si nécessaire, ajouter des actions ici en cas de réussite
+                if ($packResult -match '"([^"]+\.pext)"') {
+                    Write-Host "  Packaging"
+                    Write-PackagedArtifact -Label "PEXT" -Path $Matches[1] -SolutionDir $SolutionDir
+                }
+                else {
+                    Write-Host "Packaging failed: $packResult"
+                }
+
+                $verifyResult = & $ToolboxPath "verify" "installer" $Manifest
+                if ($verifyResult -imatch "Installer manifest passed verification") {
+                    Write-Host "  Manifest OK"
                 } else {
-                    Write-Host $Result
+                    Write-Host $verifyResult
                 }
             } 
 			else {
