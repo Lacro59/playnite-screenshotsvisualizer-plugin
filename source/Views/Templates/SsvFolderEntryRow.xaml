@@ -1,0 +1,92 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
+                    xmlns:controls="clr-namespace:CommonPluginsControls.Controls">
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <DataTemplate x:Key="SsvFolderEntryRowTemplate">
+        <Grid Margin="0,0,0,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" Grid.Column="0" />
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
+                            ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"
+                            Command="{Binding DataContext.GamesConfiguration.BrowseFolderEntryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}" />
+                    <ToggleButton Margin="8,0,0,0" ToolTip="{DynamicResource LOCCommonAddFilePattern}"
+                                  FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;"
+                                  IsChecked="{Binding UsedFilePattern, FallbackValue=True}" />
+                    <ToggleButton Margin="8,0,0,0" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
+                                  FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;"
+                                  IsChecked="{Binding ScanSubFolders, FallbackValue=True}" />
+                    <Button Margin="8,0,0,0" Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}"
+                            ToolTip="{DynamicResource LOCCommonRemoveFolder}"
+                            IsEnabled="{Binding CanRemoveFolder}"
+                            Command="{Binding DataContext.GamesConfiguration.RemoveFolderEntryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0,8,0,0"
+                  Visibility="{Binding UsedFilePattern, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Content="&#xe98d;" FontFamily="{DynamicResource CommonFont}"
+                        ToolTip="{DynamicResource LOCSsvNumberToDigit}"
+                        Command="{Binding DataContext.GamesConfiguration.ReplaceDigitEntryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0" />
+
+                <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
+                    <TextBox.ToolTip>
+                        <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
+                    </TextBox.ToolTip>
+                </TextBox>
+            </Grid>
+
+            <Expander Grid.Row="2" Margin="0,8,0,0" IsEnabled="False"
+                      AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="False">
+                <Expander.Header>
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvConfigPreview}" />
+                </Expander.Header>
+                <Expander.Content>
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Foreground="{DynamicResource GlyphBrush}"
+                               Text="{DynamicResource LOCSsvConfigPreviewComingSoon}" />
+                </Expander.Content>
+            </Expander>
+
+            <Expander Grid.Row="3" Margin="0,4,0,0" IsEnabled="False"
+                      AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="False">
+                <Expander.Header>
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvConfigNameFormat}" />
+                </Expander.Header>
+                <Expander.Content>
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Foreground="{DynamicResource GlyphBrush}"
+                               Text="{DynamicResource LOCSsvConfigNameFormatComingSoon}" />
+                </Expander.Content>
+            </Expander>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

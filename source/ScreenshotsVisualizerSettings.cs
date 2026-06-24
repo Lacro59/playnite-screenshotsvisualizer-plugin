@@ -1,6 +1,6 @@
 ﻿using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
-using ScreenshotsVisualizer.Views;
+using ScreenshotsVisualizer.ViewModels.Settings;
 using Playnite.SDK.Data;
 using System.Collections.Generic;
 using ScreenshotsVisualizer.Models.StartPage;
@@ -18,6 +18,7 @@ namespace ScreenshotsVisualizer
         public ScreenshotsVisualizerSettings()
         {
             ApplyFixedLibraryFilterPolicy();
+            EnsureGlobalScreenshotSourcesMigrated();
         }
 
         /// <summary>
@@ -75,7 +76,16 @@ namespace ScreenshotsVisualizer
         public string FolderToSave { get; set; } = string.Empty;
         public string FileSavePattern { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Legacy single global screenshot folder path. Migrated into <see cref="GlobalScreenshotSources"/> on load.
+        /// Kept for JSON backward compatibility until all consumers use the list.
+        /// </summary>
         public string GlobalScreenshootsPath { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Global screenshot folder sources merged into every game's scan configuration.
+        /// </summary>
+        public List<FolderSettings> GlobalScreenshotSources { get; set; } = new List<FolderSettings>();
 
         public bool UsedThumbnails { get; set; } = true;
 
@@ -114,7 +124,86 @@ namespace ScreenshotsVisualizer
         [DontSerialize]
         public List<Screenshot> ListScreenshots { get => _listScreenshots; set => SetValue(ref _listScreenshots, value); }
         
-        #endregion  
+        #endregion
+
+        #region Global screenshot sources
+
+        /// <summary>
+        /// Returns global screenshot sources after applying any pending legacy migration.
+        /// </summary>
+        /// <returns>Migrated global folder settings.</returns>
+        public IList<FolderSettings> GetEffectiveGlobalScreenshotSources()
+        {
+            EnsureGlobalScreenshotSourcesMigrated();
+            return GlobalScreenshotSources ?? new List<FolderSettings>();
+        }
+
+        /// <summary>
+        /// Ensures <see cref="GlobalScreenshotSources"/> is initialized and migrates
+        /// <see cref="GlobalScreenshootsPath"/> when present. Safe to call repeatedly.
+        /// </summary>
+        public void EnsureGlobalScreenshotSourcesMigrated()
+        {
+            if (GlobalScreenshotSources == null)
+            {
+                GlobalScreenshotSources = new List<FolderSettings>();
+            }
+
+            if (string.IsNullOrEmpty(GlobalScreenshootsPath))
+            {
+                return;
+            }
+
+            bool alreadyMigrated = GlobalScreenshotSources.Exists(x =>
+                x != null
+                && string.Equals(x.ScreenshotsFolder, GlobalScreenshootsPath, StringComparison.OrdinalIgnoreCase));
+
+            if (!alreadyMigrated)
+            {
+                GlobalScreenshotSources.Add(new FolderSettings
+                {
+                    ScreenshotsFolder = GlobalScreenshootsPath
+                });
+            }
+        }
+
+        /// <summary>
+        /// Normalizes global screenshot sources before JSON persistence: runs migration,
+        /// removes empty entries, and syncs the legacy path field for transitional consumers.
+        /// </summary>
+        public void NormalizeGlobalScreenshotSourcesForPersistence()
+        {
+            EnsureGlobalScreenshotSourcesMigrated();
+
+            GlobalScreenshotSources = GlobalScreenshotSources
+                .Where(x => x != null && !string.IsNullOrWhiteSpace(x.ScreenshotsFolder))
+                .ToList();
+
+            SyncLegacyGlobalScreenshootsPath();
+        }
+
+        /// <summary>
+        /// Keeps <see cref="GlobalScreenshootsPath"/> aligned with a single global source for legacy scan code.
+        /// Clears the legacy field when multiple global sources are configured.
+        /// </summary>
+        private void SyncLegacyGlobalScreenshootsPath()
+        {
+            if (GlobalScreenshotSources == null || GlobalScreenshotSources.Count == 0)
+            {
+                GlobalScreenshootsPath = string.Empty;
+                return;
+            }
+
+            if (GlobalScreenshotSources.Count == 1)
+            {
+                GlobalScreenshootsPath = GlobalScreenshotSources[0].ScreenshotsFolder ?? string.Empty;
+                return;
+            }
+
+            GlobalScreenshootsPath = string.Empty;
+        }
+
+        #endregion
     }
 
 
@@ -128,6 +217,26 @@ namespace ScreenshotsVisualizer
         private ScreenshotsVisualizerSettings settings;
         public ScreenshotsVisualizerSettings Settings { get => settings; set => SetValue(ref settings, value); }
 
+        private SsvGamesConfigurationViewModel _gamesConfiguration;
+        /// <summary>
+        /// Gets the view model for per-game screenshot folder configuration.
+        /// </summary>
+        public SsvGamesConfigurationViewModel GamesConfiguration
+        {
+            get => _gamesConfiguration;
+            private set => SetValue(ref _gamesConfiguration, value);
+        }
+
+        private SsvConfigurationContextViewModel _configurationContext;
+        /// <summary>
+        /// Gets the view model for master-detail configuration context and active sources.
+        /// </summary>
+        public SsvConfigurationContextViewModel ConfigurationContext
+        {
+            get => _configurationContext;
+            private set => SetValue(ref _configurationContext, value);
+        }
+
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
         {
@@ -140,6 +249,12 @@ namespace ScreenshotsVisualizer
             // LoadPluginSettings returns null if not saved data is available.
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
             Settings.ApplyFixedLibraryFilterPolicy();
+            Settings.EnsureGlobalScreenshotSourcesMigrated();
+
+            GamesConfiguration = new SsvGamesConfigurationViewModel(ScreenshotsVisualizer.PluginName);
+            ConfigurationContext = new SsvConfigurationContextViewModel(GamesConfiguration);
+            ConfigurationContext.LoadFrom(Settings);
+            _ = GamesConfiguration.LoadFromAsync(Settings.gameSettings);
 
             // Manage source
             _ = Task.Run(() =>
@@ -160,7 +275,11 @@ namespace ScreenshotsVisualizer
         public void BeginEdit()
         {
             EditingClone = Serialization.GetClone(Settings);
+            GamesConfiguration.ReloadFrom(Settings.gameSettings);
+            ConfigurationContext.ReloadFrom(Settings);
             InitializeCommands(ScreenshotsVisualizer.PluginName, ScreenshotsVisualizer.PluginDatabase);
+            GamesConfiguration.CaptureCancelSnapshot();
+            ConfigurationContext.CaptureCancelSnapshot();
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.
@@ -168,6 +287,8 @@ namespace ScreenshotsVisualizer
         public void CancelEdit()
         {
             Settings = EditingClone;
+            GamesConfiguration.RestoreCancelSnapshot();
+            ConfigurationContext.RestoreCancelSnapshot();
         }
 
         // Code executed when user decides to confirm changes made since BeginEdit was called.
@@ -175,19 +296,9 @@ namespace ScreenshotsVisualizer
         public void EndEdit()
         {
             Settings.ApplyFixedLibraryFilterPolicy();
-
-            Settings.gameSettings = new List<GameSettings>();
-            foreach (ListGameScreenshot item in ScreenshotsVisualizerSettingsView.ListGameScreenshots)
-            {
-                Settings.gameSettings.Add(new GameSettings
-                {
-                    Id = item.Id,
-                    ScreenshotsFolders = item.ScreenshotsFolders,
-                    UsedFilePattern = item.UsedFilePattern,
-                    FilePattern = item.FilePattern,
-                    ScanSubFolders = item.ScanSubFolders
-                });
-            }
+            ConfigurationContext.ApplyToSettings(Settings);
+            Settings.NormalizeGlobalScreenshotSourcesForPersistence();
+            Settings.gameSettings = GamesConfiguration.ToGameSettingsList();
 
             Plugin.SavePluginSettings(Settings);
             ScreenshotsVisualizer.PluginDatabase.PluginSettings = Settings;
@@ -230,6 +341,21 @@ namespace ScreenshotsVisualizer
                 if (!filePath.IsNullOrEmpty())
                 {
                     Settings.FfprobePath = filePath;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Gets the command that opens a folder picker for the unique save folder path.
+        /// </summary>
+        public RelayCommand<object> BrowseFolderToSaveCommand
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                string selectedFolder = API.Instance.Dialogs.SelectFolder();
+                if (!selectedFolder.IsNullOrEmpty())
+                {
+                    Settings.FolderToSave = selectedFolder;
                 }
             });
         }

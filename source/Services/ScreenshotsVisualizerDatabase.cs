@@ -477,7 +477,7 @@ namespace ScreenshotsVisualizer.Services
         /// <summary>
         /// Retrieves the <see cref="GameSettings"/> object for the specified game ID.
         /// If no specific settings exist for the game, a new <see cref="GameSettings"/> instance is created using global folder settings.
-        /// Ensures that all relevant global folder settings are present in the returned object.
+        /// Ensures that all global screenshot sources and archive folder settings are present in the returned object.
         /// </summary>
         /// <param name="id">The unique identifier of the game.</param>
         /// <returns>The <see cref="GameSettings"/> for the specified game.</returns>
@@ -495,11 +495,19 @@ namespace ScreenshotsVisualizer.Services
                 });
             }
 
-            if (!PluginSettings.GlobalScreenshootsPath.IsNullOrEmpty())
+            foreach (FolderSettings globalSource in PluginSettings.GetEffectiveGlobalScreenshotSources())
             {
+                if (globalSource == null || globalSource.ScreenshotsFolder.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
                 folderSettingsGlobal.Add(new FolderSettings
                 {
-                    ScreenshotsFolder = PluginSettings.GlobalScreenshootsPath
+                    ScreenshotsFolder = globalSource.ScreenshotsFolder,
+                    UsedFilePattern = globalSource.UsedFilePattern,
+                    FilePattern = globalSource.FilePattern,
+                    ScanSubFolders = globalSource.ScanSubFolders
                 });
             }
 

@@ -14,297 +14,188 @@
              d:DataContext="{d:DesignInstance ScreenshotsVisualizer:ScreenshotsVisualizerSettingsViewModel, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter"/>
-        <converters:NegateConverter x:Key="NegateConverter" />
-        <convertersshared:ListMoreOneBoolConverter x:Key="ListMoreOneBoolConverter" />
-        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Templates/SsvConfigurationContextRow.xaml" />
+                <ResourceDictionary Source="Templates/SsvActiveSourceRow.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+            <converters:NegateConverter x:Key="NegateConverter" />
+            <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Margin="20">
         <TabControl Name="PART_TabControl">
             <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
-                <Grid Name="PART_Settings" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <ScrollViewer Name="PART_Settings" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,10,0,0">
+                        <CheckBox Name="cbEnableTag" IsChecked="{Binding Settings.EnableTag}" VerticalAlignment="Center">
+                            <Label Content="{DynamicResource LOCSsvAddTag}" />
+                        </CheckBox>
 
-                    <CheckBox Name="cbEnableTag" Grid.Row="0" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
-                        <Label Content="{DynamicResource LOCSsvAddTag}" />
-                    </CheckBox>
+                        <Separator Margin="0,15,0,15" />
 
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <ToggleButton Grid.Column="0" Name="PART_BtAddGame" Content="{DynamicResource LOCMenuAddGame}"
-                                      HorizontalAlignment="left" Click="PART_BtAddGame_Click" IsChecked="False" />
-
-                        <Grid Margin="10,0,0,0" Grid.Column="1">
+                        <Grid MinHeight="280" MaxHeight="420">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <playnitecontrols:SearchBox x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" />
-
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Name="PART_BtAddSteamGame" HorizontalAlignment="Left" 
-                                    Click="PART_BtAddSteamGame_Click"
-                                    ToolTip="Steam"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{DynamicResource LOCAddTitle}" 
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                        <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                    </StackPanel>
-                                </Button>
-                                <Button Name="PART_BtAddUplay" HorizontalAlignment="Left" 
-                                    Click="PART_BtAddUplay_Click" Margin="5,0,0,0"
-                                    ToolTip="Uplay"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{DynamicResource LOCAddTitle}" 
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                        <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                    </StackPanel>
-                                </Button>
-                                <Button Name="PART_BtAddURetroScummVM" HorizontalAlignment="Left" 
-                                    Click="PART_BtAddURetroScummVM_Click" Margin="5,0,0,0"
-                                    ToolTip="ScummVM"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{DynamicResource LOCAddTitle}" 
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                        <Label Content="&#xea71;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                    </StackPanel>
-                                </Button>
-                                <Button Name="PART_BtAddURetroArch" HorizontalAlignment="Left" 
-                                    Click="PART_BtAddURetroArch_Click" Margin="5,0,0,0"
-                                    ToolTip="RetroArch"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{DynamicResource LOCAddTitle}" 
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                        <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                        
-                        <Button Grid.Column="2" Name="PART_BtSelectGame" Content="{DynamicResource LOCSelect}" HorizontalAlignment="Right" 
-                                Click="PART_BtSelectGame_Click" IsEnabled="False" Margin="10,0,0,0"
-                                Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-
-                        <Grid Grid.Row="2" Grid.ColumnSpan="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="0.35*" MinWidth="200" />
                                 <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="0.65*" MinWidth="280" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Name="PART_BtRelative" Click="PART_BtRelative_Click"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                    Content="{DynamicResource LOCSsvSetRelative}" Grid.Column="1"  />
-                            <Button Name="PART_BtAbsolute" Click="PART_BtAbsolute_Click"
-                                    Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                    Content="{DynamicResource LOCSsvSetAbsolute}" Grid.Column="3"  />
+                            <DockPanel Grid.Column="0">
+                                <TextBlock DockPanel.Dock="Top" Style="{DynamicResource SectionHeaderText}"
+                                           Text="{DynamicResource LOCSsvConfigSectionContexts}" Margin="0,0,0,8" />
+
+                                <Button DockPanel.Dock="Bottom" Margin="0,10,0,0"
+                                        Content="{DynamicResource LOCSsvConfigAddGameTitle}"
+                                        Command="{Binding ConfigurationContext.AddConfiguredGameCommand}" />
+
+                                <ListBox ItemsSource="{Binding ConfigurationContext.ContextItems}"
+                                         SelectedItem="{Binding ConfigurationContext.SelectedContext}"
+                                         ItemTemplate="{StaticResource SsvConfigurationContextRowTemplate}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         VirtualizingPanel.VirtualizationMode="Recycling"
+                                         VirtualizingPanel.CacheLengthUnit="Item"
+                                         VirtualizingPanel.CacheLength="5" />
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="2">
+                                <TextBlock DockPanel.Dock="Top" Style="{DynamicResource SectionHeaderText}"
+                                           Text="{Binding ConfigurationContext.ActiveSourcesSectionHeader}" Margin="0,0,0,8" />
+
+                                <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                                    <TextBlock Style="{DynamicResource SectionHeaderText}"
+                                               Text="{DynamicResource LOCSsvConfigSectionQuickAdd}" Margin="0,0,0,8" />
+
+                                    <WrapPanel Margin="0,0,0,8">
+                                        <Button Command="{Binding ConfigurationContext.ApplySteamPresetToActiveContextCommand}"
+                                                ToolTip="{DynamicResource LOCSsvAddSteamGame}" Margin="0,0,5,5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{DynamicResource LOCAddTitle}"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding ConfigurationContext.ApplyUbisoftPresetToActiveContextCommand}" Margin="0,0,5,5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{DynamicResource LOCAddTitle}"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding ConfigurationContext.ApplyScummvmPresetToActiveContextCommand}" Margin="0,0,5,5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{DynamicResource LOCAddTitle}"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                <Label Content="&#xea71;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding ConfigurationContext.ApplyRetroArchPresetToActiveContextCommand}" Margin="0,0,5,5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{DynamicResource LOCAddTitle}"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </WrapPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding ConfigurationContext.GamesConfiguration.ConvertPathsRelativeCommand}"
+                                                Content="{DynamicResource LOCSsvSetRelative}" Margin="0,0,10,0" />
+                                        <Button Command="{Binding ConfigurationContext.GamesConfiguration.ConvertPathsAbsoluteCommand}"
+                                                Content="{DynamicResource LOCSsvSetAbsolute}" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{DynamicResource LOCSsvConfigAddSource}"
+                                            Command="{Binding ConfigurationContext.AddActiveSourceCommand}" Margin="0,0,8,0" />
+                                    <Button Content="{DynamicResource LOCSsvConfigEditSource}"
+                                            Click="EditSelectedActiveSource_Click"
+                                            IsEnabled="{Binding ConfigurationContext.HasSelectedActiveSource}" Margin="0,0,8,0" />
+                                    <Button Content="{DynamicResource LOCRemoveTitle}"
+                                            Command="{Binding ConfigurationContext.GamesConfiguration.RemoveConfiguredGameCommand}"
+                                            CommandParameter="{Binding ConfigurationContext.SelectedConfiguredGame}"
+                                            Visibility="{Binding ConfigurationContext.IsGameContextSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </StackPanel>
+
+                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                           Text="{DynamicResource LOCSsvConfigNoActiveSources}"
+                                           TextAlignment="Center"
+                                           Foreground="{DynamicResource GlyphBrush}"
+                                           Visibility="{Binding ConfigurationContext.HasNoActiveSources, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                <ListBox ItemsSource="{Binding ConfigurationContext.ActiveSources}"
+                                         SelectedItem="{Binding ConfigurationContext.SelectedActiveSource}"
+                                         ItemTemplate="{StaticResource SsvActiveSourceRowTemplate}"
+                                         MouseDoubleClick="ActiveSourcesList_MouseDoubleClick"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                         VirtualizingPanel.VirtualizationMode="Recycling"
+                                         VirtualizingPanel.CacheLengthUnit="Item"
+                                         VirtualizingPanel.CacheLength="5" />
+                            </DockPanel>
                         </Grid>
-                    </Grid>
 
-                    <Grid Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,10"
-                          Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
+                        <Separator Margin="0,15,0,15" />
 
-                        <Label Content="{DynamicResource LOCSsvGlobalPath}" Grid.Column="0" />
-                        <TextBox Text="{Binding Settings.GlobalScreenshootsPath}" Grid.Column="2" />
-                        <Button Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" Grid.Column="4"
-                                Command="{x:Static pcmd:GlobalCommands.NavigateUrlCommand}" 
-                                CommandParameter="https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/wiki/Global-screenshots-path" />
-                    </Grid>
+                        <TextBlock Style="{DynamicResource SectionHeaderText}"
+                                   Text="{DynamicResource LOCSsvConfigSectionArchiving}" Margin="0,0,0,10" />
 
-                    <Grid Grid.Row="3" Name="PART_GridContenerListGame" 
-                          Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ListBox Name="PART_ListGame" SelectionChanged="PART_ListGame_SelectionChanged"
-                                 Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
-                                 Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}"              
-                                 VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.CacheLength="5">
+                        <Border Padding="10"
+                                BorderBrush="{DynamicResource PopupBorderBrush}"
+                                BorderThickness="{DynamicResource ControlBorderThickness}"
+                                CornerRadius="{DynamicResource ControlCornerRadius}">
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
+                                    <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />
+                                </CheckBox>
 
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="400" />
-                                            <ColumnDefinition Width="8" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                <Grid Margin="0,10,0,0" IsEnabled="{Binding ElementName=PART_EnableFolderToSave, Path=IsChecked}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="10" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="10" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
 
-                                        <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                               Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}"/>
-                                        <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
-                                        <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
+                                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
+                                    <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
+                                            Command="{Binding BrowseFolderToSaveCommand}" Grid.Column="4" />
+                                    <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center"
+                                             MinWidth="100" Grid.Column="2" Grid.Row="0" />
 
-                    <Grid Grid.Row="3" Name="PART_GridContener"
-                          Visibility="{Binding ElementName=PART_BtAddGame, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                        <ListBox Name="PART_ListGameScreenshot" Grid.IsSharedSizeScope="True" MinHeight="100"
-                                 Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" 
-                                 Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"              
-                                 VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.CacheLength="5">
-                            
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="5" />
-                                            <RowDefinition Height="auto" />
-                                        </Grid.RowDefinitions>
+                                    <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
+                                    <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center"
+                                             MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3">
+                                        <TextBox.ToolTip>
+                                            <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" FontFamily="Consolas" />
+                                        </TextBox.ToolTip>
+                                    </TextBox>
 
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="8" />
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="8" />
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="8"/>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="8"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" Width="32" 
-                                                   VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" Stretch="Uniform" />
-
-                                            <Label Content="{Binding SourceIcon, FallbackValue='X'}" FontFamily="{DynamicResource CommonFont}"
-                                                   Grid.Column="2" VerticalAlignment="Center" FontSize="22" Margin="0,-4,0,0" />
-
-                                            <controls:TextBlockTrimmed Style="{DynamicResource BaseTextBlockStyle}" 
-                                                                       Grid.Column="4" Text="{Binding Name, FallbackValue=Game_Name}" VerticalAlignment="Center" />
-                                            
-                                            <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddFolder_Click" 
-                                                    Name="ButtonAddFolder" ToolTip="{DynamicResource LOCCommonAddFolder}"
-                                                    Tag="{Binding Id}"
-                                                    VerticalAlignment="Center" Grid.Column="6" />
-
-                                            <Button Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemove_Click" 
-                                                    Name="ButtonRemove" ToolTip="{DynamicResource LOCRemoveTitle}"
-                                                    Tag="{Binding Id}"
-                                                    VerticalAlignment="Center" Grid.Column="8" />
-                                        </Grid>
-
-                                        <ItemsControl Grid.Row="2" MinHeight="10" ItemsSource="{Binding ScreenshotsFolders}" Name="PART_ItemsControl" AlternationCount="100" Tag="{Binding Id}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid Margin="40,0,0,5">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="8" />
-                                                            <ColumnDefinition Width="auto" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="auto" />
-                                                            <RowDefinition Height="auto" />
-                                                        </Grid.RowDefinitions>
-
-                                                        <TextBox Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" Grid.Column="0" />
-
-                                                        <Grid Grid.Column="2">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto" />
-                                                                <ColumnDefinition Width="8" />
-                                                                <ColumnDefinition Width="auto" />
-                                                                <ColumnDefinition Width="8" />
-                                                                <ColumnDefinition Width="auto" />
-                                                                <ColumnDefinition Width="8" />
-                                                                <ColumnDefinition Width="auto" />
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
-                                                                    Name="ButtonSelectFolder" ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"                                                               
-                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    VerticalAlignment="Center" Grid.Column="0" />
-
-                                                            <ToggleButton Name="PART_UsedPattern" Grid.Column="2" ToolTip="{DynamicResource LOCCommonAddFilePattern}"
-                                                                          FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;" 
-                                                                          IsChecked="{Binding UsedFilePattern, FallbackValue=True}" />
-
-                                                            <ToggleButton Name="PART_ScanSubFolders" Grid.Column="4" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
-                                                                          FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;" 
-                                                                          IsChecked="{Binding ScanSubFolders, FallbackValue=True}" />
-
-                                                            <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveFolder_Click" 
-                                                                    Name="ButtonRemoveFolder" ToolTip="{DynamicResource LOCCommonRemoveFolder}"
-                                                                    IsEnabled="{Binding ElementName=PART_ItemsControl, Path=ItemsSource, Converter={StaticResource ListMoreOneBoolConverter} }"
-                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    VerticalAlignment="Center" Grid.Column="6" />
-                                                        </Grid>
-
-                                                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,8,0,0"
-                                                              Visibility="{Binding ElementName=PART_UsedPattern, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="100" />
-                                                                <ColumnDefinition Width="*" />
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <Button Content="&#xe98d;" FontFamily="{DynamicResource CommonFont}" Click="PART_BtToDigit_Click" 
-                                                                    Name="PART_BtToDigit" ToolTip="{DynamicResource LOCSsvNumberToDigit}"
-                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    HorizontalAlignment="Right"
-                                                                    VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0" />
-
-                                                            <TextBox Text="{Binding FilePattern}" VerticalAlignment="Center" Grid.Column="1" MinWidth="50">
-                                                                <TextBox.ToolTip>
-                                                                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
-                                                                </TextBox.ToolTip>
-                                                            </TextBox>
-                                                        </Grid>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                </Grid>
+                                    <TextBlock Grid.Row="4" Grid.ColumnSpan="5" Text="{DynamicResource LOCSsvMoveFolderExplain}"
+                                               Style="{DynamicResource BaseTextBlockStyle}" TextWrapping="Wrap" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{DynamicResource LOCCommonIntegration}">
@@ -628,8 +519,6 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0">
@@ -663,55 +552,13 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Content="{DynamicResource LOCSsJpgQuality}" Grid.Column="0" />
-                            <Slider Name="PART_SliderQuality" Minimum="10" Maximum="100" Value="{Binding Settings.JpgQuality, FallbackValue=98}" 
+                            <Slider Name="PART_SliderQuality" Minimum="10" Maximum="100" Value="{Binding Settings.JpgQuality, FallbackValue=98}"
                                     IsSnapToTickEnabled="True" TickFrequency="1"
                                     AutoToolTipPlacement="TopLeft"
                                     Grid.Column="2" />
                             <Label Content="{Binding ElementName=PART_SliderQuality, Path=Value}" ContentStringFormat=" {0}%"
                                    Grid.Column="4"/>
                         </Grid>
-
-                        <GroupBox Grid.Row="4">
-                            <GroupBox.Header>
-                                <CheckBox IsChecked="{Binding Settings.EnableFolderToSave}" Name="PART_EnableFolderToSave">
-                                    <Label Content="{DynamicResource LOCSsvEnableFolderToSave}" />
-                                </CheckBox>
-                            </GroupBox.Header>
-
-                            <Grid IsEnabled="{Binding ElementName=PART_EnableFolderToSave, Path=IsChecked}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="10" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="10" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
-                                <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolderToSave_Click" 
-                                        Name="ButtonSelectFolderToSave" Grid.Column="4" />
-                                <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center" 
-                                         Name="PART_FolderToSave" MinWidth="100" Grid.Column="2" Grid.Row="0" />
-
-                                <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
-                                <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center" 
-                                         Name="PART_FileSavePattern" MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5">
-                                    <TextBox.ToolTip>
-                                        <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" FontFamily="Consolas" />
-                                    </TextBox.ToolTip>
-                                </TextBox>
-
-                                <TextBlock Grid.Row="4" Grid.ColumnSpan="7" Text="{DynamicResource LOCSsvMoveFolderExplain}"
-                                           TextWrapping="Wrap" />
-                            </Grid>
-                        </GroupBox>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -732,10 +579,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        
-        <Button Content="{DynamicResource LOCCommonSelectVariable}" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Visibility="{Binding ElementName=PART_Settings, Path=IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Name="PART_SelectVariables" Margin="0,5,0,0" Click="PART_SelectVariables_Click" />
     </Grid>
 </UserControl>
     

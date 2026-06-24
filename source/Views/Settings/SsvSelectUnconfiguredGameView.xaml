@@ -1,0 +1,83 @@
+<UserControl x:Class="ScreenshotsVisualizer.Views.Settings.SsvSelectUnconfiguredGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="420" d:DesignWidth="500"
+             MinWidth="400" MinHeight="320"
+             Background="{DynamicResource WindowBackgourndBrush}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <playnitecontrols:SearchBox Grid.Row="0"
+                                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="2">
+            <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                       Text="{DynamicResource LOCSsvConfigNoUnconfiguredGames}"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource GlyphBrush}"
+                       Visibility="{Binding HasNoAvailableGames, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <ListBox ItemsSource="{Binding FilteredGamesView}"
+                     SelectedItem="{Binding SelectedGame}"
+                     MouseDoubleClick="ListBox_MouseDoubleClick"
+                     VirtualizingPanel.VirtualizationMode="Recycling"
+                     VirtualizingPanel.CacheLengthUnit="Item"
+                     VirtualizingPanel.CacheLength="5"
+                     Visibility="{Binding HasAvailableGames, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32"
+                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                            <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
+                            <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource NormalBorderBrush}" Padding="0,10,0,0">
+            <DockPanel LastChildFill="False">
+                <Button Content="{DynamicResource LOCCloseLabel}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        Click="CloseButton_Click" />
+                <Button Content="{DynamicResource LOCSelect}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        IsEnabled="{Binding HasSelectedGame}"
+                        Click="SelectButton_Click" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

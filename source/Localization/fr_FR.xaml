@@ -124,5 +124,33 @@ Si vous avez le dossier unique {DropboxFolder}\Screenshots\{Name}, après avoir 
     <!-- Notifications -->
 
     <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Il manque des paramètres pour déplacer les captures d'écran</sys:String>
+
+    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Chemins globaux</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Ajout rapide</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionManualAdd">Ajouter un jeu manuellement</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Jeux configurés</sys:String>
+    <sys:String x:Key="LOCSsvConfigContextGlobals">Globaux</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionContexts">Contextes</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSources">Sources</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddGameTitle">Ajouter un jeu</sys:String>
+    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Sélectionner un jeu à configurer</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">Tous les jeux de la bibliothèque sont déjà configurés.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePath">Dossier de captures</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Ajouter une source</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Modifier une source</sys:String>
+    <sys:String x:Key="LOCSsvConfigSaveSource">Enregistrer</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSource">Ajouter une source</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSource">Modifier</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePathRequired">Le chemin du dossier de captures est obligatoire.</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Le test de configuration sera disponible dans une prochaine mise à jour.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionArchiving">Archivage</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoActiveSources">Aucune source de captures configurée pour ce contexte.</sys:String>
+    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} jeu(x)</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Aucun jeu configuré. Utilisez Ajouter un jeu ou un preset d'ajout rapide sur le contexte actif.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreview">Aperçu</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormat">Format du nom</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Disponible dans une prochaine mise à jour.</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Disponible dans une prochaine mise à jour.</sys:String>
     
 </ResourceDictionary>

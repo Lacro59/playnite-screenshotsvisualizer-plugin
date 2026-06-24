@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:CommonPluginsControls.Controls">
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <DataTemplate x:Key="SsvConfigurationContextRowTemplate">
+        <Grid Margin="0,4" ToolTip="{Binding DisplayName}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   ToolTip="{DynamicResource LOCSsvGlobalSearchTooltip}"
+                   Visibility="{Binding IsGlobal, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <Label Grid.Column="0" Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">
+                <Label.Style>
+                    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsGlobal}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding DisplayName}"
+                                       ToolTip="{Binding DisplayName}"
+                                       VerticalAlignment="Center" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

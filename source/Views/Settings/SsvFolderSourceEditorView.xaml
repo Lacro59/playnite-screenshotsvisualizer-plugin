@@ -1,0 +1,97 @@
+<UserControl x:Class="ScreenshotsVisualizer.Views.Settings.SsvFolderSourceEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="420" d:DesignWidth="560"
+             MinWidth="480" MinHeight="360"
+             Background="{DynamicResource WindowBackgourndBrush}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="{DynamicResource LOCSsvConfigSourcePath}" />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Text="{Binding ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="2" Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
+                    ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"
+                    Click="BrowseFolderButton_Click" />
+        </Grid>
+
+        <Button Grid.Row="4" HorizontalAlignment="Left"
+                Content="{DynamicResource LOCCommonSelectVariable}"
+                Click="SelectVariableButton_Click" />
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <ToggleButton ToolTip="{DynamicResource LOCCommonAddFilePattern}"
+                          FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;"
+                          IsChecked="{Binding UsedFilePattern, FallbackValue=False}" />
+            <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvFilePattern}" VerticalAlignment="Center" />
+            <ToggleButton Margin="24,0,0,0" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
+                          FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;"
+                          IsChecked="{Binding ScanSubFolders, FallbackValue=False}" />
+            <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvScanSubFolders}" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <Grid Grid.Row="8"
+              Visibility="{Binding UsedFilePattern, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="&#xe98d;" FontFamily="{DynamicResource CommonFont}"
+                    ToolTip="{DynamicResource LOCSsvNumberToDigit}"
+                    Click="ReplaceDigitButton_Click" />
+            <TextBox Grid.Column="2" Text="{Binding FilePattern, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.ToolTip>
+                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
+                </TextBox.ToolTip>
+            </TextBox>
+        </Grid>
+
+        <TextBlock Grid.Row="10" Style="{DynamicResource BaseTextBlockStyle}"
+                   Foreground="{DynamicResource GlyphBrush}"
+                   Text="{DynamicResource LOCSsvConfigTestConfigComingSoon}"
+                   VerticalAlignment="Bottom" TextWrapping="Wrap" />
+
+        <Border Grid.Row="12" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource NormalBorderBrush}" Padding="0,10,0,0">
+            <DockPanel LastChildFill="False">
+                <Button Content="{DynamicResource LOCCloseLabel}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        Click="CancelButton_Click" />
+                <Button Content="{DynamicResource LOCSsvConfigSaveSource}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        Click="SaveButton_Click" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
