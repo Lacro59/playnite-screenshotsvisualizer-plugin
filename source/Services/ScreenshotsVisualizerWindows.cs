@@ -7,6 +7,7 @@ using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Views;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
