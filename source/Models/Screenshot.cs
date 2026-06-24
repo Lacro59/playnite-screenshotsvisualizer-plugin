@@ -1,5 +1,7 @@
 ﻿using CommonPlayniteShared.Common;
 using CommonPluginsShared;
+using CommonPluginsShared.Images;
+using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
@@ -41,10 +43,10 @@ namespace ScreenshotsVisualizer.Models
                         {
                             try
                             {
-                                if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
+                                if (File.Exists(PluginDatabase.PluginSettings.FfprobePath))
                                 {
                                     string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
-                                    _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
+                                    _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
 
                                     _sizeString = stdOut.Trim();
                                     return _sizeString;
@@ -78,7 +80,7 @@ namespace ScreenshotsVisualizer.Models
         }
 
         [DontSerialize]
-        public string FileSizeString => File.Exists(FileName) ? Tools.SizeSuffix(new FileInfo(FileName).Length) : string.Empty;
+        public string FileSizeString => File.Exists(FileName) ? UtilityTools.SizeSuffix(new FileInfo(FileName).Length) : string.Empty;
 
         [DontSerialize]
         public long FileSize => File.Exists(FileName) ? new FileInfo(FileName).Length : 0;
@@ -94,7 +96,7 @@ namespace ScreenshotsVisualizer.Models
         {
             get
             {
-                if (PluginDatabase.PluginSettings.Settings.UsedThumbnails)
+                if (PluginDatabase.PluginSettings.UsedThumbnails)
                 {
                     string fileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
                     string pathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
@@ -149,10 +151,10 @@ namespace ScreenshotsVisualizer.Models
 
                         try
                         {
-                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfmpegPath))
+                            if (File.Exists(PluginDatabase.PluginSettings.FfmpegPath))
                             {
                                 string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfmpegPath, string.Format(thumbArgs, FileName, fileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfmpegPath), true, out string stdOut, out string stdErr);
+                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfmpegPath, string.Format(thumbArgs, FileName, fileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfmpegPath), true, out string stdOut, out string stdErr);
                             }
                             else
                             {
@@ -194,10 +196,10 @@ namespace ScreenshotsVisualizer.Models
                     {
                         try
                         {
-                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
+                            if (File.Exists(PluginDatabase.PluginSettings.FfprobePath))
                             {
                                 string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
+                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
                                 _ = TimeSpan.TryParse(stdOut, out _duration);
                             }
                             else

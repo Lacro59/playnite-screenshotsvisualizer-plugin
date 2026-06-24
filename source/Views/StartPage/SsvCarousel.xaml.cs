@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Commands;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -39,8 +40,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         public SsvCarousel()
         {
-            PluginDatabase.PluginSettings.Settings.PropertyChanged += Settings_PropertyChanged;
-            PluginDatabase.PluginSettings.PropertyChanged += SettingsViewModel_PropertyChanged;
+            PluginDatabase.PluginSettings.PropertyChanged += Settings_PropertyChanged;
 
             InitializeComponent();
 
@@ -68,12 +68,12 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 }
                 else
                 {
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableLowerResolution)
+                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.EnableLowerResolution)
                     {
-                        bool tmp = PluginDatabase.PluginSettings.Settings.UsedThumbnails;
-                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = true;
+                        bool tmp = PluginDatabase.PluginSettings.UsedThumbnails;
+                        PluginDatabase.PluginSettings.UsedThumbnails = true;
                         pictureSource = screenshot.ImageThumbnail;
-                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = tmp;
+                        PluginDatabase.PluginSettings.UsedThumbnails = tmp;
                     }
                     else
                     {
@@ -86,10 +86,10 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     PictureSource = pictureSource,
                     IsVideo = isVideo,
                     AddBorder = true,
-                    AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
+                    AddGameName = PluginDatabase.PluginSettings.ssvCarouselOptions.AddGameName,
                     GameName = API.Instance.Database.Games.Get(screenshot.GameId)?.Name,
                     GameId = API.Instance.Database.Games.Get(screenshot.GameId)?.Id,
-                    GoToGame = Commands.GoToGame
+                    GoToGame = CommandsNavigation.GoToGame
                 };
             }
             else
@@ -105,14 +105,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
             }
         }
 
-        private void SettingsViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-            {
-                Update();
-            }
-        }
-
         private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.IsVisible)
@@ -123,7 +115,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void Update()
         {
-            PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Margin);
+            PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.ssvCarouselOptions.Margin);
 
             _ = Task.Run(() =>
             {
@@ -142,29 +134,29 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                 Random r = new Random();
 
-                List<KeyValuePair<Guid, GameScreenshots>> pluginData = PluginDatabase.Database.Items.Where(x => x.Value.ScreenshotsCount > 0).ToList();
+                List<GameScreenshots> pluginData = PluginDatabase.GetAllCache().Where(x => x.ScreenshotsCount > 0).ToList();
                 pluginData.Sort((z, y) => r.Next(-1, 1));
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)
                 {
-                    pluginData = pluginData.Where(x => PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.Where(y => y.IsCheck).Any(y => y.Name.IsEqual(x.Value.Source?.Name))).ToList();
+                    pluginData = pluginData.Where(x => PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.Where(y => y.IsCheck).Any(y => y.Name.IsEqual(x.Source?.Name))).ToList();
                 }
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.OnlyFavorite)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyFavorite)
                 {
-                    pluginData = pluginData.Where(x => x.Value.Favorite).ToList();
+                    pluginData = pluginData.Where(x => x.Favorite).ToList();
                 }
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitGame != 0)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame != 0)
                 {
-                    pluginData = pluginData.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitGame).ToList();
+                    pluginData = pluginData.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame).ToList();
                 }
 
                 List<Screenshot> temp = Screenshots.ToList();
-                pluginData.Where(x => x.Value.Count > 0 && !x.Value.Hidden).ForEach(x =>
+                pluginData.Where(x => x.Count > 0 && !x.Hidden).ToList().ForEach(x =>
                 {
-                    List<Screenshot> data = Serialization.GetClone(x.Value.Items.Where(y => PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.OnlyMostRecent)
+                    List<Screenshot> data = Serialization.GetClone(x.Items.Where(y => PluginDatabase.PluginSettings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
+                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyMostRecent)
                     {
                         data = data.OrderByDescending(z => z.Modifed).ToList();
                     }
@@ -174,16 +166,16 @@ namespace ScreenshotsVisualizer.Views.StartPage
                         data.Sort((z, y) => r.Next(-1, 1));
                     }
 
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame != 0)
+                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame != 0)
                     {
-                        data = data.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame).ToList();
+                        data = data.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame).ToList();
                     }
 
-                    data.ForEach(c => c.GameId = x.Key);
+                    data.ForEach(c => c.GameId = x.Id);
                     temp.AddRange(data);
                 });
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAllRandom)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAllRandom)
                 {
                     r = new Random();
                     temp.Sort((z, y) => r.Next(-1, 1));
@@ -192,9 +184,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Screenshots = temp.Where(x => File.Exists(x.FileName)).ToObservable();
-                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAutoChange)
+                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange)
                     {
-                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);
+                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
                         Timer.Start();
                         Timer.Elapsed += Timer_Elapsed;
                     }
@@ -230,31 +222,21 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
             if (isGood)
             {
-                if (PluginDatabase.PluginSettings.Settings.UseExternalViewer)
+                if (PluginDatabase.PluginSettings.UseExternalViewer)
                 {
-                    Logger.Info($"Open screenshot with external viewer");
-                    _ = Process.Start(Screenshots[Index].FileName);
+                    ScreenshotsVisualizerWindows.OpenWithExternalViewer(Screenshots[Index].FileName);
                 }
                 else
                 {
-                    WindowOptions windowOptions = new WindowOptions
-                    {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        CanBeResizable = true,
-                        Height = 720,
-                        Width = 1280
-                    };
-
                     Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
                     string title = game != null
                         ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
                         : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
-
-                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(title, viewExtension, windowOptions);
-                    _ = windowExtension.ShowDialog();
+                    ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
+                    if (windows != null)
+                    {
+                        windows.ShowSinglePictureWindow(Screenshots[Index], null, title);
+                    }
                 }
             }
         }
@@ -278,7 +260,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 if (Timer != null)
                 {
                     Timer.Stop();
-                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Interval = PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000;
                     Timer.Start();
                 }
 
@@ -303,7 +285,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 if (Timer != null)
                 {
                     Timer.Stop();
-                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Interval = PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000;
                     Timer.Start();
                 }
 

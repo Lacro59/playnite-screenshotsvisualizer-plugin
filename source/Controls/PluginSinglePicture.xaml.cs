@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -43,31 +42,26 @@ namespace ScreenshotsVisualizer.Controls
         {
             InitializeComponent();
             DataContext = ControlDataContext;
+            Loaded += OnLoaded;
+        }
 
-            _ = Task.Run(() =>
+        protected override void AttachStaticEvents()
+        {
+            base.AttachStaticEvents();
+            AttachPluginEvents(PluginDatabase.PluginName, () =>
             {
-                // Wait extension database are loaded
-                _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
-
-                    // Apply settings
-                    PluginSettings_PropertyChanged(null, null);
-                });
+                PluginDatabase.PluginSettings.PropertyChanged += CreatePluginSettingsHandler();
+                PluginDatabase.DatabaseItemUpdated += CreateDatabaseItemUpdatedHandler<GameScreenshots>();
+                PluginDatabase.DatabaseItemCollectionChanged += CreateDatabaseCollectionChangedHandler<GameScreenshots>();
             });
         }
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
-            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture;
-            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture;
-            ControlDataContext.IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.EnableIntegrationShowSinglePicture;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.AddBorderSinglePicture;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCornerSinglePicture;
+            ControlDataContext.IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.IntegrationShowSinglePictureHeight;
 
             ControlDataContext.EnablePrev = false;
             ControlDataContext.EnableNext = false;
@@ -78,7 +72,7 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.PictureInfos = string.Empty;
         }
 
-        public override void SetData(Game newContext, PluginDataBaseGameBase pluginGameData)
+        public override void SetData(Game newContext, PluginGameEntry pluginGameData)
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
@@ -172,7 +166,7 @@ namespace ScreenshotsVisualizer.Controls
         {
             bool isGood = false;
 
-            if (PluginDatabase.PluginSettings.Settings.OpenViewerWithOnSelectionSinglePicture)
+            if (PluginDatabase.PluginSettings.OpenViewerWithOnSelectionSinglePicture)
             {
                 isGood = true;
             }
@@ -186,26 +180,17 @@ namespace ScreenshotsVisualizer.Controls
 
             if (isGood)
             {
-                if (PluginDatabase.PluginSettings.Settings.UseExternalViewer)
+                if (PluginDatabase.PluginSettings.UseExternalViewer)
                 {
-                    Logger.Info($"Open screenshot with external viewer");
-                    _ = Process.Start(Screenshots[Index].FileName);
+                    ScreenshotsVisualizerWindows.OpenWithExternalViewer(Screenshots[Index].FileName);
                 }
                 else
                 {
-                    WindowOptions windowOptions = new WindowOptions
+                    ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
+                    if (windows != null)
                     {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        CanBeResizable = true,
-                        Height = 720,
-                        Width = 1280
-                    };
-
-                    SsvSinglePictureView viewExtension = new SsvSinglePictureView(Screenshots[Index], Screenshots);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly, viewExtension, windowOptions);
-                    _ = windowExtension.ShowDialog();
+                        windows.ShowSinglePictureWindow(Screenshots[Index], Screenshots);
+                    }
                 }
             }
         }

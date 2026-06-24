@@ -2,6 +2,7 @@
 using CommonPluginsControls.Controls;
 using CommonPluginsShared;
 using Playnite.SDK;
+using CommonPluginsShared.UI;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -76,7 +77,7 @@ namespace ScreenshotsVisualizer.Views
         private void LoadData()
         {
             ListGameScreenshots = new List<ListGameScreenshot>();
-            foreach (GameSettings item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.Settings.gameSettings)
+            foreach (GameSettings item in ScreenshotsVisualizer.PluginDatabase.PluginSettings.gameSettings)
             {
                 Game game = API.Instance.Database.Games.Get(item.Id);
 
@@ -152,7 +153,7 @@ namespace ScreenshotsVisualizer.Views
         #region Action on list games screenshots
         private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UIHelper.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
@@ -161,7 +162,7 @@ namespace ScreenshotsVisualizer.Views
             string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
-                TextBox TextBox = UI.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
+                TextBox TextBox = UIHelper.FindVisualChildren<TextBox>(((FrameworkElement)((FrameworkElement)sender).Parent).Parent).FirstOrDefault();
 
                 if (TextBox != null)
                 {
@@ -220,7 +221,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void ButtonRemoveFolder_Click(object sender, RoutedEventArgs e)
         {
-            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UIHelper.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
@@ -248,7 +249,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_BtToDigit_Click(object sender, RoutedEventArgs e)
         {
-            Guid Id = Guid.Parse(UI.FindParent<ItemsControl>((Button)sender).Tag.ToString());
+            Guid Id = Guid.Parse(UIHelper.FindParent<ItemsControl>((Button)sender).Tag.ToString());
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
             ListGameScreenshot item = ((List<ListGameScreenshot>)PART_ListGameScreenshot.ItemsSource).Find(x => x.Id == Id);
@@ -517,7 +518,7 @@ namespace ScreenshotsVisualizer.Views
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_FolderToSave.Text = SelectedFolder;
-                PluginDatabase.PluginSettings.Settings.FolderToSave = SelectedFolder;
+                PluginDatabase.PluginSettings.FolderToSave = SelectedFolder;
             }
         }
         #endregion

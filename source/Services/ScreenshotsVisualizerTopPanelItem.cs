@@ -35,7 +35,7 @@ namespace ScreenshotsVisualizer.Services
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv"), viewExtension, windowOptions);
                 _ = windowExtension.ShowDialog();
             };
-            Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonHeader;
+            Visible = ScreenshotsVisualizer.PluginDatabase.PluginSettings.EnableIntegrationButtonHeader;
         }
     }
 }

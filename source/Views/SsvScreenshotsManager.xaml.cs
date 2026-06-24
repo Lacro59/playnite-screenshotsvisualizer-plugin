@@ -1,4 +1,7 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Commands;
+using CommonPluginsShared.UI;
+using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -33,7 +36,7 @@ namespace ScreenshotsVisualizer.Views
             SetData();
             SetInfos();
 
-            PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+            PluginDatabase.DatabaseItemUpdated += Database_ItemUpdated;
 
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
             PART_Copy.Visibility = Visibility.Collapsed;
@@ -64,7 +67,7 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    ObservableCollection<LveGame> LveGames = PluginDatabase.Database.Where(x => x.HasData)
+                    ObservableCollection<LveGame> LveGames = PluginDatabase.GetAllCache().Where(x => x.HasData)
                                                                     .Select(x => new LveGame
                                                                     {
                                                                         Id = x.Id,
@@ -104,7 +107,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void SetInfos()
         {
-            List<Screenshot> screenOnly = PluginDatabase.Database.SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
+            List<Screenshot> screenOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
             int ScreenshotsCount = screenOnly.Count;
             long ScreenshotsTotalSize = 0;
             foreach (Screenshot item in screenOnly)
@@ -112,10 +115,10 @@ namespace ScreenshotsVisualizer.Views
                 ScreenshotsTotalSize += item.FileSize;
             }
             PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
+            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
 
 
-            List<Screenshot> videoOnly = PluginDatabase.Database.SelectMany(x => x.Items).Where(x => x.IsVideo).ToList();
+            List<Screenshot> videoOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => x.IsVideo).ToList();
             int VideosCount = videoOnly.Count;
             long VideosTotalSize = 0;
             foreach (Screenshot item in videoOnly)
@@ -123,11 +126,11 @@ namespace ScreenshotsVisualizer.Views
                 VideosTotalSize += item.FileSize;
             }
             PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
+            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
 
 
             PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
         }
 
 
@@ -196,7 +199,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_BtDelete_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxItem item = UI.FindParent<ListBoxItem>((Button)sender);
+            ListBoxItem item = UIHelper.FindParent<ListBoxItem>((Button)sender);
             Screenshot screenshot = (Screenshot)item.DataContext;
             int indexSelected = PART_LveGames.SelectedIndex;
 
@@ -288,7 +291,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
         }
@@ -352,7 +355,7 @@ namespace ScreenshotsVisualizer.Views
         public DateTime LastSsv { get; set; }
         public int Total { get; set; }
 
-        public RelayCommand<Guid> GoToGame => Commands.GoToGame;
+        public RelayCommand<Guid> GoToGame => CommandsNavigation.GoToGame;
         public bool GameExist => API.Instance.Database.Games.Get(Id) != null;
     }
 }

@@ -29,7 +29,7 @@ namespace ScreenshotsVisualizer.Services
 
                 return plugin.SidebarItemControl;
             };
-            Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonSide;
+            Visible = ScreenshotsVisualizer.PluginDatabase.PluginSettings.EnableIntegrationButtonSide;
         }
     }
 }

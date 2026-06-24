@@ -9,11 +9,27 @@ using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
 using System;
 using CommonPluginsShared.Plugins;
+using CommonPluginsShared.Interfaces;
 
 namespace ScreenshotsVisualizer
 {
     public class ScreenshotsVisualizerSettings : PluginSettings
     {
+        public ScreenshotsVisualizerSettings()
+        {
+            ApplyFixedLibraryFilterPolicy();
+        }
+
+        /// <summary>
+        /// Applies fixed library filter values for this plugin (not user-configurable).
+        /// </summary>
+        public void ApplyFixedLibraryFilterPolicy()
+        {
+            LibrarySourceFilterMode = SourceFilterMode.All;
+            EnabledSources = new List<string>();
+            ExcludedSources = new List<string>();
+        }
+
         #region Settings variables
 
         public bool EnableIntegrationButtonHeader { get; set; } = false;
@@ -102,10 +118,12 @@ namespace ScreenshotsVisualizer
     }
 
 
-    public class ScreenshotsVisualizerSettingsViewModel : ObservableObject, ISettings
+    public class ScreenshotsVisualizerSettingsViewModel : PluginSettingsViewModel, IPluginSettingsViewModel
     {
         private readonly ScreenshotsVisualizer Plugin;
         private ScreenshotsVisualizerSettings EditingClone { get; set; }
+
+        IPluginSettings IPluginSettingsViewModel.Settings => Settings;
 
         private ScreenshotsVisualizerSettings settings;
         public ScreenshotsVisualizerSettings Settings { get => settings; set => SetValue(ref settings, value); }
@@ -121,6 +139,7 @@ namespace ScreenshotsVisualizer
 
             // LoadPluginSettings returns null if not saved data is available.
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
+            Settings.ApplyFixedLibraryFilterPolicy();
 
             // Manage source
             _ = Task.Run(() =>
@@ -141,6 +160,7 @@ namespace ScreenshotsVisualizer
         public void BeginEdit()
         {
             EditingClone = Serialization.GetClone(Settings);
+            InitializeCommands(ScreenshotsVisualizer.PluginName, ScreenshotsVisualizer.PluginDatabase);
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.
@@ -154,6 +174,8 @@ namespace ScreenshotsVisualizer
         // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
+            Settings.ApplyFixedLibraryFilterPolicy();
+
             Settings.gameSettings = new List<GameSettings>();
             foreach (ListGameScreenshot item in ScreenshotsVisualizerSettingsView.ListGameScreenshots)
             {
@@ -168,7 +190,7 @@ namespace ScreenshotsVisualizer
             }
 
             Plugin.SavePluginSettings(Settings);
-            ScreenshotsVisualizer.PluginDatabase.PluginSettings = this;
+            ScreenshotsVisualizer.PluginDatabase.PluginSettings = Settings;
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {

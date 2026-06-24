@@ -6,7 +6,7 @@ using Playnite.SDK.Data;
 
 namespace ScreenshotsVisualizer.Models
 {
-    public class GameScreenshots : PluginDataBaseGame<Screenshot>
+    public class GameScreenshots : PluginGameCollection<Screenshot>
     {
         public List<string> ScreenshotsFolders { get; set; }
 

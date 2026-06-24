@@ -24,7 +24,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             this.Plugin = plugin;
             this.DataContext = PluginDatabase.PluginSettings;
 
-            PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.Where(x => x.IsCheck)?.ForEach(x => 
+            PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.Where(x => x.IsCheck)?.ForEach(x => 
             {
                 SearchSources.Add(x.Name);
             });
@@ -37,7 +37,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
         {
-            Plugin.SavePluginSettings(PluginDatabase.PluginSettings.Settings);
+            Plugin.SavePluginSettings(PluginDatabase.PluginSettings);
             PluginDatabase.PluginSettings.OnPropertyChanged();
         }
 
@@ -55,10 +55,10 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             FilterSource.Text = string.Empty;
 
-            int idx = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.FindIndex(x => x.Name == (string)sender.Tag);
+            int idx = PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.FindIndex(x => x.Name == (string)sender.Tag);
             if (idx > -1)
             {
-                PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList[idx].IsCheck = (bool)sender.IsChecked;
+                PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList[idx].IsCheck = (bool)sender.IsChecked;
             }
 
             if ((bool)sender.IsChecked)

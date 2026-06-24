@@ -1,7 +1,6 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
-using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK;
 using Playnite.SDK.Models;
@@ -11,7 +10,6 @@ using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ScreenshotsVisualizer.Controls
@@ -38,36 +36,31 @@ namespace ScreenshotsVisualizer.Controls
 
             InitializeComponent();
             this.DataContext = ControlDataContext;
+            Loaded += OnLoaded;
+        }
 
-            _ = Task.Run(() =>
+        protected override void AttachStaticEvents()
+        {
+            base.AttachStaticEvents();
+            AttachPluginEvents(PluginDatabase.PluginName, () =>
             {
-                // Wait extension database are loaded
-                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
-
-                    // Apply settings
-                    PluginSettings_PropertyChanged(null, null);
-                });
+                PluginDatabase.PluginSettings.PropertyChanged += CreatePluginSettingsHandler();
+                PluginDatabase.DatabaseItemUpdated += CreateDatabaseItemUpdatedHandler<GameScreenshots>();
+                PluginDatabase.DatabaseItemCollectionChanged += CreateDatabaseCollectionChangedHandler<GameScreenshots>();
             });
         }
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton;
-            ControlDataContext.DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.EnableIntegrationButton;
+            ControlDataContext.DisplayDetails = PluginDatabase.PluginSettings.EnableIntegrationButtonDetails;
 
             ControlDataContext.Text = "\uea38";
             ControlDataContext.SsvDateLast = DateTime.Now;
             ControlDataContext.SsvTotal = 0;
         }
 
-        public override void SetData(Game newContext, PluginDataBaseGameBase pluginGameData)
+        public override void SetData(Game newContext, PluginGameEntry pluginGameData)
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
@@ -78,8 +71,6 @@ namespace ScreenshotsVisualizer.Controls
                     List<Screenshot> tmp = gameScreenshots.Items;
                     tmp.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
                     DateTime SsvDateLast = tmp[0].Modifed;
-
-                    LocalDateConverter localDateConverter = new LocalDateConverter();
 
                     ControlDataContext.SsvDateLast = SsvDateLast;
                     ControlDataContext.SsvTotal = gameScreenshots.Items.Count();
@@ -99,19 +90,7 @@ namespace ScreenshotsVisualizer.Controls
 
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowOptions windowOptions = new WindowOptions
-            {
-                ShowMinimizeButton = false,
-                ShowMaximizeButton = true,
-                ShowCloseButton = true,
-                CanBeResizable = true,
-                Height = 720,
-                Width = 1200
-            };
-
-            SsvScreenshotsView viewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsvTitle"), viewExtension, windowOptions);
-            windowExtension.ShowDialog();
+            PluginDatabase.PluginWindows.ShowPluginGameDataWindow(PluginDatabase.GameContext);
         }
 
         #endregion

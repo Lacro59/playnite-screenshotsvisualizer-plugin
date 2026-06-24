@@ -1,4 +1,6 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Commands;
+using CommonPluginsShared.UI;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Controls;
@@ -68,7 +70,7 @@ namespace ScreenshotsVisualizer.Views
                 Icon = !game?.Icon.IsNullOrEmpty() ?? false ? API.Instance.Database.GetFullFilePath(game.Icon) : string.Empty,
                 GameName = game?.Name,
                 GameId = game?.Id,
-                GoToGame = Commands.GoToGame
+                GoToGame = CommandsNavigation.GoToGame
             };
         }
 
@@ -162,7 +164,7 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_Contener_Loaded(object sender, RoutedEventArgs e)
         {
-            Window window = UI.FindParent<Window>((FrameworkElement)sender);
+            Window window = UIHelper.FindParent<Window>((FrameworkElement)sender);
             window.KeyDown += new KeyEventHandler(SsvSinglePictureView_KeyDown);
             window.MouseEnter += PART_Contener_MouseEnter;
             window.MouseLeave += PART_Contener_MouseLeave;
@@ -202,7 +204,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch(Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
         }
@@ -211,7 +213,7 @@ namespace ScreenshotsVisualizer.Views
         {
             if ((!Screenshot?.IsVideo ?? true) && File.Exists(Screenshot.FileName))
             {
-                ZoomBorder parent = UI.FindParent<ZoomBorder>(PART_ScreenshotsPicture);
+                ZoomBorder parent = UIHelper.FindParent<ZoomBorder>(PART_ScreenshotsPicture);
                 if (parent != null)
                 {
                     parent.Reset();

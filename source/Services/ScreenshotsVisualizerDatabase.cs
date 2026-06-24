@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
+using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -15,33 +16,43 @@ using System.Windows.Controls;
 using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
+using CommonPluginsShared.IO;
 using CommonPluginsShared.Extensions;
+using CommonPluginsShared.Images;
 using CommonPlayniteShared.Common;
 using System.Text;
 
 namespace ScreenshotsVisualizer.Services
 {
-    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettingsViewModel, ScreeshotsVisualizeCollection, GameScreenshots, Screenshot>
+    public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettings, GameScreenshots, Screenshot>
     {
-        public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettingsViewModel pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
+        public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
             TagBefore = "[SSV]";
+            PluginWindows = new ScreenshotsVisualizerWindows(PluginName, this);
+            PluginExportCsv = new ScreenshotsVisualizerExport();
         }
 
-        public override void RefreshNoLoader(Guid id)
+        #region Logging
+
+        private void LogError(Exception ex, string context = null, bool showNotification = true, string notificationMessage = null)
         {
-            Game game = API.Instance.Database.Games.Get(id);
-            Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
-
-            GameSettings gameSettings = GetGameSettings(game.Id);
-            if (gameSettings != null)
+            if (notificationMessage != null)
             {
-                SetDataFromSettings(gameSettings);
+                Common.LogError(ex, false, context ?? string.Empty, showNotification, PluginName, notificationMessage);
             }
-
-            GameScreenshots gameScreenshots = Get(game, true);
-            ActionAfterRefresh(gameScreenshots);
+            else
+            {
+                Common.LogError(ex, false, context ?? string.Empty, showNotification, PluginName);
+            }
         }
+
+        private static void LogScanDebug(string message)
+        {
+            Common.LogDebug(true, string.Format("[SsvDatabase] {0}", message));
+        }
+
+        #endregion
 
         #region Move data
 
@@ -65,9 +76,10 @@ namespace ScreenshotsVisualizer.Services
                 stopWatch.Start();
 
                 string cancelText = string.Empty;
-                activateGlobalProgress.ProgressMaxValue = Database.Items.Count;
+                List<GameScreenshots> allItems = GetAllCache().ToList();
+                activateGlobalProgress.ProgressMaxValue = allItems.Count;
 
-                foreach (KeyValuePair<Guid, GameScreenshots> item in Database.Items)
+                foreach (GameScreenshots item in allItems)
                 {
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
@@ -77,18 +89,23 @@ namespace ScreenshotsVisualizer.Services
 
                     try
                     {
-                        MoveToFolderToSaveWithNoLoader(item.Key, activateGlobalProgress);
+                        MoveToFolderToSaveWithNoLoader(item.Id, activateGlobalProgress);
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, PluginName);
+                        LogError(ex);
                     }
                     activateGlobalProgress.CurrentProgressValue++;
                 }
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"MoveToFolderToSaveAll{cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                LogScanDebug(string.Format(
+                    "MoveToFolderToSaveAll{0} - {1:00}:{2:00}.{3:00}",
+                    cancelText,
+                    ts.Minutes,
+                    ts.Seconds,
+                    ts.Milliseconds / 10));
             }, globalProgressOptions);
         }
 
@@ -135,7 +152,7 @@ namespace ScreenshotsVisualizer.Services
                 string cancelText = string.Empty;
                 activateGlobalProgress.ProgressMaxValue = ids.Count;
 
-                Database.BeginBufferUpdate();
+                _database.BeginBufferUpdate();
 
                 try
                 {
@@ -153,14 +170,21 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, PluginName);
+                    LogError(ex);
                 }
 
-                Database.EndBufferUpdate();
+                _database.EndBufferUpdate();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task MoveToFolderToSave(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{ids.Count} items");
+                LogScanDebug(string.Format(
+                    "Task MoveToFolderToSave(){0} - {1:00}:{2:00}.{3:00} for {4}/{5} items",
+                    cancelText,
+                    ts.Minutes,
+                    ts.Seconds,
+                    ts.Milliseconds / 10,
+                    activateGlobalProgress.CurrentProgressValue,
+                    ids.Count));
             }, globalProgressOptions);
         }
 
@@ -191,13 +215,13 @@ namespace ScreenshotsVisualizer.Services
         /// <param name="game">The game whose screenshots will be moved.</param>
         public void MoveToFolderToSaveWithNoLoader(Game game)
         {
-            if (PluginSettings.Settings.EnableFolderToSave)
+            if (PluginSettings.EnableFolderToSave)
             {
                 try
                 {
-                    if (PluginSettings.Settings.FolderToSave.IsNullOrEmpty() || PluginSettings.Settings.FileSavePattern.IsNullOrEmpty())
+                    if (PluginSettings.FolderToSave.IsNullOrEmpty() || PluginSettings.FileSavePattern.IsNullOrEmpty())
                     {
-                        Logger.Error("No settings to use folder to save");
+                        Common.LogDebug(false, "[SsvDatabase] No settings to use folder to save");
                         API.Instance.Notifications.Add(new NotificationMessage(
                             $"{PluginName}-MoveToFolderToSave-Errors",
                             $"{PluginName}\r\n" + ResourceProvider.GetString("LOCSsvMoveToFolderToSaveError"),
@@ -213,13 +237,13 @@ namespace ScreenshotsVisualizer.Services
                             SetDataFromSettings(gameSettings);
                         }
 
-                        string pathFolder = PluginSettings.Settings.FolderToSave;
-                        if (!PluginSettings.Settings.FolderToSave.Contains("{Name}"))
+                        string pathFolder = PluginSettings.FolderToSave;
+                        if (!PluginSettings.FolderToSave.Contains("{Name}"))
                         {
                             pathFolder = Path.Combine(pathFolder, "{Name}");
                         }
                         pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, pathFolder);
-                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, false);
+                        pathFolder = PathValidator.GetSafePath(pathFolder, false);
 
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
@@ -229,7 +253,7 @@ namespace ScreenshotsVisualizer.Services
                         bool haveDigit = false;
                         foreach (Screenshot screenshot in gameScreenshots.Items)
                         {
-                            string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.Settings.FileSavePattern);
+                            string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, PluginSettings.FileSavePattern);
                             string patternWithDigit = string.Empty;
 
                             if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(pathFolder, StringComparison.InvariantCultureIgnoreCase))
@@ -281,7 +305,7 @@ namespace ScreenshotsVisualizer.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Common.LogError(ex, false, true, PluginName);
+                                    LogError(ex);
                                     break;
                                 }
                             }
@@ -296,7 +320,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, PluginName);
+                    LogError(ex);
                 }
             }
         }
@@ -320,7 +344,7 @@ namespace ScreenshotsVisualizer.Services
                 if (!screenshot.IsVideo)
                 {
                     string oldFile = screenshot.FileName;
-                    string newFile = ImageTools.ConvertToJpg(oldFile, PluginSettings.Settings.JpgQuality);
+                    string newFile = ImageTools.ConvertToJpg(oldFile, PluginSettings.JpgQuality);
 
                     if (!newFile.IsNullOrEmpty())
                     {
@@ -333,7 +357,7 @@ namespace ScreenshotsVisualizer.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, false, PluginName);
+                LogError(ex, null, false);
             }
 
             return false;
@@ -379,7 +403,7 @@ namespace ScreenshotsVisualizer.Services
                     activateGlobalProgress.ProgressMaxValue = ids.Count;
                 }
 
-                Database.BeginBufferUpdate();
+                _database.BeginBufferUpdate();
 
                 try
                 {
@@ -404,14 +428,20 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, PluginName);
+                    LogError(ex);
                 }
 
-                Database.EndBufferUpdate();
+                _database.EndBufferUpdate();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task ConvertGameSsvToJpg(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {ids.Count} items");
+                LogScanDebug(string.Format(
+                    "Task ConvertGameSsvToJpg(){0} - {1:00}:{2:00}.{3:00} for {4} items",
+                    cancelText,
+                    ts.Minutes,
+                    ts.Seconds,
+                    ts.Milliseconds / 10,
+                    ids.Count));
             }, globalProgressOptions);
         }
 
@@ -455,26 +485,26 @@ namespace ScreenshotsVisualizer.Services
         {
             List<FolderSettings> folderSettingsGlobal = new List<FolderSettings>();
 
-            if (PluginSettings.Settings.EnableFolderToSave && !PluginSettings.Settings.FolderToSave.IsNullOrEmpty())
+            if (PluginSettings.EnableFolderToSave && !PluginSettings.FolderToSave.IsNullOrEmpty())
             {
                 folderSettingsGlobal.Add(new FolderSettings
                 {
-                    ScreenshotsFolder = PluginSettings.Settings.FolderToSave,
+                    ScreenshotsFolder = PluginSettings.FolderToSave,
                     UsedFilePattern = true,
-                    FilePattern = PluginSettings.Settings.FileSavePattern
+                    FilePattern = PluginSettings.FileSavePattern
                 });
             }
 
-            if (!PluginSettings.Settings.GlobalScreenshootsPath.IsNullOrEmpty())
+            if (!PluginSettings.GlobalScreenshootsPath.IsNullOrEmpty())
             {
                 folderSettingsGlobal.Add(new FolderSettings
                 {
-                    ScreenshotsFolder = PluginSettings.Settings.GlobalScreenshootsPath
+                    ScreenshotsFolder = PluginSettings.GlobalScreenshootsPath
                 });
             }
 
 
-            GameSettings gameSettings = PluginSettings.Settings.gameSettings.Find(x => x.Id == id);
+            GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
             if (gameSettings == null)
             {
                 gameSettings = new GameSettings
@@ -533,9 +563,14 @@ namespace ScreenshotsVisualizer.Services
             Game game = API.Instance.Database.Games.Get(item.Id);
             if (game == null)
             {
-                Logger.Warn($"Game not found for {item.Id}");
+                Common.LogDebug(false, string.Format("[SsvDatabase] Game not found for {0}", item.Id));
                 return;
             }
+
+            LogScanDebug(string.Format(
+                "SetDataFromSettings started for '{0}' ({1} folder(s))",
+                game.Name,
+                item.ScreenshotsFolders?.Count ?? 0));
 
             GameScreenshots gameScreenshots = GetDefault(game);
             try
@@ -549,12 +584,12 @@ namespace ScreenshotsVisualizer.Services
                     {
                         if (screenshotsFolder?.ScreenshotsFolder == null || screenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
                         {
-                            Logger.Warn($"Screenshots directory is empty for {game.Name}");
+                            Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory is empty for {0}", game.Name));
                             return;
                         }
 
                         string pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.ScreenshotsFolder);
-                        pathFolder = CommonPluginsShared.Paths.GetSafePath(pathFolder, false);
+                        pathFolder = PathValidator.GetSafePath(pathFolder, false);
 
                         // Get files
                         string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv", ".webm" };
@@ -583,7 +618,7 @@ namespace ScreenshotsVisualizer.Services
                                             pattern = pattern.Replace("\\{DateTimeModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
 
                                             string gameName = API.Instance.ExpandGameVariables(game, "{Name}");
-                                            string goodName = CommonPluginsShared.Paths.GetSafePathName(gameName).Replace(" ", "[ ]*");
+                                            string goodName = PathValidator.GetSafePathName(gameName).Replace(" ", "[ ]*");
                                             pattern = pattern.Replace(gameName, goodName);
 
                                             string fileName = Path.GetFileNameWithoutExtension(objectFile);
@@ -608,13 +643,13 @@ namespace ScreenshotsVisualizer.Services
                                     }
                                     catch (Exception ex)
                                     {
-                                        Common.LogError(ex, false, true, PluginName);
+                                        LogError(ex);
                                     }
                                 });
                         }
                         else
                         {
-                            Logger.Warn($"Screenshots directory not found for {game.Name} - {pathFolder}");
+                            Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory not found for {0} - {1}", game.Name, pathFolder));
                         }
 
                         IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
@@ -638,13 +673,18 @@ namespace ScreenshotsVisualizer.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Error on {game.Name} for {screenshotsFolder.ScreenshotsFolder}", true, PluginName);
+                        LogError(ex, string.Format("Error on {0} for {1}", game.Name, screenshotsFolder.ScreenshotsFolder));
                     }
                 }
+
+                LogScanDebug(string.Format(
+                    "SetDataFromSettings completed for '{0}' ({1} item(s))",
+                    game.Name,
+                    Get(game, true)?.Items?.Count ?? 0));
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, PluginName);
+                LogError(ex);
             }
         }
 
@@ -667,7 +707,7 @@ namespace ScreenshotsVisualizer.Services
 
         #region Tag
 
-        public override void AddTag(Game game)
+        public new void AddTag(Game game)
         {
             GameScreenshots item = Get(game, true);
             if (item.HasData)
@@ -689,7 +729,7 @@ namespace ScreenshotsVisualizer.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
+                    LogError(ex, string.Format("Tag insert error with {0}", game.Name), true, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
                     return;
                 }
             }
@@ -717,8 +757,8 @@ namespace ScreenshotsVisualizer.Services
         public override void SetThemesResources(Game game)
         {
             GameScreenshots gameScreenshots = Get(game, true);
-            PluginSettings.Settings.HasData = gameScreenshots?.HasData ?? false;
-            PluginSettings.Settings.ListScreenshots = gameScreenshots?.Items ?? new List<Screenshot>();
+            PluginSettings.HasData = gameScreenshots?.HasData ?? false;
+            PluginSettings.ListScreenshots = gameScreenshots?.Items ?? new List<Screenshot>();
         }
 
         /// <summary>
@@ -743,7 +783,7 @@ namespace ScreenshotsVisualizer.Services
 
                 bool isGood = false;
 
-                if (PluginSettings.Settings.OpenViewerWithOnSelection)
+                if (PluginSettings.OpenViewerWithOnSelection)
                 {
                     isGood = true;
                 }
@@ -757,26 +797,17 @@ namespace ScreenshotsVisualizer.Services
 
                 if (isGood)
                 {
-                    if (PluginSettings.Settings.UseExternalViewer)
+                    if (PluginSettings.UseExternalViewer)
                     {
-                        Logger.Info($"Open screenshot with external viewer");
-                        _ = Process.Start(screenshot.FileName);
+                        ScreenshotsVisualizerWindows.OpenWithExternalViewer(screenshot.FileName);
                     }
                     else
                     {
-                        WindowOptions windowOptions = new WindowOptions
+                        ScreenshotsVisualizerWindows windows = PluginWindows as ScreenshotsVisualizerWindows;
+                        if (windows != null)
                         {
-                            ShowMinimizeButton = false,
-                            ShowMaximizeButton = true,
-                            ShowCloseButton = true,
-                            CanBeResizable = true,
-                            Height = 720,
-                            Width = 1280
-                        };
-
-                        SsvSinglePictureView viewExtension = new SsvSinglePictureView(screenshot, listBox.Items.Cast<Screenshot>().ToList());
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly, viewExtension, windowOptions);
-                        _ = windowExtension.ShowDialog();
+                            windows.ShowSinglePictureWindow(screenshot, listBox.Items.Cast<Screenshot>().ToList());
+                        }
                     }
                 }
             }

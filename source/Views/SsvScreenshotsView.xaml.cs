@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -176,7 +177,7 @@ namespace ScreenshotsVisualizer.Views
                 ScreenshotsTotalSize += item.FileSize;
             }
             PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
+            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
 
 
             List<Screenshot> videoOnly = gameScreenshots.Items.FindAll(x => x.IsVideo);
@@ -187,11 +188,11 @@ namespace ScreenshotsVisualizer.Views
                 VideosTotalSize += item.FileSize;
             }
             PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
+            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
 
 
             PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
         }
 
 
@@ -224,7 +225,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
         }
