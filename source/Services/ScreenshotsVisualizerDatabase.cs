@@ -548,6 +548,31 @@ namespace ScreenshotsVisualizer.Services
             return gameScreenshots;
         }
 
+        /// <inheritdoc />
+        /// <remarks>
+        /// Scans configured screenshot folders and updates the plugin database entry.
+        /// Invoked by <c>RefreshNoLoader</c> after menu or batch refresh actions.
+        /// </remarks>
+        public override void ActionAfterRefresh(GameScreenshots item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            GameSettings gameSettings = GetGameSettings(item.Id);
+            if (gameSettings?.ScreenshotsFolders == null || gameSettings.ScreenshotsFolders.Count == 0)
+            {
+                LogScanDebug(string.Format(
+                    "ActionAfterRefresh skipped for '{0}' — no screenshot folders configured",
+                    item.Name));
+                return;
+            }
+
+            LogScanDebug(string.Format("ActionAfterRefresh — scanning '{0}'", item.Name));
+            SetDataFromSettings(gameSettings);
+        }
+
         /// <summary>
         /// Updates the screenshot data for the specified game based on the provided <see cref="GameSettings"/>.
         /// For each configured screenshots folder, the method scans for supported image and video files,
