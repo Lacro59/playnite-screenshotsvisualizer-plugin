@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="LOCSsvScreenshot">{0} screenshot</sys:String>
@@ -123,15 +123,17 @@ GameName_2020-01-07&#x09;=>&#x09;{Name}_{DateModified}</sys:String>
 Example:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">This option adds a game menu to move all screenshot files to a single folder.
-If the {Name} is not included in "Folder", it is automatically added.
-    
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Adds a game menu action to move screenshots from all configured source folders to one archive folder.
+The archive folder path uses the destination field above. If {Name} is missing in that path, it is added automatically.
+Files are renamed using "File pattern", then plugin links are updated.
+
 Example:
-A game with two screenshot folders:
+Source folders:
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
-    
-If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selecting the option in game menu, all screenshots will be moved to the unique folder according to the "File Pattern" and the link will be upated in plugin data.</sys:String>
+
+Archive destination:
+{DropboxFolder}\Screenshots\{Name}</sys:String>
 
     <!-- Notifications -->
 
@@ -145,6 +147,11 @@ If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selectin
     <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Quick add</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu.</sys:String>
+    <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
+    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>
     <sys:String x:Key="LOCSsvConfigContextGlobals">Globals</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Configured games</sys:String>
     <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} game(s)</sys:String>

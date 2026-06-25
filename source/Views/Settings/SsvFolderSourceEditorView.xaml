@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Text="{Binding WorkingCopy.ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox x:Name="PART_ScreenshotsFolder" Grid.Column="0" Text="{Binding WorkingCopy.ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="2" Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
                     ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"
                     Click="BrowseFolderButton_Click" />

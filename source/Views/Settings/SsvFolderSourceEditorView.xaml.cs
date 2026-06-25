@@ -76,12 +76,48 @@ namespace ScreenshotsVisualizer.Views.Settings
 
         private void SelectVariableButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectVariable viewExtension = new SelectVariable();
+            var picker = new SelectVariable(SelectVariableMode.Path, _viewModel?.SelectedTestGame?.Game);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(
                 ResourceProvider.GetString("LOCCommonSelectVariable"),
-                viewExtension);
+                picker);
             windowExtension.ResizeMode = ResizeMode.CanResize;
-            _ = windowExtension.ShowDialog();
+
+            if (windowExtension.ShowDialog() == true && picker.WasSelected)
+            {
+                InsertVariableToken(PART_ScreenshotsFolder, picker.SelectedVariable);
+            }
+        }
+
+        private static void InsertVariableToken(TextBox targetTextBox, string variableToken)
+        {
+            if (targetTextBox == null || string.IsNullOrWhiteSpace(variableToken))
+            {
+                return;
+            }
+
+            string currentText = targetTextBox.Text ?? string.Empty;
+            int selectionStart = targetTextBox.SelectionStart;
+            int selectionLength = targetTextBox.SelectionLength;
+
+            if (selectionStart < 0 || selectionStart > currentText.Length)
+            {
+                selectionStart = currentText.Length;
+            }
+
+            if (selectionLength < 0)
+            {
+                selectionLength = 0;
+            }
+
+            if (selectionStart + selectionLength > currentText.Length)
+            {
+                selectionLength = currentText.Length - selectionStart;
+            }
+
+            string updatedText = currentText.Remove(selectionStart, selectionLength).Insert(selectionStart, variableToken);
+            targetTextBox.Text = updatedText;
+            targetTextBox.Focus();
+            targetTextBox.CaretIndex = selectionStart + variableToken.Length;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

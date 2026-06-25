@@ -158,10 +158,18 @@
                             </DockPanel>
                         </Grid>
 
-                        <Separator Margin="0,15,0,15" />
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
 
-                        <TextBlock Style="{DynamicResource SectionHeaderText}"
-                                   Text="{DynamicResource LOCSsvConfigSectionArchiving}" Margin="0,0,0,10" />
+            <TabItem Header="{DynamicResource LOCSsvConfigSectionArchiving}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,10,0,0">
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{DynamicResource LOCSsvArchivingIntro}"
+                                   Foreground="{DynamicResource GlyphBrush}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,10" />
 
                         <Border Padding="10"
                                 BorderBrush="{DynamicResource PopupBorderBrush}"
@@ -188,19 +196,41 @@
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCActionTrackingModeDirectory}" />
-                                    <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
-                                            Command="{Binding BrowseFolderToSaveCommand}" Grid.Column="4" />
-                                    <TextBox Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center"
+                                    <TextBlock Grid.Column="0" Grid.Row="0"
+                                               Style="{DynamicResource SectionHeaderText}"
+                                               Text="{DynamicResource LOCSsvArchivingDestinationFolder}"
+                                               VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                        <Button Content="{DynamicResource LOCCommonSelectVariable}"
+                                                Margin="0,0,5,0"
+                                                Click="SelectFolderVariableButton_Click" />
+
+                                        <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
+                                                ToolTip="{DynamicResource LOCBrowse}"
+                                                Command="{Binding BrowseFolderToSaveCommand}" />
+                                    </StackPanel>
+                                    <TextBox x:Name="PART_FolderToSave"
+                                             Text="{Binding Settings.FolderToSave}" VerticalAlignment="Center"
                                              MinWidth="100" Grid.Column="2" Grid.Row="0" />
 
                                     <Label Content="{DynamicResource LOCSsvFilePattern}" Grid.Column="0" Grid.Row="2" />
-                                    <TextBox Text="{Binding Settings.FileSavePattern}" VerticalAlignment="Center"
-                                             MinWidth="100" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3">
-                                        <TextBox.ToolTip>
-                                            <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" FontFamily="Consolas" />
-                                        </TextBox.ToolTip>
-                                    </TextBox>
+                                    <StackPanel Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3">
+                                        <DockPanel>
+                                            <Button Content="{DynamicResource LOCCommonSelectVariable}"
+                                                    DockPanel.Dock="Right"
+                                                    Margin="10,0,0,0"
+                                                    Click="SelectFilePatternVariableButton_Click" />
+
+                                            <TextBox x:Name="PART_FileSavePattern"
+                                                     Text="{Binding Settings.FileSavePattern}"
+                                                     VerticalAlignment="Center"
+                                                     MinWidth="100">
+                                                <TextBox.ToolTip>
+                                                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" FontFamily="Consolas" />
+                                                </TextBox.ToolTip>
+                                            </TextBox>
+                                        </DockPanel>
+                                    </StackPanel>
 
                                     <TextBlock Grid.Row="4" Grid.ColumnSpan="5" Text="{DynamicResource LOCSsvMoveFolderExplain}"
                                                Style="{DynamicResource BaseTextBlockStyle}" TextWrapping="Wrap" />

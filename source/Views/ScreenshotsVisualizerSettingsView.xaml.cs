@@ -1,10 +1,12 @@
 ﻿using CommonPlayniteShared.Common;
+using CommonPluginsControls.Controls;
 using CommonPluginsShared;
+using CommonPluginsShared.UI;
+using Playnite.SDK;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace ScreenshotsVisualizer.Views
 {
@@ -25,7 +27,7 @@ namespace ScreenshotsVisualizer.Views
             }
         }
 
-        private void ActiveSourcesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ActiveSourcesList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (DataContext is ScreenshotsVisualizerSettingsViewModel viewModel
                 && viewModel.ConfigurationContext.HasSelectedActiveSource)
@@ -65,6 +67,72 @@ namespace ScreenshotsVisualizer.Views
             {
                 viewModel.ConfigurationContext.ContextSearchText = searchText;
             }
+        }
+
+        private void SelectFolderVariableButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TryPickVariable(SelectVariableMode.Path, out string variableToken))
+            {
+                InsertVariableToken(PART_FolderToSave, variableToken);
+            }
+        }
+
+        private void SelectFilePatternVariableButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TryPickVariable(SelectVariableMode.FilePattern, out string variableToken))
+            {
+                InsertVariableToken(PART_FileSavePattern, variableToken);
+            }
+        }
+
+        private static bool TryPickVariable(SelectVariableMode mode, out string variableToken)
+        {
+            variableToken = null;
+            var picker = new SelectVariable(mode);
+            Window window = PlayniteUiHelper.CreateExtensionWindow(
+                ResourceProvider.GetString("LOCCommonSelectVariable"),
+                picker);
+            window.ResizeMode = ResizeMode.CanResize;
+
+            if (window.ShowDialog() == true && picker.WasSelected)
+            {
+                variableToken = picker.SelectedVariable;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void InsertVariableToken(TextBox targetTextBox, string variableToken)
+        {
+            if (targetTextBox == null || string.IsNullOrWhiteSpace(variableToken))
+            {
+                return;
+            }
+
+            var currentText = targetTextBox.Text ?? string.Empty;
+            var selectionStart = targetTextBox.SelectionStart;
+            var selectionLength = targetTextBox.SelectionLength;
+
+            if (selectionStart < 0 || selectionStart > currentText.Length)
+            {
+                selectionStart = currentText.Length;
+            }
+
+            if (selectionLength < 0)
+            {
+                selectionLength = 0;
+            }
+
+            if (selectionStart + selectionLength > currentText.Length)
+            {
+                selectionLength = currentText.Length - selectionStart;
+            }
+
+            var updatedText = currentText.Remove(selectionStart, selectionLength).Insert(selectionStart, variableToken);
+            targetTextBox.Text = updatedText;
+            targetTextBox.Focus();
+            targetTextBox.CaretIndex = selectionStart + variableToken.Length;
         }
     }
 }
