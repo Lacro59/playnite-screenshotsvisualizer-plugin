@@ -147,7 +147,7 @@ Archive destination:
     <sys:String x:Key="LOCSsvConfigSourcePathRequired">A screenshot folder path is required.</sys:String>
     <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Configuration test will be available in a future update.</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration. Use {Name} in the path for a per-game subfolder.</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration.</sys:String>
     <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationTitle">Archive settings migration</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Creating settings backup...</sys:String>
