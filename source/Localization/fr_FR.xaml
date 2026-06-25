@@ -147,8 +147,15 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvConfigSourcePathRequired">Le chemin du dossier de captures est obligatoire.</sys:String>
     <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Le test de configuration sera disponible dans une prochaine mise à jour.</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionArchiving">Archivage</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">Configure la façon dont les captures sont déplacées vers un dossier d'archivage unique depuis le menu du jeu.</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">Configure la façon dont les captures sont déplacées vers un dossier d'archivage unique depuis le menu du jeu. Ces paramètres s'appliquent automatiquement à tous les jeux : le dossier d'archivage est pris en compte lors du scan, y compris pour les jeux sans configuration dédiée. Utilisez {Name} dans le chemin pour un sous-dossier par jeu.</sys:String>
     <sys:String x:Key="LOCSsvArchivingDestinationFolder">Dossier de destination de l'archivage</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationTitle">Migration des paramètres d'archivage</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Création de la sauvegarde des paramètres...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Suppression des entrées d'archivage en double...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Enregistrement des paramètres...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration terminée.</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationFailed">Échec de la migration des paramètres d'archivage : {0}</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">Aucune entrée d'archivage en double n'a été supprimée.</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insérer une variable</sys:String>
     <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Variables disponibles : {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insérer une variable de chemin</sys:String>

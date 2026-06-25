@@ -127,6 +127,9 @@
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
+    <Compile Include="Models\SsvArchiveDuplicateAnalysis.cs" />
+    <Compile Include="Models\SsvArchiveMigrationResult.cs" />
+    <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\StartPage\SsvCarouselOptions.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\MediaElementExtend.xaml.cs">
@@ -180,6 +183,8 @@
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
+    <Compile Include="Services\SsvArchiveFolderHelper.cs" />
+    <Compile Include="Services\SsvArchiveSettingsMigration.cs" />
     <Compile Include="Services\ScreenshotsVisualizerExport.cs" />
     <Compile Include="Services\ScreenshotsVisualizerMenus.cs" />
     <Compile Include="Services\SsvPathResolver.cs" />

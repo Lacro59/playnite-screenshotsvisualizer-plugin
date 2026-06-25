@@ -147,8 +147,15 @@ Archive destination:
     <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Quick add</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu.</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration. Use {Name} in the path for a per-game subfolder.</sys:String>
     <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationTitle">Archive settings migration</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Creating settings backup...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Removing duplicate archive entries...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Saving settings...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration completed.</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationFailed">Archive settings migration failed: {0}</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">No duplicate archive entries were removed.</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
     <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>

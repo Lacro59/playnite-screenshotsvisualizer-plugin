@@ -2,6 +2,7 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using System;
@@ -51,6 +52,11 @@ namespace ScreenshotsVisualizer.Services
         private static void LogScanDebug(string message)
         {
             Common.LogDebug(true, string.Format("[SsvDatabase] {0}", message));
+        }
+
+        private static void LogScanWarn(string message)
+        {
+            Logger.Warn(string.Format("[SsvDatabase] {0}", message));
         }
 
         #endregion
@@ -222,7 +228,7 @@ namespace ScreenshotsVisualizer.Services
                 {
                     if (PluginSettings.FolderToSave.IsNullOrEmpty() || PluginSettings.FileSavePattern.IsNullOrEmpty())
                     {
-                        Common.LogDebug(false, "[SsvDatabase] No settings to use folder to save");
+                        LogScanWarn("No settings to use folder to save (global FolderToSave / FileSavePattern)");
                         API.Instance.Notifications.Add(new NotificationMessage(
                             $"{PluginName}-MoveToFolderToSave-Errors",
                             $"{PluginName}\r\n" + ResourceProvider.GetString("LOCSsvMoveToFolderToSaveError"),
@@ -246,8 +252,14 @@ namespace ScreenshotsVisualizer.Services
                         pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, pathFolder);
                         pathFolder = PathValidator.GetSafePath(pathFolder, false);
 
+                        LogScanDebug(string.Format(
+                            "MoveToFolderToSave started for '{0}' — destination '{1}' (global FolderToSave / FileSavePattern)",
+                            game.Name,
+                            pathFolder));
+
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
+                        int movedCount = 0;
 
                         FileSystem.CreateDirectory(pathFolder);
 
@@ -303,6 +315,7 @@ namespace ScreenshotsVisualizer.Services
                                 try
                                 {
                                     File.Move(screenshot.FileName, destFileName + ext);
+                                    movedCount++;
                                 }
                                 catch (Exception ex)
                                 {
@@ -311,6 +324,12 @@ namespace ScreenshotsVisualizer.Services
                                 }
                             }
                         }
+
+                        LogScanDebug(string.Format(
+                            "MoveToFolderToSave completed for '{0}' — {1} file(s) moved to '{2}'",
+                            game.Name,
+                            movedCount,
+                            pathFolder));
 
                         // Refresh data
                         if (gameSettings != null)
@@ -476,25 +495,16 @@ namespace ScreenshotsVisualizer.Services
         #endregion
 
         /// <summary>
-        /// Retrieves the <see cref="GameSettings"/> object for the specified game ID.
-        /// If no specific settings exist for the game, a new <see cref="GameSettings"/> instance is created using global folder settings.
-        /// Ensures that all global screenshot sources and archive folder settings are present in the returned object.
+        /// Retrieves effective <see cref="GameSettings"/> for the specified game ID.
+        /// Merges persisted per-game folders with global screenshot sources (when allowed) and the global archive folder at runtime only.
+        /// The global archive configuration is never injected into persisted <c>gameSettings</c>.
         /// </summary>
         /// <param name="id">The unique identifier of the game.</param>
-        /// <returns>The <see cref="GameSettings"/> for the specified game.</returns>
+        /// <returns>Effective game settings for scan and refresh operations.</returns>
         public GameSettings GetGameSettings(Guid id)
         {
-            List<FolderSettings> folderSettingsToMerge = new List<FolderSettings>();
-
-            if (PluginSettings.EnableFolderToSave && !PluginSettings.FolderToSave.IsNullOrEmpty())
-            {
-                folderSettingsToMerge.Add(new FolderSettings
-                {
-                    ScreenshotsFolder = PluginSettings.FolderToSave,
-                    UsedFilePattern = true,
-                    FilePattern = PluginSettings.FileSavePattern
-                });
-            }
+            FolderSettings globalArchiveFolder = SsvArchiveFolderHelper.TryCreateGlobalArchiveFolderSettings(PluginSettings);
+            List<FolderSettings> globalSourcesToMerge = new List<FolderSettings>();
 
             GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
             bool overrideGlobalConfigs = gameSettings?.OverrideGlobalConfigs ?? false;
@@ -507,7 +517,7 @@ namespace ScreenshotsVisualizer.Services
                         continue;
                     }
 
-                    folderSettingsToMerge.Add(new FolderSettings
+                    globalSourcesToMerge.Add(new FolderSettings
                     {
                         ScreenshotsFolder = globalSource.ScreenshotsFolder,
                         UsedFilePattern = globalSource.UsedFilePattern,
@@ -523,7 +533,7 @@ namespace ScreenshotsVisualizer.Services
                 {
                     Id = id,
                     OverrideGlobalConfigs = false,
-                    ScreenshotsFolders = folderSettingsToMerge
+                    ScreenshotsFolders = globalSourcesToMerge
                 };
             }
             else
@@ -533,7 +543,7 @@ namespace ScreenshotsVisualizer.Services
                     gameSettings.ScreenshotsFolders = new List<FolderSettings>();
                 }
 
-                foreach (FolderSettings folderSettings in folderSettingsToMerge)
+                foreach (FolderSettings folderSettings in globalSourcesToMerge)
                 {
                     FolderSettings finded = gameSettings.ScreenshotsFolders
                         .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder)
@@ -542,11 +552,42 @@ namespace ScreenshotsVisualizer.Services
 
                     if (finded == null)
                     {
-                        _ = gameSettings.ScreenshotsFolders.AddMissing(folderSettings);
+                        gameSettings.ScreenshotsFolders.Add(folderSettings);
                     }
                 }
             }
-            return gameSettings;
+
+            return AppendGlobalArchiveFolderForRuntime(gameSettings, globalArchiveFolder);
+        }
+
+        /// <summary>
+        /// Returns a copy of <paramref name="settings"/> that includes the global archive folder for runtime scan when needed.
+        /// Does not mutate persisted game settings.
+        /// </summary>
+        /// <param name="settings">Base game settings.</param>
+        /// <param name="globalArchiveFolder">Global archive folder settings.</param>
+        /// <returns>Effective settings for scan, including archive when applicable.</returns>
+        private static GameSettings AppendGlobalArchiveFolderForRuntime(GameSettings settings, FolderSettings globalArchiveFolder)
+        {
+            if (settings == null || globalArchiveFolder == null)
+            {
+                return settings;
+            }
+
+            if (settings.ScreenshotsFolders != null
+                && settings.ScreenshotsFolders.Exists(x => SsvArchiveFolderHelper.IsStrictArchiveFolderMatch(x, globalArchiveFolder)))
+            {
+                return settings;
+            }
+
+            GameSettings effectiveSettings = Serialization.GetClone(settings);
+            if (effectiveSettings.ScreenshotsFolders == null)
+            {
+                effectiveSettings.ScreenshotsFolders = new List<FolderSettings>();
+            }
+
+            effectiveSettings.ScreenshotsFolders.Insert(0, globalArchiveFolder);
+            return effectiveSettings;
         }
 
         public override GameScreenshots Get(Guid id, bool onlyCache = false, bool force = false)
@@ -606,7 +647,7 @@ namespace ScreenshotsVisualizer.Services
             Game game = API.Instance.Database.Games.Get(item.Id);
             if (game == null)
             {
-                Common.LogDebug(false, string.Format("[SsvDatabase] Game not found for {0}", item.Id));
+                LogScanWarn(string.Format("Game not found for {0}", item.Id));
                 return;
             }
 
@@ -627,7 +668,9 @@ namespace ScreenshotsVisualizer.Services
                     {
                         if (screenshotsFolder?.ScreenshotsFolder == null || screenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
                         {
-                            Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory is empty for {0}", game.Name));
+                            LogScanWarn(string.Format(
+                                "Screenshots directory is not configured for '{0}' (empty folder entry)",
+                                game.Name));
                             continue;
                         }
 
@@ -683,7 +726,11 @@ namespace ScreenshotsVisualizer.Services
                         }
                         else
                         {
-                            Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory not found for {0} - {1}", game.Name, pathFolder));
+                            LogScanWarn(string.Format(
+                                "Screenshots directory not found for '{0}' — configured '{1}', resolved '{2}'",
+                                game.Name,
+                                screenshotsFolder.ScreenshotsFolder,
+                                pathFolder));
                         }
                     }
                     catch (Exception ex)

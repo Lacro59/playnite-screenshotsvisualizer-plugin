@@ -1,5 +1,6 @@
 ﻿using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
+using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.ViewModels.Settings;
 using Playnite.SDK.Data;
 using System.Collections.Generic;
@@ -201,6 +202,36 @@ namespace ScreenshotsVisualizer
             }
 
             GlobalScreenshootsPath = string.Empty;
+        }
+
+        /// <summary>
+        /// Scans persisted per-game settings for archive folder entries that strictly duplicate
+        /// <see cref="FolderToSave"/> and <see cref="FileSavePattern"/>.
+        /// </summary>
+        /// <returns>Duplicate analysis summary for migration planning.</returns>
+        public SsvArchiveDuplicateAnalysis AnalyzePersistedArchiveDuplicates()
+        {
+            return SsvArchiveFolderHelper.AnalyzePersistedArchiveDuplicates(this);
+        }
+
+        /// <summary>
+        /// Removes persisted archive duplicates that strictly match the global archive configuration.
+        /// </summary>
+        /// <returns>Total number of removed duplicates.</returns>
+        public int RemovePersistedArchiveDuplicates()
+        {
+            return SsvArchiveFolderHelper.RemovePersistedArchiveDuplicates(this);
+        }
+
+        /// <summary>
+        /// Creates a ZIP backup of <c>config.json</c> in the plugin user data folder before migration.
+        /// </summary>
+        /// <param name="pluginUserDataPath">Plugin user data path.</param>
+        /// <param name="pluginName">Plugin display name for the archive file name.</param>
+        /// <returns>Backup operation result.</returns>
+        public SsvArchiveSettingsBackupResult CreateSettingsBackupZip(string pluginUserDataPath, string pluginName)
+        {
+            return SsvArchiveSettingsMigration.TryCreateSettingsBackupZip(pluginUserDataPath, pluginName);
         }
 
         #endregion

@@ -20,6 +20,7 @@ namespace ScreenshotsVisualizer.Services
     /// </summary>
     public class ScreenshotsVisualizerMenus : PluginMenus
     {
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly ScreenshotsVisualizer _plugin;
         private ScreenshotsVisualizerDatabase Database => (ScreenshotsVisualizerDatabase)_database;
 
@@ -113,6 +114,10 @@ namespace ScreenshotsVisualizer.Services
                         Description = ResourceProvider.GetString("LOCSsvMoveToSave"),
                         Action = gameMenuItem =>
                         {
+                            Common.LogDebug(true, string.Format(
+                                "[SsvMenus] MoveToFolderToSave requested for {0} game(s) (global archive config)",
+                                ids.Count));
+
                             if (ids.Count == 1)
                             {
                                 Database.MoveToFolderToSave(gameMenu);
@@ -280,7 +285,7 @@ namespace ScreenshotsVisualizer.Services
                         {
                             if (Database.PluginSettings.FolderToSave.IsNullOrEmpty() || Database.PluginSettings.FileSavePattern.IsNullOrEmpty())
                             {
-                                Common.LogDebug(false, "[SsvMenus] No settings to use folder to save");
+                                Logger.Warn("[SsvMenus] No settings to use folder to save (global FolderToSave / FileSavePattern)");
                                 API.Instance.Notifications.Add(new NotificationMessage(
                                     $"{Database.PluginName}-MoveToFolderToSave-Errors",
                                     $"{Database.PluginName}\r\n" + ResourceProvider.GetString("LOCSsvMoveToFolderToSaveError"),
@@ -289,6 +294,7 @@ namespace ScreenshotsVisualizer.Services
                             }
                             else
                             {
+                                Common.LogDebug(true, "[SsvMenus] MoveToFolderToSaveAll requested (global archive config)");
                                 Database.MoveToFolderToSaveAll();
                             }
                         }
