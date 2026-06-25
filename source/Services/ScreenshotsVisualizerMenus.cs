@@ -132,15 +132,7 @@ namespace ScreenshotsVisualizer.Services
 
                 if (gameScreenshots.Items.Count > 0)
                 {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = ResourceProvider.GetString("LOCSsv"),
-                        Description = ResourceProvider.GetString("LOCSsvConvertToJPG"),
-                        Action = gameMenuItem =>
-                        {
-                            Database.ConvertGameSsvToJpg(ids);
-                        }
-                    });
+                    AddGameConversionMenuItems(gameMenuItems, ResourceProvider.GetString("LOCSsv"), ids);
                 }
 
                 gameMenuItems.Add(new GameMenuItem
@@ -257,16 +249,7 @@ namespace ScreenshotsVisualizer.Services
                 Description = "-"
             });
 
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = section,
-                Description = ResourceProvider.GetString("LOCSsvConvertToJPGForAll"),
-                Action = gameMenuItem =>
-                {
-                    List<Guid> ids = Database.GetAllCache().Select(x => x.Id).ToList();
-                    Database.ConvertGameSsvToJpg(ids);
-                }
-            });
+            AddMainConversionMenuItems(mainMenuItems, section);
 
             if (Database.PluginSettings.EnableFolderToSave)
             {
@@ -317,6 +300,116 @@ namespace ScreenshotsVisualizer.Services
 #endif
 
             return mainMenuItems;
+        }
+
+        /// <summary>
+        /// Adds game menu entries for each configured ImageMagick conversion profile.
+        /// </summary>
+        /// <param name="menuItems">Target menu item collection.</param>
+        /// <param name="menuSection">Root menu section (<c>LOCSsv</c>).</param>
+        /// <param name="gameIds">Selected game identifiers to convert.</param>
+        private void AddGameConversionMenuItems(List<GameMenuItem> menuItems, string menuSection, List<Guid> gameIds)
+        {
+            IList<SsvImageConversionCustomCmd> commands = GetConfiguredConversionCommands();
+            if (commands.Count == 0)
+            {
+                return;
+            }
+
+            string convertImagesParentSection = BuildConvertImagesMenuSection(menuSection);
+
+            foreach (SsvImageConversionCustomCmd command in commands)
+            {
+                SsvImageConversionCustomCmd commandCopy = command;
+                menuItems.Add(new GameMenuItem
+                {
+                    MenuSection = convertImagesParentSection,
+                    Description = GetConversionCommandMenuLabel(commandCopy),
+                    Action = gameMenuItem =>
+                    {
+                        Common.LogDebug(true, string.Format(
+                            "[SsvMenus] ConvertGameScreenshots requested — profile '{0}', {1} game(s)",
+                            GetConversionCommandMenuLabel(commandCopy),
+                            gameIds.Count));
+                        Database.ConvertGameScreenshots(gameIds, commandCopy);
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// Adds main menu entries for each configured ImageMagick conversion profile (all cached games).
+        /// </summary>
+        /// <param name="menuItems">Target menu item collection.</param>
+        /// <param name="menuSection">Root menu section.</param>
+        private void AddMainConversionMenuItems(List<MainMenuItem> menuItems, string menuSection)
+        {
+            IList<SsvImageConversionCustomCmd> commands = GetConfiguredConversionCommands();
+            if (commands.Count == 0)
+            {
+                return;
+            }
+
+            string convertImagesParentSection = BuildConvertImagesMenuSection(menuSection);
+            List<Guid> allGameIds = Database.GetAllCache().Select(x => x.Id).ToList();
+
+            foreach (SsvImageConversionCustomCmd command in commands)
+            {
+                SsvImageConversionCustomCmd commandCopy = command;
+                menuItems.Add(new MainMenuItem
+                {
+                    MenuSection = convertImagesParentSection,
+                    Description = GetConversionCommandMenuLabel(commandCopy),
+                    Action = mainMenuItem =>
+                    {
+                        Common.LogDebug(true, string.Format(
+                            "[SsvMenus] ConvertGameScreenshots requested (all games) — profile '{0}', {1} game(s)",
+                            GetConversionCommandMenuLabel(commandCopy),
+                            allGameIds.Count));
+                        Database.ConvertGameScreenshots(allGameIds, commandCopy);
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// Returns persisted conversion profiles without seeding defaults.
+        /// </summary>
+        /// <returns>Configured commands or an empty list.</returns>
+        private IList<SsvImageConversionCustomCmd> GetConfiguredConversionCommands()
+        {
+            List<SsvImageConversionCustomCmd> commands = Database.PluginSettings?.CustomConversionCmds;
+            if (commands == null || commands.Count == 0)
+            {
+                return new List<SsvImageConversionCustomCmd>();
+            }
+
+            return commands.Where(x => x != null).ToList();
+        }
+
+        /// <summary>
+        /// Builds the nested menu section for conversion profile children.
+        /// </summary>
+        /// <param name="rootMenuSection">Root plugin menu section.</param>
+        /// <returns>Section path <c>LOCSsv|Convert images</c>.</returns>
+        private static string BuildConvertImagesMenuSection(string rootMenuSection)
+        {
+            return rootMenuSection + "|" + ResourceProvider.GetString("LOCSsvConvertImages");
+        }
+
+        /// <summary>
+        /// Resolves the menu label for a conversion profile.
+        /// </summary>
+        /// <param name="command">Conversion profile.</param>
+        /// <returns>Display name for the menu entry.</returns>
+        private static string GetConversionCommandMenuLabel(SsvImageConversionCustomCmd command)
+        {
+            if (!string.IsNullOrWhiteSpace(command?.Name))
+            {
+                return command.Name.Trim();
+            }
+
+            return ResourceProvider.GetString("LOCSsvImageConversionUnnamed");
         }
     }
 }

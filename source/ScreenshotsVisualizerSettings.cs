@@ -9,6 +9,8 @@ using System.Linq;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
 using System;
+using System.IO;
+using CommonPlayniteShared;
 using CommonPluginsShared.Plugins;
 using CommonPluginsShared.Interfaces;
 
@@ -20,6 +22,11 @@ namespace ScreenshotsVisualizer
         {
             ApplyFixedLibraryFilterPolicy();
             EnsureGlobalScreenshotSourcesMigrated();
+
+            if (CustomConversionCmds == null)
+            {
+                CustomConversionCmds = new List<SsvImageConversionCustomCmd>();
+            }
         }
 
         /// <summary>
@@ -71,8 +78,6 @@ namespace ScreenshotsVisualizer
 
         public bool HideScreenshotsInfos { get; set; } = false;
 
-        public int JpgQuality { get; set; } = 98;
-
         public bool EnableFolderToSave { get; set; } = false;
         public string FolderToSave { get; set; } = string.Empty;
         public string FileSavePattern { get; set; } = string.Empty;
@@ -105,6 +110,17 @@ namespace ScreenshotsVisualizer
 
         private string _ffprobePath;
         public string FfprobePath { get => _ffprobePath; set => SetValue(ref _ffprobePath, value); }
+
+        private string _imageMagickPath;
+        /// <summary>
+        /// Gets or sets the absolute path to the ImageMagick executable (<c>magick.exe</c> or <c>convert.exe</c>).
+        /// </summary>
+        public string ImageMagickPath { get => _imageMagickPath; set => SetValue(ref _imageMagickPath, value); }
+
+        /// <summary>
+        /// Gets or sets the list of ImageMagick conversion profiles exposed in game and main menus.
+        /// </summary>
+        public List<SsvImageConversionCustomCmd> CustomConversionCmds { get; set; } = new List<SsvImageConversionCustomCmd>();
 
         public bool UseExternalViewer { get; set; } = false;
 
@@ -235,6 +251,137 @@ namespace ScreenshotsVisualizer
         }
 
         #endregion
+
+        #region Image conversion custom commands
+
+        private const int DefaultJpgQuality = 98;
+
+        /// <summary>
+        /// Returns custom conversion commands after applying any pending legacy migration.
+        /// </summary>
+        /// <returns>Migrated conversion profiles.</returns>
+        public IList<SsvImageConversionCustomCmd> GetEffectiveCustomConversionCmds()
+        {
+            EnsureCustomConversionCmdsMigrated();
+            return CustomConversionCmds ?? new List<SsvImageConversionCustomCmd>();
+        }
+
+        /// <summary>
+        /// Ensures <see cref="CustomConversionCmds"/> is initialized and seeds a default JPEG profile
+        /// when the list is empty. Safe to call repeatedly.
+        /// </summary>
+        /// <param name="legacyJpgQuality">Legacy quality from <c>config.json</c> when upgrading existing settings.</param>
+        public void EnsureCustomConversionCmdsMigrated(int legacyJpgQuality = DefaultJpgQuality)
+        {
+            if (CustomConversionCmds == null)
+            {
+                CustomConversionCmds = new List<SsvImageConversionCustomCmd>();
+            }
+
+            if (CustomConversionCmds.Count > 0)
+            {
+                return;
+            }
+
+            CustomConversionCmds.Add(SsvImageConversionCustomCmd.CreateDefaultJpgProfile(ClampJpgQuality(legacyJpgQuality)));
+        }
+
+        /// <summary>
+        /// Applies image conversion migration using the legacy <c>JpgQuality</c> field from persisted settings.
+        /// </summary>
+        /// <param name="pluginUserDataPath">Plugin user data folder containing <c>config.json</c>.</param>
+        public void ApplyImageConversionMigrationFromConfig(string pluginUserDataPath)
+        {
+            if (CustomConversionCmds != null && CustomConversionCmds.Count > 0)
+            {
+                return;
+            }
+
+            EnsureCustomConversionCmdsMigrated(TryReadLegacyJpgQualityFromConfig(pluginUserDataPath));
+        }
+
+        /// <summary>
+        /// Normalizes custom conversion commands before JSON persistence.
+        /// </summary>
+        public void NormalizeCustomConversionCmdsForPersistence()
+        {
+            EnsureCustomConversionCmdsMigrated();
+
+            CustomConversionCmds = CustomConversionCmds
+                .Where(x => x != null)
+                .ToList();
+
+            foreach (SsvImageConversionCustomCmd cmd in CustomConversionCmds)
+            {
+                if (cmd.Id == Guid.Empty)
+                {
+                    cmd.Id = Guid.NewGuid();
+                }
+
+                if (string.IsNullOrWhiteSpace(cmd.Name))
+                {
+                    int quality = cmd.Quality ?? DefaultJpgQuality;
+                    cmd.Name = string.Format("JPG (quality {0})", quality);
+                }
+
+                cmd.DeleteOriginal = true;
+            }
+        }
+
+        /// <summary>
+        /// Reads the legacy <c>JpgQuality</c> value from persisted plugin settings.
+        /// </summary>
+        /// <param name="pluginUserDataPath">Plugin user data folder.</param>
+        /// <returns>Clamped legacy quality, or <see cref="DefaultJpgQuality"/> when absent.</returns>
+        public static int TryReadLegacyJpgQualityFromConfig(string pluginUserDataPath)
+        {
+            if (string.IsNullOrEmpty(pluginUserDataPath))
+            {
+                return DefaultJpgQuality;
+            }
+
+            string configPath = Path.Combine(pluginUserDataPath, PlaynitePaths.ConfigFileName);
+            if (!File.Exists(configPath))
+            {
+                return DefaultJpgQuality;
+            }
+
+            try
+            {
+                LegacyJpgQualitySnapshot snapshot = Serialization.FromJsonFile<LegacyJpgQualitySnapshot>(configPath);
+                if (snapshot != null)
+                {
+                    return ClampJpgQuality(snapshot.JpgQuality);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return DefaultJpgQuality;
+        }
+
+        private static int ClampJpgQuality(int quality)
+        {
+            if (quality < 1)
+            {
+                return 1;
+            }
+
+            if (quality > 100)
+            {
+                return 100;
+            }
+
+            return quality;
+        }
+
+        private sealed class LegacyJpgQualitySnapshot
+        {
+            public int JpgQuality { get; set; } = DefaultJpgQuality;
+        }
+
+        #endregion
     }
 
 
@@ -268,6 +415,16 @@ namespace ScreenshotsVisualizer
             private set => SetValue(ref _configurationContext, value);
         }
 
+        private SsvImageConversionSettingsViewModel _imageConversionSettings;
+        /// <summary>
+        /// Gets the view model for ImageMagick path and conversion profile list management.
+        /// </summary>
+        public SsvImageConversionSettingsViewModel ImageConversionSettings
+        {
+            get => _imageConversionSettings;
+            private set => SetValue(ref _imageConversionSettings, value);
+        }
+
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
         {
@@ -281,10 +438,13 @@ namespace ScreenshotsVisualizer
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
             Settings.ApplyFixedLibraryFilterPolicy();
             Settings.EnsureGlobalScreenshotSourcesMigrated();
+            Settings.ApplyImageConversionMigrationFromConfig(plugin.GetPluginUserDataPath());
 
             GamesConfiguration = new SsvGamesConfigurationViewModel(ScreenshotsVisualizer.PluginName);
             ConfigurationContext = new SsvConfigurationContextViewModel(GamesConfiguration);
             ConfigurationContext.LoadFrom(Settings);
+            ImageConversionSettings = new SsvImageConversionSettingsViewModel();
+            ImageConversionSettings.LoadFrom(Settings);
             _ = GamesConfiguration.LoadFromAsync(Settings.gameSettings);
 
             // Manage source
@@ -306,8 +466,10 @@ namespace ScreenshotsVisualizer
         public void BeginEdit()
         {
             EditingClone = Serialization.GetClone(Settings);
+            Settings.ApplyImageConversionMigrationFromConfig(Plugin.GetPluginUserDataPath());
             GamesConfiguration.ReloadFrom(Settings.gameSettings);
             ConfigurationContext.ReloadFrom(Settings);
+            ImageConversionSettings.LoadFrom(Settings);
             InitializeCommands(ScreenshotsVisualizer.PluginName, ScreenshotsVisualizer.PluginDatabase);
             GamesConfiguration.CaptureCancelSnapshot();
             ConfigurationContext.CaptureCancelSnapshot();
@@ -320,6 +482,7 @@ namespace ScreenshotsVisualizer
             Settings = EditingClone;
             GamesConfiguration.RestoreCancelSnapshot();
             ConfigurationContext.RestoreCancelSnapshot();
+            ImageConversionSettings.LoadFrom(Settings);
         }
 
         // Code executed when user decides to confirm changes made since BeginEdit was called.
@@ -328,7 +491,9 @@ namespace ScreenshotsVisualizer
         {
             Settings.ApplyFixedLibraryFilterPolicy();
             ConfigurationContext.ApplyToSettings(Settings);
+            ImageConversionSettings.ApplyToSettings(Settings);
             Settings.NormalizeGlobalScreenshotSourcesForPersistence();
+            Settings.NormalizeCustomConversionCmdsForPersistence();
             Settings.gameSettings = GamesConfiguration.ToGameSettingsList();
 
             Plugin.SavePluginSettings(Settings);
@@ -372,6 +537,18 @@ namespace ScreenshotsVisualizer
                 if (!filePath.IsNullOrEmpty())
                 {
                     Settings.FfprobePath = filePath;
+                }
+            });
+        }
+
+        public RelayCommand<object> BrowseSelectImageMagickCommand
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                var filePath = API.Instance.Dialogs.SelectFile("ImageMagick|magick.exe;convert.exe");
+                if (!filePath.IsNullOrEmpty())
+                {
+                    Settings.ImageMagickPath = filePath;
                 }
             });
         }

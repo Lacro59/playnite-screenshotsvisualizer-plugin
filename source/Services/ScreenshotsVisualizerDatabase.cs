@@ -18,7 +18,6 @@ using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
 using CommonPluginsShared.IO;
-using CommonPluginsShared.Images;
 using CommonPlayniteShared.Common;
 
 namespace ScreenshotsVisualizer.Services
@@ -26,6 +25,7 @@ namespace ScreenshotsVisualizer.Services
     public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettings, GameScreenshots, Screenshot>
     {
         private readonly SsvPathResolver _pathResolver;
+        private readonly ImageMagickConversionService _imageMagickConversionService;
 
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
@@ -33,6 +33,7 @@ namespace ScreenshotsVisualizer.Services
             PluginWindows = new ScreenshotsVisualizerWindows(PluginName, this);
             PluginExportCsv = new ScreenshotsVisualizerExport();
             _pathResolver = new SsvPathResolver();
+            _imageMagickConversionService = new ImageMagickConversionService(PluginName);
         }
 
         #region Logging
@@ -57,6 +58,69 @@ namespace ScreenshotsVisualizer.Services
         private static void LogScanWarn(string message)
         {
             Logger.Warn(string.Format("[SsvDatabase] {0}", message));
+        }
+
+        private static string GetConversionProfileLogLabel(SsvImageConversionCustomCmd command)
+        {
+            if (command == null)
+            {
+                return "null";
+            }
+
+            if (!string.IsNullOrWhiteSpace(command.Name))
+            {
+                return command.Name;
+            }
+
+            return string.IsNullOrWhiteSpace(command.OutputFormat) ? "unnamed" : command.OutputFormat;
+        }
+
+        private static int CountImageScreenshots(GameScreenshots data)
+        {
+            if (data?.Items == null)
+            {
+                return 0;
+            }
+
+            return data.Items.Count(x => !x.IsVideo);
+        }
+
+        private int CountImageScreenshots(IEnumerable<Guid> ids)
+        {
+            if (ids == null)
+            {
+                return 0;
+            }
+
+            int total = 0;
+            foreach (Guid id in ids)
+            {
+                GameScreenshots data = Get(id);
+                if (data.HasData)
+                {
+                    total += CountImageScreenshots(data);
+                }
+            }
+
+            return total;
+        }
+
+        private static void AdvanceConversionFileProgress(
+            GlobalProgressActionArgs progress,
+            Game game,
+            Screenshot screenshot)
+        {
+            if (progress == null)
+            {
+                return;
+            }
+
+            string fileName = Path.GetFileName(screenshot?.FileName);
+            string gameName = game?.Name ?? string.Empty;
+            progress.Text = string.IsNullOrEmpty(fileName)
+                ? gameName
+                : string.Format("{0} — {1}", gameName, fileName);
+            progress.CurrentProgressValue++;
         }
 
         #endregion
@@ -350,64 +414,191 @@ namespace ScreenshotsVisualizer.Services
         #region Convert data
 
         /// <summary>
-        /// Converts the specified screenshot image file to JPEG format using the configured JPEG quality.
-        /// If the screenshot is not a video, the method attempts the conversion and preserves the original file's last write time.
-        /// The original file is deleted after a successful conversion.
-        /// Any errors encountered during the process are logged.
+        /// Converts a single screenshot image using ImageMagick and the supplied profile.
+        /// Videos are ignored.
         /// </summary>
-        /// <param name="screenshot">The screenshot to convert to JPEG format.</param>
-        /// <returns>True if the conversion was successful; otherwise, false.</returns>
-        private bool ConvertToJpg(Screenshot screenshot)
+        /// <param name="screenshot">Screenshot to convert.</param>
+        /// <param name="command">Conversion profile.</param>
+        /// <returns><c>true</c> when conversion succeeded.</returns>
+        private bool ConvertScreenshot(Screenshot screenshot, SsvImageConversionCustomCmd command)
         {
+            if (screenshot == null || screenshot.IsVideo || command == null)
+            {
+                return false;
+            }
+
             try
             {
-                if (!screenshot.IsVideo)
-                {
-                    string oldFile = screenshot.FileName;
-                    string newFile = ImageTools.ConvertToJpg(oldFile, PluginSettings.JpgQuality);
+                SsvImageConversionResult result = _imageMagickConversionService.TryConvert(
+                    PluginSettings.ImageMagickPath,
+                    command,
+                    screenshot.FileName);
 
-                    if (!newFile.IsNullOrEmpty())
+                if (!result.Success)
+                {
+                    if (!result.ImageMagickNotFound && !string.IsNullOrEmpty(result.ErrorMessage))
                     {
-                        DateTime dt = File.GetLastWriteTime(oldFile);
-                        File.SetLastWriteTime(newFile, dt);
-                        FileSystem.DeleteFileSafe(oldFile);
-                        return true;
+                        LogScanWarn(string.Format(
+                            "Image conversion failed for '{0}': {1}",
+                            screenshot.FileName,
+                            result.ErrorMessage));
                     }
+
+                    return false;
                 }
+
+                LogScanDebug(string.Format(
+                    "Image converted — profile '{0}': '{1}' -> '{2}'",
+                    GetConversionProfileLogLabel(command),
+                    result.InputPath ?? screenshot.FileName,
+                    result.OutputPath ?? screenshot.FileName));
+
+                if (!string.IsNullOrEmpty(result.OutputPath)
+                    && !string.Equals(result.OutputPath, screenshot.FileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    screenshot.FileName = result.OutputPath;
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
                 LogError(ex, null, false);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Converts all screenshots for the specified game using the supplied ImageMagick profile.
+        /// </summary>
+        /// <param name="game">Game whose screenshots will be converted.</param>
+        /// <param name="command">Conversion profile.</param>
+        /// <param name="progress">Optional progress dialog updated once per image file.</param>
+        /// <returns><c>true</c> when at least one screenshot was converted.</returns>
+        public bool ConvertGameScreenshots(
+            Game game,
+            SsvImageConversionCustomCmd command,
+            GlobalProgressActionArgs progress = null)
+        {
+            if (game == null || command == null)
+            {
+                return false;
             }
 
-            return false;
+            bool hasConverted = false;
+            GameScreenshots data = Get(game);
+            if (!data.HasData)
+            {
+                LogScanDebug(string.Format(
+                    "ConvertGameScreenshots skipped for '{0}' — no screenshots in cache",
+                    game.Name));
+                return false;
+            }
+
+            int videoCount = data.Items.Count(x => x.IsVideo);
+            int imageCount = data.Items.Count - videoCount;
+            LogScanDebug(string.Format(
+                "ConvertGameScreenshots started for '{0}' — profile '{1}' ({2}), {3} image(s), {4} video(s) skipped",
+                game.Name,
+                GetConversionProfileLogLabel(command),
+                command.OutputFormat ?? string.Empty,
+                imageCount,
+                videoCount));
+
+            int convertedCount = 0;
+            int skippedOutputFormatCount = 0;
+            foreach (Screenshot screenshot in data.Items)
+            {
+                if (progress?.CancelToken.IsCancellationRequested == true)
+                {
+                    break;
+                }
+
+                if (screenshot.IsVideo)
+                {
+                    continue;
+                }
+
+                if (command.IsAlreadyOutputFormat(screenshot.FileName))
+                {
+                    skippedOutputFormatCount++;
+                    LogScanDebug(string.Format(
+                        "Image conversion skipped — profile '{0}': '{1}' already matches output format '{2}'",
+                        GetConversionProfileLogLabel(command),
+                        screenshot.FileName,
+                        command.OutputFormat ?? string.Empty));
+                    AdvanceConversionFileProgress(progress, game, screenshot);
+                    continue;
+                }
+
+                if (ConvertScreenshot(screenshot, command))
+                {
+                    hasConverted = true;
+                    convertedCount++;
+                }
+
+                AdvanceConversionFileProgress(progress, game, screenshot);
+            }
+
+            LogScanDebug(string.Format(
+                "ConvertGameScreenshots completed for '{0}' — profile '{1}', {2} file(s) converted, {3} already in target format",
+                game.Name,
+                GetConversionProfileLogLabel(command),
+                convertedCount,
+                skippedOutputFormatCount));
+
+            return hasConverted;
         }
 
         /// <summary>
-        /// Converts all screenshots associated with the specified game ID to JPEG format.
-        /// This method retrieves the game by its ID and delegates the conversion logic to <see cref="ConvertGameSsvToJpg(Game)"/>.
+        /// Converts all screenshots for the specified game identifier using the supplied profile.
         /// </summary>
-        /// <param name="id">The unique identifier of the game whose screenshots will be converted.</param>
-        /// <returns>True if at least one screenshot was successfully converted; otherwise, false.</returns>
-        private bool ConvertGameSsvToJpg(Guid id)
+        /// <param name="id">Playnite game identifier.</param>
+        /// <param name="command">Conversion profile.</param>
+        /// <param name="progress">Optional progress dialog updated once per image file.</param>
+        /// <returns><c>true</c> when at least one screenshot was converted.</returns>
+        private bool ConvertGameScreenshots(
+            Guid id,
+            SsvImageConversionCustomCmd command,
+            GlobalProgressActionArgs progress = null)
         {
-            return ConvertGameSsvToJpg(API.Instance.Database.Games.Get(id));
+            return ConvertGameScreenshots(API.Instance.Database.Games.Get(id), command, progress);
         }
 
         /// <summary>
-        /// Converts all screenshots for the specified list of game IDs to JPEG format.
-        /// This operation is performed within a global progress dialog, which allows the user to cancel the process.
-        /// For each game ID, the method attempts to convert the screenshots using <see cref="ConvertGameSsvToJpg(Guid)"/>.
-        /// After a successful conversion, the game data is refreshed from settings.
-        /// Any exceptions encountered are logged. The total operation time and the number of processed items are also logged.
+        /// Converts screenshots for the specified games using ImageMagick.
+        /// Shows a cancellable progress dialog and refreshes game data after each successful conversion.
         /// </summary>
-        /// <param name="ids">The list of game IDs whose screenshots will be converted to JPEG format.</param>
-        public void ConvertGameSsvToJpg(List<Guid> ids)
+        /// <param name="ids">Game identifiers to process.</param>
+        /// <param name="command">Conversion profile.</param>
+        public void ConvertGameScreenshots(List<Guid> ids, SsvImageConversionCustomCmd command)
         {
+            if (ids == null || ids.Count == 0 || command == null)
+            {
+                return;
+            }
+
+            string imageMagickPath = PluginSettings.ImageMagickPath ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(imageMagickPath) || !File.Exists(imageMagickPath))
+            {
+                LogScanWarn(string.Format(
+                    "ConvertGameScreenshots — ImageMagick executable not found (path: '{0}')",
+                    imageMagickPath));
+            }
+
+            int totalImageFiles = CountImageScreenshots(ids);
+            LogScanDebug(string.Format(
+                "Task ConvertGameScreenshots started — profile '{0}' ({1}), {2} game(s), {3} image file(s), ImageMagick path '{4}'",
+                GetConversionProfileLogLabel(command),
+                command.OutputFormat ?? string.Empty,
+                ids.Count,
+                totalImageFiles,
+                imageMagickPath));
+
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonConverting")}")
             {
                 Cancelable = true,
-                IsIndeterminate = ids.Count == 1
+                IsIndeterminate = totalImageFiles <= 0
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
@@ -416,35 +607,33 @@ namespace ScreenshotsVisualizer.Services
                 stopWatch.Start();
 
                 string cancelText = string.Empty;
-                activateGlobalProgress.IsIndeterminate = true;
-                if (ids.Count > 1)
+                activateGlobalProgress.IsIndeterminate = totalImageFiles <= 0;
+                if (totalImageFiles > 0)
                 {
-                    activateGlobalProgress.IsIndeterminate = false;
-                    activateGlobalProgress.ProgressMaxValue = ids.Count;
+                    activateGlobalProgress.ProgressMaxValue = totalImageFiles;
                 }
 
                 _database.BeginBufferUpdate();
 
                 try
                 {
-                    ids.ForEach(y =>
+                    foreach (Guid gameId in ids)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                         {
                             cancelText = " canceled";
-                            return;
+                            break;
                         }
 
-                        activateGlobalProgress.Text = API.Instance.Database.Games.Get(y)?.Name;
-                        if (ConvertGameSsvToJpg(y))
+                        if (ConvertGameScreenshots(gameId, command, activateGlobalProgress))
                         {
-                            GameSettings gameSettings = GetGameSettings(y);
+                            GameSettings gameSettings = GetGameSettings(gameId);
                             if (gameSettings != null)
                             {
                                 SetDataFromSettings(gameSettings);
                             }
                         }
-                    });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -456,40 +645,13 @@ namespace ScreenshotsVisualizer.Services
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 LogScanDebug(string.Format(
-                    "Task ConvertGameSsvToJpg(){0} - {1:00}:{2:00}.{3:00} for {4} items",
+                    "Task ConvertGameScreenshots(){0} - {1:00}:{2:00}.{3:00} for {4} image file(s)",
                     cancelText,
                     ts.Minutes,
                     ts.Seconds,
                     ts.Milliseconds / 10,
-                    ids.Count));
+                    totalImageFiles));
             }, globalProgressOptions);
-        }
-
-        /// <summary>
-        /// Converts all screenshots associated with the specified game to JPEG format.
-        /// For each screenshot that is not a video, the method attempts the conversion using <see cref="ConvertToJpg(Screenshot)"/>.
-        /// Returns true if at least one screenshot was successfully converted; otherwise, false.
-        /// </summary>
-        /// <param name="game">The game whose screenshots will be converted to JPEG format.</param>
-        /// <returns>True if at least one screenshot was converted; otherwise, false.</returns>
-        public bool ConvertGameSsvToJpg(Game game)
-        {
-            bool hasConverted = false;
-            if (game != null)
-            {
-                GameScreenshots data = Get(game);
-                if (data.HasData)
-                {
-                    data.Items.ForEach(x =>
-                    {
-                        if (ConvertToJpg(x))
-                        {
-                            hasConverted = true;
-                        }
-                    });
-                }
-            }
-            return hasConverted;
         }
 
         #endregion

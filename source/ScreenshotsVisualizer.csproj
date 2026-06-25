@@ -127,9 +127,12 @@
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
+    <Compile Include="Models\ImageMagickProcessInvocation.cs" />
     <Compile Include="Models\SsvArchiveDuplicateAnalysis.cs" />
     <Compile Include="Models\SsvArchiveMigrationResult.cs" />
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
+    <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
+    <Compile Include="Models\SsvImageConversionResult.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\StartPage\SsvCarouselOptions.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\MediaElementExtend.xaml.cs">
@@ -174,6 +177,9 @@
     <Compile Include="ViewModels\Settings\AvailableGameItem.cs" />
     <Compile Include="ViewModels\Settings\ConfiguredGameItem.cs" />
     <Compile Include="ViewModels\Settings\FolderEntryItem.cs" />
+    <Compile Include="ViewModels\Settings\SsvImageConversionCustomCmdEditorViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SsvImageConversionCustomCmdItem.cs" />
+    <Compile Include="ViewModels\Settings\SsvImageConversionSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvFolderSourceEditorViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvGameConfigurationPreset.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextItem.cs" />
@@ -182,6 +188,8 @@
     <Compile Include="ViewModels\Settings\SsvGamesConfigurationViewModel.cs" />
     <Compile Include="ScreenshotsVisualizer.cs" />
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
+    <Compile Include="Services\ImageMagickCommandBuilder.cs" />
+    <Compile Include="Services\ImageMagickConversionService.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
     <Compile Include="Services\SsvArchiveSettingsMigration.cs" />
@@ -196,6 +204,9 @@
     </Compile>
     <Compile Include="Views\Settings\SsvFolderSourceEditorView.xaml.cs">
       <DependentUpon>SsvFolderSourceEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SsvImageConversionCustomCmdEditorView.xaml.cs">
+      <DependentUpon>SsvImageConversionCustomCmdEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings\SsvSelectUnconfiguredGameView.xaml.cs">
       <DependentUpon>SsvSelectUnconfiguredGameView.xaml</DependentUpon>
@@ -511,6 +522,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\SsvFolderSourceEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SsvImageConversionCustomCmdEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

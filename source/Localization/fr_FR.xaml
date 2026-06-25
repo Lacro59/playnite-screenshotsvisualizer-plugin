@@ -9,6 +9,24 @@
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">L'exécutable ffmpeg n'a pas été trouvé</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">L'exécutable ffprobe n'a pas été trouvé</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">L'exécutable ImageMagick n'a pas été trouvé</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickPathLabel">Chemin ImageMagick :</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionSection">Commandes de conversion d'images</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionTabTitle">Conversion d'images</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionIntro">Configurez ImageMagick et les profils de conversion personnalisés utilisés depuis les menus jeu et principal.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">Ajouter une commande</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">Modifier la commande</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAddTitle">Ajouter une commande de conversion</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEditTitle">Modifier la commande de conversion</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionName">Nom</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Format de sortie</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">Qualité</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Supprimer les métadonnées</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Arguments supplémentaires</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Aperçu de la commande</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">Le nom de la commande est requis.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Le format de sortie est requis.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNoCommands">Aucune commande de conversion configurée.</sys:String>
 
 
     <!-- MainView -->
@@ -21,8 +39,8 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Voir les captures d'écran du jeu</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ouvrir le répertoire des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Déplacer les captures d'écran vers le répertoire de sauvegarde</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPG">Convertir les images en JPG</sys:String>
-    <sys:String x:Key="LOCSsvConvertToJPGForAll">Convertir les images en JPG pour toutes les captures d'écran des jeux</sys:String>
+    <sys:String x:Key="LOCSsvConvertImages">Convertir les images</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionUnnamed">Commande sans nom</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
 
@@ -95,8 +113,6 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Transformer en chemin absolu</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformer en chemin relatif</sys:String>
     
-    <sys:String x:Key="LOCSsJpgQuality">Qualité JPG</sys:String>
-
     <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">En plus, vous pouvez utiliser :
 - {DateModified}		yyyy-MM-dd
 - {DateTimeModified}	yyyy-MM-dd HH_mm_ss

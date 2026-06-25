@@ -114,6 +114,23 @@ namespace ScreenshotsVisualizer.Views
             }
         }
 
+        private void EditSelectedConversionCommand_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ScreenshotsVisualizerSettingsViewModel viewModel)
+            {
+                viewModel.ImageConversionSettings.EditSelectedCommand();
+            }
+        }
+
+        private void ConversionCommandsList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is ScreenshotsVisualizerSettingsViewModel viewModel
+                && viewModel.ImageConversionSettings.HasSelectedCommand)
+            {
+                viewModel.ImageConversionSettings.EditSelectedCommand();
+            }
+        }
+
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
         {
             try
