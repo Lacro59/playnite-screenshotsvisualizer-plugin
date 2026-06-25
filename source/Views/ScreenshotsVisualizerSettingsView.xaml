@@ -7,11 +7,11 @@
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:pcmd="clr-namespace:CommonPlayniteShared.Commands"
-             xmlns:ScreenshotsVisualizer="clr-namespace:ScreenshotsVisualizer"
+             xmlns:ssv="clr-namespace:ScreenshotsVisualizer"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="650"
-             d:DataContext="{d:DesignInstance ScreenshotsVisualizer:ScreenshotsVisualizerSettingsViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance ssv:ScreenshotsVisualizerSettingsViewModel, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -28,17 +28,22 @@
     </UserControl.Resources>
 
     <Grid Margin="20">
-        <TabControl Name="PART_TabControl">
+        <TabControl Name="PART_TabControl" SelectionChanged="PART_TabControl_SelectionChanged">
             <TabItem Header="{DynamicResource LOCMenuConfigurationTitle}">
-                <ScrollViewer Name="PART_Settings" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="0,10,0,0">
-                        <CheckBox Name="cbEnableTag" IsChecked="{Binding Settings.EnableTag}" VerticalAlignment="Center">
-                            <Label Content="{DynamicResource LOCSsvAddTag}" />
-                        </CheckBox>
+                <Grid Name="PART_ConfigurationTab" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                        <Separator Margin="0,15,0,15" />
+                    <CheckBox Grid.Row="0" Name="cbEnableTag" IsChecked="{Binding Settings.EnableTag}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSsvAddTag}" />
+                    </CheckBox>
 
-                        <Grid MinHeight="280" MaxHeight="420">
+                    <Separator Grid.Row="1" Margin="0,15,0,15" />
+
+                    <Grid Grid.Row="2" x:Name="PART_ConfigurationPanel" MinHeight="280">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.35*" MinWidth="200" />
                                 <ColumnDefinition Width="10" />
@@ -59,7 +64,8 @@
                                                             Text="{Binding ConfigurationContext.ContextSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             TextChanged="ContextSearchBox_TextChanged" />
 
-                                <ListBox ItemsSource="{Binding ConfigurationContext.FilteredContextItems}"
+                                <ListBox x:Name="PART_ContextList"
+                                         ItemsSource="{Binding ConfigurationContext.FilteredContextItems}"
                                          SelectedItem="{Binding ConfigurationContext.SelectedContext}"
                                          ItemTemplate="{StaticResource SsvConfigurationContextRowTemplate}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -157,9 +163,7 @@
                                          VirtualizingPanel.CacheLength="5" />
                             </DockPanel>
                         </Grid>
-
-                    </StackPanel>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
 
             <TabItem Header="{DynamicResource LOCSsvConfigSectionArchiving}">

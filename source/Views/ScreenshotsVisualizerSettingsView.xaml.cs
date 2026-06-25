@@ -7,16 +7,94 @@ using ScreenshotsVisualizer.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace ScreenshotsVisualizer.Views
 {
     public partial class ScreenshotsVisualizerSettingsView : UserControl
     {
+        private const double ConfigurationPanelMinHeight = 280;
+        private const double ConfigurationPanelReservedHeight = 130;
+
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         public ScreenshotsVisualizerSettingsView()
         {
             InitializeComponent();
+            Loaded += ScreenshotsVisualizerSettingsView_Loaded;
+            SizeChanged += ScreenshotsVisualizerSettingsView_SizeChanged;
+        }
+
+        private void ScreenshotsVisualizerSettingsView_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(UpdateConfigurationPanelHeight), DispatcherPriority.Loaded);
+        }
+
+        private void ScreenshotsVisualizerSettingsView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged)
+            {
+                UpdateConfigurationPanelHeight();
+            }
+        }
+
+        private void PART_TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateConfigurationPanelHeight();
+        }
+
+        /// <summary>
+        /// Sizes the configuration master-detail panel to the available settings viewport height.
+        /// </summary>
+        private void UpdateConfigurationPanelHeight()
+        {
+            if (PART_ConfigurationPanel == null)
+            {
+                return;
+            }
+
+            double viewportHeight = GetSettingsViewportHeight();
+            if (viewportHeight <= 0)
+            {
+                return;
+            }
+
+            double availableHeight = viewportHeight - ConfigurationPanelReservedHeight;
+            if (availableHeight < ConfigurationPanelMinHeight)
+            {
+                availableHeight = ConfigurationPanelMinHeight;
+            }
+
+            PART_ConfigurationPanel.MaxHeight = availableHeight;
+        }
+
+        /// <summary>
+        /// Resolves the usable vertical space for the settings view.
+        /// </summary>
+        private double GetSettingsViewportHeight()
+        {
+            if (PART_TabControl != null && PART_TabControl.ActualHeight > 0)
+            {
+                return PART_TabControl.ActualHeight;
+            }
+
+            if (ActualHeight > 0)
+            {
+                return ActualHeight;
+            }
+
+            var element = Parent as FrameworkElement;
+            while (element != null)
+            {
+                if (element.ActualHeight > 0)
+                {
+                    return element.ActualHeight;
+                }
+
+                element = element.Parent as FrameworkElement;
+            }
+
+            return 0;
         }
 
         private void EditSelectedActiveSource_Click(object sender, RoutedEventArgs e)
