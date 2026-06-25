@@ -46,5 +46,25 @@ namespace ScreenshotsVisualizer.Views
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
+
+        private void ContextSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!(DataContext is ScreenshotsVisualizerSettingsViewModel viewModel))
+            {
+                return;
+            }
+
+            string searchText = string.Empty;
+            if (sender != null)
+            {
+                var textProperty = sender.GetType().GetProperty("Text");
+                searchText = textProperty?.GetValue(sender)?.ToString() ?? string.Empty;
+            }
+
+            if (!string.Equals(viewModel.ConfigurationContext.ContextSearchText, searchText, StringComparison.Ordinal))
+            {
+                viewModel.ConfigurationContext.ContextSearchText = searchText;
+            }
+        }
     }
 }

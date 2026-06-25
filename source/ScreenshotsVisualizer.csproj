@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\Settings\AvailableGameItem.cs" />
     <Compile Include="ViewModels\Settings\ConfiguredGameItem.cs" />
     <Compile Include="ViewModels\Settings\FolderEntryItem.cs" />
+    <Compile Include="ViewModels\Settings\SsvFolderSourceEditorViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvGameConfigurationPreset.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextItem.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextKind.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\ScreenshotsVisualizerExport.cs" />
     <Compile Include="Services\ScreenshotsVisualizerMenus.cs" />
+    <Compile Include="Services\SsvPathResolver.cs" />
     <Compile Include="Services\ScreenshotsVisualizerTopPanelItem.cs" />
     <Compile Include="Services\ScreenshotsVisualizerViewSidebar.cs" />
     <Compile Include="Services\ScreenshotsVisualizerWindows.cs" />

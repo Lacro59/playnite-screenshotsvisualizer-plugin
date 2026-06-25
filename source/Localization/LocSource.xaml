@@ -149,6 +149,7 @@ If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selectin
     <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Configured games</sys:String>
     <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} game(s)</sys:String>
     <sys:String x:Key="LOCSsvConfigNoActiveSources">No screenshot sources configured for this context.</sys:String>
+    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Override global sources for this game</sys:String>
 
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
     <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Global paths</sys:String>
@@ -175,5 +176,8 @@ If you have the unique folder {DropboxFolder}\Screenshots\{Name}, after selectin
     <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Available in a future update.</sys:String>
     <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Available in a future update.</sys:String>
     <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Configuration test will be available in a future update.</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestGame">Test game</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathExists">Resolved folder exists.</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Resolved folder does not exist.</sys:String>
     
 </ResourceDictionary>

@@ -372,6 +372,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 Name = game.Name,
                 SourceName = game.SourceName,
                 SourceIcon = game.SourceIcon,
+                OverrideGlobalConfigs = false,
                 UsedFilePattern = false,
                 FilePattern = string.Empty,
                 ScanSubFolders = false
@@ -512,6 +513,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                     Name = game.Name,
                     SourceName = game.SourceName,
                     SourceIcon = game.SourceIcon,
+                    OverrideGlobalConfigs = false,
                     UsedFilePattern = false,
                     FilePattern = string.Empty,
                     ScanSubFolders = false

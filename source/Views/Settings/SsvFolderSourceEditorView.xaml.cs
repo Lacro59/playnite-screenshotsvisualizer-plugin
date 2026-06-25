@@ -5,6 +5,8 @@ using Playnite.SDK;
 using ScreenshotsVisualizer.ViewModels.Settings;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +22,7 @@ namespace ScreenshotsVisualizer.Views.Settings
         private readonly ObservableCollection<FolderEntryItem> _activeSources;
         private readonly Action _onSourcesChanged;
         private readonly FolderEntryItem _workingCopy;
+        private readonly SsvFolderSourceEditorViewModel _viewModel;
         private readonly bool _isAddMode;
 
         /// <summary>
@@ -31,6 +34,7 @@ namespace ScreenshotsVisualizer.Views.Settings
         public SsvFolderSourceEditorView(
             FolderEntryItem targetEntry,
             ObservableCollection<FolderEntryItem> activeSources,
+            Guid? preferredGameId,
             Action onSourcesChanged)
         {
             _targetEntry = targetEntry;
@@ -41,7 +45,8 @@ namespace ScreenshotsVisualizer.Views.Settings
                 ? new FolderEntryItem()
                 : new FolderEntryItem(targetEntry.ToModel());
 
-            DataContext = _workingCopy;
+            _viewModel = new SsvFolderSourceEditorViewModel(_workingCopy, preferredGameId);
+            DataContext = _viewModel;
             InitializeComponent();
         }
 
@@ -101,6 +106,20 @@ namespace ScreenshotsVisualizer.Views.Settings
 
             _onSourcesChanged?.Invoke();
             CloseDialog(true);
+        }
+
+        private void OpenResolvedFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_viewModel == null || string.IsNullOrEmpty(_viewModel.ResolvedPath) || !Directory.Exists(_viewModel.ResolvedPath))
+            {
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = _viewModel.ResolvedPath,
+                UseShellExecute = true
+            });
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

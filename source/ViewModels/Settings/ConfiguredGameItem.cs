@@ -15,6 +15,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         public string Name { get; set; }
         public string SourceName { get; set; }
         public string SourceIcon { get; set; }
+        public bool OverrideGlobalConfigs { get; set; }
 
         /// <summary>
         /// Legacy game-level fields kept for settings serialization compatibility.
@@ -59,6 +60,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 Name = name,
                 SourceName = sourceName,
                 SourceIcon = sourceIcon,
+                OverrideGlobalConfigs = settings.OverrideGlobalConfigs,
                 UsedFilePattern = settings.UsedFilePattern,
                 ScanSubFolders = settings.ScanSubFolders,
                 FilePattern = settings.FilePattern
@@ -95,6 +97,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             {
                 Id = Id,
                 ScreenshotsFolders = ScreenshotsFolders.Select(x => x.ToModel()).ToList(),
+                OverrideGlobalConfigs = OverrideGlobalConfigs,
                 UsedFilePattern = UsedFilePattern,
                 FilePattern = FilePattern,
                 ScanSubFolders = ScanSubFolders

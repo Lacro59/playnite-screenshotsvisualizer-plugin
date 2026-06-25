@@ -53,7 +53,13 @@
                                         Content="{DynamicResource LOCSsvConfigAddGameTitle}"
                                         Command="{Binding ConfigurationContext.AddConfiguredGameCommand}" />
 
-                                <ListBox ItemsSource="{Binding ConfigurationContext.ContextItems}"
+                                <playnitecontrols:SearchBox x:Name="ContextSearchBox"
+                                                            DockPanel.Dock="Top"
+                                                            Margin="0,0,0,8"
+                                                            Text="{Binding ConfigurationContext.ContextSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            TextChanged="ContextSearchBox_TextChanged" />
+
+                                <ListBox ItemsSource="{Binding ConfigurationContext.FilteredContextItems}"
                                          SelectedItem="{Binding ConfigurationContext.SelectedContext}"
                                          ItemTemplate="{StaticResource SsvConfigurationContextRowTemplate}"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -126,6 +132,13 @@
                                             CommandParameter="{Binding ConfigurationContext.SelectedConfiguredGame}"
                                             Visibility="{Binding ConfigurationContext.IsGameContextSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 </StackPanel>
+
+                                <CheckBox DockPanel.Dock="Top"
+                                          Margin="0,0,0,8"
+                                          Visibility="{Binding ConfigurationContext.IsGameContextSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          IsChecked="{Binding ConfigurationContext.SelectedConfiguredGame.OverrideGlobalConfigs}">
+                                    <Label Content="{DynamicResource LOCSsvConfigOverrideGlobalConfigs}" />
+                                </CheckBox>
 
                                 <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
                                            Text="{DynamicResource LOCSsvConfigNoActiveSources}"

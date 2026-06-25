@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Text="{Binding ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Column="0" Text="{Binding WorkingCopy.ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="2" Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
                     ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"
                     Click="BrowseFolderButton_Click" />
@@ -50,16 +50,16 @@
         <StackPanel Grid.Row="6" Orientation="Horizontal">
             <ToggleButton ToolTip="{DynamicResource LOCCommonAddFilePattern}"
                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;"
-                          IsChecked="{Binding UsedFilePattern, FallbackValue=False}" />
+                          IsChecked="{Binding WorkingCopy.UsedFilePattern, FallbackValue=False}" />
             <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvFilePattern}" VerticalAlignment="Center" />
             <ToggleButton Margin="24,0,0,0" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;"
-                          IsChecked="{Binding ScanSubFolders, FallbackValue=False}" />
+                          IsChecked="{Binding WorkingCopy.ScanSubFolders, FallbackValue=False}" />
             <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvScanSubFolders}" VerticalAlignment="Center" />
         </StackPanel>
 
         <Grid Grid.Row="8"
-              Visibility="{Binding UsedFilePattern, Converter={StaticResource BooleanToVisibilityConverter}}">
+              Visibility="{Binding WorkingCopy.UsedFilePattern, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="10" />
@@ -69,17 +69,65 @@
             <Button Grid.Column="0" Content="&#xe98d;" FontFamily="{DynamicResource CommonFont}"
                     ToolTip="{DynamicResource LOCSsvNumberToDigit}"
                     Click="ReplaceDigitButton_Click" />
-            <TextBox Grid.Column="2" Text="{Binding FilePattern, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox Grid.Column="2" Text="{Binding WorkingCopy.FilePattern, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.ToolTip>
                     <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
                 </TextBox.ToolTip>
             </TextBox>
         </Grid>
 
-        <TextBlock Grid.Row="10" Style="{DynamicResource BaseTextBlockStyle}"
-                   Foreground="{DynamicResource GlyphBrush}"
-                   Text="{DynamicResource LOCSsvConfigTestConfigComingSoon}"
-                   VerticalAlignment="Bottom" TextWrapping="Wrap" />
+        <Border Grid.Row="10" BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="1" Padding="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="5" FontWeight="SemiBold" Text="{DynamicResource LOCSsvConfigPreview}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource LOCSsvConfigTestGame}" />
+                <ComboBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"
+                          ItemsSource="{Binding TestGames}"
+                          SelectedItem="{Binding SelectedTestGame}"
+                          DisplayMemberPath="Name" />
+
+                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Text="{DynamicResource LOCSsvConfigSourcePath}" />
+                <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3"
+                         Text="{Binding ResolvedPath, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap" />
+
+                <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource LOCSsvFilePattern}" />
+                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3"
+                         Text="{Binding ResolvedFilePattern, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap" />
+
+                <TextBlock Grid.Row="8" Grid.Column="2"
+                           Foreground="{DynamicResource GlyphBrush}"
+                           Text="{Binding ResolvedPathStatusText}" />
+                <Button Grid.Row="8" Grid.Column="4"
+                        Content="&#xe97f;"
+                        FontFamily="{DynamicResource CommonFont}"
+                        ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}"
+                        IsEnabled="{Binding ResolvedPathExists}"
+                        Click="OpenResolvedFolderButton_Click" />
+            </Grid>
+        </Border>
 
         <Border Grid.Row="12" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource NormalBorderBrush}" Padding="0,10,0,0">
             <DockPanel LastChildFill="False">

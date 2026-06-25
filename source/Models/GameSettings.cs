@@ -10,6 +10,7 @@ namespace ScreenshotsVisualizer.Models
     {
         public Guid Id { get; set; }
         public List<FolderSettings> ScreenshotsFolders { get; set; }
+        public bool OverrideGlobalConfigs { get; set; }
 
         // TODO TEMP
         public bool ScanSubFolders { get; set; }

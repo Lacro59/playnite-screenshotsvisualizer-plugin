@@ -26,6 +26,8 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         private List<FolderSettings> _cancelGlobalSourcesSnapshot;
         private bool _cancelSelectedIsGlobal = true;
         private Guid? _cancelSelectedGameId;
+        private string _contextSearchText = string.Empty;
+        private readonly ObservableCollection<SsvConfigurationContextItem> _filteredContextItems = new ObservableCollection<SsvConfigurationContextItem>();
 
         /// <summary>
         /// Initializes a new configuration context view model.
@@ -36,6 +38,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             GamesConfiguration = gamesConfiguration ?? throw new ArgumentNullException(nameof(gamesConfiguration));
 
             ContextItems = new ObservableCollection<SsvConfigurationContextItem> { SsvConfigurationContextItem.Global };
+            _filteredContextItems.Add(SsvConfigurationContextItem.Global);
             _activeSources = _globalSources;
 
             GamesConfiguration.ConfiguredGames.CollectionChanged += OnConfiguredGamesCollectionChanged;
@@ -66,6 +69,31 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         public ObservableCollection<SsvConfigurationContextItem> ContextItems { get; }
 
         /// <summary>
+        /// Gets the filtered context list shown in the left panel.
+        /// </summary>
+        public ObservableCollection<SsvConfigurationContextItem> FilteredContextItems => _filteredContextItems;
+
+        /// <summary>
+        /// Gets or sets the search text applied to configured game contexts.
+        /// </summary>
+        public string ContextSearchText
+        {
+            get => _contextSearchText;
+            set
+            {
+                string normalized = value ?? string.Empty;
+                if (string.Equals(_contextSearchText, normalized, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                Common.LogDebug(true, $"[SsvConfigContext] ContextSearchText changed: '{_contextSearchText}' -> '{normalized}'");
+                SetValue(ref _contextSearchText, normalized);
+                RefreshFilteredContexts();
+            }
+        }
+
+        /// <summary>
         /// Gets folder sources for the currently selected context.
         /// </summary>
         public ObservableCollection<FolderEntryItem> ActiveSources => _activeSources;
@@ -78,14 +106,17 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             get => _selectedContext;
             set
             {
-                if (_selectedContext == value)
+                SsvConfigurationContextItem normalizedContext = value ?? SsvConfigurationContextItem.Global;
+                if (_selectedContext == normalizedContext)
                 {
                     return;
                 }
 
-                _selectedContext = value ?? SsvConfigurationContextItem.Global;
+                Common.LogDebug(true, $"[SsvConfigContext] SelectedContext change requested: '{_selectedContext?.DisplayName ?? "null"}' -> '{normalizedContext.DisplayName}'");
+                _selectedContext = normalizedContext;
                 _selectedIsGlobal = _selectedContext.IsGlobal;
                 _selectedGameId = _selectedContext.Game?.Id;
+                Common.LogDebug(true, $"[SsvConfigContext] SelectedContext applied: '{_selectedContext.DisplayName}', IsGlobal={_selectedIsGlobal}, GameId={_selectedGameId}");
                 OnPropertyChanged();
                 NotifyContextSelectionChanged();
                 UpdateActiveSourcesBinding();
@@ -439,6 +470,45 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             {
                 ContextItems.Add(SsvConfigurationContextItem.ForGame(game));
             }
+
+            RefreshFilteredContexts();
+        }
+
+        private void RefreshFilteredContexts()
+        {
+            string query = _contextSearchText?.Trim();
+            Guid? selectedGameId = _selectedContext?.Game?.Id;
+
+            _filteredContextItems.Clear();
+
+            foreach (SsvConfigurationContextItem context in ContextItems)
+            {
+                bool keep = context.IsGlobal;
+
+                if (!keep)
+                {
+                    if (_selectedContext != null && context.Game?.Id == selectedGameId)
+                    {
+                        keep = true;
+                    }
+                    else if (string.IsNullOrEmpty(query))
+                    {
+                        keep = true;
+                    }
+                    else
+                    {
+                        keep = context.DisplayName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+                        Common.LogDebug(true, $"[SsvConfigContext] FilterContextItem: query='{query}', context='{context.DisplayName}', match={keep}");
+                    }
+                }
+
+                if (keep)
+                {
+                    _filteredContextItems.Add(context);
+                }
+            }
+
+            OnPropertyChanged(nameof(FilteredContextItems));
         }
 
         private void RestoreSelection()
@@ -655,6 +725,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             SsvFolderSourceEditorView view = new SsvFolderSourceEditorView(
                 targetEntry,
                 _activeSources,
+                SelectedConfiguredGame?.Id,
                 OnActiveSourcesEdited);
 
             string titleKey = isAdd ? "LOCSsvConfigAddSourceTitle" : "LOCSsvConfigEditSourceTitle";

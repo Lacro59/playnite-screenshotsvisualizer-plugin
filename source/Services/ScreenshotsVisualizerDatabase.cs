@@ -17,20 +17,21 @@ using System.Windows;
 using ScreenshotsVisualizer.Views;
 using System.Threading;
 using CommonPluginsShared.IO;
-using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Images;
 using CommonPlayniteShared.Common;
-using System.Text;
 
 namespace ScreenshotsVisualizer.Services
 {
     public class ScreenshotsVisualizerDatabase : PluginDatabaseObject<ScreenshotsVisualizerSettings, GameScreenshots, Screenshot>
     {
+        private readonly SsvPathResolver _pathResolver;
+
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
             TagBefore = "[SSV]";
             PluginWindows = new ScreenshotsVisualizerWindows(PluginName, this);
             PluginExportCsv = new ScreenshotsVisualizerExport();
+            _pathResolver = new SsvPathResolver();
         }
 
         #region Logging
@@ -483,11 +484,11 @@ namespace ScreenshotsVisualizer.Services
         /// <returns>The <see cref="GameSettings"/> for the specified game.</returns>
         public GameSettings GetGameSettings(Guid id)
         {
-            List<FolderSettings> folderSettingsGlobal = new List<FolderSettings>();
+            List<FolderSettings> folderSettingsToMerge = new List<FolderSettings>();
 
             if (PluginSettings.EnableFolderToSave && !PluginSettings.FolderToSave.IsNullOrEmpty())
             {
-                folderSettingsGlobal.Add(new FolderSettings
+                folderSettingsToMerge.Add(new FolderSettings
                 {
                     ScreenshotsFolder = PluginSettings.FolderToSave,
                     UsedFilePattern = true,
@@ -495,35 +496,44 @@ namespace ScreenshotsVisualizer.Services
                 });
             }
 
-            foreach (FolderSettings globalSource in PluginSettings.GetEffectiveGlobalScreenshotSources())
+            GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
+            bool overrideGlobalConfigs = gameSettings?.OverrideGlobalConfigs ?? false;
+            if (!overrideGlobalConfigs)
             {
-                if (globalSource == null || globalSource.ScreenshotsFolder.IsNullOrEmpty())
+                foreach (FolderSettings globalSource in PluginSettings.GetEffectiveGlobalScreenshotSources())
                 {
-                    continue;
-                }
+                    if (globalSource == null || globalSource.ScreenshotsFolder.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
 
-                folderSettingsGlobal.Add(new FolderSettings
-                {
-                    ScreenshotsFolder = globalSource.ScreenshotsFolder,
-                    UsedFilePattern = globalSource.UsedFilePattern,
-                    FilePattern = globalSource.FilePattern,
-                    ScanSubFolders = globalSource.ScanSubFolders
-                });
+                    folderSettingsToMerge.Add(new FolderSettings
+                    {
+                        ScreenshotsFolder = globalSource.ScreenshotsFolder,
+                        UsedFilePattern = globalSource.UsedFilePattern,
+                        FilePattern = globalSource.FilePattern,
+                        ScanSubFolders = globalSource.ScanSubFolders
+                    });
+                }
             }
 
-
-            GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
             if (gameSettings == null)
             {
                 gameSettings = new GameSettings
                 {
                     Id = id,
-                    ScreenshotsFolders = folderSettingsGlobal
+                    OverrideGlobalConfigs = false,
+                    ScreenshotsFolders = folderSettingsToMerge
                 };
             }
             else
             {
-                foreach (FolderSettings folderSettings in folderSettingsGlobal)
+                if (gameSettings.ScreenshotsFolders == null)
+                {
+                    gameSettings.ScreenshotsFolders = new List<FolderSettings>();
+                }
+
+                foreach (FolderSettings folderSettings in folderSettingsToMerge)
                 {
                     FolderSettings finded = gameSettings.ScreenshotsFolders
                         .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder)
@@ -618,11 +628,10 @@ namespace ScreenshotsVisualizer.Services
                         if (screenshotsFolder?.ScreenshotsFolder == null || screenshotsFolder.ScreenshotsFolder.IsNullOrEmpty())
                         {
                             Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory is empty for {0}", game.Name));
-                            return;
+                            continue;
                         }
 
-                        string pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.ScreenshotsFolder);
-                        pathFolder = PathValidator.GetSafePath(pathFolder, false);
+                        string pathFolder = _pathResolver.ResolvePath(game, screenshotsFolder);
 
                         // Get files
                         string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv", ".webm" };
@@ -644,15 +653,7 @@ namespace ScreenshotsVisualizer.Services
 
                                         if (screenshotsFolder.UsedFilePattern)
                                         {
-                                            string pattern = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, screenshotsFolder.FilePattern);
-                                            pattern = EscapeRegexSpecialChars(pattern);
-                                            pattern = pattern.Replace("\\{digit\\}", @"\d*");
-                                            pattern = pattern.Replace("\\{DateModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
-                                            pattern = pattern.Replace("\\{DateTimeModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
-
-                                            string gameName = API.Instance.ExpandGameVariables(game, "{Name}");
-                                            string goodName = PathValidator.GetSafePathName(gameName).Replace(" ", "[ ]*");
-                                            pattern = pattern.Replace(gameName, goodName);
+                                            string pattern = _pathResolver.ResolveFilePatternRegex(game, screenshotsFolder);
 
                                             string fileName = Path.GetFileNameWithoutExtension(objectFile);
 
@@ -684,30 +685,34 @@ namespace ScreenshotsVisualizer.Services
                         {
                             Common.LogDebug(false, string.Format("[SsvDatabase] Screenshots directory not found for {0} - {1}", game.Name, pathFolder));
                         }
-
-                        IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
-                        if (elements?.Count() > 0)
-                        {
-                            elements = elements?.GroupBy(x => x.FileName)?.Select(g => g.First());
-
-                            gameScreenshots.DateLastRefresh = DateTime.Now;
-                            gameScreenshots.Items = elements.ToList();
-
-                            // Force generation of data from video
-                            gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
-                            {
-                                string thumb = x.Thumbnail;
-                                string duration = x.DurationString;
-                                string size = x.SizeString;
-                            });
-                        }
-
-                        AddOrUpdate(gameScreenshots);
                     }
                     catch (Exception ex)
                     {
                         LogError(ex, string.Format("Error on {0} for {1}", game.Name, screenshotsFolder.ScreenshotsFolder));
                     }
+                }
+
+                IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
+                if (elements?.Count() > 0)
+                {
+                    elements = elements.GroupBy(x => x.FileName).Select(g => g.First());
+                    gameScreenshots.DateLastRefresh = DateTime.Now;
+                    gameScreenshots.Items = elements.ToList();
+
+                    // Force generation of data from video
+                    gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
+                    {
+                        string thumb = x.Thumbnail;
+                        string duration = x.DurationString;
+                        string size = x.SizeString;
+                    });
+                }
+
+                AddOrUpdate(gameScreenshots);
+
+                if (GameContext?.Id == game.Id)
+                {
+                    API.Instance.MainView.UIDispatcher?.BeginInvoke((Action)(() => SetThemesResources(game)));
                 }
 
                 LogScanDebug(string.Format(
@@ -719,23 +724,6 @@ namespace ScreenshotsVisualizer.Services
             {
                 LogError(ex);
             }
-        }
-
-        private static string EscapeRegexSpecialChars(string input)
-        {
-            string specialChars = @".^$*+?(){}[]|\";
-            StringBuilder escapedString = new StringBuilder();
-
-            foreach (char c in input)
-            {
-                if (specialChars.Contains(c))
-                {
-                    _ = escapedString.Append('\\');
-                }
-                _ = escapedString.Append(c);
-            }
-
-            return escapedString.ToString();
         }
 
         #region Tag
