@@ -9,24 +9,24 @@
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg の実行ファイルが見つかりません</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe の実行ファイルが見つかりません</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick executable was not found</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick path:</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionSection">Image conversion commands</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionTabTitle">Image conversion</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionIntro">Configure ImageMagick and custom conversion profiles used from the game and main menus.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAdd">Add command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEdit">Edit command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAddTitle">Add conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEditTitle">Edit conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionName">Name</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Output format</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionQuality">Quality</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Strip metadata</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Extra arguments</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Command preview</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNameRequired">Command name is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick の実行ファイルが見つかりません</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick パス：</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionSection">画像変換コマンド</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionTabTitle">画像変換</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionIntro">ゲームメニューとメインメニューから使用する ImageMagick とカスタム変換プロファイルを設定します。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">コマンドを追加</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">コマンドを編集</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAddTitle">変換コマンドを追加</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEditTitle">変換コマンドを編集</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionName">名前</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">出力形式</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">品質</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">メタデータを削除</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">追加引数</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">コマンドプレビュー</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">コマンド名は必須です。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">出力形式は必須です。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNoCommands">変換コマンドが設定されていません。</sys:String>
 
 
     <!-- MainView -->
@@ -39,20 +39,20 @@
     <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">スクリーンショットを保存ディレクトリに移動</sys:String>
-    <sys:String x:Key="LOCSsvConvertImages">Convert images</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionUnnamed">Unnamed command</sys:String>
+    <sys:String x:Key="LOCSsvConvertImages">画像を変換</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionUnnamed">名前なしのコマンド</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSize">Image total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoCount">Video count</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Video total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Video total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Video total duration</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalCount">Total count</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSize">Total size</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageCount">画像数</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">画像の合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSize">画像の合計サイズ</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoCount">動画数</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">動画の合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSize">動画の合計サイズ</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">動画の合計時間</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalCount">合計数</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSize">合計サイズ</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">すべてのスクリーンショットを移動してもよろしいですか？</sys:String>
 
@@ -139,16 +139,16 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 例：
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Adds a game menu action to move screenshots from all configured source folders to one archive folder.
-The archive folder path uses the destination field above. If {Name} is missing in that path, it is added automatically.
-Files are renamed using &quot;File pattern&quot;, then plugin links are updated.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">設定済みのすべてのソースフォルダーから、1 つのアーカイブフォルダーへスクリーンショットを移動するゲームメニューアクションを追加します。
+アーカイブフォルダーのパスには、上の保存先フィールドが使用されます。そのパスに {Name} が含まれていない場合は、自動的に追加されます。
+ファイルは &quot;File pattern&quot; を使用して名前変更され、その後プラグイン内のリンクが更新されます。
 
-Example:
-Source folders:
+例：
+ソースフォルダー：
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
 
-Archive destination:
+アーカイブ先：
 {DropboxFolder}\Screenshots\{Name}</sys:String>
 
     <!-- Notifications -->
@@ -158,56 +158,56 @@ Archive destination:
     <!-- Settings — Configuration tab (phase 1.5 master-detail) -->
 
     <!-- Layout sections -->
-    <sys:String x:Key="LOCSsvConfigSectionContexts">Contexts</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSources">Sources</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Quick add</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration.</sys:String>
-    <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationTitle">Archive settings migration</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Creating settings backup...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Removing duplicate archive entries...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Saving settings...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration completed.</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationFailed">Archive settings migration failed: {0}</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">No duplicate archive entries were removed.</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
-    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>
-    <sys:String x:Key="LOCSsvConfigContextGlobals">Globals</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Configured games</sys:String>
-    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} game(s)</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoActiveSources">No screenshot sources configured for this context.</sys:String>
-    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Override global sources for this game</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionContexts">コンテキスト</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSources">ソース</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">ソース — {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">クイック追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionArchiving">アーカイブ</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">ゲームメニューからスクリーンショットを 1 つのアーカイブフォルダーへ移動する方法を設定します。これらの設定はすべてのゲームに自動的に適用されます。ゲームごとの設定がないゲームも含め、スキャン時にはアーカイブフォルダーも対象になります。</sys:String>
+    <sys:String x:Key="LOCSsvArchivingDestinationFolder">アーカイブ先フォルダー</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationTitle">アーカイブ設定の移行</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">設定のバックアップを作成中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">重複するアーカイブ項目を削除中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">設定を保存中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">移行が完了しました。</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationFailed">アーカイブ設定の移行に失敗しました：{0}</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">重複するアーカイブ項目は削除されませんでした。</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternInsertVariable">変数を挿入</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">利用可能な変数：{Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
+    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">パス変数を挿入</sys:String>
+    <sys:String x:Key="LOCSsvConfigContextGlobals">グローバル</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">設定済みゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} 件のゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoActiveSources">このコンテキストにはスクリーンショットソースが設定されていません。</sys:String>
+    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">このゲームのグローバルソースを上書き</sys:String>
 
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
-    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Global paths</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionManualAdd">Add a game manually</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">No games configured. Use Add a game or apply a quick-add preset to the active context.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">グローバルパス</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionManualAdd">ゲームを手動で追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">ゲームが設定されていません。「ゲームを追加」を使用するか、アクティブなコンテキストにクイック追加プリセットを適用してください。</sys:String>
 
     <!-- Game selection dialog -->
-    <sys:String x:Key="LOCSsvConfigAddGameTitle">Add a game</sys:String>
-    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Select a game to configure</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">All library games are already configured.</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddGameTitle">ゲームを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigSelectGameTitle">設定するゲームを選択</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">ライブラリ内のすべてのゲームはすでに設定されています。</sys:String>
 
     <!-- Source editor dialog -->
-    <sys:String x:Key="LOCSsvConfigSourcePath">Screenshot folder</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSource">Add a source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSource">Edit</sys:String>
-    <sys:String x:Key="LOCSsvConfigSourcePathRequired">A screenshot folder path is required.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePath">スクリーンショットフォルダー</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSourceTitle">スクリーンショットソースを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSourceTitle">スクリーンショットソースを編集</sys:String>
+    <sys:String x:Key="LOCSsvConfigSaveSource">保存</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSource">ソースを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSource">編集</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePathRequired">スクリーンショットフォルダーのパスは必須です。</sys:String>
 
     <!-- Phase 2 placeholders -->
-    <sys:String x:Key="LOCSsvConfigPreview">Preview</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormat">Name format</sys:String>
-    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Configuration test will be available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestGame">Test game</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathExists">Resolved folder exists.</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Resolved folder does not exist.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreview">プレビュー</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormat">名前の形式</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">設定テストは今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestGame">テスト用ゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathExists">解決済みフォルダーが存在します。</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">解決済みフォルダーが存在しません。</sys:String>
     
 </ResourceDictionary>
