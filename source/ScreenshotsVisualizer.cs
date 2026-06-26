@@ -302,15 +302,23 @@ namespace ScreenshotsVisualizer
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            string pluginUserDataPath = GetPluginUserDataPath();
+            Action<ScreenshotsVisualizerSettings> saveSettings = settings =>
+            {
+                SavePluginSettings(settings);
+                PluginDatabase.PluginSettings = settings;
+            };
+
             SsvArchiveSettingsMigration.ScheduleIfNeeded(
                 PluginSettingsViewModel.Settings,
-                GetPluginUserDataPath(),
+                pluginUserDataPath,
                 PluginDatabase.PluginName,
-                settings =>
-                {
-                    SavePluginSettings(settings);
-                    PluginDatabase.PluginSettings = settings;
-                });
+                saveSettings,
+                () => SsvPresetSettingsMigration.ScheduleIfNeeded(
+                    PluginSettingsViewModel.Settings,
+                    pluginUserDataPath,
+                    PluginDatabase.PluginName,
+                    saveSettings));
         }
 
         // Add code to be executed when Playnite is shutting down.

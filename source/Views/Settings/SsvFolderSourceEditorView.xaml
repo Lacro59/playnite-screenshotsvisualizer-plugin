@@ -3,16 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="420" d:DesignWidth="560"
-             MinWidth="480" MinHeight="360"
+             d:DesignHeight="760" d:DesignWidth="700"
+             MinWidth="560" MinHeight="420"
              Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10">
+    <DockPanel Margin="10" LastChildFill="True">
+
+        <Border DockPanel.Dock="Bottom"
+                BorderThickness="0,1,0,0"
+                BorderBrush="{DynamicResource NormalBorderBrush}"
+                Padding="0,10,0,0"
+                Margin="0,10,0,0">
+            <DockPanel LastChildFill="False">
+                <Button Content="{DynamicResource LOCCloseLabel}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        Click="CancelButton_Click" />
+                <Button Content="{DynamicResource LOCSsvConfigSaveSource}"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource BottomButton}"
+                        Click="SaveButton_Click" />
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
@@ -23,12 +45,15 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Content="{DynamicResource LOCSsvConfigSourcePath}" />
+        <TextBlock Grid.Row="0"
+                   Style="{DynamicResource ViewColumnLabelText}"
+                   Text="{DynamicResource LOCSsvConfigSourcePath}" />
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -37,7 +62,10 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="PART_ScreenshotsFolder" Grid.Column="0" Text="{Binding WorkingCopy.ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox x:Name="PART_ScreenshotsFolder" Grid.Column="0"
+                     Text="{Binding WorkingCopy.ScreenshotsFolder, UpdateSourceTrigger=PropertyChanged}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     TextWrapping="NoWrap" />
             <Button Grid.Column="2" Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}"
                     ToolTip="{DynamicResource LOCSelectDirectoryTooltip}"
                     Click="BrowseFolderButton_Click" />
@@ -51,11 +79,19 @@
             <ToggleButton ToolTip="{DynamicResource LOCCommonAddFilePattern}"
                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xeae5;"
                           IsChecked="{Binding WorkingCopy.UsedFilePattern, FallbackValue=False}" />
-            <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvFilePattern}" VerticalAlignment="Center" />
+            <TextBlock Margin="8,0,0,0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource LOCSsvFilePattern}"
+                       TextTrimming="CharacterEllipsis" />
             <ToggleButton Margin="24,0,0,0" ToolTip="{DynamicResource LOCSsvScanSubFolders}"
                           FontFamily="{DynamicResource FontIcoFont}" Content="&#xee03;"
                           IsChecked="{Binding WorkingCopy.ScanSubFolders, FallbackValue=False}" />
-            <Label Margin="8,0,0,0" Content="{DynamicResource LOCSsvScanSubFolders}" VerticalAlignment="Center" />
+            <TextBlock Margin="8,0,0,0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource LOCSsvScanSubFolders}"
+                       TextTrimming="CharacterEllipsis" />
         </StackPanel>
 
         <Grid Grid.Row="8"
@@ -76,7 +112,106 @@
             </TextBox>
         </Grid>
 
-        <Border Grid.Row="10" BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="1" Padding="8">
+        <Border Grid.Row="10"
+                BorderBrush="{DynamicResource NormalBorderBrush}"
+                BorderThickness="{DynamicResource ControlBorderThickness}"
+                CornerRadius="{DynamicResource ControlCornerRadius}"
+                Padding="8"
+                Visibility="{Binding IsGlobalSourceEditor, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel>
+                <TextBlock Style="{DynamicResource SectionHeaderText}"
+                           Text="{DynamicResource LOCSsvGlobalSourceApplicability}" />
+                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                           Margin="0,4,0,8"
+                           Foreground="{DynamicResource GlyphBrush}"
+                           Text="{DynamicResource LOCSsvGlobalSourceApplicabilityHint}"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Style="{DynamicResource ViewColumnLabelText}"
+                           Margin="0,0,0,4"
+                           Text="{DynamicResource LOCSsvGlobalSourceFilterMode}" />
+                <WrapPanel Margin="0,0,0,8">
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableSourceFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceFilterAll}"
+                                 IsChecked="{Binding IsApplicableSourceFilterAll}" />
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableSourceFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceFilterWhitelist}"
+                                 IsChecked="{Binding IsApplicableSourceFilterWhitelist}" />
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableSourceFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceFilterBlacklist}"
+                                 IsChecked="{Binding IsApplicableSourceFilterBlacklist}" />
+                </WrapPanel>
+
+                <TextBlock Style="{DynamicResource ViewColumnLabelText}"
+                           Margin="0,0,0,4"
+                           Text="{DynamicResource LOCSsvGlobalSourceFilterSources}" />
+                <Grid Margin="0,0,0,8"
+                      IsEnabled="{Binding IsApplicableSourceListEnabled}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0"
+                              ItemsSource="{Binding AvailableSourceNames}"
+                              SelectedItem="{Binding SelectedAvailableSource}" />
+                    <Button Grid.Column="2"
+                            Content="{DynamicResource LOCSsvGlobalSourceFilterAddSource}"
+                            Command="{Binding AddApplicableSourceCommand}" />
+                </Grid>
+                <ListBox MinHeight="56"
+                         MaxHeight="120"
+                         Margin="0,0,0,8"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding ApplicableSourceEntries}"
+                         IsEnabled="{Binding IsApplicableSourceListEnabled}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <Button DockPanel.Dock="Right"
+                                        Margin="8,0,0,0"
+                                        Content="{DynamicResource LOCRemoveTitle}"
+                                        Background="{DynamicResource ButtonBackgroundBrush}"
+                                        Foreground="{DynamicResource TextBrush}"
+                                        BorderBrush="{DynamicResource NormalBorderBrush}"
+                                        Command="{Binding DataContext.RemoveApplicableSourceCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+                                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlock}"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock Style="{DynamicResource ViewColumnLabelText}"
+                           Margin="0,0,0,4"
+                           Text="{DynamicResource LOCSsvGlobalSourceEmulatorFilter}" />
+                <WrapPanel>
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableEmulatorFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceEmulatorNone}"
+                                 IsChecked="{Binding IsApplicableEmulatorNone}" />
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableEmulatorFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceEmulatorRetroArch}"
+                                 IsChecked="{Binding IsApplicableEmulatorRetroArch}" />
+                    <RadioButton Style="{DynamicResource ModernRadio}"
+                                 GroupName="SsvApplicableEmulatorFilter"
+                                 Content="{DynamicResource LOCSsvGlobalSourceEmulatorScummVM}"
+                                 IsChecked="{Binding IsApplicableEmulatorScummVM}" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="12"
+                BorderBrush="{DynamicResource NormalBorderBrush}"
+                BorderThickness="{DynamicResource ControlBorderThickness}"
+                CornerRadius="{DynamicResource ControlCornerRadius}"
+                Padding="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -92,54 +227,68 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" MinWidth="0" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="5" FontWeight="SemiBold" Text="{DynamicResource LOCSsvConfigPreview}" />
+                <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="5"
+                           Style="{DynamicResource SectionHeaderText}"
+                           Text="{DynamicResource LOCSsvConfigPreview}" />
 
-                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource LOCSsvConfigTestGame}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Style="{DynamicResource ViewColumnLabelText}"
+                           Text="{DynamicResource LOCSsvConfigTestGame}" />
                 <ComboBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"
                           ItemsSource="{Binding TestGames}"
                           SelectedItem="{Binding SelectedTestGame}"
                           DisplayMemberPath="Name" />
 
-                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Text="{DynamicResource LOCSsvConfigSourcePath}" />
-                <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3"
-                         Text="{Binding ResolvedPath, Mode=OneWay}"
-                         IsReadOnly="True"
-                         TextWrapping="Wrap" />
+                <TextBlock Grid.Row="4"
+                           Grid.Column="0"
+                           Style="{DynamicResource ViewColumnLabelText}"
+                           VerticalAlignment="Center"
+                           Text="{DynamicResource LOCSsvConfigSourcePath}" />
+                <Grid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="0" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <controls:TextBlockTrimmed Grid.Column="0"
+                                                 Style="{DynamicResource BaseTextBlockStyle}"
+                                                 VerticalAlignment="Center"
+                                                 Text="{Binding ResolvedPath, Mode=OneWay}" />
+                    <Button Grid.Column="2"
+                            Content="&#xe97f;"
+                            FontFamily="{DynamicResource CommonFont}"
+                            ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}"
+                            IsEnabled="{Binding ResolvedPathExists}"
+                            Click="OpenResolvedFolderButton_Click" />
+                </Grid>
 
-                <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Text="{DynamicResource LOCSsvFilePattern}" />
-                <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3"
-                         Text="{Binding ResolvedFilePattern, Mode=OneWay}"
-                         IsReadOnly="True"
-                         TextWrapping="Wrap" />
+                <TextBlock Grid.Row="6"
+                           Grid.Column="0"
+                           Style="{DynamicResource ViewColumnLabelText}"
+                           VerticalAlignment="Center"
+                           Text="{DynamicResource LOCSsvFilePattern}" />
+                <controls:TextBlockTrimmed Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3"
+                                           Style="{DynamicResource BaseTextBlockStyle}"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding ResolvedFilePattern, Mode=OneWay}" />
 
-                <TextBlock Grid.Row="8" Grid.Column="2"
+                <TextBlock Grid.Row="8"
+                           Grid.Column="2"
+                           Grid.ColumnSpan="3"
+                           Style="{DynamicResource BaseTextBlockStyle}"
                            Foreground="{DynamicResource GlyphBrush}"
-                           Text="{Binding ResolvedPathStatusText}" />
-                <Button Grid.Row="8" Grid.Column="4"
-                        Content="&#xe97f;"
-                        FontFamily="{DynamicResource CommonFont}"
-                        ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}"
-                        IsEnabled="{Binding ResolvedPathExists}"
-                        Click="OpenResolvedFolderButton_Click" />
+                           Text="{Binding ResolvedPathStatusText}"
+                           TextWrapping="Wrap" />
             </Grid>
         </Border>
-
-        <Border Grid.Row="12" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource NormalBorderBrush}" Padding="0,10,0,0">
-            <DockPanel LastChildFill="False">
-                <Button Content="{DynamicResource LOCCloseLabel}"
-                        DockPanel.Dock="Right"
-                        Style="{StaticResource BottomButton}"
-                        Click="CancelButton_Click" />
-                <Button Content="{DynamicResource LOCSsvConfigSaveSource}"
-                        DockPanel.Dock="Right"
-                        Style="{StaticResource BottomButton}"
-                        Click="SaveButton_Click" />
-            </DockPanel>
-        </Border>
-    </Grid>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

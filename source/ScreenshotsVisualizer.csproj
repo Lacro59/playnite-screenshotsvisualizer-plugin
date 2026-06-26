@@ -127,9 +127,15 @@
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
+    <Compile Include="Models\SsvApplicableEmulatorFilter.cs" />
+    <Compile Include="Models\SsvFolderPreset.cs" />
+    <Compile Include="Models\SsvFolderPresetId.cs" />
+    <Compile Include="Models\SsvFolderPresetAddResult.cs" />
     <Compile Include="Models\ImageMagickProcessInvocation.cs" />
     <Compile Include="Models\SsvArchiveDuplicateAnalysis.cs" />
+    <Compile Include="Models\SsvPresetDuplicateAnalysis.cs" />
     <Compile Include="Models\SsvArchiveMigrationResult.cs" />
+    <Compile Include="Models\SsvPresetMigrationResult.cs" />
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
     <Compile Include="Models\SsvImageConversionResult.cs" />
@@ -182,7 +188,6 @@
     <Compile Include="ViewModels\Settings\SsvImageConversionCustomCmdItem.cs" />
     <Compile Include="ViewModels\Settings\SsvImageConversionSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvFolderSourceEditorViewModel.cs" />
-    <Compile Include="ViewModels\Settings\SsvGameConfigurationPreset.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextItem.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextKind.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextViewModel.cs" />
@@ -193,6 +198,11 @@
     <Compile Include="Services\ImageMagickConversionService.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
+    <Compile Include="Services\SsvPresetFolderHelper.cs" />
+    <Compile Include="Services\SsvPresetSettingsMigration.cs" />
+    <Compile Include="Services\SsvFolderPresetCatalog.cs" />
+    <Compile Include="Services\SsvFolderPresetService.cs" />
+    <Compile Include="Services\SsvGlobalSourceApplicabilityHelper.cs" />
     <Compile Include="Services\SsvArchiveSettingsMigration.cs" />
     <Compile Include="Services\ScreenshotsVisualizerExport.cs" />
     <Compile Include="Services\ScreenshotsVisualizerMenus.cs" />
@@ -509,14 +519,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Templates\SsvActiveSourceRow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Templates\SsvFolderEntryRow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Templates\SsvConfiguredGameCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

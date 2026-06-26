@@ -87,6 +87,20 @@
     
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">Ce préréglage est déjà configuré dans les sources globales.</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicabilité</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Limite les jeux qui reçoivent cette source globale au scan. Laissez « Toutes les sources » et « Tous » pour l'appliquer à chaque jeu.</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Sources Playnite</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">Toutes les sources</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Sélection uniquement</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Exclure la sélection</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Noms de source</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">Ajouter</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Émulateur</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Tous</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch uniquement</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM uniquement</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Transformer les nombres en {digit}</sys:String>
 
@@ -155,6 +169,9 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvConfigSelectGameTitle">Sélectionner un jeu à configurer</sys:String>
     <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">Tous les jeux de la bibliothèque sont déjà configurés.</sys:String>
     <sys:String x:Key="LOCSsvConfigSourcePath">Dossier de captures</sys:String>
+    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">Modèle de fichier : {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources : {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Sources exclues : {0}</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">Ajouter une source</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">Modifier une source</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">Enregistrer</sys:String>
@@ -172,6 +189,13 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration terminée.</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationFailed">Échec de la migration des paramètres d'archivage : {0}</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">Aucune entrée d'archivage en double n'a été supprimée.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationTitle">Migration des presets globaux</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">Création de la sauvegarde des paramètres...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">Consolidation des sources preset globales...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Enregistrement des paramètres...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCompleted">Migration terminée.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationFailed">Échec de la migration des presets globaux : {0}</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">Aucune modification de migration preset n'a été appliquée.</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insérer une variable</sys:String>
     <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Variables disponibles : {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insérer une variable de chemin</sys:String>

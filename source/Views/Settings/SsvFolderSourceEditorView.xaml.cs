@@ -30,11 +30,14 @@ namespace ScreenshotsVisualizer.Views.Settings
         /// </summary>
         /// <param name="targetEntry">Existing entry to edit, or <c>null</c> when adding a new source.</param>
         /// <param name="activeSources">Collection that receives new entries in add mode.</param>
+        /// <param name="preferredGameId">Optional game id used as default preview context.</param>
+        /// <param name="isGlobalSourceEditor">When <c>true</c>, shows global applicability options.</param>
         /// <param name="onSourcesChanged">Callback invoked after a successful save.</param>
         public SsvFolderSourceEditorView(
             FolderEntryItem targetEntry,
             ObservableCollection<FolderEntryItem> activeSources,
             Guid? preferredGameId,
+            bool isGlobalSourceEditor,
             Action onSourcesChanged)
         {
             _targetEntry = targetEntry;
@@ -45,7 +48,7 @@ namespace ScreenshotsVisualizer.Views.Settings
                 ? new FolderEntryItem()
                 : new FolderEntryItem(targetEntry.ToModel());
 
-            _viewModel = new SsvFolderSourceEditorViewModel(_workingCopy, preferredGameId);
+            _viewModel = new SsvFolderSourceEditorViewModel(_workingCopy, preferredGameId, isGlobalSourceEditor);
             DataContext = _viewModel;
             InitializeComponent();
         }
@@ -130,6 +133,8 @@ namespace ScreenshotsVisualizer.Views.Settings
                     ResourceProvider.GetString(titleKey));
                 return;
             }
+
+            _viewModel.ApplyApplicabilityToWorkingCopy();
 
             if (_isAddMode)
             {

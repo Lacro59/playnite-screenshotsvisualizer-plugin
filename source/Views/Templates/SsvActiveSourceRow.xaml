@@ -2,49 +2,46 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:CommonPluginsControls.Controls">
 
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
     <DataTemplate x:Key="SsvActiveSourceRowTemplate">
-        <Grid Margin="0,4">
+        <Grid Margin="0,6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <controls:TextBlockTrimmed Grid.Column="0" Text="{Binding ScreenshotsFolder}" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlock}"
+                                           Text="{Binding ScreenshotsFolder}" />
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Label Content="&#xeae5;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,0,4,0"
-                       ToolTip="{DynamicResource LOCCommonAddFilePattern}">
-                    <Label.Style>
-                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding UsedFilePattern}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-                <Label Content="&#xee03;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,0,8,0"
-                       ToolTip="{DynamicResource LOCSsvScanSubFolders}">
-                    <Label.Style>
-                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ScanSubFolders}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-                <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}"
-                        ToolTip="{DynamicResource LOCCommonRemoveFolder}"
-                        IsEnabled="{Binding CanRemoveFolder}"
-                        Command="{Binding DataContext.ConfigurationContext.RemoveActiveSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding}" />
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding FilePatternSummary}"
+                                           Visibility="{Binding ShowFilePatternSummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding ScanSubFoldersSummary}"
+                                           Visibility="{Binding ShowScanSubFoldersSummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding ApplicabilitySummary}"
+                                           Visibility="{Binding ShowApplicabilitySummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
+
+            <Button Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Content="&#xe97f;"
+                    FontFamily="{DynamicResource CommonFont}"
+                    ToolTip="{DynamicResource LOCCommonRemoveFolder}"
+                    Background="{DynamicResource ButtonBackgroundBrush}"
+                    Foreground="{DynamicResource TextBrush}"
+                    BorderBrush="{DynamicResource NormalBorderBrush}"
+                    Command="{Binding DataContext.ConfigurationContext.RemoveActiveSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding}" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -60,7 +60,7 @@
                             <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32"
                                    Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
                             <controls:TextBlockTrimmed Grid.Column="2"
-                                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                                       Style="{DynamicResource ListBoxExtendStyleTextBlock}"
                                                        Text="{Binding Name}"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Stretch" />
@@ -69,6 +69,7 @@
                                      Stretch="Uniform"
                                      ToolTip="{Binding SourceName}">
                                 <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}"
+                                       Style="{DynamicResource ListBoxExtendStyleLabel}"
                                        FontSize="32" Padding="0" />
                             </Viewbox>
                         </Grid>

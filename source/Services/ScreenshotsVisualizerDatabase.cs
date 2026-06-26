@@ -672,7 +672,9 @@ namespace ScreenshotsVisualizer.Services
 
         /// <summary>
         /// Retrieves effective <see cref="GameSettings"/> for the specified game ID.
-        /// Merges persisted per-game folders with global screenshot sources (when allowed) and the global archive folder at runtime only.
+        /// Merges persisted per-game folders with applicable global screenshot sources (when allowed)
+        /// and the global archive folder at runtime only.
+        /// Global sources are included only when <see cref="SsvGlobalSourceApplicabilityHelper.MatchesGame"/> passes.
         /// The global archive configuration is never injected into persisted <c>gameSettings</c>.
         /// </summary>
         /// <param name="id">The unique identifier of the game.</param>
@@ -681,6 +683,7 @@ namespace ScreenshotsVisualizer.Services
         {
             FolderSettings globalArchiveFolder = SsvArchiveFolderHelper.TryCreateGlobalArchiveFolderSettings(PluginSettings);
             List<FolderSettings> globalSourcesToMerge = new List<FolderSettings>();
+            Game game = API.Instance.Database.Games.Get(id);
 
             GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
             bool overrideGlobalConfigs = gameSettings?.OverrideGlobalConfigs ?? false;
@@ -693,13 +696,12 @@ namespace ScreenshotsVisualizer.Services
                         continue;
                     }
 
-                    globalSourcesToMerge.Add(new FolderSettings
+                    if (game == null || !SsvGlobalSourceApplicabilityHelper.MatchesGame(game, globalSource))
                     {
-                        ScreenshotsFolder = globalSource.ScreenshotsFolder,
-                        UsedFilePattern = globalSource.UsedFilePattern,
-                        FilePattern = globalSource.FilePattern,
-                        ScanSubFolders = globalSource.ScanSubFolders
-                    });
+                        continue;
+                    }
+
+                    globalSourcesToMerge.Add(globalSource.Clone());
                 }
             }
 

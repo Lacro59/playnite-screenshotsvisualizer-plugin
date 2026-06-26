@@ -1,6 +1,7 @@
 using CommonPluginsShared;
 using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
+using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views.Settings;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             _filteredContextItems.Add(SsvConfigurationContextItem.Global);
             _activeSources = _globalSources;
 
+            _globalSources.CollectionChanged += OnGlobalSourcesCollectionChanged;
             GamesConfiguration.ConfiguredGames.CollectionChanged += OnConfiguredGamesCollectionChanged;
             GamesConfiguration.ConfiguredGamesBulkUpdateCompleted += OnConfiguredGamesBulkUpdateCompleted;
             GamesConfiguration.PropertyChanged += OnGamesConfigurationPropertyChanged;
@@ -50,10 +52,10 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             RemoveActiveSourceCommand = new RelayCommand<object>(RemoveActiveSourceFromCommand);
             BrowseActiveSourceCommand = new RelayCommand<object>(BrowseActiveSourceFromCommand);
             ReplaceDigitActiveSourceCommand = new RelayCommand<object>(ReplaceDigitActiveSourceFromCommand);
-            ApplySteamPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvGameConfigurationPreset.Steam));
-            ApplyUbisoftPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvGameConfigurationPreset.Ubisoft));
-            ApplyScummvmPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvGameConfigurationPreset.ScummVM));
-            ApplyRetroArchPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvGameConfigurationPreset.RetroArch));
+            ApplySteamPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.Steam));
+            ApplyUbisoftPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.Ubisoft));
+            ApplyScummvmPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.ScummVM));
+            ApplyRetroArchPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.RetroArch));
             SelectContextCommand = new RelayCommand<object>(SelectContextFromCommand);
             AddConfiguredGameCommand = new RelayCommand(OpenAddConfiguredGameDialog);
         }
@@ -144,14 +146,10 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         public string ActiveContextDisplayName => _selectedContext?.DisplayName ?? string.Empty;
 
         /// <summary>
-        /// Gets the number of sources in the active context.
+        /// Gets whether the active context has at least one configured source path.
         /// </summary>
-        public int ActiveSourceCount => _activeSources?.Count ?? 0;
-
-        /// <summary>
-        /// Gets whether the active context has at least one source.
-        /// </summary>
-        public bool HasActiveSources => ActiveSourceCount > 0;
+        public bool HasActiveSources =>
+            _activeSources?.Any(x => !string.IsNullOrWhiteSpace(x.ScreenshotsFolder)) ?? false;
 
         /// <summary>
         /// Gets whether the active context has no sources yet.
@@ -347,60 +345,68 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         }
 
         /// <summary>
-        /// Applies a platform preset to the active context.
+        /// Gets whether the Steam quick-add preset can be added to global sources.
+        /// </summary>
+        public bool CanApplySteamPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.Steam);
+
+        /// <summary>
+        /// Gets whether the Ubisoft quick-add preset can be added to global sources.
+        /// </summary>
+        public bool CanApplyUbisoftPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.Ubisoft);
+
+        /// <summary>
+        /// Gets whether the ScummVM quick-add preset can be added to global sources.
+        /// </summary>
+        public bool CanApplyScummvmPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.ScummVM);
+
+        /// <summary>
+        /// Gets whether the RetroArch quick-add preset can be added to global sources.
+        /// </summary>
+        public bool CanApplyRetroArchPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.RetroArch);
+
+        /// <summary>
+        /// Adds a built-in preset to global screenshot sources (ignores the active game context).
         /// </summary>
         /// <param name="preset">Preset to apply.</param>
-        public void ApplyPresetToActiveContext(SsvGameConfigurationPreset preset)
+        public void ApplyPresetToActiveContext(SsvFolderPresetId preset)
         {
-            if (IsGlobalContextSelected)
-            {
-                _globalSources.Add(CreateGlobalPresetFolder(preset));
-                UpdateFolderRemoveStates(_globalSources);
-            }
-            else if (SelectedConfiguredGame != null)
-            {
-                SelectedConfiguredGame.ScreenshotsFolders.Add(
-                    GamesConfiguration.CreatePresetFolderForGame(preset, SelectedConfiguredGame.Id));
-                UpdateFolderRemoveStates(SelectedConfiguredGame.ScreenshotsFolders);
-            }
-            else
-            {
-                GamesConfiguration.ApplyPreset(preset);
-            }
+            SelectGlobal();
 
+            SsvFolderPresetService.TryAddToGlobal(_globalSources, preset);
             NotifyActiveSourcesChanged();
+            RefreshPresetCommandsCanExecute();
         }
 
         /// <summary>
-        /// Adds an empty folder row to the active context.
+        /// Returns whether a built-in preset can be added to global sources.
         /// </summary>
-        public void AddActiveSource()
+        /// <param name="presetId">Preset identifier.</param>
+        /// <returns><c>true</c> when the canonical preset is not already configured.</returns>
+        public bool CanApplyGlobalPreset(SsvFolderPresetId presetId)
         {
-            if (_activeSources == null)
-            {
-                return;
-            }
-
-            _activeSources.Add(new FolderEntryItem());
-            UpdateFolderRemoveStates(_activeSources);
-            NotifyActiveSourcesChanged();
+            return !SsvFolderPresetService.IsGlobalPresetPresent(_globalSources, presetId);
         }
 
         /// <summary>
-        /// Removes a folder row from the active context when more than one source exists.
+        /// Removes a folder row from the active context.
         /// </summary>
         /// <param name="folder">Folder row to remove.</param>
         public void RemoveActiveSource(FolderEntryItem folder)
         {
-            if (_activeSources == null || folder == null || _activeSources.Count <= 1)
+            if (_activeSources == null || folder == null)
             {
                 return;
             }
 
             if (_activeSources.Remove(folder))
             {
-                UpdateFolderRemoveStates(_activeSources);
+                if (SelectedActiveSource == folder)
+                {
+                    SelectedActiveSource = null;
+                }
+
                 NotifyActiveSourcesChanged();
+                RefreshPresetCommandsCanExecute();
             }
         }
 
@@ -549,7 +555,6 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 _activeSources = _globalSources;
             }
 
-            UpdateFolderRemoveStates(_activeSources);
             OnPropertyChanged(nameof(ActiveSources));
             NotifyActiveSourcesChanged();
         }
@@ -565,7 +570,6 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
 
         private void NotifyActiveSourcesChanged()
         {
-            OnPropertyChanged(nameof(ActiveSourceCount));
             OnPropertyChanged(nameof(HasActiveSources));
             OnPropertyChanged(nameof(HasNoActiveSources));
         }
@@ -584,60 +588,20 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 _globalSources.Add(new FolderEntryItem(source));
             }
 
-            if (_globalSources.Count == 0)
-            {
-                _globalSources.Add(new FolderEntryItem());
-            }
-
-            UpdateFolderRemoveStates(_globalSources);
+            RefreshPresetCommandsCanExecute();
         }
 
-        private static void UpdateFolderRemoveStates(ObservableCollection<FolderEntryItem> folders)
+        private void OnGlobalSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            bool canRemove = folders.Count > 1;
-            foreach (FolderEntryItem folder in folders)
-            {
-                folder.CanRemoveFolder = canRemove;
-            }
+            RefreshPresetCommandsCanExecute();
         }
 
-        private static FolderEntryItem CreateGlobalPresetFolder(SsvGameConfigurationPreset preset)
+        private void RefreshPresetCommandsCanExecute()
         {
-            switch (preset)
-            {
-                case SsvGameConfigurationPreset.Steam:
-                    return new FolderEntryItem(new FolderSettings
-                    {
-                        ScreenshotsFolder = "{SteamScreenshotsDir}",
-                        ScanSubFolders = true
-                    });
-
-                case SsvGameConfigurationPreset.Ubisoft:
-                    return new FolderEntryItem(new FolderSettings
-                    {
-                        ScreenshotsFolder = "{UbisoftScreenshotsDir}",
-                        ScanSubFolders = true
-                    });
-
-                case SsvGameConfigurationPreset.RetroArch:
-                    return new FolderEntryItem(new FolderSettings
-                    {
-                        ScreenshotsFolder = "{RetroArchScreenshotsDir}",
-                        UsedFilePattern = true,
-                        FilePattern = "{ImageNameNoExt}-{digit}-{digit}"
-                    });
-
-                case SsvGameConfigurationPreset.ScummVM:
-                    return new FolderEntryItem(new FolderSettings
-                    {
-                        ScreenshotsFolder = "{UserProfile}\\Pictures\\ScummVM Screenshots",
-                        UsedFilePattern = true,
-                        FilePattern = "scummvm-{ImageNameNoExt}-{digit}"
-                    });
-
-                default:
-                    return new FolderEntryItem();
-            }
+            OnPropertyChanged(nameof(CanApplySteamPresetToActiveContext));
+            OnPropertyChanged(nameof(CanApplyUbisoftPresetToActiveContext));
+            OnPropertyChanged(nameof(CanApplyScummvmPresetToActiveContext));
+            OnPropertyChanged(nameof(CanApplyRetroArchPresetToActiveContext));
         }
 
         private void RemoveActiveSourceFromCommand(object parameter)
@@ -726,6 +690,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 targetEntry,
                 _activeSources,
                 SelectedConfiguredGame?.Id,
+                IsGlobalContextSelected,
                 OnActiveSourcesEdited);
 
             string titleKey = isAdd ? "LOCSsvConfigAddSourceTitle" : "LOCSsvConfigEditSourceTitle";
@@ -734,10 +699,10 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                 view,
                 new WindowOptions
                 {
-                    Width = 560,
-                    Height = 460,
-                    MinWidth = 480,
-                    MinHeight = 360,
+                    Width = 700,
+                    Height = IsGlobalContextSelected ? 760 : 500,
+                    MinWidth = 560,
+                    MinHeight = IsGlobalContextSelected ? 680 : 420,
                     CanBeResizable = true
                 });
             window.ResizeMode = ResizeMode.CanResize;
@@ -746,8 +711,8 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
 
         private void OnActiveSourcesEdited()
         {
-            UpdateFolderRemoveStates(_activeSources);
             NotifyActiveSourcesChanged();
+            RefreshPresetCommandsCanExecute();
         }
     }
 }

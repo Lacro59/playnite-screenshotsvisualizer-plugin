@@ -80,44 +80,50 @@
                                            Text="{Binding ConfigurationContext.ActiveSourcesSectionHeader}" Margin="0,0,0,8" />
 
                                 <StackPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
-                                    <TextBlock Style="{DynamicResource SectionHeaderText}"
-                                               Text="{DynamicResource LOCSsvConfigSectionQuickAdd}" Margin="0,0,0,8" />
+                                    <StackPanel Visibility="{Binding ConfigurationContext.IsGlobalContextSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Style="{DynamicResource SectionHeaderText}"
+                                                   Text="{DynamicResource LOCSsvConfigSectionQuickAdd}" Margin="0,0,0,8" />
 
-                                    <WrapPanel Margin="0,0,0,8">
-                                        <Button Command="{Binding ConfigurationContext.ApplySteamPresetToActiveContextCommand}"
-                                                ToolTip="{DynamicResource LOCSsvAddSteamGame}" Margin="0,0,5,5">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource LOCAddTitle}"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                                <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Command="{Binding ConfigurationContext.ApplyUbisoftPresetToActiveContextCommand}" Margin="0,0,5,5">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource LOCAddTitle}"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                                <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Command="{Binding ConfigurationContext.ApplyScummvmPresetToActiveContextCommand}" Margin="0,0,5,5">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource LOCAddTitle}"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                                <Label Content="&#xea71;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Command="{Binding ConfigurationContext.ApplyRetroArchPresetToActiveContextCommand}" Margin="0,0,5,5">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{DynamicResource LOCAddTitle}"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                                <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
-                                                       Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </WrapPanel>
+                                        <WrapPanel Margin="0,0,0,8">
+                                            <Button Command="{Binding ConfigurationContext.ApplySteamPresetToActiveContextCommand}"
+                                                    IsEnabled="{Binding ConfigurationContext.CanApplySteamPresetToActiveContext}"
+                                                    ToolTip="{DynamicResource LOCSsvAddSteamGame}" Margin="0,0,5,5">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{DynamicResource LOCAddTitle}"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                    <Label Content="&#xe906;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Command="{Binding ConfigurationContext.ApplyUbisoftPresetToActiveContextCommand}"
+                                                    IsEnabled="{Binding ConfigurationContext.CanApplyUbisoftPresetToActiveContext}" Margin="0,0,5,5">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{DynamicResource LOCAddTitle}"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                    <Label Content="&#xe907;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Command="{Binding ConfigurationContext.ApplyScummvmPresetToActiveContextCommand}"
+                                                    IsEnabled="{Binding ConfigurationContext.CanApplyScummvmPresetToActiveContext}" Margin="0,0,5,5">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{DynamicResource LOCAddTitle}"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                    <Label Content="&#xea71;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Command="{Binding ConfigurationContext.ApplyRetroArchPresetToActiveContextCommand}"
+                                                    IsEnabled="{Binding ConfigurationContext.CanApplyRetroArchPresetToActiveContext}" Margin="0,0,5,5">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="{DynamicResource LOCAddTitle}"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                    <Label Content="&#xea62;" FontFamily="{DynamicResource CommonFont}" Margin="5,0,0,0"
+                                                           Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </WrapPanel>
+                                    </StackPanel>
 
                                     <StackPanel Orientation="Horizontal">
                                         <Button Command="{Binding ConfigurationContext.GamesConfiguration.ConvertPathsRelativeCommand}"

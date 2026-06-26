@@ -48,8 +48,12 @@ namespace ScreenshotsVisualizer.Services
         /// </summary>
         /// <param name="pluginUserDataPath">Plugin user data folder; archive is stored in this directory.</param>
         /// <param name="pluginName">Plugin display name used in the archive file name.</param>
+        /// <param name="archiveNameFormat">Optional <see cref="string.Format"/> pattern ({0} = plugin name, {1} = UTC timestamp).</param>
         /// <returns>Backup result with archive path or error details.</returns>
-        public static SsvArchiveSettingsBackupResult TryCreateSettingsBackupZip(string pluginUserDataPath, string pluginName)
+        public static SsvArchiveSettingsBackupResult TryCreateSettingsBackupZip(
+            string pluginUserDataPath,
+            string pluginName,
+            string archiveNameFormat = null)
         {
             if (string.IsNullOrEmpty(pluginUserDataPath))
             {
@@ -70,9 +74,10 @@ namespace ScreenshotsVisualizer.Services
                     pluginUserDataPath));
             }
 
+            string format = string.IsNullOrEmpty(archiveNameFormat) ? MigrationArchiveNameFormat : archiveNameFormat;
             string archivePath = Path.Combine(
                 pluginUserDataPath,
-                string.Format(MigrationArchiveNameFormat, pluginName, DateTime.UtcNow));
+                string.Format(format, pluginName, DateTime.UtcNow));
 
             int archivedCount = CreateMigrationArchive(filesToBackup, archivePath);
             if (archivedCount != filesToBackup.Length)
@@ -128,14 +133,17 @@ namespace ScreenshotsVisualizer.Services
         /// <param name="pluginUserDataPath">Plugin user data folder.</param>
         /// <param name="pluginName">Plugin display name.</param>
         /// <param name="saveSettings">Persists settings after cleanup.</param>
+        /// <param name="onCompleted">Optional callback invoked when migration is skipped or finished (success or failure).</param>
         public static void ScheduleIfNeeded(
             ScreenshotsVisualizerSettings settings,
             string pluginUserDataPath,
             string pluginName,
-            Action<ScreenshotsVisualizerSettings> saveSettings)
+            Action<ScreenshotsVisualizerSettings> saveSettings,
+            Action onCompleted = null)
         {
             if (settings == null)
             {
+                onCompleted?.Invoke();
                 return;
             }
 
@@ -144,6 +152,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 if (!analysis.HasGlobalArchiveReference || analysis.TotalRemovable == 0)
                 {
+                    onCompleted?.Invoke();
                     return;
                 }
 
@@ -152,12 +161,14 @@ namespace ScreenshotsVisualizer.Services
             else if (!analysis.HasGlobalArchiveReference)
             {
                 WriteMigrationMarker(pluginUserDataPath, 0, null, "No global archive folder configured.");
+                onCompleted?.Invoke();
                 return;
             }
 
             if (analysis.TotalRemovable == 0)
             {
                 WriteMigrationMarker(pluginUserDataPath, 0, null, "No archive duplicates found.");
+                onCompleted?.Invoke();
                 return;
             }
 
@@ -169,7 +180,11 @@ namespace ScreenshotsVisualizer.Services
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress(
-                progress => RunMigrationWithProgress(settings, pluginUserDataPath, pluginName, saveSettings, progress),
+                progress =>
+                {
+                    RunMigrationWithProgress(settings, pluginUserDataPath, pluginName, saveSettings, progress);
+                    onCompleted?.Invoke();
+                },
                 progressOptions);
         }
 
