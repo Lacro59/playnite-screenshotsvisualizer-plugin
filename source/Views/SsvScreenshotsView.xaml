@@ -63,11 +63,11 @@
                                 <Style TargetType="{x:Type controls1:ImageAsync}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
-                                            <Setter Property="Source" Value="{Binding ImageThumbnail, FallbackValue=''}" />
+                                            <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True, FallbackValue=''}" />
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
-                                            <Setter Property="Source" Value="{Binding Thumbnail, FallbackValue=''}" />
+                                            <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True, FallbackValue=''}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

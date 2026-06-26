@@ -26,6 +26,12 @@ namespace ScreenshotsVisualizer.Services
     {
         private readonly SsvPathResolver _pathResolver;
         private readonly ImageMagickConversionService _imageMagickConversionService;
+        private readonly SsvThumbnailService _thumbnailService;
+
+        /// <summary>
+        /// Gets the thumbnail generation service used for image and video cache paths.
+        /// </summary>
+        public SsvThumbnailService ThumbnailService => _thumbnailService;
 
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
@@ -34,6 +40,7 @@ namespace ScreenshotsVisualizer.Services
             PluginExportCsv = new ScreenshotsVisualizerExport();
             _pathResolver = new SsvPathResolver();
             _imageMagickConversionService = new ImageMagickConversionService(PluginName);
+            _thumbnailService = new SsvThumbnailService(PluginName);
         }
 
         #region Logging

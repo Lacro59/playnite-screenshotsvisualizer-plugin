@@ -196,6 +196,7 @@
     <Compile Include="Services\ScreenshotsVisualizerExport.cs" />
     <Compile Include="Services\ScreenshotsVisualizerMenus.cs" />
     <Compile Include="Services\SsvPathResolver.cs" />
+    <Compile Include="Services\SsvThumbnailService.cs" />
     <Compile Include="Services\ScreenshotsVisualizerTopPanelItem.cs" />
     <Compile Include="Services\ScreenshotsVisualizerViewSidebar.cs" />
     <Compile Include="Services\ScreenshotsVisualizerWindows.cs" />

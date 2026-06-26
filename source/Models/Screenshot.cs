@@ -1,6 +1,5 @@
 ﻿using CommonPlayniteShared.Common;
 using CommonPluginsShared;
-using CommonPluginsShared.Images;
 using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -96,29 +95,16 @@ namespace ScreenshotsVisualizer.Models
         {
             get
             {
-                if (PluginDatabase.PluginSettings.UsedThumbnails)
+                if (PluginDatabase.PluginSettings.UsedThumbnails && !IsVideo)
                 {
-                    string fileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                    string pathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                    string fileThumbnail = Path.Combine(pathThumbnail, fileNameWithoutExt + $"_{fileNameWithoutExt}_Thumbnail.jpg");
+                    string thumbnailPath = PluginDatabase.ThumbnailService.TryEnsureImageThumbnail(
+                        FileName,
+                        PluginDatabase.Paths.PluginCachePath,
+                        Modifed);
 
-                    if (File.Exists(fileThumbnail))
+                    if (!thumbnailPath.IsNullOrEmpty())
                     {
-                        return fileThumbnail;
-                    }
-
-                    try
-                    {
-                        _ = ImageTools.Resize(FileName, 320, fileThumbnail);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-
-                    if (File.Exists(fileThumbnail))
-                    {
-                        return fileThumbnail;
+                        return thumbnailPath;
                     }
                 }
 
@@ -134,47 +120,17 @@ namespace ScreenshotsVisualizer.Models
         {
             get
             {
-                if (_thumbnail.IsNullOrEmpty())
+                if (_thumbnail.IsNullOrEmpty() && IsVideo)
                 {
-                    if (IsVideo)
-                    {
-                        string fileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                        string pathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                        string fileThumbnail = Path.Combine(pathThumbnail, fileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
-
-                        if (File.Exists(fileThumbnail))
-                        {
-                            _thumbnail = fileThumbnail;
-                            return fileThumbnail;
-                        }
-                        FileSystem.CreateDirectory(pathThumbnail);
-
-                        try
-                        {
-                            if (File.Exists(PluginDatabase.PluginSettings.FfmpegPath))
-                            {
-                                string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfmpegPath, string.Format(thumbArgs, FileName, fileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfmpegPath), true, out string stdOut, out string stdErr);
-                            }
-                            else
-                            {
-                                Logger.Warn("No ffmpeg executable");
-                                API.Instance.Notifications.Add(new NotificationMessage(
-                                    $"{PluginDatabase.PluginName}-FfmpegPath-Error",
-                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsvFfmpegNotFound"),
-                                    NotificationType.Error
-                                ));
-                            }
-
-                            _thumbnail = fileThumbnail;
-                            return fileThumbnail;
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                        }
-                    }
+                    _thumbnail = PluginDatabase.ThumbnailService.TryEnsureVideoThumbnail(
+                        FileName,
+                        PluginDatabase.Paths.PluginCachePath,
+                        Modifed,
+                        FileSize,
+                        Duration.TotalSeconds,
+                        PluginDatabase.PluginSettings.FfmpegPath) ?? string.Empty;
                 }
+
                 return _thumbnail;
             }
 
