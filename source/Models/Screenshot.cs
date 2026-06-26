@@ -14,9 +14,6 @@ namespace ScreenshotsVisualizer.Models
     public class Screenshot : ObservableObject
     {
         [DontSerialize]
-        private static ILogger Logger => LogManager.GetLogger();
-
-        [DontSerialize]
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         [DontSerialize]
@@ -28,36 +25,32 @@ namespace ScreenshotsVisualizer.Models
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
+        [DontSerialize]
+        private bool _videoSizeLookupAttempted;
+
         private string _sizeString;
         [DontSerialize]
         public string SizeString
         {
             get
             {
-                if (_sizeString.IsNullOrEmpty())
+                if (_sizeString.IsNullOrEmpty() && !_videoSizeLookupAttempted)
                 {
                     if (File.Exists(FileName))
                     {
                         if (IsVideo)
                         {
+                            _videoSizeLookupAttempted = true;
+
                             try
                             {
-                                if (File.Exists(PluginDatabase.PluginSettings.FfprobePath))
+                                if (PluginDatabase.ThumbnailService.EnsureFfprobeAvailable(PluginDatabase.PluginSettings.FfprobePath))
                                 {
                                     string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
                                     _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
 
                                     _sizeString = stdOut.Trim();
                                     return _sizeString;
-                                }
-                                else
-                                {
-                                    Logger.Warn("No ffprobe executable");
-                                    API.Instance.Notifications.Add(new NotificationMessage(
-                                        $"{PluginDatabase.PluginName}-FfprobePath-Error",
-                                        $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
-                                        NotificationType.Error
-                                    ));
                                 }
                             }
                             catch (Exception ex)
@@ -140,40 +133,31 @@ namespace ScreenshotsVisualizer.Models
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
+        [DontSerialize]
+        private bool _durationLookupAttempted;
+
         private TimeSpan _duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
             get
             {
-                if (_duration == default)
+                if (!_durationLookupAttempted && IsVideo)
                 {
-                    if (IsVideo)
-                    {
-                        try
-                        {
-                            if (File.Exists(PluginDatabase.PluginSettings.FfprobePath))
-                            {
-                                string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
-                                _ = TimeSpan.TryParse(stdOut, out _duration);
-                            }
-                            else
-                            {
-                                Logger.Warn("No ffprobe executable");
-                                API.Instance.Notifications.Add(new NotificationMessage(
-                                    $"{PluginDatabase.PluginName}-FfprobePath-Error",
-                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
-                                    NotificationType.Error
-                                ));
-                            }
+                    _durationLookupAttempted = true;
 
-                            return _duration == null ? default : _duration;
-                        }
-                        catch (Exception ex)
+                    try
+                    {
+                        if (PluginDatabase.ThumbnailService.EnsureFfprobeAvailable(PluginDatabase.PluginSettings.FfprobePath))
                         {
-                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
+                            _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
+                            _ = TimeSpan.TryParse(stdOut, out _duration);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
                 return _duration;

@@ -35,6 +35,8 @@ namespace ScreenshotsVisualizer.Services
         private const string LogPrefix = "[SsvThumbnail]";
 
         private readonly string _pluginName;
+        private bool _ffmpegNotFoundNotified;
+        private bool _ffprobeNotFoundNotified;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SsvThumbnailService"/> class.
@@ -43,6 +45,22 @@ namespace ScreenshotsVisualizer.Services
         public SsvThumbnailService(string pluginName)
         {
             _pluginName = pluginName ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Returns whether ffprobe is configured and present; logs and notifies once per service instance when missing.
+        /// </summary>
+        /// <param name="ffprobePath">Absolute path to the ffprobe executable.</param>
+        /// <returns><c>true</c> when ffprobe can be invoked.</returns>
+        public bool EnsureFfprobeAvailable(string ffprobePath)
+        {
+            if (!string.IsNullOrWhiteSpace(ffprobePath) && File.Exists(ffprobePath))
+            {
+                return true;
+            }
+
+            NotifyFfprobeNotFoundOnce();
+            return false;
         }
 
         /// <summary>
@@ -219,7 +237,7 @@ namespace ScreenshotsVisualizer.Services
             if (string.IsNullOrWhiteSpace(ffmpegPath) || !File.Exists(ffmpegPath))
             {
                 LogThumbnailDebug(string.Format("ffmpeg not found, skipping video: '{0}'", sourcePath));
-                NotifyFfmpegNotFound();
+                NotifyFfmpegNotFoundOnce();
                 WriteFailureMarker(failureMarkerPath);
                 return null;
             }
@@ -399,6 +417,11 @@ namespace ScreenshotsVisualizer.Services
             Common.LogDebug(true, string.Format("{0} {1}", LogPrefix, message));
         }
 
+        private static void LogThumbnailWarn(string message)
+        {
+            LogManager.GetLogger().Warn(string.Format("{0} {1}", LogPrefix, message));
+        }
+
         private bool GenerateVideoThumbnailWithFfmpeg(string sourcePath, string thumbnailPath, string ffmpegPath)
         {
             string directory = Path.GetDirectoryName(thumbnailPath);
@@ -420,9 +443,30 @@ namespace ScreenshotsVisualizer.Services
             return File.Exists(thumbnailPath);
         }
 
-        private void NotifyFfmpegNotFound()
+        private void NotifyFfprobeNotFoundOnce()
         {
-            LogManager.GetLogger().Warn("No ffmpeg executable");
+            if (_ffprobeNotFoundNotified)
+            {
+                return;
+            }
+
+            _ffprobeNotFoundNotified = true;
+            LogThumbnailWarn("ffprobe not found");
+            API.Instance.Notifications.Add(new NotificationMessage(
+                string.Format("{0}-FfprobePath-Error", _pluginName),
+                string.Format("{0}\r\n{1}", _pluginName, ResourceProvider.GetString("LOCSsFfprobeNotFound")),
+                NotificationType.Error));
+        }
+
+        private void NotifyFfmpegNotFoundOnce()
+        {
+            if (_ffmpegNotFoundNotified)
+            {
+                return;
+            }
+
+            _ffmpegNotFoundNotified = true;
+            LogThumbnailWarn("ffmpeg not found");
             API.Instance.Notifications.Add(new NotificationMessage(
                 string.Format("{0}-FfmpegPath-Error", _pluginName),
                 string.Format("{0}\r\n{1}", _pluginName, ResourceProvider.GetString("LOCSsvFfmpegNotFound")),
