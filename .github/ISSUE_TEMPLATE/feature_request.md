@@ -7,8 +7,15 @@ assignees: ''
 
 ---
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen or implemented.
+**Current problem**
+<!-- Describe the problem or limitation this feature would solve -->
+<!-- e.g. "I can't do X, which forces me to..." -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Desired solution**
+<!-- A clear and concise description of what you would like to see implemented -->
+
+**Alternatives considered**
+<!-- Any other solutions or workarounds you have considered -->
+
+**Screenshots / mockups**
+<!-- If applicable, add visuals to illustrate the idea -->
