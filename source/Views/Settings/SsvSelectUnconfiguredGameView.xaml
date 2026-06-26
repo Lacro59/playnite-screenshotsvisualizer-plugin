@@ -41,13 +41,14 @@
             <ListBox ItemsSource="{Binding FilteredGamesView}"
                      SelectedItem="{Binding SelectedGame}"
                      MouseDoubleClick="ListBox_MouseDoubleClick"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      VirtualizingPanel.VirtualizationMode="Recycling"
                      VirtualizingPanel.CacheLengthUnit="Item"
                      VirtualizingPanel.CacheLength="5"
                      Visibility="{Binding HasAvailableGames, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,2">
+                        <Grid Margin="0,2" HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="8" />
@@ -58,8 +59,18 @@
 
                             <Image Grid.Column="0" HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32"
                                    Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
-                            <controls:TextBlockTrimmed Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" />
-                            <Label Grid.Column="4" Content="{Binding SourceName}" VerticalAlignment="Center" />
+                            <controls:TextBlockTrimmed Grid.Column="2"
+                                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                                       Text="{Binding Name}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Stretch" />
+                            <Viewbox Grid.Column="4" Width="32" Height="32"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     Stretch="Uniform"
+                                     ToolTip="{Binding SourceName}">
+                                <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}"
+                                       FontSize="32" Padding="0" />
+                            </Viewbox>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

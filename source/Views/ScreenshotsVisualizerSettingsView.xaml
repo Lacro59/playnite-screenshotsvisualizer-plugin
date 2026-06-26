@@ -146,21 +146,26 @@
                                     <Label Content="{DynamicResource LOCSsvConfigOverrideGlobalConfigs}" />
                                 </CheckBox>
 
-                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
-                                           Text="{DynamicResource LOCSsvConfigNoActiveSources}"
-                                           TextAlignment="Center"
-                                           Foreground="{DynamicResource GlyphBrush}"
-                                           Visibility="{Binding ConfigurationContext.HasNoActiveSources, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Grid>
+                                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                               Text="{DynamicResource LOCSsvConfigNoActiveSources}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource GlyphBrush}"
+                                               Visibility="{Binding ConfigurationContext.HasNoActiveSources, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                                <ListBox ItemsSource="{Binding ConfigurationContext.ActiveSources}"
-                                         SelectedItem="{Binding ConfigurationContext.SelectedActiveSource}"
-                                         ItemTemplate="{StaticResource SsvActiveSourceRowTemplate}"
-                                         MouseDoubleClick="ActiveSourcesList_MouseDoubleClick"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                         VirtualizingPanel.VirtualizationMode="Recycling"
-                                         VirtualizingPanel.CacheLengthUnit="Item"
-                                         VirtualizingPanel.CacheLength="5" />
+                                    <ListBox ItemsSource="{Binding ConfigurationContext.ActiveSources}"
+                                             SelectedItem="{Binding ConfigurationContext.SelectedActiveSource}"
+                                             ItemTemplate="{StaticResource SsvActiveSourceRowTemplate}"
+                                             MouseDoubleClick="ActiveSourcesList_MouseDoubleClick"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                             VirtualizingPanel.VirtualizationMode="Recycling"
+                                             VirtualizingPanel.CacheLengthUnit="Item"
+                                             VirtualizingPanel.CacheLength="5"
+                                             Visibility="{Binding ConfigurationContext.HasActiveSources, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </Grid>
                             </DockPanel>
                         </Grid>
                 </Grid>

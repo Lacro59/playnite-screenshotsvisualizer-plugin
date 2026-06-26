@@ -46,6 +46,11 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         public string SourceIcon => Game?.SourceIcon;
 
         /// <summary>
+        /// Gets the game cover icon path for game contexts.
+        /// </summary>
+        public string Icon => Game?.Icon;
+
+        /// <summary>
         /// Gets the localized or game display name shown in the context list.
         /// </summary>
         public string DisplayName =>
