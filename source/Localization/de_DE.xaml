@@ -9,24 +9,24 @@
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg nicht auffindbar</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe nicht auffindbar</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick executable was not found</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick Programm wurde nicht gefunden</sys:String>
     <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick path:</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionSection">Image conversion commands</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionTabTitle">Image conversion</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionIntro">Configure ImageMagick and custom conversion profiles used from the game and main menus.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAdd">Add command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEdit">Edit command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAddTitle">Add conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEditTitle">Edit conversion command</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionSection">Bildkonvertierungsbefehle</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionTabTitle">Bildkonvertierung</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionIntro">Konfiguriere ImageMagick und benutzerdefinierte Konvertierungsprofile aus dem Spiel- und Hauptmenü.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">Befehl hinzufügen</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">Befehl bearbeiten</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAddTitle">Konversionsbefehl hinzufügen</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEditTitle">Konvertierungsbefehl bearbeiten</sys:String>
     <sys:String x:Key="LOCSsvImageConversionName">Name</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Output format</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionQuality">Quality</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Strip metadata</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Extra arguments</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Command preview</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNameRequired">Command name is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Ausgabeformat</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">Qualität</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Metadaten entfernen</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Zusätzliche Argumente</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Befehlsvorschau</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">Befehlsname ist notwendig.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Ausgabeformat ist erforderlich.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNoCommands">Keine Konvertierungsbefehle konfiguriert.</sys:String>
 
 
     <!-- MainView -->
@@ -39,12 +39,12 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Bildschirmfotos ansehen</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Verzeichnis der Bildschirmfotos öffnen</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Verschieben der Screenshots in das Speicherverzeichnis</sys:String>
-    <sys:String x:Key="LOCSsvConvertImages">Convert images</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionUnnamed">Unnamed command</sys:String>
+    <sys:String x:Key="LOCSsvConvertImages">Bilder konvertieren </sys:String>
+    <sys:String x:Key="LOCSsvImageConversionUnnamed">Unbenannter Befehl</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Verschieben der Screenshots...</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageCount">Anzahl Bilder</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Größe des Bildes (Bytes)</sys:String>
     <sys:String x:Key="LOCSsvCsvImageTotalSize">Image total size</sys:String>
     <sys:String x:Key="LOCSsvCsvVideoCount">Video count</sys:String>
     <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Video total size (bytes)</sys:String>
