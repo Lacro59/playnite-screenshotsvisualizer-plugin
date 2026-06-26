@@ -133,6 +133,7 @@
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
     <Compile Include="Models\SsvImageConversionResult.cs" />
+    <Compile Include="Models\SsvVideoMetadata.cs" />
     <Compile Include="Models\Screenshot.cs" />
     <Compile Include="Models\StartPage\SsvCarouselOptions.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\MediaElementExtend.xaml.cs">
@@ -196,6 +197,7 @@
     <Compile Include="Services\ScreenshotsVisualizerExport.cs" />
     <Compile Include="Services\ScreenshotsVisualizerMenus.cs" />
     <Compile Include="Services\SsvPathResolver.cs" />
+    <Compile Include="Services\SsvVideoMetadataService.cs" />
     <Compile Include="Services\SsvThumbnailService.cs" />
     <Compile Include="Services\ScreenshotsVisualizerTopPanelItem.cs" />
     <Compile Include="Services\ScreenshotsVisualizerViewSidebar.cs" />

@@ -27,11 +27,17 @@ namespace ScreenshotsVisualizer.Services
         private readonly SsvPathResolver _pathResolver;
         private readonly ImageMagickConversionService _imageMagickConversionService;
         private readonly SsvThumbnailService _thumbnailService;
+        private readonly SsvVideoMetadataService _videoMetadataService;
 
         /// <summary>
         /// Gets the thumbnail generation service used for image and video cache paths.
         /// </summary>
         public SsvThumbnailService ThumbnailService => _thumbnailService;
+
+        /// <summary>
+        /// Gets the ffprobe metadata cache service for video duration and resolution.
+        /// </summary>
+        public SsvVideoMetadataService VideoMetadataService => _videoMetadataService;
 
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
@@ -41,6 +47,7 @@ namespace ScreenshotsVisualizer.Services
             _pathResolver = new SsvPathResolver();
             _imageMagickConversionService = new ImageMagickConversionService(PluginName);
             _thumbnailService = new SsvThumbnailService(PluginName);
+            _videoMetadataService = new SsvVideoMetadataService(PluginName, _thumbnailService);
         }
 
         #region Logging

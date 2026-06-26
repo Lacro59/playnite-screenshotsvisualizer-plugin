@@ -26,7 +26,7 @@ namespace ScreenshotsVisualizer.Models
         public DateTime Modifed { get; set; }
 
         [DontSerialize]
-        private bool _videoSizeLookupAttempted;
+        private bool _videoMetadataResolveAttempted;
 
         private string _sizeString;
         [DontSerialize]
@@ -34,37 +34,21 @@ namespace ScreenshotsVisualizer.Models
         {
             get
             {
-                if (_sizeString.IsNullOrEmpty() && !_videoSizeLookupAttempted)
+                if (_sizeString.IsNullOrEmpty())
                 {
                     if (File.Exists(FileName))
                     {
                         if (IsVideo)
                         {
-                            _videoSizeLookupAttempted = true;
-
-                            try
-                            {
-                                if (PluginDatabase.ThumbnailService.EnsureFfprobeAvailable(PluginDatabase.PluginSettings.FfprobePath))
-                                {
-                                    string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
-                                    _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
-
-                                    _sizeString = stdOut.Trim();
-                                    return _sizeString;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                            }
+                            EnsureVideoMetadataResolved();
+                            return _sizeString;
                         }
-                        else
-                        {
-                            ImageProperties imageProperties = Images.GetImageProperties(FileName);
-                            return imageProperties.Width + "x" + imageProperties.Height;
-                        }
+
+                        ImageProperties imageProperties = Images.GetImageProperties(FileName);
+                        return imageProperties.Width + "x" + imageProperties.Height;
                     }
                 }
+
                 return _sizeString;
             }
 
@@ -133,37 +117,64 @@ namespace ScreenshotsVisualizer.Models
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
-        [DontSerialize]
-        private bool _durationLookupAttempted;
-
         private TimeSpan _duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
             get
             {
-                if (!_durationLookupAttempted && IsVideo)
+                if (IsVideo)
                 {
-                    _durationLookupAttempted = true;
-
-                    try
-                    {
-                        if (PluginDatabase.ThumbnailService.EnsureFfprobeAvailable(PluginDatabase.PluginSettings.FfprobePath))
-                        {
-                            string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
-                            _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.FfprobePath), true, out string stdOut, out string stdErr);
-                            _ = TimeSpan.TryParse(stdOut, out _duration);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
+                    EnsureVideoMetadataResolved();
                 }
+
                 return _duration;
             }
 
             set => SetValue(ref _duration, value);
+        }
+
+        private void EnsureVideoMetadataResolved()
+        {
+            if (_videoMetadataResolveAttempted || !IsVideo || !File.Exists(FileName))
+            {
+                return;
+            }
+
+            _videoMetadataResolveAttempted = true;
+
+            try
+            {
+                Common.LogDebug(true, string.Format(
+                    "[SsvVideoMetadata] Resolve start for '{0}' (modified={1:u})",
+                    FileName,
+                    Modifed.ToUniversalTime()));
+
+                if (PluginDatabase.VideoMetadataService.TryGetVideoMetadata(
+                    FileName,
+                    Modifed,
+                    PluginDatabase.PluginSettings.FfprobePath,
+                    out SsvVideoMetadata metadata))
+                {
+                    _duration = metadata.Duration;
+                    _sizeString = metadata.SizeString;
+                    Common.LogDebug(true, string.Format(
+                        "[SsvVideoMetadata] Resolve ok for '{0}' ({1}, {2})",
+                        FileName,
+                        _sizeString,
+                        _duration));
+                }
+                else
+                {
+                    Common.LogDebug(true, string.Format(
+                        "[SsvVideoMetadata] Resolve failed for '{0}'",
+                        FileName));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         #endregion
