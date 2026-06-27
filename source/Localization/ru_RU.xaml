@@ -99,6 +99,20 @@
     
     <sys:String x:Key="LOCSsvAddTag">Добавить тег, если в игре есть скриншоты</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Добавить игру Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">This preset is already configured in global sources.</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicability</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Restrict which games receive this global source at scan time. Leave sources on All and emulator on None to apply to every game.</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite sources</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">All sources</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Only selected</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Exclude selected</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Source names</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">Add</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Emulator</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Any</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch only</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM only</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Преобразовать номер в {digit}</sys:String>
 
@@ -172,6 +186,13 @@ Archive destination:
     <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration completed.</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationFailed">Archive settings migration failed: {0}</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">No duplicate archive entries were removed.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationTitle">Preset settings migration</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">Creating settings backup...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">Consolidating global preset sources...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Saving settings...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCompleted">Migration completed.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationFailed">Preset settings migration failed: {0}</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">No preset migration changes were applied.</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
     <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>
@@ -193,6 +214,9 @@ Archive destination:
 
     <!-- Source editor dialog -->
     <sys:String x:Key="LOCSsvConfigSourcePath">Screenshot folder</sys:String>
+    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">File pattern: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Excluded sources: {0}</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>
