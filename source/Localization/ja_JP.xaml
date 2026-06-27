@@ -99,6 +99,21 @@
     
     <sys:String x:Key="LOCSsvAddTag">ゲームにスクリーンショットがある場合はタグを追加</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam ゲームを追加</sys:String>
+    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">このプリセットはすでにグローバルソースで設定されています。</sys:String>
+
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">適用対象</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">スキャン時に、このグローバルソースを適用するゲームを制限します。
+すべてのゲームに適用するには、ソースを「すべて」、エミュレーターを「なし」のままにしてください。</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite ソース</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">すべてのソース</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">選択したもののみ</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">選択したものを除外</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">ソース名</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">追加</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">エミュレーター</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">すべて</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch のみ</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM のみ</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">数値を {digit} 桁に変換</sys:String>
 
@@ -172,6 +187,13 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationCompleted">移行が完了しました。</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationFailed">アーカイブ設定の移行に失敗しました：{0}</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">重複するアーカイブ項目は削除されませんでした。</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationTitle">プリセット設定の移行</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">設定のバックアップを作成中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">グローバルプリセットソースを統合中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">設定を保存中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCompleted">移行が完了しました。</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationFailed">プリセット設定の移行に失敗しました：{0}</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">プリセット移行による変更は適用されませんでした。</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">変数を挿入</sys:String>
     <sys:String x:Key="LOCSsvFilePatternAvailableVariables">利用可能な変数：{Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">パス変数を挿入</sys:String>
@@ -193,6 +215,9 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 
     <!-- Source editor dialog -->
     <sys:String x:Key="LOCSsvConfigSourcePath">スクリーンショットフォルダー</sys:String>
+    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">ファイルパターン：{0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">ソース：{0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">除外ソース：{0}</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">スクリーンショットソースを追加</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">スクリーンショットソースを編集</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">保存</sys:String>
