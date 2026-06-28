@@ -18,6 +18,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Templates/SsvConfigurationContextRow.xaml" />
                 <ResourceDictionary Source="Templates/SsvActiveSourceRow.xaml" />
+                <ResourceDictionary Source="Templates/SsvFilePatternTooltip.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -233,7 +234,7 @@
                                                      VerticalAlignment="Center"
                                                      MinWidth="100">
                                                 <TextBox.ToolTip>
-                                                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" FontFamily="Consolas" />
+                                                    <ToolTip Content="{StaticResource SsvFilePatternTooltipContent}" />
                                                 </TextBox.ToolTip>
                                             </TextBox>
                                         </DockPanel>

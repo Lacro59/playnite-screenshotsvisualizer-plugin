@@ -10,7 +10,13 @@
              Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Templates/SsvFilePatternTooltip.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <DockPanel Margin="10" LastChildFill="True">
@@ -108,7 +114,7 @@
                     Click="ReplaceDigitButton_Click" />
             <TextBox Grid.Column="2" Text="{Binding WorkingCopy.FilePattern, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.ToolTip>
-                    <ToolTip Content="{DynamicResource LOCSsvFilePatternTooltip}" />
+                    <ToolTip Content="{StaticResource SsvFilePatternTooltipContent}" />
                 </TextBox.ToolTip>
             </TextBox>
         </Grid>

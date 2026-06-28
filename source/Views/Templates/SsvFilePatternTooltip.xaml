@@ -1,0 +1,107 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel x:Key="SsvFilePatternTooltipContent">
+        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                   Text="{DynamicResource LOCSsvFilePatternTooltipIntro}"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,6" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="&#x2022; {}{DateModified}" />
+            <TextBlock Grid.Row="0" Grid.Column="2"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource LOCSsvFilePatternTooltipFormatDateModified}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="&#x2022; {}{DateTimeModified}" />
+            <TextBlock Grid.Row="1" Grid.Column="2"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource LOCSsvFilePatternTooltipFormatDateTimeModified}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="&#x2022; {}{digit}" />
+            <TextBlock Grid.Row="2" Grid.Column="2"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="{DynamicResource LOCSsvFilePatternTooltipDigitDescription}" />
+        </Grid>
+
+        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                   Text="{DynamicResource LOCSsvFilePatternTooltipExample}"
+                   Margin="0,10,0,4" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="GameName_20200107-1" />
+            <TextBlock Grid.Row="0" Grid.Column="2"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="=&gt;" />
+            <TextBlock Grid.Row="0" Grid.Column="4"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="{}{Name}_{}{digit}-{}{digit}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="GameName_2020-01-07" />
+            <TextBlock Grid.Row="1" Grid.Column="2"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="=&gt;" />
+            <TextBlock Grid.Row="1" Grid.Column="4"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       FontFamily="Consolas"
+                       VerticalAlignment="Center"
+                       Text="{}{Name}_{}{DateModified}" />
+        </Grid>
+    </StackPanel>
+
+</ResourceDictionary>

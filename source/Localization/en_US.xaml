@@ -145,14 +145,11 @@ Use Insert variable for the full list with live preview.</sys:String>
     <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
-    
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">In addition, you can use:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">number(s)</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">Example:</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
     
