@@ -11,11 +11,19 @@ namespace ScreenshotsVisualizer.Models
         /// Initializes a new folder preset definition.
         /// </summary>
         /// <param name="id">Preset identifier.</param>
+        /// <param name="displayNameLocalizationKey">Settings UI display name resource key.</param>
         /// <param name="tooltipLocalizationKey">Optional settings UI tooltip resource key.</param>
-        public SsvFolderPreset(SsvFolderPresetId id, string tooltipLocalizationKey)
+        /// <param name="iconGlyph">CommonFont glyph for the quick-add button.</param>
+        public SsvFolderPreset(
+            SsvFolderPresetId id,
+            string displayNameLocalizationKey,
+            string tooltipLocalizationKey,
+            string iconGlyph)
         {
             Id = id;
+            DisplayNameLocalizationKey = displayNameLocalizationKey ?? string.Empty;
             TooltipLocalizationKey = tooltipLocalizationKey ?? string.Empty;
+            IconGlyph = iconGlyph ?? string.Empty;
         }
 
         /// <summary>
@@ -24,9 +32,19 @@ namespace ScreenshotsVisualizer.Models
         public SsvFolderPresetId Id { get; }
 
         /// <summary>
+        /// Gets the localization key for preset display text in settings UI.
+        /// </summary>
+        public string DisplayNameLocalizationKey { get; }
+
+        /// <summary>
         /// Gets the localization key for preset tooltip text in settings UI.
         /// </summary>
         public string TooltipLocalizationKey { get; }
+
+        /// <summary>
+        /// Gets the CommonFont icon glyph shown on the quick-add button.
+        /// </summary>
+        public string IconGlyph { get; }
 
         /// <summary>
         /// Creates canonical <see cref="FolderSettings"/> for <see cref="ScreenshotsVisualizerSettings.GlobalScreenshotSources"/>.
@@ -42,6 +60,14 @@ namespace ScreenshotsVisualizer.Models
                         ScreenshotsFolder = "{SteamScreenshotsDir}\\{GameId}\\screenshots",
                         ApplicableSourceFilterMode = SourceFilterMode.Whitelist,
                         ApplicableSources = new System.Collections.Generic.List<string> { "Steam" }
+                    };
+
+                case SsvFolderPresetId.Gog:
+                    return new FolderSettings
+                    {
+                        ScreenshotsFolder = "{GogScreenshotDir}\\{Name}",
+                        ApplicableSourceFilterMode = SourceFilterMode.Whitelist,
+                        ApplicableSources = new System.Collections.Generic.List<string> { "GOG" }
                     };
 
                 case SsvFolderPresetId.Ubisoft:
@@ -68,6 +94,14 @@ namespace ScreenshotsVisualizer.Models
                         UsedFilePattern = true,
                         FilePattern = "scummvm-{ImageNameNoExt}-{digit}",
                         ApplicableEmulatorFilter = SsvApplicableEmulatorFilter.ScummVM
+                    };
+
+                case SsvFolderPresetId.XboxGameBar:
+                    return new FolderSettings
+                    {
+                        ScreenshotsFolder = "{XboxGamebarScreenshotsDir}",
+                        UsedFilePattern = true,
+                        FilePattern = "{Name} *"
                     };
 
                 default:

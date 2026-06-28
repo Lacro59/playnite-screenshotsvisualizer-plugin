@@ -87,7 +87,25 @@
     
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoft">Ubisoft Connect</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArch">RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVM">ScummVM</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBar">Xbox Game Bar</sys:String>
+    <sys:String x:Key="LOCSsvPresetGogTooltip">Ajoute une source globale GOG Galaxy ({GogScreenshotDir}\{Name}) pour les jeux de la bibliothèque GOG.</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Ajoute une source globale Ubisoft Connect ({UbisoftScreenshotsDir}\{Name}) pour les jeux de la bibliothèque Ubisoft.</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">Ajoute une source globale RetroArch avec filtre de motif émulateur.</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVMTooltip">Ajoute une source globale ScummVM avec filtre de motif émulateur.</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">Ajoute le dossier des captures Xbox Game Bar ({XboxGamebarScreenshotsDir}) avec le motif {Name} *.</sys:String>
     <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">Ce préréglage est déjà configuré dans les sources globales.</sys:String>
+    <sys:String x:Key="LOCSsvConfigQuickAddHint">Ajoute une entrée canonique aux sources globales. Chaque preset ne peut être ajouté qu'une fois ; l'applicabilité filtre les jeux concernés au scan.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">Utilisez des variables dans les chemins de dossiers. Playnite : {Name}, {GameId}, {InstallDir}, {Platform}, …
+
+Dossiers plateformes :
+{SteamScreenshotsDir}, {UbisoftScreenshotsDir}, {GogScreenshotDir}, {XboxGamebarScreenshotsDir}, {RetroArchScreenshotsDir}
+
+Utilisez Insérer une variable pour la liste complète avec aperçu en direct.</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicabilité</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Limite les jeux qui reçoivent cette source globale au scan. Laissez « Toutes les sources » et « Tous » pour l'appliquer à chaque jeu.</sys:String>
@@ -149,6 +167,8 @@ Exemple :
 Dossiers sources :
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
+- {GogScreenshotDir}\{Name}
+- {XboxGamebarScreenshotsDir}
 
 Destination d'archivage :
 {DropboxFolder}\Screenshots\{Name}</sys:String>
@@ -202,7 +222,7 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvConfigNoActiveSources">Aucune source de captures configurée pour ce contexte.</sys:String>
     <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Remplacer les sources globales pour ce jeu</sys:String>
     <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} jeu(x)</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Aucun jeu configuré. Utilisez Ajouter un jeu ou un preset d'ajout rapide sur le contexte actif.</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Aucun jeu configuré. Utilisez Ajouter un jeu ou un preset d'ajout rapide dans Globaux.</sys:String>
     <sys:String x:Key="LOCSsvConfigPreview">Aperçu</sys:String>
     <sys:String x:Key="LOCSsvConfigNameFormat">Format du nom</sys:String>
     <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Disponible dans une prochaine mise à jour.</sys:String>

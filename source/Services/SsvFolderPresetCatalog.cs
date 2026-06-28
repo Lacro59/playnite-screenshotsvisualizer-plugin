@@ -6,16 +6,18 @@ using System.Linq;
 namespace ScreenshotsVisualizer.Services
 {
     /// <summary>
-    /// Static registry of built-in global folder presets (Steam, Ubisoft, RetroArch, ScummVM).
+    /// Static registry of built-in global folder presets (Steam, GOG, Ubisoft, RetroArch, ScummVM, Xbox Game Bar).
     /// </summary>
     public static class SsvFolderPresetCatalog
     {
         private static readonly IReadOnlyList<SsvFolderPreset> Presets = new List<SsvFolderPreset>
         {
-            new SsvFolderPreset(SsvFolderPresetId.Steam, "LOCSsvAddSteamGame"),
-            new SsvFolderPreset(SsvFolderPresetId.Ubisoft, string.Empty),
-            new SsvFolderPreset(SsvFolderPresetId.ScummVM, string.Empty),
-            new SsvFolderPreset(SsvFolderPresetId.RetroArch, string.Empty)
+            new SsvFolderPreset(SsvFolderPresetId.Steam, "LOCSsvPresetSteam", "LOCSsvAddSteamGame", "\ue906"),
+            new SsvFolderPreset(SsvFolderPresetId.Gog, "LOCSsvPresetGog", "LOCSsvPresetGogTooltip", "\ue903"),
+            new SsvFolderPreset(SsvFolderPresetId.Ubisoft, "LOCSsvPresetUbisoft", "LOCSsvPresetUbisoftTooltip", "\ue907"),
+            new SsvFolderPreset(SsvFolderPresetId.RetroArch, "LOCSsvPresetRetroArch", "LOCSsvPresetRetroArchTooltip", "\uea62"),
+            new SsvFolderPreset(SsvFolderPresetId.ScummVM, "LOCSsvPresetScummVM", "LOCSsvPresetScummVMTooltip", "\uea71"),
+            new SsvFolderPreset(SsvFolderPresetId.XboxGameBar, "LOCSsvPresetXboxGameBar", "LOCSsvPresetXboxGameBarTooltip", "\ue908")
         };
 
         /// <summary>

@@ -52,12 +52,11 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             RemoveActiveSourceCommand = new RelayCommand<object>(RemoveActiveSourceFromCommand);
             BrowseActiveSourceCommand = new RelayCommand<object>(BrowseActiveSourceFromCommand);
             ReplaceDigitActiveSourceCommand = new RelayCommand<object>(ReplaceDigitActiveSourceFromCommand);
-            ApplySteamPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.Steam));
-            ApplyUbisoftPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.Ubisoft));
-            ApplyScummvmPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.ScummVM));
-            ApplyRetroArchPresetToActiveContextCommand = new RelayCommand(() => ApplyPresetToActiveContext(SsvFolderPresetId.RetroArch));
+            ApplyQuickAddPresetCommand = new RelayCommand<object>(ApplyQuickAddPresetFromCommand);
             SelectContextCommand = new RelayCommand<object>(SelectContextFromCommand);
             AddConfiguredGameCommand = new RelayCommand(OpenAddConfiguredGameDialog);
+
+            InitializeQuickAddPresets();
         }
 
         /// <summary>
@@ -195,24 +194,14 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         public RelayCommand<object> ReplaceDigitActiveSourceCommand { get; }
 
         /// <summary>
-        /// Gets the command that applies the Steam preset to the active context.
+        /// Gets built-in quick-add preset buttons bound from the catalog.
         /// </summary>
-        public RelayCommand ApplySteamPresetToActiveContextCommand { get; }
+        public ObservableCollection<SsvFolderPresetQuickAddItem> QuickAddPresets { get; } = new ObservableCollection<SsvFolderPresetQuickAddItem>();
 
         /// <summary>
-        /// Gets the command that applies the Ubisoft preset to the active context.
+        /// Gets the command that applies a built-in preset to global sources.
         /// </summary>
-        public RelayCommand ApplyUbisoftPresetToActiveContextCommand { get; }
-
-        /// <summary>
-        /// Gets the command that applies the ScummVM preset to the active context.
-        /// </summary>
-        public RelayCommand ApplyScummvmPresetToActiveContextCommand { get; }
-
-        /// <summary>
-        /// Gets the command that applies the RetroArch preset to the active context.
-        /// </summary>
-        public RelayCommand ApplyRetroArchPresetToActiveContextCommand { get; }
+        public RelayCommand<object> ApplyQuickAddPresetCommand { get; }
 
         /// <summary>
         /// Gets the command that selects a context item from a command parameter.
@@ -345,24 +334,14 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         }
 
         /// <summary>
-        /// Gets whether the Steam quick-add preset can be added to global sources.
+        /// Gets whether a built-in preset can be added to global sources.
         /// </summary>
-        public bool CanApplySteamPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.Steam);
-
-        /// <summary>
-        /// Gets whether the Ubisoft quick-add preset can be added to global sources.
-        /// </summary>
-        public bool CanApplyUbisoftPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.Ubisoft);
-
-        /// <summary>
-        /// Gets whether the ScummVM quick-add preset can be added to global sources.
-        /// </summary>
-        public bool CanApplyScummvmPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.ScummVM);
-
-        /// <summary>
-        /// Gets whether the RetroArch quick-add preset can be added to global sources.
-        /// </summary>
-        public bool CanApplyRetroArchPresetToActiveContext => CanApplyGlobalPreset(SsvFolderPresetId.RetroArch);
+        /// <param name="presetId">Preset identifier.</param>
+        /// <returns><c>true</c> when the canonical preset is not already configured.</returns>
+        public bool CanApplyGlobalPreset(SsvFolderPresetId presetId)
+        {
+            return !SsvFolderPresetService.IsGlobalPresetPresent(_globalSources, presetId);
+        }
 
         /// <summary>
         /// Adds a built-in preset to global screenshot sources (ignores the active game context).
@@ -375,16 +354,6 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             SsvFolderPresetService.TryAddToGlobal(_globalSources, preset);
             NotifyActiveSourcesChanged();
             RefreshPresetCommandsCanExecute();
-        }
-
-        /// <summary>
-        /// Returns whether a built-in preset can be added to global sources.
-        /// </summary>
-        /// <param name="presetId">Preset identifier.</param>
-        /// <returns><c>true</c> when the canonical preset is not already configured.</returns>
-        public bool CanApplyGlobalPreset(SsvFolderPresetId presetId)
-        {
-            return !SsvFolderPresetService.IsGlobalPresetPresent(_globalSources, presetId);
         }
 
         /// <summary>
@@ -598,10 +567,30 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
 
         private void RefreshPresetCommandsCanExecute()
         {
-            OnPropertyChanged(nameof(CanApplySteamPresetToActiveContext));
-            OnPropertyChanged(nameof(CanApplyUbisoftPresetToActiveContext));
-            OnPropertyChanged(nameof(CanApplyScummvmPresetToActiveContext));
-            OnPropertyChanged(nameof(CanApplyRetroArchPresetToActiveContext));
+            foreach (SsvFolderPresetQuickAddItem item in QuickAddPresets)
+            {
+                item.CanApply = CanApplyGlobalPreset(item.PresetId);
+            }
+        }
+
+        private void InitializeQuickAddPresets()
+        {
+            QuickAddPresets.Clear();
+
+            foreach (SsvFolderPreset preset in SsvFolderPresetCatalog.GetAll())
+            {
+                QuickAddPresets.Add(new SsvFolderPresetQuickAddItem(preset));
+            }
+
+            RefreshPresetCommandsCanExecute();
+        }
+
+        private void ApplyQuickAddPresetFromCommand(object parameter)
+        {
+            if (parameter is SsvFolderPresetId presetId)
+            {
+                ApplyPresetToActiveContext(presetId);
+            }
         }
 
         private void RemoveActiveSourceFromCommand(object parameter)

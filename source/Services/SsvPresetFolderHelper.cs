@@ -18,9 +18,11 @@ namespace ScreenshotsVisualizer.Services
         private static readonly SsvFolderPresetId[] AllPresetIds =
         {
             SsvFolderPresetId.Steam,
+            SsvFolderPresetId.Gog,
             SsvFolderPresetId.Ubisoft,
             SsvFolderPresetId.RetroArch,
-            SsvFolderPresetId.ScummVM
+            SsvFolderPresetId.ScummVM,
+            SsvFolderPresetId.XboxGameBar
         };
 
         private const string SteamScreenshotsDirToken = "{SteamScreenshotsDir}";
@@ -56,6 +58,12 @@ namespace ScreenshotsVisualizer.Services
                         ScreenshotsFolder = "{UbisoftScreenshotsDir}\\" + game.Name
                     };
 
+                case SsvFolderPresetId.Gog:
+                    return new FolderSettings
+                    {
+                        ScreenshotsFolder = "{GogScreenshotDir}\\" + game.Name
+                    };
+
                 case SsvFolderPresetId.RetroArch:
                     return new FolderSettings
                     {
@@ -70,6 +78,14 @@ namespace ScreenshotsVisualizer.Services
                         ScreenshotsFolder = "{UserProfile}\\Pictures\\ScummVM Screenshots",
                         UsedFilePattern = true,
                         FilePattern = "scummvm-{ImageNameNoExt}-{digit}"
+                    };
+
+                case SsvFolderPresetId.XboxGameBar:
+                    return new FolderSettings
+                    {
+                        ScreenshotsFolder = "{XboxGamebarScreenshotsDir}",
+                        UsedFilePattern = true,
+                        FilePattern = game.Name + " *"
                     };
 
                 default:

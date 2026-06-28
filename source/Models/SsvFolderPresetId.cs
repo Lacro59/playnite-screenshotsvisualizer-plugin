@@ -8,6 +8,9 @@ namespace ScreenshotsVisualizer.Models
         /// <summary>Steam client screenshots folder.</summary>
         Steam,
 
+        /// <summary>GOG Galaxy screenshots folder.</summary>
+        Gog,
+
         /// <summary>Ubisoft Connect / Uplay screenshots folder.</summary>
         Ubisoft,
 
@@ -15,6 +18,9 @@ namespace ScreenshotsVisualizer.Models
         ScummVM,
 
         /// <summary>RetroArch emulator screenshots folder.</summary>
-        RetroArch
+        RetroArch,
+
+        /// <summary>Xbox Game Bar captures folder.</summary>
+        XboxGameBar
     }
 }

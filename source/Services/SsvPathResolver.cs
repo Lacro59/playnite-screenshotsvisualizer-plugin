@@ -45,6 +45,7 @@ namespace ScreenshotsVisualizer.Services
 
             string pattern = PlayniteTools.StringExpandWithStores(game, folderSettings.FilePattern);
             pattern = EscapeRegexSpecialChars(pattern);
+            pattern = pattern.Replace("\\*", ".*");
             pattern = pattern.Replace("\\{digit\\}", @"\d*");
             pattern = pattern.Replace("\\{DateModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
             pattern = pattern.Replace("\\{DateTimeModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");

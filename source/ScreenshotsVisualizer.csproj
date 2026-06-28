@@ -190,6 +190,7 @@
     <Compile Include="ViewModels\Settings\SsvFolderSourceEditorViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextItem.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextKind.cs" />
+    <Compile Include="ViewModels\Settings\SsvFolderPresetQuickAddItem.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvGamesConfigurationViewModel.cs" />
     <Compile Include="ScreenshotsVisualizer.cs" />
