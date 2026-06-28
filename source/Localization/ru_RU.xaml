@@ -9,24 +9,24 @@
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">Исполняемый файл ffmpeg не найден</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">Исполняемый файл ffprobe не найден</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick executable was not found</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick path:</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionSection">Image conversion commands</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionTabTitle">Image conversion</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionIntro">Configure ImageMagick and custom conversion profiles used from the game and main menus.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAdd">Add command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEdit">Edit command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAddTitle">Add conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEditTitle">Edit conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionName">Name</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Output format</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionQuality">Quality</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Strip metadata</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Extra arguments</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Command preview</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNameRequired">Command name is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">Исполняемый файл ImageMagick не найден</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick путь:</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionSection">Команды конвертации изображений</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionTabTitle">Конвертация изображения</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionIntro">Настройте ImageMagick и пользовательские профили конвертации, используемые в игре и главном меню.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">Добавить команду</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">Редактировать команду</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAddTitle">Добавить команду конвертации</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEditTitle">Редактировать команду конвертации</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionName">Название</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Выходной формат</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">Качество</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Снять метаданные</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Дополнительные аргументы</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Предпросмотр команды</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">Необходимо указать имя команды.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Необходимо указать формат вывода.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNoCommands">Команды конвертации не настроены.</sys:String>
 
 
     <!-- MainView -->
@@ -39,20 +39,20 @@
     <sys:String x:Key="LOCSsvViewScreenshots">Скриншоты игры</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Открыть каталог скриншотов</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Переместить скриншоты в каталог</sys:String>
-    <sys:String x:Key="LOCSsvConvertImages">Convert images</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionUnnamed">Unnamed command</sys:String>
+    <sys:String x:Key="LOCSsvConvertImages">Конвертировать изображения</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionUnnamed">Команда без имени</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Перемещение скриншотов...</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSize">Image total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoCount">Video count</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Video total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Video total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Video total duration</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalCount">Total count</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSize">Total size</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageCount">Количество изображений</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Общий размер изображения (байт)</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSize">Общий размер изображения</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoCount">Количество видео</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Общий размер видео (байт)</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Общий размер видео</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Общая длительность видео</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalCount">Общее количество</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Общий размер (байт)</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSize">Общий размер</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">Вы уверены, что хотите удалить этот скриншот?</sys:String>
 
@@ -99,20 +99,20 @@
     
     <sys:String x:Key="LOCSsvAddTag">Добавить тег, если в игре есть скриншоты</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Добавить игру Steam</sys:String>
-    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">This preset is already configured in global sources.</sys:String>
+    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">Этот шаблон уже настроен в глобальных источниках.</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicability</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Restrict which games receive this global source at scan time. Leave sources on All and emulator on None to apply to every game.</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite sources</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">All sources</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Only selected</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Exclude selected</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Source names</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">Add</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Emulator</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Any</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch only</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM only</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Применимость</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Ограничение того, какие игры получают этот глобальный источник во время сканирования. Оставьте источники в положении «Все», а эмулятор в положении «Нет», чтобы применить ко всем играм.</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Источники Playnite</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">Все источники</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Только выбранные</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Исключить выбранные</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Названия источников</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">Добавить</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Эмулятор</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Любое</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">Только RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">Только ScummVM</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Преобразовать номер в {digit}</sys:String>
 
@@ -153,16 +153,16 @@ GameName_2020-01-07=&gt;	{Name}_{DateModified}</sys:String>
 Пример:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Adds a game menu action to move screenshots from all configured source folders to one archive folder.
-The archive folder path uses the destination field above. If {Name} is missing in that path, it is added automatically.
-Files are renamed using &quot;File pattern&quot;, then plugin links are updated.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Добавляет действие в игровое меню для перемещения скриншотов из всех настроенных исходных папок в одну архивную папку.
+Путь к архивной папке использует поле места назначения, указанное выше. Если в этом пути отсутствует {Name}, он добавляется автоматически.
+Файлы переименовываются с использованием &quot;Шаблона файла&quot;, после чего обновляются ссылки на плагин.
 
-Example:
-Source folders:
+Пример:
+Исходные папки:
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
 
-Archive destination:
+Место назначения архива:
 {DropboxFolder}\Screenshots\{Name}</sys:String>
 
     <!-- Notifications -->
@@ -172,66 +172,66 @@ Archive destination:
     <!-- Settings — Configuration tab (phase 1.5 master-detail) -->
 
     <!-- Layout sections -->
-    <sys:String x:Key="LOCSsvConfigSectionContexts">Contexts</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSources">Sources</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Quick add</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration.</sys:String>
-    <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationTitle">Archive settings migration</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Creating settings backup...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Removing duplicate archive entries...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Saving settings...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration completed.</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationFailed">Archive settings migration failed: {0}</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">No duplicate archive entries were removed.</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationTitle">Preset settings migration</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">Creating settings backup...</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">Consolidating global preset sources...</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Saving settings...</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationCompleted">Migration completed.</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationFailed">Preset settings migration failed: {0}</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">No preset migration changes were applied.</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
-    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>
-    <sys:String x:Key="LOCSsvConfigContextGlobals">Globals</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Configured games</sys:String>
-    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} game(s)</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoActiveSources">No screenshot sources configured for this context.</sys:String>
-    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Override global sources for this game</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionContexts">Контексты</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSources">Источники</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Источники — {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Быстрое добавление</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionArchiving">Архивирование</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">Настройте способ перемещения скриншотов в единую архивную папку через меню игры. Эти настройки применяются ко всем играм автоматически — архивная папка включается в сканирование, в том числе и для игр, для которых не заданы параметры для каждой игры отдельно.</sys:String>
+    <sys:String x:Key="LOCSsvArchivingDestinationFolder">Папка места назначения архива</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationTitle">Перенос настроек архива</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Создание резервной копии настроек...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Удаление дублирующихся записей архива...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Сохранение настроек...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Перенос завершен.</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationFailed">Перенос настроек архива не удался: {0}</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">Ни одна дублирующаяся запись архива не была удалена.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationTitle">Перенос настроек шаблона</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">Создание резервной копии настроек...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">Объединение глобальных источников шаблонов...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Сохранение настроек...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCompleted">Перенос завершен.</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationFailed">Перенос настроек шаблона не удался: {0}</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">Изменения переноса шаблонов не были применены.</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternInsertVariable">Вставить переменную</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Доступные переменные: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
+    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Вставить переменную пути</sys:String>
+    <sys:String x:Key="LOCSsvConfigContextGlobals">Глобальные</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Настроенные игры</sys:String>
+    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} игр(а)</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoActiveSources">Нет настроенных источников скриншотов для этого контекста.</sys:String>
+    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Переопределить глобальные источники для этой игры</sys:String>
 
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
-    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Global paths</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionManualAdd">Add a game manually</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">No games configured. Use Add a game or apply a quick-add preset to the active context.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Глобальные пути</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionManualAdd">Добавить игру вручную</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Нет настроенных игр. Добавьте игру или примените шаблон быстрого добавления в активный контекст.</sys:String>
 
     <!-- Game selection dialog -->
-    <sys:String x:Key="LOCSsvConfigAddGameTitle">Add a game</sys:String>
-    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Select a game to configure</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">All library games are already configured.</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddGameTitle">Добавить игру</sys:String>
+    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Выберите игру для настройки</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">Все игры в библиотеке уже настроены.</sys:String>
 
     <!-- Source editor dialog -->
-    <sys:String x:Key="LOCSsvConfigSourcePath">Screenshot folder</sys:String>
-    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">File pattern: {0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources: {0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Excluded sources: {0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSource">Add a source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSource">Edit</sys:String>
-    <sys:String x:Key="LOCSsvConfigSourcePathRequired">A screenshot folder path is required.</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePath">Папка скриншотов</sys:String>
+    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">Шаблон файла: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Источники: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Исключённые источники: {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Добавить источник скриншота</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Изменить источник скриншота</sys:String>
+    <sys:String x:Key="LOCSsvConfigSaveSource">Сохранить</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSource">Добавить источник</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSource">Редактировать</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePathRequired">Требуется путь к папке со скриншотами.</sys:String>
 
     <!-- Phase 2 placeholders -->
-    <sys:String x:Key="LOCSsvConfigPreview">Preview</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormat">Name format</sys:String>
-    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Configuration test will be available in a future update.</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestGame">Test game</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathExists">Resolved folder exists.</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Resolved folder does not exist.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreview">Предпросмотр</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormat">Формат имени</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Доступно в будущем обновлении.</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Доступно в будущем обновлении.</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Тестирование конфигурации будет доступно в будущем обновлении.</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestGame">Тест игры</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathExists">Папка решённых задач существует.</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Папка решённых задач не существует.</sys:String>
     
 </ResourceDictionary>
