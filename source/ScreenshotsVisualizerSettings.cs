@@ -56,10 +56,17 @@ namespace ScreenshotsVisualizer
         private bool _enableIntegrationShowSinglePicture = true;
         public bool EnableIntegrationShowSinglePicture { get => _enableIntegrationShowSinglePicture; set => SetValue(ref _enableIntegrationShowSinglePicture, value); }
 
-        public double IntegrationShowSinglePictureHeight { get; set; } = 150;
-        public bool OpenViewerWithOnSelectionSinglePicture { get; set; } = false;
-        public bool AddBorderSinglePicture { get; set; } = true;
-        public bool AddRoundedCornerSinglePicture { get; set; } = false;
+        private double _integrationShowSinglePictureHeight = 150;
+        public double IntegrationShowSinglePictureHeight { get => _integrationShowSinglePictureHeight; set => SetValue(ref _integrationShowSinglePictureHeight, value); }
+
+        private bool _openViewerWithOnSelectionSinglePicture = false;
+        public bool OpenViewerWithOnSelectionSinglePicture { get => _openViewerWithOnSelectionSinglePicture; set => SetValue(ref _openViewerWithOnSelectionSinglePicture, value); }
+
+        private bool _addBorderSinglePicture = true;
+        public bool AddBorderSinglePicture { get => _addBorderSinglePicture; set => SetValue(ref _addBorderSinglePicture, value); }
+
+        private bool _addRoundedCornerSinglePicture = false;
+        public bool AddRoundedCornerSinglePicture { get => _addRoundedCornerSinglePicture; set => SetValue(ref _addRoundedCornerSinglePicture, value); }
 
         private bool _enableIntegrationShowPictures = true;
         public bool EnableIntegrationShowPictures { get => _enableIntegrationShowPictures; set => SetValue(ref _enableIntegrationShowPictures, value); }
@@ -70,13 +77,23 @@ namespace ScreenshotsVisualizer
         private bool _enableIntegrationPicturesList = true;
         public bool EnableIntegrationPicturesList { get => _enableIntegrationPicturesList; set => SetValue(ref _enableIntegrationPicturesList, value); }
 
-        public double IntegrationShowPicturesHeight { get; set; } = 150;
-        public bool LinkWithSinglePicture { get; set; } = false;
-        public bool OpenViewerWithOnSelection { get; set; } = false;
-        public bool AddBorder { get; set; } = true;
-        public bool AddRoundedCorner { get; set; } = false;
+        private double _integrationShowPicturesHeight = 150;
+        public double IntegrationShowPicturesHeight { get => _integrationShowPicturesHeight; set => SetValue(ref _integrationShowPicturesHeight, value); }
 
-        public bool HideScreenshotsInfos { get; set; } = false;
+        private bool _linkWithSinglePicture = false;
+        public bool LinkWithSinglePicture { get => _linkWithSinglePicture; set => SetValue(ref _linkWithSinglePicture, value); }
+
+        private bool _openViewerWithOnSelection = false;
+        public bool OpenViewerWithOnSelection { get => _openViewerWithOnSelection; set => SetValue(ref _openViewerWithOnSelection, value); }
+
+        private bool _addBorder = true;
+        public bool AddBorder { get => _addBorder; set => SetValue(ref _addBorder, value); }
+
+        private bool _addRoundedCorner = false;
+        public bool AddRoundedCorner { get => _addRoundedCorner; set => SetValue(ref _addRoundedCorner, value); }
+
+        private bool _hideScreenshotsInfos = false;
+        public bool HideScreenshotsInfos { get => _hideScreenshotsInfos; set => SetValue(ref _hideScreenshotsInfos, value); }
 
         public bool EnableFolderToSave { get; set; } = false;
         public string FolderToSave { get; set; } = string.Empty;
@@ -479,7 +496,7 @@ namespace ScreenshotsVisualizer
         // This method should revert any changes made to Option1 and Option2.
         public void CancelEdit()
         {
-            Settings = EditingClone;
+            CopySettingsValues(EditingClone, Settings);
             GamesConfiguration.RestoreCancelSnapshot();
             ConfigurationContext.RestoreCancelSnapshot();
             ImageConversionSettings.LoadFrom(Settings);
@@ -497,7 +514,6 @@ namespace ScreenshotsVisualizer
             Settings.gameSettings = GamesConfiguration.ToGameSettingsList();
 
             Plugin.SavePluginSettings(Settings);
-            ScreenshotsVisualizer.PluginDatabase.PluginSettings = Settings;
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
