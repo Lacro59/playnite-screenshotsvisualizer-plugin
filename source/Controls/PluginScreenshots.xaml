@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls" 
-    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel" 
     xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" 
     xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
     xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
@@ -20,6 +19,11 @@
     MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxWidth}">
 
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Views/Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
@@ -73,31 +77,16 @@
                         VerticalAlignment="Bottom" />
             </DockPanel>
         </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
         <ListBox Name="PART_ListScreenshots"
-                 VirtualizingPanel.CacheLengthUnit="Item" 
-                 VirtualizingPanel.ScrollUnit="Pixel" 
-                 VirtualizingPanel.VirtualizationMode="Recycling"
-                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
+                 Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
                  SelectionChanged="PART_ListScreenshots_SelectionChanged"
                  ItemsSource="{Binding ItemsSource}"
                  ItemTemplate="{StaticResource ItemTemplate}"     
                  Tag="{Binding AddBorder}">
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
         </ListBox>
     </DockPanel>
 </controls:PluginUserControlExtend>

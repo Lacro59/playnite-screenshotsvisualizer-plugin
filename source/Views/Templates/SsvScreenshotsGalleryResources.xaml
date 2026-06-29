@@ -1,0 +1,40 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
+
+    <ItemsPanelTemplate x:Key="SsvWrapPanelHorizontalTemplate">
+        <wpftk:VirtualizingWrapPanel />
+    </ItemsPanelTemplate>
+
+    <ItemsPanelTemplate x:Key="SsvWrapPanelVerticalTemplate">
+        <wpftk:VirtualizingWrapPanel Orientation="Vertical" />
+    </ItemsPanelTemplate>
+
+    <Style x:Key="SsvScreenshotsListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Key="SsvScreenshotsListBoxStyle"
+           TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="VirtualizingPanel.CacheLengthUnit" Value="Item" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource SsvScreenshotsListBoxItemStyle}" />
+    </Style>
+
+    <Style x:Key="SsvScreenshotsListBoxHorizontalStyle"
+           TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource SsvScreenshotsListBoxStyle}">
+        <Setter Property="ItemsPanel" Value="{StaticResource SsvWrapPanelHorizontalTemplate}" />
+    </Style>
+
+    <Style x:Key="SsvScreenshotsListBoxVerticalStyle"
+           TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource SsvScreenshotsListBoxStyle}">
+        <Setter Property="ItemsPanel" Value="{StaticResource SsvWrapPanelVerticalTemplate}" />
+    </Style>
+
+</ResourceDictionary>

@@ -9,13 +9,17 @@
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
-        xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding IntegrationShowPicturesHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
     <controls:PluginUserControlExtend.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Views/Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
@@ -88,28 +92,18 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        </ResourceDictionary>
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContenerListGame" Tag="{Binding HideInfos}">
-        <ListBox Name="PART_ListScreenshots" SelectionChanged="PART_ListScreenshots_SelectionChanged"
+        <ListBox Name="PART_ListScreenshots"
+                 Style="{StaticResource SsvScreenshotsListBoxVerticalStyle}"
+                 SelectionChanged="PART_ListScreenshots_SelectionChanged"
                  ItemsSource="{Binding ItemsSource}"
                  ItemTemplate="{StaticResource ItemTemplate}"     
                  Tag="{Binding AddBorder}"
                  Height="{Binding ElementName=PART_GridContenerListGame, Path=ActualHeight}" 
                  Width="{Binding ElementName=PART_GridContenerListGame, Path=ActualWidth}">
-            
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
         </ListBox>
     </Grid>
 </controls:PluginUserControlExtend>

@@ -7,12 +7,16 @@
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=local:SsvScreenshotsManagerData}">
 
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
@@ -105,6 +109,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -273,29 +278,13 @@
 
             <Grid Name="PART_ListScreenshotsContener" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
                 <ListBox Name="PART_ListScreenshots"
-                         VirtualizingPanel.CacheLengthUnit="Item" 
-                         VirtualizingPanel.ScrollUnit="Pixel" 
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
+                         Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
                          SelectionChanged="PART_ListScreenshots_SelectionChanged"
                          ItemsSource="{Binding Screenshots}"
                          ItemTemplate="{StaticResource ItemTemplate}"     
                          Tag="{Binding AddBorder}"
                          Height="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualHeight}" 
                          Width="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualWidth}">
-                    
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
                 </ListBox>
             </Grid>
         </Grid>
