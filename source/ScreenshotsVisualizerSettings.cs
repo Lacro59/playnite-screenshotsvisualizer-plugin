@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using ScreenshotsVisualizer.Models.StartPage;
 using System.Linq;
 using CommonPluginsShared.Extensions;
+using CommonPluginsShared.Utilities;
 using System.Threading.Tasks;
 using System;
 using System.IO;
@@ -109,8 +110,6 @@ namespace ScreenshotsVisualizer
         /// Global screenshot folder sources merged into every game's scan configuration.
         /// </summary>
         public List<FolderSettings> GlobalScreenshotSources { get; set; } = new List<FolderSettings>();
-
-        public bool UsedThumbnails { get; set; } = true;
 
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
@@ -442,6 +441,26 @@ namespace ScreenshotsVisualizer
             private set => SetValue(ref _imageConversionSettings, value);
         }
 
+        private string _thumbnailCacheFileCountText = "0";
+        /// <summary>
+        /// Gets the formatted thumbnail cache file count for the settings view.
+        /// </summary>
+        public string ThumbnailCacheFileCountText
+        {
+            get => _thumbnailCacheFileCountText;
+            private set => SetValue(ref _thumbnailCacheFileCountText, value);
+        }
+
+        private string _thumbnailCacheSizeText = UtilityTools.SizeSuffix(0);
+        /// <summary>
+        /// Gets the formatted thumbnail cache total size for the settings view.
+        /// </summary>
+        public string ThumbnailCacheSizeText
+        {
+            get => _thumbnailCacheSizeText;
+            private set => SetValue(ref _thumbnailCacheSizeText, value);
+        }
+
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
         {
@@ -490,6 +509,18 @@ namespace ScreenshotsVisualizer
             InitializeCommands(ScreenshotsVisualizer.PluginName, ScreenshotsVisualizer.PluginDatabase);
             GamesConfiguration.CaptureCancelSnapshot();
             ConfigurationContext.CaptureCancelSnapshot();
+            RefreshThumbnailCacheInfo();
+        }
+
+        /// <summary>
+        /// Refreshes thumbnail cache statistics displayed in the settings view.
+        /// </summary>
+        public void RefreshThumbnailCacheInfo()
+        {
+            ThumbnailCacheStats stats = SsvThumbnailService.GetThumbnailCacheStats(
+                ScreenshotsVisualizer.PluginDatabase.Paths.PluginCachePath);
+            ThumbnailCacheFileCountText = stats.FileCount.ToString();
+            ThumbnailCacheSizeText = UtilityTools.SizeSuffix(stats.TotalBytes);
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.

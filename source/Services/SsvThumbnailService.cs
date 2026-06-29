@@ -102,6 +102,38 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
+        /// Counts cached thumbnail files and their total size on disk.
+        /// </summary>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        /// <returns>File count and total byte size for thumbnail cache entries.</returns>
+        public static ThumbnailCacheStats GetThumbnailCacheStats(string cacheRootPath)
+        {
+            string thumbnailsDirectory = Path.Combine(cacheRootPath ?? string.Empty, ThumbnailsFolderName);
+            if (!Directory.Exists(thumbnailsDirectory))
+            {
+                return new ThumbnailCacheStats(0, 0);
+            }
+
+            int fileCount = 0;
+            long totalBytes = 0;
+
+            foreach (string filePath in Directory.GetFiles(thumbnailsDirectory, "*", SearchOption.TopDirectoryOnly))
+            {
+                if (filePath.EndsWith(FailedMarkerSuffix, StringComparison.OrdinalIgnoreCase)
+                    || filePath.EndsWith(TemporaryFileSuffix, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                FileInfo fileInfo = new FileInfo(filePath);
+                fileCount++;
+                totalBytes += fileInfo.Length;
+            }
+
+            return new ThumbnailCacheStats(fileCount, totalBytes);
+        }
+
+        /// <summary>
         /// Ensures an image thumbnail exists in the cache and returns its path when available.
         /// </summary>
         /// <param name="sourcePath">Absolute path to the source image.</param>
@@ -472,5 +504,32 @@ namespace ScreenshotsVisualizer.Services
                 string.Format("{0}\r\n{1}", _pluginName, ResourceProvider.GetString("LOCSsvFfmpegNotFound")),
                 NotificationType.Error));
         }
+    }
+
+    /// <summary>
+    /// Thumbnail cache folder statistics for settings display.
+    /// </summary>
+    public readonly struct ThumbnailCacheStats
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThumbnailCacheStats"/> struct.
+        /// </summary>
+        /// <param name="fileCount">Number of cached thumbnail files.</param>
+        /// <param name="totalBytes">Combined size of cached thumbnail files in bytes.</param>
+        public ThumbnailCacheStats(int fileCount, long totalBytes)
+        {
+            FileCount = fileCount;
+            TotalBytes = totalBytes;
+        }
+
+        /// <summary>
+        /// Gets the number of cached thumbnail files.
+        /// </summary>
+        public int FileCount { get; }
+
+        /// <summary>
+        /// Gets the combined size of cached thumbnail files in bytes.
+        /// </summary>
+        public long TotalBytes { get; }
     }
 }

@@ -72,7 +72,7 @@ namespace ScreenshotsVisualizer.Models
         {
             get
             {
-                if (PluginDatabase.PluginSettings.UsedThumbnails && !IsVideo)
+                if (!IsVideo)
                 {
                     string thumbnailPath = PluginDatabase.ThumbnailService.TryEnsureImageThumbnail(
                         FileName,

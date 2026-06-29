@@ -41,6 +41,13 @@ namespace ScreenshotsVisualizer.Views
         private void PART_TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateConfigurationPanelHeight();
+
+            if (PART_CacheTab != null
+                && PART_TabControl?.SelectedItem == PART_CacheTab
+                && DataContext is ScreenshotsVisualizerSettingsViewModel viewModel)
+            {
+                viewModel.RefreshThumbnailCacheInfo();
+            }
         }
 
         /// <summary>
@@ -135,12 +142,19 @@ namespace ScreenshotsVisualizer.Views
         {
             try
             {
-                string pathThumbnail = System.IO.Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
+                string pathThumbnail = System.IO.Path.Combine(
+                    PluginDatabase.Paths.PluginCachePath,
+                    SsvThumbnailService.ThumbnailsFolderName);
                 FileSystem.DeleteDirectory(pathThumbnail);
             }
             catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            if (DataContext is ScreenshotsVisualizerSettingsViewModel viewModel)
+            {
+                viewModel.RefreshThumbnailCacheInfo();
             }
         }
 

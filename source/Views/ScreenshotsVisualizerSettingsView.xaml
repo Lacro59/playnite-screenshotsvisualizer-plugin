@@ -656,19 +656,52 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{DynamicResource LOCSettingsPerformanceLabel}">
+            <TabItem Name="PART_CacheTab" Header="{DynamicResource LOCCommonCacheSectionTitle}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="8" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <CheckBox IsChecked="{Binding Settings.UsedThumbnails}" VerticalAlignment="Center">
-                        <Label Content="{DynamicResource LOCSsvUsedThumbnails}" />
-                    </CheckBox>
+                    <TextBlock Grid.Row="0"
+                               Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvThumbnailCacheDescription}"
+                               Foreground="{DynamicResource GlyphBrush}"
+                               TextWrapping="Wrap" />
 
-                    <Button Content="{DynamicResource LOCClearLabel}" HorizontalAlignment="Right" Click="ButtonClear_Click" />
+                    <DockPanel Grid.Row="2">
+                        <TextBlock Style="{DynamicResource ViewColumnLabelText}"
+                                   Text="{DynamicResource LOCSsvThumbnailCacheItemCountLabel}"
+                                   DockPanel.Dock="Left"
+                                   VerticalAlignment="Center"
+                                   Width="150" />
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding ThumbnailCacheFileCountText}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+                    </DockPanel>
+
+                    <DockPanel Grid.Row="4">
+                        <TextBlock Style="{DynamicResource ViewColumnLabelText}"
+                                   Text="{DynamicResource LOCSsvThumbnailCacheSizeLabel}"
+                                   DockPanel.Dock="Left"
+                                   VerticalAlignment="Center"
+                                   Width="150" />
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding ThumbnailCacheSizeText}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+                    </DockPanel>
+
+                    <Button Grid.Row="6"
+                            Content="{DynamicResource LOCCommonClearCache}"
+                            HorizontalAlignment="Right"
+                            Click="ButtonClear_Click" />
                 </Grid>
             </TabItem>
         </TabControl>

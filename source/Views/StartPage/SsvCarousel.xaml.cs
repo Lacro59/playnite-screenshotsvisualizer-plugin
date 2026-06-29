@@ -68,17 +68,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 }
                 else
                 {
-                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.EnableLowerResolution)
-                    {
-                        bool tmp = PluginDatabase.PluginSettings.UsedThumbnails;
-                        PluginDatabase.PluginSettings.UsedThumbnails = true;
-                        pictureSource = screenshot.ImageThumbnail;
-                        PluginDatabase.PluginSettings.UsedThumbnails = tmp;
-                    }
-                    else
-                    {
-                        pictureSource = screenshot.FileName;
-                    }
+                    pictureSource = PluginDatabase.PluginSettings.ssvCarouselOptions.EnableLowerResolution
+                        ? screenshot.ImageThumbnail
+                        : screenshot.FileName;
                 }
 
                 this.DataContext = new
