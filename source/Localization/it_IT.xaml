@@ -99,7 +99,25 @@
     
     <sys:String x:Key="LOCSsvAddTag">Aggiungi etichetta se il gioco ha schermate</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Aggiungi un gioco Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoft">Connetti Ubisoft</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArch">RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVM">ScummVM</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBar">Xbox Game Bar</sys:String>
+    <sys:String x:Key="LOCSsvPresetGogTooltip">Aggiungi una fonte globale GOG Galaxy ({GogScreenshotDir}\{Name}) per i giochi della libreria GOG.</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Aggiungi fonte globale Ubisoft Connect ({UbisoftScreenshotsDir}\{Name}) per i giochi della libreria Ubisoft.</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">Aggiungi la sorgente globale RetroArch con il filtro modello di file emulatore.</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVMTooltip">Aggiunge la sorgente globale ScummVM con il filtro modello di file emulatore.</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">Aggiungi Xbox Game Bar cattura la cartella ({XboxGamebarScreenshotsDir}) con il modello di file {Name}*.</sys:String>
     <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">This preset is already configured in global sources.</sys:String>
+    <sys:String x:Key="LOCSsvConfigQuickAddHint">Aggiunge una voce canonica a fonti globali. Ogni preset può essere aggiunto una volta; filtri di applicabilità che i giochi lo utilizzano al momento della scansione.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">Usa segnaposto nei percorsi delle cartelle. Playnite: {Name}, {GameId}, {InstallDir}, {Platform}, …
+
+Cartelle negozio:
+{SteamScreenshotsDir}, {UbisoftScreenshotsDir}, {GogScreenshotDir}, {XboxGamebarScreenshotsDir}, {RetroArchScreenshotsDir}
+
+Usa Inserisci variabile per l'elenco completo con anteprima live.</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicability</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Restrict which games receive this global source at scan time. Leave sources on All and emulator on None to apply to every game.</sys:String>
@@ -139,30 +157,29 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Trasforma in percorso assoluto</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Trasforma in percorso relativo</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">Inoltre, puoi usare:
-- {DateModified}		 yyy-MM-dd
-- {DateTimeModified}	 yyy-MM-dd HH_mm_ss
-- {digit}			  number(s)
-    
-Esempio:
-GameName_20200107-1   =&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07    =&gt;	{Name}_{DateModified}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">Inoltre, è possibile utilizzare:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">numero(i)</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">Esempio:</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Aggiungi questa cartella per tutti i giochi.
     
 Esempio:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Adds a game menu action to move screenshots from all configured source folders to one archive folder.
-The archive folder path uses the destination field above. If {Name} is missing in that path, it is added automatically.
-Files are renamed using &quot;File pattern&quot;, then plugin links are updated.
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Aggiunge un'azione del menu di gioco per spostare gli screenshot da tutte le cartelle di origine configurate a una cartella di archivio.
+Il percorso della cartella di archivio utilizza il campo di destinazione sopra. Se {Name} manca in quel percorso, viene aggiunto automaticamente. I file
+vengono rinominati usando &quot;File pattern&quot;, quindi i collegamenti dei plugin vengono aggiornati.
 
-Example:
-Source folders:
+Esempio:
+Cartelle sorgente:
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
+- {GogScreenshotDir}\{Name}
+- {XboxGamebarScreenshotsDir}
 
-Archive destination:
+Destinazione dell'archivio:
 {DropboxFolder}\Screenshots\{Name}</sys:String>
 
     <!-- Notifications -->
@@ -205,7 +222,7 @@ Archive destination:
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
     <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Global paths</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionManualAdd">Add a game manually</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">No games configured. Use Add a game or apply a quick-add preset to the active context.</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Nessun gioco configurato. Usa Aggiungi un gioco o aggiungi velocemente una preimpostazione in globale.</sys:String>
 
     <!-- Game selection dialog -->
     <sys:String x:Key="LOCSsvConfigAddGameTitle">Add a game</sys:String>
