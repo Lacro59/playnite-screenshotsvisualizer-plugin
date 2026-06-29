@@ -92,6 +92,29 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
+        /// Returns whether <paramref name="path"/> points to a plugin-generated JPEG thumbnail in the cache folder.
+        /// </summary>
+        /// <param name="path">Absolute or relative file path to evaluate.</param>
+        /// <returns><c>true</c> when the path is under <see cref="ThumbnailsFolderName"/> and ends with <c>_Thumbnail.jpg</c>.</returns>
+        public static bool IsPluginThumbnailCachePath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            string fileName = Path.GetFileName(path);
+            if (string.IsNullOrEmpty(fileName)
+                || !fileName.EndsWith("_Thumbnail.jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            string parentDirectoryName = Path.GetFileName(Path.GetDirectoryName(path));
+            return string.Equals(parentDirectoryName, ThumbnailsFolderName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Returns the failure marker path associated with a thumbnail cache file.
         /// </summary>
         /// <param name="thumbnailPath">Thumbnail cache file path.</param>

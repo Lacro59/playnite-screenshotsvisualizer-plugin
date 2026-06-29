@@ -54,18 +54,18 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         
-                        <controls:ImageAsync Grid.Row="0" DecodePixelHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}" Parameter="0"
-                                          x:Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
-                                          Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
-                            <controls:ImageAsync.MaxHeight>
+                        <local:SsvThumbnailImage Grid.Row="0"
+                                              x:Name="PART_ScreenshotsPicture" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"
+                                              Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}">
+                            <local:SsvThumbnailImage.MaxHeight>
                                 <MultiBinding Converter="{StaticResource TwoSizeMultiValueConverter}" ConverterParameter="-">
                                     <Binding ElementName="PART_GridContenerListGame" Path="ActualHeight" />
                                     <Binding ElementName="PART_LabelContener" Path="ActualHeight" />
                                 </MultiBinding>
-                            </controls:ImageAsync.MaxHeight>
+                            </local:SsvThumbnailImage.MaxHeight>
 
-                            <controls:ImageAsync.Style>
-                                <Style TargetType="{x:Type controls:ImageAsync}">
+                            <local:SsvThumbnailImage.Style>
+                                <Style TargetType="{x:Type local:SsvThumbnailImage}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
                                             <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
@@ -76,8 +76,8 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </controls:ImageAsync.Style>
-                        </controls:ImageAsync>
+                            </local:SsvThumbnailImage.Style>
+                        </local:SsvThumbnailImage>
 
                         <Border Name="PART_ImageBorder" Grid.Row="0"
                                 BorderThickness="{DynamicResource ControlBorderThickness}" 

@@ -45,10 +45,10 @@
                                             VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                 <Grid Margin="0,0,5,0">
-                    <controls:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                         Parameter="2" RenderOptions.BitmapScalingMode="Fant">
-                        <controls:ImageAsync.Style>
-                            <Style TargetType="{x:Type controls:ImageAsync}">
+                    <local:SsvThumbnailImage Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
+                                             RenderOptions.BitmapScalingMode="Fant">
+                        <local:SsvThumbnailImage.Style>
+                            <Style TargetType="{x:Type local:SsvThumbnailImage}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsVideo}" Value="False">
                                         <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
@@ -59,8 +59,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </controls:ImageAsync.Style>
-                    </controls:ImageAsync>
+                        </local:SsvThumbnailImage.Style>
+                    </local:SsvThumbnailImage>
 
                     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                FontFamily="{DynamicResource FontIcoFont}" FontSize="20"

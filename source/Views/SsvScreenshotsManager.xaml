@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
+             xmlns:ssvcontrols="clr-namespace:ScreenshotsVisualizer.Controls"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
@@ -47,10 +48,10 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
 
-                <controlsShared:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                           Parameter="2" RenderOptions.BitmapScalingMode="Fant">
-                    <controlsShared:ImageAsync.Style>
-                        <Style TargetType="{x:Type controlsShared:ImageAsync}">
+                <ssvcontrols:SsvThumbnailImage Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
+                                                RenderOptions.BitmapScalingMode="Fant">
+                    <ssvcontrols:SsvThumbnailImage.Style>
+                        <Style TargetType="{x:Type ssvcontrols:SsvThumbnailImage}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsVideo}" Value="False">
                                     <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
@@ -61,8 +62,8 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </controlsShared:ImageAsync.Style>
-                </controlsShared:ImageAsync>
+                    </ssvcontrols:SsvThumbnailImage.Style>
+                </ssvcontrols:SsvThumbnailImage>
                 
                 <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                    FontFamily="{DynamicResource FontIcoFont}" FontSize="20"

@@ -124,6 +124,7 @@
     <Compile Include="Controls\PluginViewItem.xaml.cs">
       <DependentUpon>PluginViewItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SsvThumbnailImage.cs" />
     <Compile Include="Controls\ZoomBorder.cs" />
     <Compile Include="Models\GameScreenshots.cs" />
     <Compile Include="Models\GameSettings.cs" />
