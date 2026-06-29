@@ -99,7 +99,25 @@
     
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoft">Ubisoft Connect</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArch">RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVM">ScummVM</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBar">Xbox Game Bar</sys:String>
+    <sys:String x:Key="LOCSsvPresetGogTooltip">Ajoute une source globale GOG Galaxy ({GogScreenshotDir}\{Name}) pour les jeux de la bibliothèque GOG.</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Ajoute une source globale Ubisoft Connect ({UbisoftScreenshotsDir}\{Name}) pour les jeux de la bibliothèque Ubisoft.</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">Ajoute une source globale RetroArch avec filtre de motif émulateur.</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVMTooltip">Ajoute une source globale ScummVM avec filtre de motif émulateur.</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">Ajoute le dossier des captures Xbox Game Bar ({XboxGamebarScreenshotsDir}) avec le motif {Name} *.</sys:String>
     <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">Ce préréglage est déjà configuré dans les sources globales.</sys:String>
+    <sys:String x:Key="LOCSsvConfigQuickAddHint">Ajoute une entrée canonique aux sources globales. Chaque preset ne peut être ajouté qu'une fois ; l'applicabilité filtre les jeux concernés au scan.</sys:String>
+    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">Utilisez des variables dans les chemins de dossiers. Playnite : {Name}, {GameId}, {InstallDir}, {Platform}, …
+
+Dossiers plateformes :
+{SteamScreenshotsDir}, {UbisoftScreenshotsDir}, {GogScreenshotDir}, {XboxGamebarScreenshotsDir}, {RetroArchScreenshotsDir}
+
+Utilisez Insérer une variable pour la liste complète avec aperçu en direct.</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicabilité</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Limite les jeux qui reçoivent cette source globale au scan. Laissez « Toutes les sources » et « Tous » pour l'appliquer à chaque jeu.</sys:String>
@@ -139,14 +157,11 @@
     <sys:String x:Key="LOCSsvSetAbsolute">Transformer en chemin absolu</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformer en chemin relatif</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">En plus, vous pouvez utiliser :
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}	yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
-    
-Exemple :
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">En plus, vous pouvez utiliser :</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">nombre(s)</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">Exemple :</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Ajoute ce dossier pour tous les jeux.
     
@@ -161,6 +176,8 @@ Exemple :
 Dossiers sources :
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
+- {GogScreenshotDir}\{Name}
+- {XboxGamebarScreenshotsDir}
 
 Destination d'archivage :
 {DropboxFolder}\Screenshots\{Name}</sys:String>
@@ -205,7 +222,7 @@ Destination d'archivage :
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
     <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Chemins globaux</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionManualAdd">Ajouter un jeu manuellement</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Aucun jeu configuré. Utilisez Ajouter un jeu ou un preset d'ajout rapide sur le contexte actif.</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">Aucun jeu configuré. Utilisez Ajouter un jeu ou un preset d'ajout rapide dans Globaux.</sys:String>
 
     <!-- Game selection dialog -->
     <sys:String x:Key="LOCSsvConfigAddGameTitle">Ajouter un jeu</sys:String>
