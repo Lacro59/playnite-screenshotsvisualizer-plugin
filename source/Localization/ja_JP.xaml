@@ -99,7 +99,25 @@
     
     <sys:String x:Key="LOCSsvAddTag">ゲームにスクリーンショットがある場合はタグを追加</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam ゲームを追加</sys:String>
+    <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
+    <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoft">Ubisoft Connect</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArch">RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVM">ScummVM</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBar">Xbox Game Bar</sys:String>
+    <sys:String x:Key="LOCSsvPresetGogTooltip">GOG ライブラリゲーム用に GOG Galaxy グローバルソース（{GogScreenshotDir}\{Name}）を追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Ubisoft ライブラリゲーム用に Ubisoft Connect グローバルソース（{UbisoftScreenshotsDir}\{Name}）を追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">エミュレーターのファイルパターンフィルター付きで RetroArch グローバルソースを追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVMTooltip">エミュレーターのファイルパターンフィルター付きで ScummVM グローバルソースを追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">ファイルパターン {Name}* で Xbox Game Bar キャプチャフォルダー（{XboxGamebarScreenshotsDir}）を追加します。</sys:String>
     <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">このプリセットはすでにグローバルソースで設定されています。</sys:String>
+    <sys:String x:Key="LOCSsvConfigQuickAddHint">グローバルソースに標準エントリを追加します。各プリセットは 1 回だけ追加できます。適用対象によって、スキャン時にどのゲームで使用するかを絞り込みます。</sys:String>
+    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">フォルダーパスにはプレースホルダーを使用できます。Playnite：{Name}, {GameId}, {InstallDir}, {Platform}, …
+
+ストアフォルダー：
+{SteamScreenshotsDir}, {UbisoftScreenshotsDir}, {GogScreenshotDir}, {XboxGamebarScreenshotsDir}, {RetroArchScreenshotsDir}
+
+ライブプレビュー付きの完全な一覧を確認するには、「変数を挿入」を使用してください。</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSourceApplicability">適用対象</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">スキャン時に、このグローバルソースを適用するゲームを制限します。
@@ -140,14 +158,11 @@
     <sys:String x:Key="LOCSsvSetAbsolute">絶対パスに変換</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">相対パスに変換</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltip" xml:space="preserve">In addition, you can used:
-- {DateModified}		yyyy-MM-dd
-- {DateTimeModified}		yyyy-MM-dd HH_mm_ss
-- {digit}			number(s)
-    
-Example:
-GameName_20200107-1	=&gt;	{Name}_{digit}-{digit}
-GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">さらに、以下も使用できます：</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">数字</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">例：</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">このフォルダーをすべてのゲームに追加します。
 
@@ -162,6 +177,8 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
 ソースフォルダー：
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
+- {GogScreenshotDir}\{Name}
+- {XboxGamebarScreenshotsDir}
 
 アーカイブ先：
 {DropboxFolder}\Screenshots\{Name}</sys:String>
@@ -206,7 +223,7 @@ GameName_2020-01-07	=&gt;	{Name}_{DateModified}</sys:String>
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
     <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">グローバルパス</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionManualAdd">ゲームを手動で追加</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">ゲームが設定されていません。「ゲームを追加」を使用するか、アクティブなコンテキストにクイック追加プリセットを適用してください。</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">ゲームが設定されていません。「ゲームを追加」または「グローバル」のクイック追加プリセットを使用してください。</sys:String>
 
     <!-- Game selection dialog -->
     <sys:String x:Key="LOCSsvConfigAddGameTitle">ゲームを追加</sys:String>
