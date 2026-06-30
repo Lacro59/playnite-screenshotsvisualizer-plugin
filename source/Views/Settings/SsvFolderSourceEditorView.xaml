@@ -180,10 +180,8 @@
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right"
                                         Margin="8,0,0,0"
+                                        Style="{DynamicResource ListRowHoverRevealButton}"
                                         Content="{DynamicResource LOCRemoveTitle}"
-                                        Background="{DynamicResource ButtonBackgroundBrush}"
-                                        Foreground="{DynamicResource TextBrush}"
-                                        BorderBrush="{DynamicResource NormalBorderBrush}"
                                         Command="{Binding DataContext.RemoveApplicableSourceCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                         CommandParameter="{Binding}" />
                                 <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlock}"

@@ -74,7 +74,9 @@
 
                     <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
                                     Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
-                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                                    FontFamily="{DynamicResource CommonFont}"
+                                    ToolTip="{DynamicResource LOCRemoveTitle}"
                                     VerticalAlignment="Bottom" />
                 </Grid>
             </Grid>

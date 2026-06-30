@@ -38,7 +38,9 @@
                 </Grid>
 
                 <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
-                        ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                        Style="{DynamicResource ListRowHoverRevealIconButton}"
+                        FontFamily="{DynamicResource CommonFont}"
+                        ToolTip="{DynamicResource LOCRemoveTitle}"
                         VerticalAlignment="Bottom" />
             </DockPanel>
         </DataTemplate>

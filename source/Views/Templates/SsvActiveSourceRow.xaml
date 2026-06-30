@@ -34,12 +34,10 @@
 
             <Button Grid.Column="2"
                     VerticalAlignment="Center"
-                    Content="&#xe97f;"
+                    Style="{DynamicResource ListRowHoverRevealIconButton}"
                     FontFamily="{DynamicResource CommonFont}"
+                    Content="&#xe97f;"
                     ToolTip="{DynamicResource LOCCommonRemoveFolder}"
-                    Background="{DynamicResource ButtonBackgroundBrush}"
-                    Foreground="{DynamicResource TextBrush}"
-                    BorderBrush="{DynamicResource NormalBorderBrush}"
                     Command="{Binding DataContext.ConfigurationContext.RemoveActiveSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     CommandParameter="{Binding}" />
         </Grid>
