@@ -91,7 +91,9 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe yolu:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Ffmpeg paketini indir</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">Yükleme performansını iyileştirmek için küçük resimler oluştur</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheDescription">Thumbnail images generated to speed up gallery loading.</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">Cached items:</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Total size:</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Genel ekran alıntıları yolu</sys:String>
 
