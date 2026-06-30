@@ -91,7 +91,9 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe パス：</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">ffmpeg パッケージをダウンロード</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">サムネイルを生成して読み込みパフォーマンスを向上させる</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheDescription">ギャラリーの読み込みを高速化するために生成されたサムネイル画像です。</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">キャッシュ済み項目：</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">合計サイズ：</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">グローバルスクリーンショットのパス</sys:String>
 
