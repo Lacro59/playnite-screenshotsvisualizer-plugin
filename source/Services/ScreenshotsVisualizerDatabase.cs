@@ -829,13 +829,14 @@ namespace ScreenshotsVisualizer.Services
         /// Updates the screenshot data for the specified game based on the provided <see cref="GameSettings"/>.
         /// For each configured screenshots folder, the method scans for supported image and video files,
         /// applies file pattern matching if enabled, and updates the game's screenshot collection accordingly.
-        /// Also ensures that video metadata (thumbnail, duration, size) is generated.
+        /// Also ensures that image and video thumbnails are generated, and video metadata (duration, size) is resolved.
         /// Any errors encountered during the process are logged.
         /// </summary>
         /// <param name="item">The <see cref="GameSettings"/> containing folder and pattern information for the game.</param>
         public void SetDataFromSettings(GameSettings item)
         {
             _ = SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
+            Stopwatch scanStopwatch = Stopwatch.StartNew();
 
             Game game = API.Instance.Database.Games.Get(item.Id);
             if (game == null)
@@ -939,13 +940,36 @@ namespace ScreenshotsVisualizer.Services
                     gameScreenshots.DateLastRefresh = DateTime.Now;
                     gameScreenshots.Items = elements.ToList();
 
+                    int imageCount = gameScreenshots.Items.Count(x => !x.IsVideo);
+                    int videoCount = gameScreenshots.Items.Count(x => x.IsVideo);
+
+                    // Force generation of data from image
+                    Stopwatch imageThumbnailStopwatch = Stopwatch.StartNew();
+                    gameScreenshots.Items.Where(x => !x.IsVideo).ForEach(x =>
+                    {
+                        string imageThumb = x.ImageThumbnail;
+                    });
+                    imageThumbnailStopwatch.Stop();
+                    Common.LogDebug(true, string.Format(
+                        "[SsvThumbnail] Image pre-generation for '{0}' completed ({1} image(s), {2} ms)",
+                        game.Name,
+                        imageCount,
+                        imageThumbnailStopwatch.ElapsedMilliseconds));
+
                     // Force generation of data from video
+                    Stopwatch videoThumbnailStopwatch = Stopwatch.StartNew();
                     gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
                     {
                         string thumb = x.Thumbnail;
                         string duration = x.DurationString;
                         string size = x.SizeString;
                     });
+                    videoThumbnailStopwatch.Stop();
+                    Common.LogDebug(true, string.Format(
+                        "[SsvThumbnail] Video pre-generation for '{0}' completed ({1} video(s), {2} ms)",
+                        game.Name,
+                        videoCount,
+                        videoThumbnailStopwatch.ElapsedMilliseconds));
                 }
 
                 AddOrUpdate(gameScreenshots);
@@ -959,6 +983,11 @@ namespace ScreenshotsVisualizer.Services
                     "SetDataFromSettings completed for '{0}' ({1} item(s))",
                     game.Name,
                     Get(game, true)?.Items?.Count ?? 0));
+                scanStopwatch.Stop();
+                Common.LogDebug(true, string.Format(
+                    "[SsvThumbnail] Scan duration for '{0}' completed ({1} ms)",
+                    game.Name,
+                    scanStopwatch.ElapsedMilliseconds));
             }
             catch (Exception ex)
             {
