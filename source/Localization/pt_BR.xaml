@@ -91,7 +91,9 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">caminho do ffprobe:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Baixar pacote ffmpeg</sys:String>
 
-    <sys:String x:Key="LOCSsvUsedThumbnails">Gerar miniaturas para melhorar o desempenho do carregamento</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheDescription">Thumbnail images generated to speed up gallery loading.</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">Cached items:</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Total size:</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Caminho global de capturas de tela</sys:String>
 
