@@ -1,14 +1,10 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
-                    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-                    xmlns:converters="clr-namespace:CommonPlayniteShared.Converters">
+                    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel">
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-    <convertersshared:IndexConverter x:Key="IndexConverter" />
-    <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
-    <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SsvScreenshotThumbnailFragment.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <ItemsPanelTemplate x:Key="SsvWrapPanelHorizontalTemplate">
         <wpftk:VirtualizingWrapPanel />

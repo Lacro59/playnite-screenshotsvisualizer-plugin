@@ -528,6 +528,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Templates\SsvScreenshotThumbnailFragment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Templates\SsvScreenshotsGalleryResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

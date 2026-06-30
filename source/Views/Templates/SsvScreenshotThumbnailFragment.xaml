@@ -1,0 +1,56 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+                    xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+                    xmlns:ssvcontrols="clr-namespace:ScreenshotsVisualizer.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+            <convertersshared:IndexConverter x:Key="IndexConverter" />
+            <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
+            <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="SsvThumbnailImageGalleryStyle" TargetType="{x:Type ssvcontrols:SsvThumbnailImage}">
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SsvScreenshotMediaIconStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontIcoFont}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Text" Value="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="SsvScreenshotThumbnailBlock">
+        <Grid>
+            <ssvcontrols:SsvThumbnailImage Style="{StaticResource SsvThumbnailImageGalleryStyle}" />
+            <TextBlock Style="{StaticResource SsvScreenshotMediaIconStyle}" />
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="SsvScreenshotThumbnailBlockFixedStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="ContentTemplate" Value="{StaticResource SsvScreenshotThumbnailBlock}" />
+        <Setter Property="Height" Value="96" />
+        <Setter Property="Width" Value="170" />
+    </Style>
+
+</ResourceDictionary>

@@ -34,31 +34,7 @@
                                             VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                 <Grid Margin="0,0,5,0">
-                    <local:SsvThumbnailImage Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                             RenderOptions.BitmapScalingMode="Fant">
-                        <local:SsvThumbnailImage.Style>
-                            <Style TargetType="{x:Type local:SsvThumbnailImage}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                        <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
-                                    </DataTrigger>
-
-                                    <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                        <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </local:SsvThumbnailImage.Style>
-                    </local:SsvThumbnailImage>
-
-                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                               FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                               Style="{DynamicResource BaseTextBlockStyle}" 
-                               Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                    <ContentControl Content="{Binding}" Style="{StaticResource SsvScreenshotThumbnailBlockFixedStyle}" />
                 </Grid>
 
                 <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 

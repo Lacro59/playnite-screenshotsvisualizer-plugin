@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
-             xmlns:ssvcontrols="clr-namespace:ScreenshotsVisualizer.Controls"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
@@ -42,31 +41,7 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
 
-                <ssvcontrols:SsvThumbnailImage Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                                RenderOptions.BitmapScalingMode="Fant">
-                    <ssvcontrols:SsvThumbnailImage.Style>
-                        <Style TargetType="{x:Type ssvcontrols:SsvThumbnailImage}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                    <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                    <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ssvcontrols:SsvThumbnailImage.Style>
-                </ssvcontrols:SsvThumbnailImage>
-                
-                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                   FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                                   Style="{DynamicResource BaseTextBlockStyle}" 
-                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
-                    <TextBlock.Effect>
-                        <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                    </TextBlock.Effect>
-                </TextBlock>
+                <ContentControl Grid.Column="0" Grid.Row="2" Content="{Binding}" Style="{StaticResource SsvScreenshotThumbnailBlockFixedStyle}" />
 
                 <Grid Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
