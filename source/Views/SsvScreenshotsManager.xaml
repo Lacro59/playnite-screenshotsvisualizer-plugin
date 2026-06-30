@@ -18,13 +18,7 @@
                 <ResourceDictionary Source="Templates/SsvScreenshotsGalleryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter" />
-        <convertersshared:ImageConverter x:Key="ImageConverter" />
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
 
         <DataTemplate x:Key="ItemTemplate">

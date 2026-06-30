@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls" 
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" 
-    xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
     xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=local:PluginScreenshotsDataContext, IsDesignTimeCreatable=True}"
@@ -24,15 +22,6 @@
                 <ResourceDictionary Source="../Views/Templates/SsvScreenshotsGalleryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter" />
-        <convertersshared:ImageConverter x:Key="ImageConverter" />
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
-        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
-        
         <DataTemplate x:Key="ItemTemplate">
             <DockPanel Margin="0,5" Width="220">
                 <controls1:TextBlockTrimmed MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"

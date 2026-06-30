@@ -7,8 +7,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
         xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls"
-        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-        xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="200"
         d:DataContext="{d:DesignInstance Type=local:PluginListScreenshotsDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight, FallbackValue=100}"
@@ -16,13 +14,13 @@
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight, FallbackValue=200}">
 
     <controls:PluginUserControlExtend.Resources>
-        <convertersshared:IndexConverter x:Key="IndexConverter"/>
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
-        <convertersshared:ImageConverter x:Key="ImageConverter"/>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Views/Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:TwoSizeMultiValueConverter x:Key="TwoSizeMultiValueConverter" />
+        </ResourceDictionary>
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContenerListGame" Tag="{Binding HideInfos}">
