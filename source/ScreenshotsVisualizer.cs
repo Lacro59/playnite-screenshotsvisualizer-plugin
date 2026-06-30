@@ -12,9 +12,7 @@ using ScreenshotsVisualizer.Views;
 using StartPage.SDK;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,21 +30,6 @@ namespace ScreenshotsVisualizer
 
         public ScreenshotsVisualizer(IPlayniteAPI api) : base(api, "ScreenshotsVisualizer")
         {
-            // Manual dll load
-            try
-            {
-                string pluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string pathDLL = Path.Combine(pluginPath, "VirtualizingWrapPanel.dll");
-                if (File.Exists(pathDLL))
-                {
-                    Assembly DLL = Assembly.LoadFile(pathDLL);
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-
             // Custom theme button
             EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
 
