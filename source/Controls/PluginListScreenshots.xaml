@@ -65,12 +65,12 @@
                             <local:SsvThumbnailImage.Style>
                                 <Style TargetType="{x:Type local:SsvThumbnailImage}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
-                                            <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
+                                        <DataTrigger Binding="{Binding IsVideo}" Value="False">
+                                            <Setter Property="Source" Value="{Binding ImageThumbnail}" />
                                         </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
-                                            <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
+                                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                            <Setter Property="Source" Value="{Binding Thumbnail}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

@@ -19,10 +19,10 @@
         <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
+                <Setter Property="Source" Value="{Binding ImageThumbnail}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
+                <Setter Property="Source" Value="{Binding Thumbnail}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
