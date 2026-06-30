@@ -48,7 +48,8 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    SetData();
+                    Guid? selectedGameId = (PART_LveGames.SelectedItem as LveGame)?.Id;
+                    SetData(selectedGameId);
                     SetInfos();
                 }
                 catch (Exception ex)
@@ -58,7 +59,7 @@ namespace ScreenshotsVisualizer.Views
             }));
         }
 
-        private void SetData(int index = -1)
+        private void SetData(Guid? selectedGameId = null)
         {
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
@@ -93,9 +94,14 @@ namespace ScreenshotsVisualizer.Views
                     ((SsvScreenshotsManagerData)DataContext).LveGames = antecedent.Result;
 
                     PART_LveGames.Sorting();
-                    if (index != -1)
+                    if (selectedGameId.HasValue)
                     {
-                        PART_LveGames.SelectedIndex = index;
+                        LveGame selectedGame = ((SsvScreenshotsManagerData)DataContext).LveGames
+                            .FirstOrDefault(x => x.Id == selectedGameId.Value);
+                        if (selectedGame != null)
+                        {
+                            PART_LveGames.SelectedItem = selectedGame;
+                        }
                     }
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
@@ -150,20 +156,37 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
+            RefreshScreenshotsForGame(lveGame.Id);
+        }
+
+        private void RefreshScreenshotsForGame(Guid gameId)
+        {
             _ = Task.Run(() =>
             {
-                GameScreenshots gameScreenshots = PluginDatabase.Get(lveGame.Id, true);
+                GameScreenshots gameScreenshots = PluginDatabase.Get(gameId, true);
+                if (gameScreenshots?.Items == null)
+                {
+                    return false;
+                }
 
-                List<Screenshot> Screenshots = gameScreenshots.Items;
-                Screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+                List<Screenshot> screenshots = gameScreenshots.Items;
+                screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
                 _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    ((SsvScreenshotsManagerData)DataContext).Screenshots = Screenshots.ToObservable();
+                    ((SsvScreenshotsManagerData)DataContext).Screenshots = screenshots.ToObservable();
                 }));
 
                 return true;
             });
+        }
+
+        private void ClearScreenshotPreview()
+        {
+            SsvScreenshotsManagerData dataContext = (SsvScreenshotsManagerData)DataContext;
+            dataContext.FileNameImage = string.Empty;
+            dataContext.FileNameVideo = string.Empty;
+            dataContext.FilePath = string.Empty;
         }
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -200,8 +223,19 @@ namespace ScreenshotsVisualizer.Views
         private void PART_BtDelete_Click(object sender, RoutedEventArgs e)
         {
             ListBoxItem item = UIHelper.FindParent<ListBoxItem>((Button)sender);
-            Screenshot screenshot = (Screenshot)item.DataContext;
-            int indexSelected = PART_LveGames.SelectedIndex;
+            Screenshot screenshot = item?.DataContext as Screenshot;
+            if (screenshot == null)
+            {
+                return;
+            }
+
+            LveGame selectedGame = PART_LveGames.SelectedItem as LveGame;
+            if (selectedGame == null)
+            {
+                return;
+            }
+
+            Guid gameId = selectedGame.Id;
 
             MessageBoxResult RessultDialog = API.Instance.Dialogs.ShowMessage(
                 string.Format(ResourceProvider.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
@@ -213,30 +247,15 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    if (File.Exists(screenshot.FileName))
+                    ((SsvScreenshotsManagerData)DataContext).Screenshots = new ObservableCollection<Screenshot>();
+                    ClearScreenshotPreview();
+
+                    SsvScreenshotDeleteResult result = PluginDatabase.TryDeleteScreenshot(gameId, screenshot);
+                    if (result == SsvScreenshotDeleteResult.Success
+                        || result == SsvScreenshotDeleteResult.SkippedMissingPhysicalFile)
                     {
-                        ((SsvScreenshotsManagerData)DataContext).Screenshots = new ObservableCollection<Screenshot>();
-
-                        _ = Task.Run(() =>
-                        {
-                            // TODO do better
-                            while (IsFileLocked(new FileInfo(screenshot.FileName)))
-                            {
-
-                            }
-
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                screenshot.FileName,
-                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
-                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
-                        });
-
-                        GameScreenshots gameScreenshots = PluginDatabase.Get(((LveGame)PART_LveGames.SelectedItem).Id);
-                        _ = gameScreenshots.Items.Remove(screenshot);
-                        PluginDatabase.Update(gameScreenshots);
-
-                        SetData(indexSelected);
+                        SetInfos();
+                        RefreshScreenshotsForGame(gameId);
                     }
                 }
                 catch (Exception ex)
@@ -244,38 +263,6 @@ namespace ScreenshotsVisualizer.Views
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
-            else
-            {
-
-            }
-        }
-
-        protected bool IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-            }
-
-            //file is not locked
-            return false;
         }
 
 

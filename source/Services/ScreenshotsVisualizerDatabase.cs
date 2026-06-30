@@ -69,6 +69,21 @@ namespace ScreenshotsVisualizer.Services
             Common.LogDebug(true, string.Format("[SsvDatabase] {0}", message));
         }
 
+        private static void LogDeleteDebug(string message)
+        {
+            Common.LogDebug(true, string.Format("[SsvDelete] {0}", message));
+        }
+
+        private static void LogDeleteInfo(string message)
+        {
+            Logger.Info(string.Format("[SsvDelete] {0}", message));
+        }
+
+        private static void LogDeleteWarn(string message)
+        {
+            Logger.Warn(string.Format("[SsvDelete] {0}", message));
+        }
+
         private static void LogScanWarn(string message)
         {
             Logger.Warn(string.Format("[SsvDatabase] {0}", message));
@@ -996,6 +1011,226 @@ namespace ScreenshotsVisualizer.Services
                 API.Instance.Database.Games.Update(game);
                 game.OnPropertyChanged();
             });
+        }
+
+        #endregion
+
+        #region Screenshot delete
+
+        /// <summary>
+        /// Removes a screenshot from the plugin database and sends the source file to the recycle bin when present.
+        /// The confirmation dialog is the caller's responsibility.
+        /// </summary>
+        /// <param name="gameId">Playnite game identifier owning the screenshot.</param>
+        /// <param name="screenshot">Screenshot entry to remove.</param>
+        /// <returns>Outcome of the operation.</returns>
+        public SsvScreenshotDeleteResult TryDeleteScreenshot(Guid gameId, Screenshot screenshot)
+        {
+            if (screenshot == null)
+            {
+                LogDeleteWarn("TryDeleteScreenshot skipped — screenshot argument is null");
+                return SsvScreenshotDeleteResult.ScreenshotNotInCollection;
+            }
+
+            LogDeleteInfo(string.Format(
+                "TryDeleteScreenshot started for game {0}, file '{1}'",
+                gameId,
+                screenshot.FileNameOnly ?? screenshot.FileName ?? "(unknown)"));
+
+            GameScreenshots gameScreenshots = GetOnlyCache(gameId);
+            if (gameScreenshots == null)
+            {
+                LogDeleteWarn(string.Format("TryDeleteScreenshot aborted — no cache entry for game {0}", gameId));
+                return SsvScreenshotDeleteResult.GameNotFound;
+            }
+
+            Screenshot itemToRemove = FindScreenshotInCollection(gameScreenshots, screenshot);
+            if (itemToRemove == null)
+            {
+                LogDeleteWarn(string.Format(
+                    "TryDeleteScreenshot aborted — screenshot not found in collection for game {0}",
+                    gameId));
+                return SsvScreenshotDeleteResult.ScreenshotNotInCollection;
+            }
+
+            string filePath = itemToRemove.FileName;
+            bool physicalFileExists = !string.IsNullOrEmpty(filePath) && File.Exists(filePath);
+
+            _ = gameScreenshots.Items.Remove(itemToRemove);
+            Update(gameScreenshots);
+
+            LogDeleteInfo(string.Format(
+                "Database updated for game {0} — removed '{1}', {2} item(s) remaining",
+                gameId,
+                Path.GetFileName(filePath ?? string.Empty),
+                gameScreenshots.Items?.Count ?? 0));
+
+            if (Paths != null && !string.IsNullOrEmpty(Paths.PluginCachePath))
+            {
+                _thumbnailService.TryPurgeCachedThumbnailsForScreenshot(itemToRemove, Paths.PluginCachePath);
+            }
+            else
+            {
+                LogDeleteWarn("Thumbnail cache purge skipped — PluginCachePath is not available");
+            }
+
+            if (!physicalFileExists)
+            {
+                LogDeleteWarn(string.Format(
+                    "Physical file missing — database entry removed only: '{0}'",
+                    filePath ?? string.Empty));
+                return SsvScreenshotDeleteResult.SkippedMissingPhysicalFile;
+            }
+
+            LogDeleteDebug(string.Format(
+                "Scheduling recycle-bin delete for '{0}'",
+                filePath));
+
+            _ = Task.Run(() =>
+            {
+                if (WaitAndDeleteToRecycleBin(filePath))
+                {
+                    LogDeleteInfo(string.Format("Recycle-bin delete completed for '{0}'", filePath));
+                }
+                else
+                {
+                    LogError(
+                        new IOException(string.Format("Failed to delete screenshot file '{0}'", filePath)),
+                        "TryDeleteScreenshot");
+                }
+            });
+
+            return SsvScreenshotDeleteResult.Success;
+        }
+
+        private static Screenshot FindScreenshotInCollection(GameScreenshots gameScreenshots, Screenshot screenshot)
+        {
+            if (gameScreenshots?.Items == null)
+            {
+                return null;
+            }
+
+            Screenshot itemToRemove = gameScreenshots.Items.FirstOrDefault(x => ReferenceEquals(x, screenshot));
+            if (itemToRemove != null)
+            {
+                LogDeleteDebug("Screenshot matched in collection by object reference");
+                return itemToRemove;
+            }
+
+            if (string.IsNullOrEmpty(screenshot.FileName))
+            {
+                return null;
+            }
+
+            itemToRemove = gameScreenshots.Items.FirstOrDefault(x =>
+                x != null
+                && string.Equals(x.FileName, screenshot.FileName, StringComparison.OrdinalIgnoreCase));
+
+            if (itemToRemove != null)
+            {
+                LogDeleteDebug(string.Format(
+                    "Screenshot matched in collection by FileName '{0}'",
+                    screenshot.FileName));
+            }
+
+            return itemToRemove;
+        }
+
+        private static bool WaitAndDeleteToRecycleBin(string filePath, int maxAttempts = 30, int delayMs = 200)
+        {
+            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+            {
+                LogDeleteDebug(string.Format(
+                    "WaitAndDeleteToRecycleBin skipped — file not present: '{0}'",
+                    filePath ?? string.Empty));
+                return true;
+            }
+
+            LogDeleteDebug(string.Format(
+                "WaitAndDeleteToRecycleBin started for '{0}' (max {1} attempts, {2} ms delay)",
+                filePath,
+                maxAttempts,
+                delayMs));
+
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
+            {
+                if (!IsScreenshotFileLocked(new FileInfo(filePath)))
+                {
+                    try
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                            filePath,
+                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                            Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
+                        LogDeleteDebug(string.Format(
+                            "File sent to recycle bin on attempt {0}/{1}: '{2}'",
+                            attempt + 1,
+                            maxAttempts,
+                            filePath));
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (attempt >= maxAttempts - 1)
+                        {
+                            Common.LogError(ex, false, true, "ScreenshotsVisualizer");
+                            return false;
+                        }
+
+                        LogDeleteWarn(string.Format(
+                            "Delete attempt {0}/{1} failed for '{2}' — retrying",
+                            attempt + 1,
+                            maxAttempts,
+                            filePath));
+                    }
+                }
+                else if (attempt == 0)
+                {
+                    LogDeleteWarn(string.Format(
+                        "File locked on attempt {0}/{1} — waiting {2} ms: '{3}'",
+                        attempt + 1,
+                        maxAttempts,
+                        delayMs,
+                        filePath));
+                }
+                else if (attempt == maxAttempts - 1 || (attempt + 1) % 5 == 0)
+                {
+                    LogDeleteDebug(string.Format(
+                        "File locked on attempt {0}/{1} — waiting {2} ms: '{3}'",
+                        attempt + 1,
+                        maxAttempts,
+                        delayMs,
+                        filePath));
+                }
+
+                Thread.Sleep(delayMs);
+            }
+
+            LogDeleteWarn(string.Format(
+                "WaitAndDeleteToRecycleBin exhausted all attempts for '{0}'",
+                filePath));
+            return false;
+        }
+
+        private static bool IsScreenshotFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                stream?.Close();
+            }
+
+            return false;
         }
 
         #endregion

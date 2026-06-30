@@ -198,6 +198,7 @@
     <Compile Include="ScreenshotsVisualizerSettings.cs" />
     <Compile Include="Services\ImageMagickCommandBuilder.cs" />
     <Compile Include="Services\ImageMagickConversionService.cs" />
+    <Compile Include="Services\SsvScreenshotDeleteResult.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
     <Compile Include="Services\SsvPresetFolderHelper.cs" />

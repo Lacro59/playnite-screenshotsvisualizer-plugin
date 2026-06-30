@@ -10,7 +10,6 @@ using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -87,7 +86,11 @@ namespace ScreenshotsVisualizer.Controls
         private void PART_BtDelete_Click(object sender, RoutedEventArgs e)
         {
             ListBoxItem item = UIHelper.FindParent<ListBoxItem>((Button)sender);
-            Screenshot screenshot = (Screenshot)item.DataContext;
+            Screenshot screenshot = item?.DataContext as Screenshot;
+            if (screenshot == null || GameContext == null)
+            {
+                return;
+            }
 
             MessageBoxResult resultDialog = API.Instance.Dialogs.ShowMessage(
                 string.Format(ResourceProvider.GetString("LOCSsvDeleteConfirm"), screenshot.FileNameOnly),
@@ -99,28 +102,15 @@ namespace ScreenshotsVisualizer.Controls
             {
                 try
                 {
-                    if (File.Exists(screenshot.FileName))
+                    SsvScreenshotDeleteResult result = PluginDatabase.TryDeleteScreenshot(GameContext.Id, screenshot);
+                    if (result == SsvScreenshotDeleteResult.Success
+                        || result == SsvScreenshotDeleteResult.SkippedMissingPhysicalFile)
                     {
-                        _ = System.Threading.Tasks.Task.Run(() =>
+                        GameScreenshots gameScreenshots = PluginDatabase.GetOnlyCache(GameContext.Id);
+                        if (gameScreenshots != null)
                         {
-                            // TODO do better
-                            while (IsFileLocked(new FileInfo(screenshot.FileName)))
-                            {
-
-                            }
-
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                screenshot.FileName,
-                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
-                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
-                        });
-
-                        GameScreenshots gameScreenshots = PluginDatabase.Get(GameContext);
-                        gameScreenshots.Items.Remove(screenshot);
-                        PluginDatabase.Update(gameScreenshots);
-
-                        SetData(GameContext, gameScreenshots);
+                            SetData(GameContext, gameScreenshots);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -128,38 +118,9 @@ namespace ScreenshotsVisualizer.Controls
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
-            else
-            {
-
-            }
         }
 
         #endregion
-
-        protected bool IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                stream?.Close();
-            }
-
-            //file is not locked
-            return false;
-        }
     }
 
 

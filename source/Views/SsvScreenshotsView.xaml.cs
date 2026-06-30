@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,10 +33,7 @@ namespace ScreenshotsVisualizer.Views
             PART_ImgPath.Content = string.Empty;
 
             gameScreenshots = PluginDatabase.Get(GameSelected);
-            List<Screenshot> Items = gameScreenshots.Items;
-            Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-            PART_ListScreenshots.ItemsSource = Items;
+            RefreshScreenshotList();
 
             SetInfos();
 
@@ -95,75 +91,52 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    if (File.Exists(screenshot.FileName))
+                    ClearScreenshotPreview();
+
+                    SsvScreenshotDeleteResult result = PluginDatabase.TryDeleteScreenshot(gameScreenshots.Id, screenshot);
+                    if (result == SsvScreenshotDeleteResult.Success
+                        || result == SsvScreenshotDeleteResult.SkippedMissingPhysicalFile)
                     {
-                        PART_Screenshot.Source = null;
-                        PART_Screenshot.UpdateLayout();
-
-                        _ = Task.Run(() => 
-                        {
-                            while(IsFileLocked(new FileInfo(screenshot.FileName)))
-                            {
-
-                            }
-
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                screenshot.FileName,
-                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
-                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
-                        });
-
-                        _ = gameScreenshots.Items.Remove(screenshot);
-                        PluginDatabase.Update(gameScreenshots);
+                        RefreshScreenshotList();
+                        PART_ListScreenshots.SelectedIndex = -1;
+                        SetInfos();
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
-
-                List<Screenshot> Items = gameScreenshots.Items;
-                Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-                PART_ListScreenshots.SelectedIndex = -1;
-                PART_ListScreenshots.ItemsSource = null;
-                PART_ListScreenshots.ItemsSource = Items;
-
-                SetInfos();
-            }
-            else
-            {
-
             }
         }
 
-        protected bool IsFileLocked(FileInfo file)
+        private void RefreshScreenshotList()
         {
-            FileStream stream = null;
-
-            try
+            GameScreenshots cached = PluginDatabase.GetOnlyCache(gameScreenshots.Id);
+            if (cached != null)
             {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+                gameScreenshots = cached;
             }
 
-            //file is not locked
-            return false;
+            List<Screenshot> items = gameScreenshots?.Items != null
+                ? new List<Screenshot>(gameScreenshots.Items)
+                : new List<Screenshot>();
+
+            items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            PART_ListScreenshots.ItemsSource = items;
+        }
+
+        private void ClearScreenshotPreview()
+        {
+            PART_Screenshot.Source = null;
+            PART_Screenshot.Visibility = Visibility.Collapsed;
+            PART_Screenshot.UpdateLayout();
+
+            PART_Video.Source = null;
+            PART_Video.Visibility = Visibility.Collapsed;
+
+            PART_BtFolder.Visibility = Visibility.Collapsed;
+            PART_BtFolder.Tag = null;
+            PART_ImgPath.Content = string.Empty;
         }
 
 

@@ -3,6 +3,7 @@ using CommonPluginsShared.Utilities;
 using CommonPlayniteShared.Common;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using ScreenshotsVisualizer.Models;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
@@ -122,6 +123,57 @@ namespace ScreenshotsVisualizer.Services
         public static string GetFailureMarkerPath(string thumbnailPath)
         {
             return thumbnailPath + FailedMarkerSuffix;
+        }
+
+        /// <summary>
+        /// Removes cached thumbnail files associated with a screenshot source path.
+        /// </summary>
+        /// <param name="screenshot">Screenshot whose cache entries should be purged.</param>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        public void TryPurgeCachedThumbnailsForScreenshot(Screenshot screenshot, string cacheRootPath)
+        {
+            if (screenshot == null || string.IsNullOrWhiteSpace(cacheRootPath) || string.IsNullOrEmpty(screenshot.FileName))
+            {
+                LogThumbnailDebug("Purge skipped — screenshot or cache root path is missing");
+                return;
+            }
+
+            string sourceFileName = Path.GetFileName(screenshot.FileName);
+            LogThumbnailDebug(string.Format(
+                "Purging thumbnail cache for '{0}'",
+                sourceFileName));
+
+            TryDeleteCacheEntry(GetImageThumbnailCachePath(cacheRootPath, sourceFileName));
+
+            if (screenshot.IsVideo)
+            {
+                TryDeleteCacheEntry(GetVideoThumbnailCachePath(
+                    cacheRootPath,
+                    sourceFileName,
+                    screenshot.FileSize,
+                    screenshot.Duration.TotalSeconds));
+            }
+        }
+
+        private void TryDeleteCacheEntry(string thumbnailPath)
+        {
+            if (string.IsNullOrEmpty(thumbnailPath))
+            {
+                return;
+            }
+
+            if (File.Exists(thumbnailPath))
+            {
+                FileSystem.DeleteFileSafe(thumbnailPath);
+                LogThumbnailDebug(string.Format("Deleted thumbnail cache file '{0}'", thumbnailPath));
+            }
+
+            string failureMarkerPath = GetFailureMarkerPath(thumbnailPath);
+            if (File.Exists(failureMarkerPath))
+            {
+                FileSystem.DeleteFileSafe(failureMarkerPath);
+                LogThumbnailDebug(string.Format("Deleted thumbnail failure marker '{0}'", failureMarkerPath));
+            }
         }
 
         /// <summary>
