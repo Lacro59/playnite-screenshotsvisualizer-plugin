@@ -28,6 +28,26 @@
     <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
     <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
 
+    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">Supported formats</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsIntro">Manage scanned image and video extensions as lists. Essential formats (.jpg, .jpeg, .png, .mp4) cannot be removed. Add any extension (for example .avif or .jxl) and remove optional ones. A library refresh is required after changes.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsImageSection">Image extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">Video extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">Restore defaults</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">Enable all</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">Disable all</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">Common format always kept enabled when settings are saved.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">Additional image extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">Additional video extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsAddCustom">Add</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Enter an extension such as .jxl (letters and digits only).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">The extension is invalid. Use a value such as .jxl.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">This extension is already listed.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Custom extension; display depends on Windows or installed codecs.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decoded by built-in Windows imaging support.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (AV1, WebP or HEIF extension).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Decoded by the plugin (TGA).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Video thumbnail and metadata use ffmpeg/ffprobe paths from the Misc tab.</sys:String>
+
 
     <!-- MainView -->
 
