@@ -35,7 +35,7 @@ namespace ScreenshotsVisualizer.Services
         /// </summary>
         /// <param name="game">The game used for variable expansion.</param>
         /// <param name="folderSettings">The source settings containing the configured pattern.</param>
-        /// <returns>The resolved regex pattern string, or empty when pattern matching is disabled.</returns>
+        /// <returns>The anchored regex pattern string for a full file name match, or empty when pattern matching is disabled.</returns>
         public string ResolveFilePatternRegex(Game game, FolderSettings folderSettings)
         {
             if (game == null || folderSettings == null || !folderSettings.UsedFilePattern || string.IsNullOrEmpty(folderSettings.FilePattern))
@@ -46,13 +46,14 @@ namespace ScreenshotsVisualizer.Services
             string pattern = PlayniteTools.StringExpandWithStores(game, folderSettings.FilePattern);
             pattern = EscapeRegexSpecialChars(pattern);
             pattern = pattern.Replace("\\*", ".*");
-            pattern = pattern.Replace("\\{digit\\}", @"\d*");
+            pattern = pattern.Replace("\\{digit\\}", @"\d+");
             pattern = pattern.Replace("\\{DateModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}");
             pattern = pattern.Replace("\\{DateTimeModified\\}", @"[0-9]{4}[-_][0-9]{2}[-_][0-9]{2}[ -_][0-9]{2}[-_][0-9]{2}[-_][0-9]{2}");
 
             string gameName = API.Instance.ExpandGameVariables(game, "{Name}");
             string safeGameNamePattern = PathValidator.GetSafePathName(gameName).Replace(" ", "[ ]*");
-            return pattern.Replace(gameName, safeGameNamePattern);
+            pattern = pattern.Replace(gameName, safeGameNamePattern);
+            return "^" + pattern + "$";
         }
 
         private static string EscapeRegexSpecialChars(string input)
