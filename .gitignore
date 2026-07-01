@@ -9,6 +9,9 @@
 .scripts/
 .cursorignore
 
+# Graphify (graphe local — régénérer avec `graphify update .`)
+graphify-out/
+
 # User-specific files
 *.suo
 *.user
