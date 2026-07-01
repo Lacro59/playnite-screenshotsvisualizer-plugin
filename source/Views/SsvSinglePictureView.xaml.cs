@@ -47,20 +47,20 @@ namespace ScreenshotsVisualizer.Views
 
         private void SetImage(Screenshot screenshot)
         {
+            Screenshot = screenshot;
             string pictureSource = string.Empty;
             Game game = API.Instance.Database.Games.Get(screenshot.GameId);
 
             if (File.Exists(screenshot.FileName))
             {
                 pictureSource = screenshot.FileName;
-                Screenshot = screenshot;
+            }
 
-                if (Parent is Window window)
-                {
-                    window.Title = game != null
-                        ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
-                        : ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
-                }
+            if (Parent is Window window)
+            {
+                window.Title = game != null
+                    ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
+                    : ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
             }
 
             DataContext = new
@@ -178,10 +178,14 @@ namespace ScreenshotsVisualizer.Views
                 ButtonPrev.Visibility = Visibility.Visible;
             }
 
-            if (!Screenshot?.IsVideo ?? true)
+            if (Screenshot != null && !Screenshot.IsVideo)
+            {
+                PART_Game.Visibility = Visibility.Visible;
+            }
+
+            if (IsCopiableImage())
             {
                 PART_Bt.Visibility = Visibility.Visible;
-                PART_Game.Visibility = Visibility.Visible;
             }
         }
 
@@ -195,30 +199,39 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
-            if ((!Screenshot?.IsVideo ?? true) && File.Exists(Screenshot.FileName))
+            if (!IsCopiableImage())
             {
-                try
-                {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(Screenshot.FileName);
-                    Clipboard.SetDataObject(img);
-                }
-                catch(Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
+                return;
+            }
+
+            try
+            {
+                System.Drawing.Image img = System.Drawing.Image.FromFile(Screenshot.FileName);
+                Clipboard.SetDataObject(img);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
         private void PART_Expand_Click(object sender, RoutedEventArgs e)
         {
-            if ((!Screenshot?.IsVideo ?? true) && File.Exists(Screenshot.FileName))
+            if (!IsCopiableImage())
             {
-                ZoomBorder parent = UIHelper.FindParent<ZoomBorder>(PART_ScreenshotsPicture);
-                if (parent != null)
-                {
-                    parent.Reset();
-                }
+                return;
             }
+
+            ZoomBorder parent = UIHelper.FindParent<ZoomBorder>(PART_ScreenshotsPicture);
+            if (parent != null)
+            {
+                parent.Reset();
+            }
+        }
+
+        private bool IsCopiableImage()
+        {
+            return Screenshot != null && !Screenshot.IsVideo && File.Exists(Screenshot.FileName);
         }
     }
 }
