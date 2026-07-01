@@ -28,6 +28,26 @@
     <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
     <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
 
+    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">Formati supportati</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsIntro">Gestire le estensioni di immagini e video scannerizzate come liste. I formati essenziali (.jpg, .jpeg, .png, .mp4) non possono essere rimossi. Aggiungere qualsiasi estensione (ad esempio .avif o .jxl) e rimuovere quelli opzionali. È necessario aggiornare la libreria dopo le modifiche.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsImageSection">Estensioni immagine</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">Estensioni video</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">Ripristina impostazioni predefinite</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">Abilita tutto</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">Disabilita tutto</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">Formato comune sempre abilitato quando le impostazioni vengono salvate.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">Estensioni di immagine aggiuntive</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">Estensioni video aggiuntive</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsAddCustom">Aggiungi</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Inserisci un'estensione come .jxl (solo lettere e cifre).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">Estensione non valida. Usare un valore come .jxl.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">Questa estensione è già elencata.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Estensione personalizzata; la visualizzazione dipende da Windows o dai codec installati.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decodificato dal supporto per le immagini integrato in Windows.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Richiede un codec di immagine opzionale del Windows Store (AV1, WebP o HEIF estensione).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Decodificato dal plugin (TGA).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Video thumbnail and metadata use ffmpeg/ffprobe paths from the Misc tab.</sys:String>
+
 
     <!-- MainView -->
 
