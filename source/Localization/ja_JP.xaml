@@ -28,6 +28,26 @@
     <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">出力形式は必須です。</sys:String>
     <sys:String x:Key="LOCSsvImageConversionNoCommands">変換コマンドが設定されていません。</sys:String>
 
+    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">対応形式</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsIntro">スキャン対象の画像と動画の拡張子をリストとして管理します。必須形式（.jpg、.jpeg、.png、.mp4）は削除できません。任意の拡張子（例：.avif や .jxl）を追加し、不要な拡張子を削除できます。変更後はライブラリの更新が必要です。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsImageSection">画像拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">動画拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">既定値に戻す</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">すべて有効</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">すべて無効</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">共通形式は、設定の保存時に常に有効のまま保持されます。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">追加の画像拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">追加の動画拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsAddCustom">追加</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">.jxl のような拡張子を入力してください（英数字のみ）。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">拡張子が無効です。.jxl のような値を使用してください。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">この拡張子はすでに一覧にあります。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">カスタム拡張子です。表示できるかどうかは Windows またはインストール済みコーデックによって異なります。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Windows の組み込み画像サポートでデコードされます。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">任意の Windows Store 画像コーデック（AV1、WebP、または HEIF 拡張機能）が必要です。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">プラグインでデコードされます（TGA）。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">動画サムネイルとメタデータには、その他タブの ffmpeg/ffprobe パスが使用されます。</sys:String>
+
 
     <!-- MainView -->
 
