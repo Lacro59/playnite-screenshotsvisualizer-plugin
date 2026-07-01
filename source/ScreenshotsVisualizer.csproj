@@ -138,6 +138,9 @@
     <Compile Include="Models\SsvArchiveMigrationResult.cs" />
     <Compile Include="Models\SsvPresetMigrationResult.cs" />
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
+    <Compile Include="Models\SsvMediaFormatCatalog.cs" />
+    <Compile Include="Models\SsvMediaFormatDefinition.cs" />
+    <Compile Include="Models\SsvMediaFormatKind.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
     <Compile Include="Models\SsvImageConversionResult.cs" />
     <Compile Include="Models\SsvVideoMetadata.cs" />
@@ -187,6 +190,7 @@
     <Compile Include="ViewModels\Settings\FolderEntryItem.cs" />
     <Compile Include="ViewModels\Settings\SsvImageConversionCustomCmdEditorViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvImageConversionCustomCmdItem.cs" />
+    <Compile Include="ViewModels\Settings\SsvMediaFormatsSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvImageConversionSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvFolderSourceEditorViewModel.cs" />
     <Compile Include="ViewModels\Settings\SsvConfigurationContextItem.cs" />

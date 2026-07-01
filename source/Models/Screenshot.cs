@@ -65,7 +65,7 @@ namespace ScreenshotsVisualizer.Models
         public string FileNameOnly => Path.GetFileName(FileName);
 
         [DontSerialize]
-        public bool IsVideo => new string[] { "mp4", "avi", "mkv", "webm" }.Any(s => Path.GetExtension(FileName).ToLower().Contains(s));
+        public bool IsVideo => SsvMediaFormatCatalog.IsVideoExtension(FileName, PluginDatabase.PluginSettings);
 
         [DontSerialize]
         public string ImageThumbnail

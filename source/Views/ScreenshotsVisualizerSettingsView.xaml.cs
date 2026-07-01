@@ -15,6 +15,8 @@ namespace ScreenshotsVisualizer.Views
     {
         private const double ConfigurationPanelMinHeight = 280;
         private const double ConfigurationPanelReservedHeight = 130;
+        private const double MediaFormatsPanelMinHeight = 200;
+        private const double MediaFormatsPanelReservedHeight = 110;
 
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
@@ -51,11 +53,26 @@ namespace ScreenshotsVisualizer.Views
         }
 
         /// <summary>
-        /// Sizes the configuration master-detail panel to the available settings viewport height.
+        /// Sizes stretchable tab panels to the available settings viewport height.
         /// </summary>
         private void UpdateConfigurationPanelHeight()
         {
-            if (PART_ConfigurationPanel == null)
+            UpdateStretchablePanelHeight(
+                PART_ConfigurationPanel,
+                ConfigurationPanelReservedHeight,
+                ConfigurationPanelMinHeight);
+            UpdateStretchablePanelHeight(
+                PART_MediaFormatsPanel,
+                MediaFormatsPanelReservedHeight,
+                MediaFormatsPanelMinHeight);
+        }
+
+        private void UpdateStretchablePanelHeight(
+            FrameworkElement panel,
+            double reservedHeight,
+            double minHeight)
+        {
+            if (panel == null)
             {
                 return;
             }
@@ -66,13 +83,13 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
-            double availableHeight = viewportHeight - ConfigurationPanelReservedHeight;
-            if (availableHeight < ConfigurationPanelMinHeight)
+            double availableHeight = viewportHeight - reservedHeight;
+            if (availableHeight < minHeight)
             {
-                availableHeight = ConfigurationPanelMinHeight;
+                availableHeight = minHeight;
             }
 
-            PART_ConfigurationPanel.MaxHeight = availableHeight;
+            panel.MaxHeight = availableHeight;
         }
 
         /// <summary>

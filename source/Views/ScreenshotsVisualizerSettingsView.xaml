@@ -656,6 +656,132 @@
                 </ScrollViewer>
             </TabItem>
 
+            <TabItem Header="{DynamicResource LOCSsvMediaFormatsTabTitle}">
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvMediaFormatsIntro}"
+                               Foreground="{DynamicResource GlyphBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,16" />
+
+                    <Grid Grid.Row="1" x:Name="PART_MediaFormatsPanel" MinHeight="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Top"
+                                       Style="{DynamicResource SectionHeaderText}"
+                                       Text="{DynamicResource LOCSsvMediaFormatsImageSection}"
+                                       Margin="0,0,0,8" />
+
+                            <Button DockPanel.Dock="Bottom"
+                                    HorizontalAlignment="Left"
+                                    Margin="0,8,0,0"
+                                    Content="{DynamicResource LOCSsvMediaFormatsRestoreDefaults}"
+                                    Command="{Binding MediaFormatsSettings.RestoreDefaultImagesCommand}" />
+
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                                <Button DockPanel.Dock="Right"
+                                        Margin="8,0,0,0"
+                                        Content="{DynamicResource LOCSsvMediaFormatsAddCustom}"
+                                        Command="{Binding MediaFormatsSettings.AddImageCommand}" />
+                                <TextBox Text="{Binding MediaFormatsSettings.NewImageExtension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{DynamicResource LOCSsvMediaFormatsCustomExtensionHint}" />
+                            </DockPanel>
+
+                            <ListBox ItemsSource="{Binding MediaFormatsSettings.ImageExtensions}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                                       Text="{Binding DisplayName}"
+                                                       ToolTip="{Binding CodecHint}"
+                                                       VerticalAlignment="Center" />
+                                            <Button Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                                                    Content="&#xec53;"
+                                                    ToolTip="{DynamicResource LOCRemoveTitle}"
+                                                    Command="{Binding DataContext.MediaFormatsSettings.RemoveImageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding CanRemove, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="2">
+                            <TextBlock DockPanel.Dock="Top"
+                                       Style="{DynamicResource SectionHeaderText}"
+                                       Text="{DynamicResource LOCSsvMediaFormatsVideoSection}"
+                                       Margin="0,0,0,8" />
+
+                            <Button DockPanel.Dock="Bottom"
+                                    HorizontalAlignment="Left"
+                                    Margin="0,8,0,0"
+                                    Content="{DynamicResource LOCSsvMediaFormatsRestoreDefaults}"
+                                    Command="{Binding MediaFormatsSettings.RestoreDefaultVideosCommand}" />
+
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                                <Button DockPanel.Dock="Right"
+                                        Margin="8,0,0,0"
+                                        Content="{DynamicResource LOCSsvMediaFormatsAddCustom}"
+                                        Command="{Binding MediaFormatsSettings.AddVideoCommand}" />
+                                <TextBox Text="{Binding MediaFormatsSettings.NewVideoExtension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{DynamicResource LOCSsvMediaFormatsCustomExtensionHint}" />
+                            </DockPanel>
+
+                            <ListBox ItemsSource="{Binding MediaFormatsSettings.VideoExtensions}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                                       Text="{Binding DisplayName}"
+                                                       ToolTip="{Binding CodecHint}"
+                                                       VerticalAlignment="Center" />
+                                            <Button Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                                                    Content="&#xec53;"
+                                                    ToolTip="{DynamicResource LOCRemoveTitle}"
+                                                    Command="{Binding DataContext.MediaFormatsSettings.RemoveVideoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding CanRemove, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
             <TabItem Name="PART_CacheTab" Header="{DynamicResource LOCCommonCacheSectionTitle}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>

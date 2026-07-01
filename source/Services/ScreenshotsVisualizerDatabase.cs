@@ -870,8 +870,7 @@ namespace ScreenshotsVisualizer.Services
 
                         string pathFolder = _pathResolver.ResolvePath(game, screenshotsFolder);
 
-                        // Get files
-                        string[] extensions = { ".jpg", ".jpeg", ".webp", ".png", ".gif", ".bmp", ".jfif", ".tga", ".mp4", ".avi", ".mkv", ".webm" };
+                        HashSet<string> extensions = SsvMediaFormatCatalog.GetEnabledScanExtensions(PluginSettings);
                         if (Directory.Exists(pathFolder))
                         {
                             SearchOption searchOption = SearchOption.TopDirectoryOnly;
@@ -881,7 +880,7 @@ namespace ScreenshotsVisualizer.Services
                             }
 
                             Directory.EnumerateFiles(pathFolder, "*.*", searchOption)
-                                .Where(s => extensions.Any(ext => ext == Path.GetExtension(s)))
+                                .Where(s => extensions.Contains(Path.GetExtension(s)))
                                 .ForEach(objectFile =>
                                 {
                                     try

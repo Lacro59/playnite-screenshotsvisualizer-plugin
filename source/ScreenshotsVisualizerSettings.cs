@@ -113,6 +113,36 @@ namespace ScreenshotsVisualizer
 
         public List<GameSettings> gameSettings { get; set; } = new List<GameSettings>();
 
+        /// <summary>
+        /// Image file extensions enabled for filesystem scan.
+        /// </summary>
+        public List<string> EnabledImageExtensions { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Video file extensions enabled for filesystem scan.
+        /// </summary>
+        public List<string> EnabledVideoExtensions { get; set; } = new List<string>();
+
+        /// <summary>
+        /// User-defined image extensions always included in filesystem scan.
+        /// </summary>
+        public List<string> CustomImageExtensions { get; set; } = new List<string>();
+
+        /// <summary>
+        /// User-defined video extensions always included in filesystem scan.
+        /// </summary>
+        public List<string> CustomVideoExtensions { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Tracks one-time catalog default merges when new built-in formats are added.
+        /// </summary>
+        public int MediaFormatCatalogRevision { get; set; }
+
+        /// <summary>
+        /// Indicates whether media format lists were explicitly saved by the user.
+        /// When <c>true</c>, empty or missing lists are not replaced with full catalog defaults on load.
+        /// </summary>
+        public bool MediaFormatsConfigured { get; set; }
 
         private bool _carouselAutoChangeEnable = true;
         public bool CarouselAutoChangeEnable { get => _carouselAutoChangeEnable; set => SetValue(ref _carouselAutoChangeEnable, value); }
@@ -345,6 +375,14 @@ namespace ScreenshotsVisualizer
         }
 
         /// <summary>
+        /// Normalizes media format extension lists before JSON persistence.
+        /// </summary>
+        public void NormalizeMediaFormatsForPersistence()
+        {
+            SsvMediaFormatCatalog.NormalizeForPersistence(this);
+        }
+
+        /// <summary>
         /// Reads the legacy <c>JpgQuality</c> value from persisted plugin settings.
         /// </summary>
         /// <param name="pluginUserDataPath">Plugin user data folder.</param>
@@ -441,6 +479,16 @@ namespace ScreenshotsVisualizer
             private set => SetValue(ref _imageConversionSettings, value);
         }
 
+        private SsvMediaFormatsSettingsViewModel _mediaFormatsSettings;
+        /// <summary>
+        /// Gets the view model for enabled image and video extension settings.
+        /// </summary>
+        public SsvMediaFormatsSettingsViewModel MediaFormatsSettings
+        {
+            get => _mediaFormatsSettings;
+            private set => SetValue(ref _mediaFormatsSettings, value);
+        }
+
         private string _thumbnailCacheFileCountText = "0";
         /// <summary>
         /// Gets the formatted thumbnail cache file count for the settings view.
@@ -474,6 +522,7 @@ namespace ScreenshotsVisualizer
             Settings = savedSettings ?? new ScreenshotsVisualizerSettings();
             Settings.ApplyFixedLibraryFilterPolicy();
             Settings.EnsureGlobalScreenshotSourcesMigrated();
+            SsvMediaFormatCatalog.EnsureSettingsInitialized(Settings);
             Settings.ApplyImageConversionMigrationFromConfig(plugin.GetPluginUserDataPath());
 
             GamesConfiguration = new SsvGamesConfigurationViewModel(ScreenshotsVisualizer.PluginName);
@@ -481,6 +530,8 @@ namespace ScreenshotsVisualizer
             ConfigurationContext.LoadFrom(Settings);
             ImageConversionSettings = new SsvImageConversionSettingsViewModel();
             ImageConversionSettings.LoadFrom(Settings);
+            MediaFormatsSettings = new SsvMediaFormatsSettingsViewModel();
+            MediaFormatsSettings.LoadFrom(Settings);
             _ = GamesConfiguration.LoadFromAsync(Settings.gameSettings);
 
             // Manage source
@@ -506,6 +557,7 @@ namespace ScreenshotsVisualizer
             GamesConfiguration.ReloadFrom(Settings.gameSettings);
             ConfigurationContext.ReloadFrom(Settings);
             ImageConversionSettings.LoadFrom(Settings);
+            MediaFormatsSettings.LoadFrom(Settings);
             InitializeCommands(ScreenshotsVisualizer.PluginName, ScreenshotsVisualizer.PluginDatabase);
             GamesConfiguration.CaptureCancelSnapshot();
             ConfigurationContext.CaptureCancelSnapshot();
@@ -531,6 +583,7 @@ namespace ScreenshotsVisualizer
             GamesConfiguration.RestoreCancelSnapshot();
             ConfigurationContext.RestoreCancelSnapshot();
             ImageConversionSettings.LoadFrom(Settings);
+            MediaFormatsSettings.LoadFrom(Settings);
         }
 
         // Code executed when user decides to confirm changes made since BeginEdit was called.
@@ -540,11 +593,14 @@ namespace ScreenshotsVisualizer
             Settings.ApplyFixedLibraryFilterPolicy();
             ConfigurationContext.ApplyToSettings(Settings);
             ImageConversionSettings.ApplyToSettings(Settings);
+            MediaFormatsSettings.ApplyToSettings(Settings);
             Settings.NormalizeGlobalScreenshotSourcesForPersistence();
             Settings.NormalizeCustomConversionCmdsForPersistence();
+            Settings.NormalizeMediaFormatsForPersistence();
             Settings.gameSettings = GamesConfiguration.ToGameSettingsList();
 
             Plugin.SavePluginSettings(Settings);
+            ScreenshotsVisualizer.PluginDatabase.PluginSettings = Settings;
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
