@@ -65,14 +65,17 @@ namespace ScreenshotsVisualizer.Services
         /// <param name="pluginUserDataPath">Plugin user data folder.</param>
         /// <param name="pluginName">Plugin display name.</param>
         /// <param name="saveSettings">Persists settings after cleanup.</param>
+        /// <param name="onCompleted">Optional callback invoked when migration is skipped or finished (success or failure).</param>
         public static void ScheduleIfNeeded(
             ScreenshotsVisualizerSettings settings,
             string pluginUserDataPath,
             string pluginName,
-            Action<ScreenshotsVisualizerSettings> saveSettings)
+            Action<ScreenshotsVisualizerSettings> saveSettings,
+            Action onCompleted = null)
         {
             if (settings == null)
             {
+                onCompleted?.Invoke();
                 return;
             }
 
@@ -81,6 +84,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 if (!HasPendingMigrationWork(settings))
                 {
+                    onCompleted?.Invoke();
                     return;
                 }
 
@@ -89,6 +93,7 @@ namespace ScreenshotsVisualizer.Services
             else if (!HasPendingMigrationWork(settings))
             {
                 WriteMigrationMarker(pluginUserDataPath, 0, null, null, "No preset duplicates found.");
+                onCompleted?.Invoke();
                 return;
             }
 
@@ -100,7 +105,11 @@ namespace ScreenshotsVisualizer.Services
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress(
-                progress => RunMigrationWithProgress(settings, pluginUserDataPath, pluginName, saveSettings, progress),
+                progress =>
+                {
+                    RunMigrationWithProgress(settings, pluginUserDataPath, pluginName, saveSettings, progress);
+                    onCompleted?.Invoke();
+                },
                 progressOptions);
         }
 

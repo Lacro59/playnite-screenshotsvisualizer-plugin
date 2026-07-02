@@ -301,7 +301,12 @@ namespace ScreenshotsVisualizer
                     PluginSettingsViewModel.Settings,
                     pluginUserDataPath,
                     PluginDatabase.PluginName,
-                    saveSettings));
+                    saveSettings,
+                    () => SsvGlobalSourceSettingsMigration.ScheduleIfNeeded(
+                        PluginSettingsViewModel.Settings,
+                        pluginUserDataPath,
+                        PluginDatabase.PluginName,
+                        saveSettings)));
         }
 
         // Add code to be executed when Playnite is shutting down.

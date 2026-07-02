@@ -205,8 +205,10 @@
     <Compile Include="Services\SsvScreenshotDeleteResult.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
+    <Compile Include="Services\SsvGlobalSourceFolderHelper.cs" />
     <Compile Include="Services\SsvPresetFolderHelper.cs" />
     <Compile Include="Services\SsvPresetSettingsMigration.cs" />
+    <Compile Include="Services\SsvGlobalSourceSettingsMigration.cs" />
     <Compile Include="Services\SsvFolderPresetCatalog.cs" />
     <Compile Include="Services\SsvFolderPresetService.cs" />
     <Compile Include="Services\SsvGlobalSourceApplicabilityHelper.cs" />

@@ -690,7 +690,7 @@ namespace ScreenshotsVisualizer.Services
         /// Merges persisted per-game folders with applicable global screenshot sources (when allowed)
         /// and the global archive folder at runtime only.
         /// Global sources are included only when <see cref="SsvGlobalSourceApplicabilityHelper.MatchesGame"/> passes.
-        /// The global archive configuration is never injected into persisted <c>gameSettings</c>.
+        /// Neither global sources nor archive configuration are injected into persisted <c>gameSettings</c>.
         /// </summary>
         /// <param name="id">The unique identifier of the game.</param>
         /// <returns>Effective game settings for scan and refresh operations.</returns>
@@ -700,8 +700,8 @@ namespace ScreenshotsVisualizer.Services
             List<FolderSettings> globalSourcesToMerge = new List<FolderSettings>();
             Game game = API.Instance.Database.Games.Get(id);
 
-            GameSettings gameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
-            bool overrideGlobalConfigs = gameSettings?.OverrideGlobalConfigs ?? false;
+            GameSettings persistedGameSettings = PluginSettings.gameSettings.Find(x => x.Id == id);
+            bool overrideGlobalConfigs = persistedGameSettings?.OverrideGlobalConfigs ?? false;
             if (!overrideGlobalConfigs)
             {
                 foreach (FolderSettings globalSource in PluginSettings.GetEffectiveGlobalScreenshotSources())
@@ -719,38 +719,67 @@ namespace ScreenshotsVisualizer.Services
                     globalSourcesToMerge.Add(globalSource.Clone());
                 }
             }
-
-            if (gameSettings == null)
+            else
             {
-                gameSettings = new GameSettings
+                Common.LogDebug(true, string.Format(
+                    "[SsvDatabase] GetGameSettings — global source merge disabled for {0} (OverrideGlobalConfigs=true).",
+                    id));
+            }
+
+            GameSettings effectiveGameSettings;
+            if (persistedGameSettings == null)
+            {
+                effectiveGameSettings = new GameSettings
                 {
                     Id = id,
                     OverrideGlobalConfigs = false,
-                    ScreenshotsFolders = globalSourcesToMerge
+                    ScreenshotsFolders = new List<FolderSettings>()
                 };
             }
             else
             {
-                if (gameSettings.ScreenshotsFolders == null)
+                effectiveGameSettings = Serialization.GetClone(persistedGameSettings);
+                if (effectiveGameSettings.ScreenshotsFolders == null)
                 {
-                    gameSettings.ScreenshotsFolders = new List<FolderSettings>();
-                }
-
-                foreach (FolderSettings folderSettings in globalSourcesToMerge)
-                {
-                    FolderSettings finded = gameSettings.ScreenshotsFolders
-                        .Find(x => x.ScreenshotsFolder.IsEqual(folderSettings.ScreenshotsFolder)
-                                    && x.UsedFilePattern == folderSettings.UsedFilePattern
-                                    && x.FilePattern.IsEqual(folderSettings.FilePattern));
-
-                    if (finded == null)
-                    {
-                        gameSettings.ScreenshotsFolders.Add(folderSettings);
-                    }
+                    effectiveGameSettings.ScreenshotsFolders = new List<FolderSettings>();
                 }
             }
 
-            return AppendGlobalArchiveFolderForRuntime(gameSettings, globalArchiveFolder);
+            foreach (FolderSettings folderSettings in globalSourcesToMerge)
+            {
+                bool alreadyExists = effectiveGameSettings.ScreenshotsFolders
+                    .Any(x => IsEquivalentRuntimeGlobalFolder(x, folderSettings));
+                if (!alreadyExists)
+                {
+                    effectiveGameSettings.ScreenshotsFolders.Add(folderSettings);
+                }
+            }
+
+            Common.LogDebug(true, string.Format(
+                "[SsvDatabase] GetGameSettings — game {0}, persistedFolders={1}, mergedGlobalSources={2}, effectiveFoldersBeforeArchive={3}.",
+                id,
+                persistedGameSettings?.ScreenshotsFolders?.Count ?? 0,
+                globalSourcesToMerge.Count,
+                effectiveGameSettings.ScreenshotsFolders?.Count ?? 0));
+            return AppendGlobalArchiveFolderForRuntime(effectiveGameSettings, globalArchiveFolder);
+        }
+
+        private static bool IsEquivalentRuntimeGlobalFolder(FolderSettings left, FolderSettings right)
+        {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+
+            if (left == null || right == null)
+            {
+                return false;
+            }
+
+            return SsvFolderPresetService.AreFolderTemplateStringsEqual(left.ScreenshotsFolder, right.ScreenshotsFolder)
+                && left.UsedFilePattern == right.UsedFilePattern
+                && SsvFolderPresetService.AreFolderTemplateStringsEqual(left.FilePattern, right.FilePattern)
+                && left.ScanSubFolders == right.ScanSubFolders;
         }
 
         /// <summary>
