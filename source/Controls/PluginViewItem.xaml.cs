@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK;
@@ -7,9 +8,6 @@ using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ScreenshotsVisualizer.Controls
 {
@@ -19,10 +17,10 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginViewItem : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginViewItemDataContext)controlDataContext;
@@ -33,46 +31,39 @@ namespace ScreenshotsVisualizer.Controls
         {
             InitializeComponent();
             this.DataContext = ControlDataContext;
+            Loaded += OnLoaded;
+        }
 
-            _ = Task.Run(() =>
+        protected override void AttachStaticEvents()
+        {
+            base.AttachStaticEvents();
+            AttachPluginEvents(PluginDatabase.PluginName, () =>
             {
-                // Wait extension database are loaded
-                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
-
-                    // Apply settings
-                    PluginSettings_PropertyChanged(null, null);
-                });
+                PluginDatabase.PluginSettings.PropertyChanged += CreatePluginSettingsHandler();
+                PluginDatabase.DatabaseItemUpdated += CreateDatabaseItemUpdatedHandler<GameScreenshots>();
+                PluginDatabase.DatabaseItemCollectionChanged += CreateDatabaseCollectionChangedHandler<GameScreenshots>();
             });
         }
 
-
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.EnableIntegrationViewItem;
             ControlDataContext.Text = "\uea38";
         }
 
-
-        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginGameEntry pluginGameData)
         {
-            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
         }
     }
 
 
-    public class PluginViewItemDataContext : ObservableObject, IDataContext
+    public class PluginViewItemDataContext : ObservableObjectPlus, IDataContext
     {
-        private bool isActivated;
-        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+        private bool _isActivated;
+        public bool IsActivated { get => _isActivated; set => SetValue(ref _isActivated, value); }
 
-        private string text = "\uea38";
-        public string Text { get => text; set => SetValue(ref text, value); }
+        private string _text = "\uea38";
+        public string Text { get => _text; set => SetValue(ref _text, value); }
     }
 }

@@ -1,18 +1,8 @@
 ﻿using ScreenshotsVisualizer.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ScreenshotsVisualizer.Views.StartPage
 {
@@ -21,21 +11,20 @@ namespace ScreenshotsVisualizer.Views.StartPage
     /// </summary>
     public partial class SsvCarouselSettings : UserControl
     {
-        private ScreenshotsVisualizer plugin { get; }
-        private ScreenshotsVisualizerDatabase PluginDatabase { get; set; } = ScreenshotsVisualizer.PluginDatabase;
+        private ScreenshotsVisualizer Plugin { get; }
+        private static ScreenshotsVisualizerDatabase PluginDatabase { get; set; } = ScreenshotsVisualizer.PluginDatabase;
 
-
-        private List<string> SearchSources = new List<string>();
+        private List<string> SearchSources { get; set; } = new List<string>();
 
 
         public SsvCarouselSettings(ScreenshotsVisualizer plugin)
         {
             InitializeComponent();
 
-            this.plugin = plugin;
+            this.Plugin = plugin;
             this.DataContext = PluginDatabase.PluginSettings;
 
-            PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.Where(x => x.IsCheck)?.ForEach(x => 
+            PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.Where(x => x.IsCheck)?.ForEach(x => 
             {
                 SearchSources.Add(x.Name);
             });
@@ -48,7 +37,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
         {
-            plugin.SavePluginSettings(PluginDatabase.PluginSettings.Settings);
+            Plugin.SavePluginSettings(PluginDatabase.PluginSettings);
             PluginDatabase.PluginSettings.OnPropertyChanged();
         }
 
@@ -66,10 +55,10 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             FilterSource.Text = string.Empty;
 
-            int idx = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.FindIndex(x => x.Name == (string)sender.Tag);
+            int idx = PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.FindIndex(x => x.Name == (string)sender.Tag);
             if (idx > -1)
             {
-                PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList[idx].IsCheck = (bool)sender.IsChecked;
+                PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList[idx].IsCheck = (bool)sender.IsChecked;
             }
 
             if ((bool)sender.IsChecked)

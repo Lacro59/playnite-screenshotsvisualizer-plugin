@@ -7,19 +7,17 @@
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=local:SsvScreenshotsManagerData}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter" />
-        <convertersshared:ImageConverter x:Key="ImageConverter" />
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
 
         <DataTemplate x:Key="ItemTemplate">
@@ -43,31 +41,7 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
 
-                <controlsShared:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                           Parameter="2" RenderOptions.BitmapScalingMode="Fant">
-                    <controlsShared:ImageAsync.Style>
-                        <Style TargetType="{x:Type controlsShared:ImageAsync}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                    <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                    <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controlsShared:ImageAsync.Style>
-                </controlsShared:ImageAsync>
-                
-                <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                   FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                                   Style="{DynamicResource BaseTextBlockStyle}" 
-                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
-                    <TextBlock.Effect>
-                        <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                    </TextBlock.Effect>
-                </TextBlock>
+                <ContentControl Grid.Column="0" Grid.Row="2" Content="{Binding}" Style="{StaticResource SsvScreenshotThumbnailBlockFixedStyle}" />
 
                 <Grid Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
@@ -100,11 +74,14 @@
 
                     <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
                                     Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
-                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                                    FontFamily="{DynamicResource CommonFont}"
+                                    ToolTip="{DynamicResource LOCRemoveTitle}"
                                     VerticalAlignment="Bottom" />
                 </Grid>
             </Grid>
         </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -273,29 +250,13 @@
 
             <Grid Name="PART_ListScreenshotsContener" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
                 <ListBox Name="PART_ListScreenshots"
-                         VirtualizingPanel.CacheLengthUnit="Item" 
-                         VirtualizingPanel.ScrollUnit="Pixel" 
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
+                         Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
                          SelectionChanged="PART_ListScreenshots_SelectionChanged"
                          ItemsSource="{Binding Screenshots}"
                          ItemTemplate="{StaticResource ItemTemplate}"     
                          Tag="{Binding AddBorder}"
                          Height="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualHeight}" 
                          Width="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualWidth}">
-                    
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <wpftk:VirtualizingWrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
                 </ListBox>
             </Grid>
         </Grid>

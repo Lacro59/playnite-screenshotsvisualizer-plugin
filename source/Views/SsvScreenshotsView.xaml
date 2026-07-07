@@ -7,20 +7,16 @@
              xmlns:services="clr-namespace:ScreenshotsVisualizer.Services"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:pbeh="clr-namespace:CommonPlayniteShared.Behaviors"
-             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
-             xmlns:controls1="clr-namespace:CommonPluginsShared.Controls"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1200" 
              Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter"/>
-        <convertersshared:ImageConverter x:Key="ImageConverter"/>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -57,31 +53,7 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                         </Grid>
 
-                        <controls1:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" x:Name="PART_Picture" Parameter="2"
-                                              Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant">
-                            <controls1:ImageAsync.Style>
-                                <Style TargetType="{x:Type controls1:ImageAsync}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="False">
-                                            <Setter Property="Source" Value="{Binding ImageThumbnail, FallbackValue=''}" />
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding IsVideo, IsAsync=True}" Value="True">
-                                            <Setter Property="Source" Value="{Binding Thumbnail, FallbackValue=''}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </controls1:ImageAsync.Style>
-                        </controls1:ImageAsync>
-
-                        <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                   FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                                   Style="{DynamicResource BaseTextBlockStyle}" 
-                                   Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}, FallbackValue=''}">
-                            <TextBlock.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                            </TextBlock.Effect>
-                        </TextBlock>
+                        <ContentControl Grid.Column="0" Grid.Row="2" Content="{Binding}" Style="{StaticResource SsvScreenshotThumbnailBlockFixedStyle}" />
 
                         <Grid Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom">
                             <Grid.ColumnDefinitions>
@@ -114,7 +86,9 @@
 
                             <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
                                     Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
-                                    ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                                    FontFamily="{DynamicResource CommonFont}"
+                                    ToolTip="{DynamicResource LOCRemoveTitle}"
                                     VerticalAlignment="Bottom"
                                     Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
                         </Grid>

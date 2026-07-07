@@ -1,0 +1,45 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:CommonPluginsControls.Controls">
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <DataTemplate x:Key="SsvActiveSourceRowTemplate">
+        <Grid Margin="0,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlock}"
+                                           Text="{Binding ScreenshotsFolder}" />
+
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding FilePatternSummary}"
+                                           Visibility="{Binding ShowFilePatternSummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding ScanSubFoldersSummary}"
+                                           Visibility="{Binding ShowScanSubFoldersSummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <controls:TextBlockTrimmed Style="{DynamicResource ListBoxExtendStyleTextBlockDarker}"
+                                           Margin="0,2,0,0"
+                                           Text="{Binding ApplicabilitySummary}"
+                                           Visibility="{Binding ShowApplicabilitySummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+
+            <Button Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Style="{DynamicResource ListRowHoverRevealIconButton}"
+                    FontFamily="{DynamicResource CommonFont}"
+                    Content="&#xe97f;"
+                    ToolTip="{DynamicResource LOCCommonRemoveFolder}"
+                    Command="{Binding DataContext.ConfigurationContext.RemoveActiveSourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding}" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

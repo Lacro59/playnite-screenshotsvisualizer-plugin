@@ -1,5 +1,4 @@
-﻿using CommonPlayniteShared.Common;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.PlayniteExtended;
 using Playnite.SDK;
@@ -13,14 +12,10 @@ using ScreenshotsVisualizer.Views;
 using StartPage.SDK;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace ScreenshotsVisualizer
 {
@@ -33,23 +28,8 @@ namespace ScreenshotsVisualizer
         internal SidebarItemControl SidebarItemControl { get; set; }
 
 
-        public ScreenshotsVisualizer(IPlayniteAPI api) : base(api)
+        public ScreenshotsVisualizer(IPlayniteAPI api) : base(api, "ScreenshotsVisualizer")
         {
-            // Manual dll load
-            try
-            {
-                string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string PathDLL = Path.Combine(PluginPath, "VirtualizingWrapPanel.dll");
-                if (File.Exists(PathDLL))
-                {
-                    Assembly DLL = Assembly.LoadFile(PathDLL);
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-
             // Custom theme button
             EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
 
@@ -57,15 +37,17 @@ namespace ScreenshotsVisualizer
             AddCustomElementSupport(new AddCustomElementSupportArgs
             {
                 ElementList = new List<string> { "PluginButton", "PluginSinglePicture", "PluginScreenshots", "PluginListScreenshots", "PluginListScreenshotsVertical", "PluginViewItem" },
-                SourceName = PluginDatabase.PluginName
+                SourceName = PluginName
             });
 
             // Settings integration
             AddSettingsSupport(new AddSettingsSupportArgs
             {
-                SourceName = PluginDatabase.PluginName,
-                SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
+                SourceName = PluginName,
+                SettingsRoot = $"{nameof(PluginSettingsViewModel)}.{nameof(PluginSettingsViewModel.Settings)}"
             });
+
+            _menus = new ScreenshotsVisualizerMenus(PluginSettingsViewModel.Settings, PluginDatabase, this);
 
             // Initialize top & side bar
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
@@ -75,30 +57,17 @@ namespace ScreenshotsVisualizer
             }
         }
 
-
         #region Custom event
+
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                string ButtonName = ((Button)sender).Name;
-                if (ButtonName == "PART_CustomSsvButton")
+                string buttonName = ((Button)sender).Name;
+                if (buttonName == "PART_CustomSsvButton")
                 {
-                    Common.LogDebug(true, $"OnCustomThemeButtonClick()");
-
-                    WindowOptions windowOptions = new WindowOptions
-                    {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        CanBeResizable = true,
-                        Height = 720,
-                        Width = 1200
-                    };
-
-                    SsvScreenshotsView ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
-                    _ = windowExtension.ShowDialog();
+                    Common.LogDebug(true, "OnCustomThemeButtonClick()");
+                    PluginDatabase.PluginWindows.ShowPluginGameDataWindow(PluginDatabase.GameContext);
                 }
             }
             catch (Exception ex)
@@ -106,10 +75,11 @@ namespace ScreenshotsVisualizer
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
+
         #endregion
 
-
         #region Theme integration
+
         // Button on top panel
         public override IEnumerable<TopPanelItem> GetTopPanelItems()
         {
@@ -159,10 +129,11 @@ namespace ScreenshotsVisualizer
                 SidebarItem
             };
         }
+
         #endregion
 
-
         #region StartPageExtension
+
         public StartPageExtensionArgs GetAvailableStartPageViews()
         {
             List<StartPageViewArgsBase> views = new List<StartPageViewArgsBase>
@@ -205,271 +176,25 @@ namespace ScreenshotsVisualizer
         {
 
         }
-        #endregion
 
+        #endregion
 
         #region Menus
-        // To add new game menu items override GetGameMenuItems
+
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
-            Game gameMenu = args.Games.First();
-            List<Guid> ids = args.Games.Select(x => x.Id).ToList();
-            GameScreenshots gameScreenshots = PluginDatabase.Get(gameMenu);
-
-            List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
-
-            if (gameScreenshots.HasData)
-            {
-                gameMenuItems.Add(new GameMenuItem
-                {
-                    // Delete & download localizations data for the selected game
-                    MenuSection = ResourceProvider.GetString("LOCSsv"),
-                    Description = ResourceProvider.GetString("LOCSsvViewScreenshots"),
-                    Action = (gameMenuItem) =>
-                    {
-                        WindowOptions windowOptions = new WindowOptions
-                        {
-                            ShowMinimizeButton = false,
-                            ShowMaximizeButton = true,
-                            ShowCloseButton = true,
-                            CanBeResizable = true,
-                            Height = 720,
-                            Width = 1200
-                        };
-
-                        SsvScreenshotsView ViewExtension = new SsvScreenshotsView(PluginDatabase.GameContext);
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsvTitle"), ViewExtension, windowOptions);
-                        windowExtension.ShowDialog();
-                    }
-                });
-
-                if (gameScreenshots.ScreenshotsFolders?.Count != 0 && gameScreenshots.FoldersExist)
-                {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        // Open directory
-                        MenuSection = ResourceProvider.GetString("LOCSsv"),
-                        Description = ResourceProvider.GetString("LOCSsvOpenScreenshotsDirectory"),
-                        Action = (gameMenuItem) =>
-                        {
-                            foreach (string Folder in gameScreenshots.ScreenshotsFolders)
-                            {
-                                if (Directory.Exists(Folder))
-                                {
-                                    Process.Start(Folder);
-                                }
-                            }
-                        }
-                    });
-                }
-
-                if (gameScreenshots.Items.Count > 0 && PluginDatabase.PluginSettings.Settings.EnableFolderToSave)
-                {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = ResourceProvider.GetString("LOCSsv"),
-                        Description = ResourceProvider.GetString("LOCSsvMoveToSave"),
-                        Action = (gameMenuItem) =>
-                        {
-                            if (ids.Count == 1)
-                            {
-                                PluginDatabase.MoveToFolderToSave(gameMenu);
-                            }
-                            else
-                            {
-                                PluginDatabase.MoveToFolderToSave(ids);
-                            }
-                        }
-                    });
-                }
-
-                if (gameScreenshots.Items.Count > 0)
-                {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = ResourceProvider.GetString("LOCSsv"),
-                        Description = ResourceProvider.GetString("LOCSsvConvertToJPG"),
-                        Action = (gameMenuItem) =>
-                        {
-                            PluginDatabase.ConvertGameSsvToJpg(ids);
-                        }
-                    });
-                }
-
-                gameMenuItems.Add(new GameMenuItem
-                {
-                    MenuSection = ResourceProvider.GetString("LOCSsv"),
-                    Description = "-"
-                });
-            }
-
-            gameMenuItems.Add(new GameMenuItem
-            {
-                // Refresh data
-                MenuSection = ResourceProvider.GetString("LOCSsv"),
-                Description = ResourceProvider.GetString("LOCCommonRefreshGameData"),
-                Action = (gameMenuItem) =>
-                {
-                    if (ids.Count == 1)
-                    {
-                        PluginDatabase.Refresh(gameMenu);
-                    }
-                    else
-                    {
-                        PluginDatabase.Refresh(ids);
-                    }
-                }
-            });
-
-#if DEBUG
-            gameMenuItems.Add(new GameMenuItem
-            {
-                MenuSection = ResourceProvider.GetString("LOCSsv"),
-                Description = "-"
-            });
-            gameMenuItems.Add(new GameMenuItem
-            {
-                MenuSection = ResourceProvider.GetString("LOCSsv"),
-                Description = "Test",
-                Action = (mainMenuItem) =>
-                {
-
-                }
-            });
-#endif
-
-            return gameMenuItems;
+            return _menus.GetGameMenuItems(args);
         }
 
-        // To add new main menu items override GetMainMenuItems
         public override IEnumerable<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
         {
-            string MenuInExtensions = string.Empty;
-            if (PluginSettings.Settings.MenuInExtensions)
-            {
-                MenuInExtensions = "@";
-            }
-
-            List<MainMenuItem> mainMenuItems = new List<MainMenuItem>();
-
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                Description = ResourceProvider.GetString("LOCCommonRefreshAllData"),
-                Action = (mainMenuItem) =>
-                {
-                    PluginDatabase.Refresh(API.Instance.Database.Games?.Select(x => x.Id));
-                }
-            });
-
-            if (PluginDatabase.PluginSettings.Settings.EnableTag)
-            {
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = "-"
-                });
-
-                // Add tag for selected game in database if data exists
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = ResourceProvider.GetString("LOCCommonAddTPlugin"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.AddTagSelectData();
-                    }
-                });
-                // Add tag for all games
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = ResourceProvider.GetString("LOCCommonAddAllTags"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.AddTagAllGame();
-                    }
-                });
-                // Remove tag for all game in database
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = ResourceProvider.GetString("LOCCommonRemoveAllTags"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.RemoveTagAllGame();
-                    }
-                });
-            }
-
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                Description = "-"
-            });
-
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                Description = ResourceProvider.GetString("LOCSsvConvertToJPGForAll"),
-                Action = (gameMenuItem) =>
-                {
-                    PluginDatabase.ConvertGameSsvToJpg(PluginDatabase.Database.Items.Select(x => x.Key).ToList());
-                }
-            });
-
-
-            if (PluginDatabase.PluginSettings.Settings.EnableFolderToSave)
-            {
-                mainMenuItems.Add(new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                    Description = ResourceProvider.GetString("LOCSsvMoveToSave"),
-                    Action = (gameMenuItem) =>
-                    {
-                        MessageBoxResult dialogResult = PlayniteApi.Dialogs.ShowMessage(ResourceProvider.GetString("LOCSsvWarningToMove"), ResourceProvider.GetString("LOCSsv"), MessageBoxButton.YesNo);
-                        if (dialogResult == MessageBoxResult.Yes)
-                        {
-                            if (PluginSettings.Settings.FolderToSave.IsNullOrEmpty() || PluginSettings.Settings.FileSavePattern.IsNullOrEmpty())
-                            {
-                                Logger.Warn("No settings to use folder to save");
-                                PlayniteApi.Notifications.Add(new NotificationMessage(
-                                    $"{PluginDatabase.PluginName}-MoveToFolderToSave-Errors",
-                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsvMoveToFolderToSaveError"),
-                                    NotificationType.Error,
-                                    () => this.OpenSettingsView()
-                                ));
-                            }
-                            else
-                            {
-                                PluginDatabase.MoveToFolderToSaveAll();
-                            }
-                        }
-                    }
-                });
-            }
-
-
-#if DEBUG
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                Description = "-"
-            });
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSsv"),
-                Description = "Test",
-                Action = (mainMenuItem) => { }
-            });
-#endif
-
-            return mainMenuItems;
+            return _menus.GetMainMenuItems(args);
         }
+
         #endregion
 
-
         #region Game event
+
         public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
             try
@@ -552,38 +277,62 @@ namespace ScreenshotsVisualizer
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
+
         #endregion
 
-
         #region Application event
+
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            string pluginUserDataPath = GetPluginUserDataPath();
+            Action<ScreenshotsVisualizerSettings> saveSettings = settings =>
+            {
+                SavePluginSettings(settings);
+                PluginDatabase.PluginSettings = settings;
+            };
+
+            SsvArchiveSettingsMigration.ScheduleIfNeeded(
+                PluginSettingsViewModel.Settings,
+                pluginUserDataPath,
+                PluginDatabase.PluginName,
+                saveSettings,
+                () => SsvPresetSettingsMigration.ScheduleIfNeeded(
+                    PluginSettingsViewModel.Settings,
+                    pluginUserDataPath,
+                    PluginDatabase.PluginName,
+                    saveSettings,
+                    () => SsvGlobalSourceSettingsMigration.ScheduleIfNeeded(
+                        PluginSettingsViewModel.Settings,
+                        pluginUserDataPath,
+                        PluginDatabase.PluginName,
+                        saveSettings)));
         }
 
         // Add code to be executed when Playnite is shutting down.
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
         }
-        #endregion
 
+        #endregion
 
         // Add code to be executed when library is updated.
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
         }
 
-
         #region Settings
+
         public override ISettings GetSettings(bool firstRunSettings)
         {
-            return PluginSettings;
+            return PluginSettingsViewModel;
         }
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
             return new ScreenshotsVisualizerSettingsView();
         }
+
         #endregion
     }
 }

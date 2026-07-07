@@ -10,10 +10,9 @@ using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -26,49 +25,43 @@ namespace ScreenshotsVisualizer.Controls
     public partial class PluginSinglePicture : PluginUserControlExtend
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginSinglePictureDataContext ControlDataContext = new PluginSinglePictureDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginSinglePictureDataContext)controlDataContext;
         }
 
-        private List<Screenshot> screenshots = new List<Screenshot>();
-        private int index = 0;
+        private List<Screenshot> Screenshots { get; set; } = new List<Screenshot>();
+        private int Index { get; set; } = 0;
 
 
         public PluginSinglePicture()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
+            Loaded += OnLoaded;
+        }
 
-            _ = Task.Run(() =>
+        protected override void AttachStaticEvents()
+        {
+            base.AttachStaticEvents();
+            AttachPluginEvents(PluginDatabase.PluginName, () =>
             {
-                // Wait extension database are loaded
-                _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
-
-                    // Apply settings
-                    PluginSettings_PropertyChanged(null, null);
-                });
+                PluginDatabase.PluginSettings.PropertyChanged += CreatePluginSettingsHandler();
+                PluginDatabase.DatabaseItemUpdated += CreateDatabaseItemUpdatedHandler<GameScreenshots>();
+                PluginDatabase.DatabaseItemCollectionChanged += CreateDatabaseCollectionChangedHandler<GameScreenshots>();
             });
         }
 
-
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture;
-            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorderSinglePicture;
-            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCornerSinglePicture;
-            ControlDataContext.IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowSinglePictureHeight;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.EnableIntegrationShowSinglePicture;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.AddBorderSinglePicture;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCornerSinglePicture;
+            ControlDataContext.IntegrationShowSinglePictureHeight = PluginDatabase.PluginSettings.IntegrationShowSinglePictureHeight;
 
             ControlDataContext.EnablePrev = false;
             ControlDataContext.EnableNext = false;
@@ -79,167 +72,163 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.PictureInfos = string.Empty;
         }
 
-
-        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginGameEntry pluginGameData)
         {
-            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
-            this.screenshots = gameScreenshots.Items;
-            this.screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            Screenshots = gameScreenshots.Items;
+            Screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
 
-            index = 0;
+            Index = 0;
 
-            if (screenshots.Count > 1)
+            if (Screenshots.Count > 1)
             {
                 ControlDataContext.EnablePrev = true;
                 ControlDataContext.EnableNext = true;
             }
 
-            if (screenshots.Count > 0)
+            if (Screenshots.Count > 0)
             {
-                SetPicture(screenshots[index]);
+                SetPicture(Screenshots[Index]);
             }
         }
 
-
         private void SetPicture(Screenshot screenshot)
         {
-            bool IsVideo = false;
-            string Thumbnail = string.Empty;
-            string PictureSource = string.Empty;
-            string PictureInfos = string.Empty;
+            bool isVideo = false;
+            string thumbnail = string.Empty;
+            string pictureSource = string.Empty;
+            string pictureInfos = string.Empty;
 
             LocalDateTimeConverter Converters = new LocalDateTimeConverter();
 
             if (File.Exists(screenshot.FileName))
             {
-                IsVideo = screenshot.IsVideo;
-                Thumbnail = screenshot.Thumbnail;
-                PictureSource = screenshot.FileName;
-                PictureInfos = (string)Converters.Convert(screenshot.Modifed, null, null, null);
+                isVideo = screenshot.IsVideo;
+                thumbnail = screenshot.Thumbnail;
+                pictureSource = screenshot.FileName;
+                pictureInfos = (string)Converters.Convert(screenshot.Modifed, null, null, null);
             }
 
-            ControlDataContext.IsVideo = IsVideo;
-            ControlDataContext.Thumbnail = Thumbnail;
-            ControlDataContext.PictureSource = PictureSource;
-            ControlDataContext.PictureInfos = PictureInfos;
+            ControlDataContext.IsVideo = isVideo;
+            ControlDataContext.Thumbnail = thumbnail;
+            ControlDataContext.PictureSource = pictureSource;
+            ControlDataContext.PictureInfos = pictureInfos;
         }
 
         public void SetPictureFromList(int index)
         {
             if (index != -1)
             {
-                this.index = index;
+                Index = index;
 
-                SetPicture(screenshots[index]);
+                SetPicture(Screenshots[index]);
 
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
+                    DataContext = null;
+                    DataContext = ControlDataContext;
                 }));
             }
         }
 
-
         #region Events
+
         private void PART_Prev_Click(object sender, RoutedEventArgs e)
         {
-            if (index == 0)
+            if (Index == 0)
             {
-                index = screenshots.Count - 1;
+                Index = Screenshots.Count - 1;
             }
             else
             {
-                index--;
+                Index--;
             }
 
-            SetPictureFromList(index);
+            SetPictureFromList(Index);
         }
 
         private void PART_Next_Click(object sender, RoutedEventArgs e)
         {
-            if (index == screenshots.Count - 1)
+            if (Index == Screenshots.Count - 1)
             {
-                index = 0;
+                Index = 0;
             }
             else
             {
-                index++;
+                Index++;
             }
 
-            SetPictureFromList(index);
+            SetPictureFromList(Index);
         }
-
 
         private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            bool IsGood = false;
+            bool isGood = false;
 
-            if (PluginDatabase.PluginSettings.Settings.OpenViewerWithOnSelectionSinglePicture)
+            if (PluginDatabase.PluginSettings.OpenViewerWithOnSelectionSinglePicture)
             {
-                IsGood = true;
+                isGood = true;
             }
             else
             {
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
-                    IsGood = true;
+                    isGood = true;
                 }
             }
 
-
-            if (IsGood)
+            if (isGood)
             {
-                WindowOptions windowOptions = new WindowOptions
+                if (PluginDatabase.PluginSettings.UseExternalViewer)
                 {
-                    ShowMinimizeButton = false,
-                    ShowMaximizeButton = true,
-                    ShowCloseButton = true,
-                    CanBeResizable = true,
-                    Height = 720,
-                    Width = 1280
-                };
-
-                SsvSinglePictureView ViewExtension = new SsvSinglePictureView(screenshots[index], screenshots);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSsv") + " - " + screenshots[index].FileNameOnly, ViewExtension, windowOptions);
-                windowExtension.ShowDialog();
+                    ScreenshotsVisualizerWindows.OpenWithExternalViewer(Screenshots[Index].FileName);
+                }
+                else
+                {
+                    ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
+                    if (windows != null)
+                    {
+                        windows.ShowSinglePictureWindow(Screenshots[Index], Screenshots);
+                    }
+                }
             }
         }
+
         #endregion
     }
 
 
     public class PluginSinglePictureDataContext : ObservableObject, IDataContext
     {
-        private bool isActivated;
-        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+        private bool _isActivated;
+        public bool IsActivated { get => _isActivated; set => SetValue(ref _isActivated, value); }
 
-        private bool addBorder;
-        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
+        private bool _addBorder;
+        public bool AddBorder { get => _addBorder; set => SetValue(ref _addBorder, value); }
 
-        private bool addRoundedCorner;
-        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
+        private bool _addRoundedCorner;
+        public bool AddRoundedCorner { get => _addRoundedCorner; set => SetValue(ref _addRoundedCorner, value); }
 
-        private double integrationShowSinglePictureHeight;
-        public double IntegrationShowSinglePictureHeight { get => integrationShowSinglePictureHeight; set => SetValue(ref integrationShowSinglePictureHeight, value); }
+        private double _integrationShowSinglePictureHeight;
+        public double IntegrationShowSinglePictureHeight { get => _integrationShowSinglePictureHeight; set => SetValue(ref _integrationShowSinglePictureHeight, value); }
 
-        private bool enablePrev;
-        public bool EnablePrev { get => enablePrev; set => SetValue(ref enablePrev, value); }
+        private bool _enablePrev;
+        public bool EnablePrev { get => _enablePrev; set => SetValue(ref _enablePrev, value); }
 
-        private bool enableNext;
-        public bool EnableNext { get => enableNext; set => SetValue(ref enableNext, value); }
+        private bool _enableNext;
+        public bool EnableNext { get => _enableNext; set => SetValue(ref _enableNext, value); }
 
-        private bool isVideo;
-        public bool IsVideo { get => isVideo; set => SetValue(ref isVideo, value); }
+        private bool _isVideo;
+        public bool IsVideo { get => _isVideo; set => SetValue(ref _isVideo, value); }
 
-        private string thumbnail;
-        public string Thumbnail { get => thumbnail; set => SetValue(ref thumbnail, value); }
+        private string _thumbnail;
+        public string Thumbnail { get => _thumbnail; set => SetValue(ref _thumbnail, value); }
 
-        private string pictureSource;
-        public string PictureSource { get => pictureSource; set => SetValue(ref pictureSource, value); }
+        private string _pictureSource;
+        public string PictureSource { get => _pictureSource; set => SetValue(ref _pictureSource, value); }
 
-        private string pictureInfos;
-        public string PictureInfos { get => pictureInfos; set => SetValue(ref pictureInfos, value); }
+        private string _pictureInfos;
+        public string PictureInfos { get => _pictureInfos; set => SetValue(ref _pictureInfos, value); }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Commands;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -9,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -27,7 +28,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
     /// </summary>
     public partial class SsvCarousel : UserControl
     {
-        internal ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        private static ILogger Logger => LogManager.GetLogger();
+        private static ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private ObservableCollection<Screenshot> Screenshots { get; set; } = new ObservableCollection<Screenshot>();
         private int Index { get; set; } = 0;
@@ -38,8 +40,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         public SsvCarousel()
         {
-            PluginDatabase.PluginSettings.Settings.PropertyChanged += Settings_PropertyChanged;
-            PluginDatabase.PluginSettings.PropertyChanged += SettingsViewModel_PropertyChanged;
+            PluginDatabase.PluginSettings.PropertyChanged += Settings_PropertyChanged;
 
             InitializeComponent();
 
@@ -54,42 +55,33 @@ namespace ScreenshotsVisualizer.Views.StartPage
             ButtonPrev.Visibility = Visibility.Collapsed;
         }
 
-
         private void SetImage(Screenshot screenshot)
         {
-            bool IsVideo = screenshot?.IsVideo ?? false;
+            bool isVideo = screenshot?.IsVideo ?? false;
 
             if (File.Exists(screenshot?.FileName))
             {
-                string PictureSource;
-                if (IsVideo)
+                string pictureSource;
+                if (isVideo)
                 {
-                    PictureSource = screenshot.FileName;
+                    pictureSource = screenshot.FileName;
                 }
                 else
                 {
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableLowerRezolution)
-                    {
-                        bool tmp = PluginDatabase.PluginSettings.Settings.UsedThumbnails;
-                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = true;
-                        PictureSource = screenshot.ImageThumbnail;
-                        PluginDatabase.PluginSettings.Settings.UsedThumbnails = tmp;
-                    }
-                    else
-                    {
-                        PictureSource = screenshot.FileName;
-                    }
+                    pictureSource = PluginDatabase.PluginSettings.ssvCarouselOptions.EnableLowerResolution
+                        ? screenshot.ImageThumbnail
+                        : screenshot.FileName;
                 }
 
                 this.DataContext = new
                 {
-                    PictureSource,
-                    IsVideo,
+                    PictureSource = pictureSource,
+                    IsVideo = isVideo,
                     AddBorder = true,
-                    AddGameName = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.AddGameName,
+                    AddGameName = PluginDatabase.PluginSettings.ssvCarouselOptions.AddGameName,
                     GameName = API.Instance.Database.Games.Get(screenshot.GameId)?.Name,
                     GameId = API.Instance.Database.Games.Get(screenshot.GameId)?.Id,
-                    GoToGame = Commands.GoToGame
+                    GoToGame = CommandsNavigation.GoToGame
                 };
             }
             else
@@ -105,15 +97,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
             }
         }
 
-
-        private void SettingsViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-            {
-                Update();
-            }
-        }
-
         private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.IsVisible)
@@ -122,10 +105,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
             }
         }
 
-
         private void Update()
         {
-            PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Margin);
+            PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.ssvCarouselOptions.Margin);
 
             _ = Task.Run(() =>
             {
@@ -144,29 +126,29 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                 Random r = new Random();
 
-                List<KeyValuePair<Guid, GameScreenshots>> PluginData = PluginDatabase.Database.Items.Where(x => x.Value.Count > 0).ToList();
-                PluginData.Sort((z, y) => r.Next(-1, 1));
+                List<GameScreenshots> pluginData = PluginDatabase.GetAllCache().Where(x => x.ScreenshotsCount > 0).ToList();
+                pluginData.Sort((z, y) => r.Next(-1, 1));
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)
                 {
-                    PluginData = PluginData.Where(x => PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.SourcesList.Where(y => y.IsCheck).Any(y => y.Name.IsEqual(x.Value.Source?.Name))).ToList();
+                    pluginData = pluginData.Where(x => PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.Where(y => y.IsCheck).Any(y => y.Name.IsEqual(x.Source?.Name))).ToList();
                 }
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.OnlyFavorite)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyFavorite)
                 {
-                    PluginData = PluginData.Where(x => x.Value.Favorite).ToList();
+                    pluginData = pluginData.Where(x => x.Favorite).ToList();
                 }
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitGame != 0)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame != 0)
                 {
-                    PluginData = PluginData.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitGame).ToList();
+                    pluginData = pluginData.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame).ToList();
                 }
 
                 List<Screenshot> temp = Screenshots.ToList();
-                PluginData.Where(x => x.Value.Count > 0 && !x.Value.Hidden).ForEach(x =>
+                pluginData.Where(x => x.Count > 0 && !x.Hidden).ToList().ForEach(x =>
                 {
-                    List<Screenshot> data = Serialization.GetClone(x.Value.Items.Where(y => PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.OnlyMostRecent)
+                    List<Screenshot> data = Serialization.GetClone(x.Items.Where(y => PluginDatabase.PluginSettings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
+                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyMostRecent)
                     {
                         data = data.OrderByDescending(z => z.Modifed).ToList();
                     }
@@ -176,16 +158,16 @@ namespace ScreenshotsVisualizer.Views.StartPage
                         data.Sort((z, y) => r.Next(-1, 1));
                     }
 
-                    if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame != 0)
+                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame != 0)
                     {
-                        data = data.Take(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.LimitPerGame).ToList();
+                        data = data.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame).ToList();
                     }
 
-                    data.ForEach(c => c.GameId = x.Key);
+                    data.ForEach(c => c.GameId = x.Id);
                     temp.AddRange(data);
                 });
 
-                if (PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAllRandom)
+                if (PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAllRandom)
                 {
                     r = new Random();
                     temp.Sort((z, y) => r.Next(-1, 1));
@@ -194,9 +176,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Screenshots = temp.Where(x => File.Exists(x.FileName)).ToObservable();
-                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.EnableAutoChange)
+                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange)
                     {
-                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000);
+                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
                         Timer.Start();
                         Timer.Elapsed += Timer_Elapsed;
                     }
@@ -208,7 +190,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 });
             });
         }
-
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -223,40 +204,37 @@ namespace ScreenshotsVisualizer.Views.StartPage
             });
         }
 
-
         private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            bool IsGood = false;
+            bool isGood = false;
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
             {
-                IsGood = true;
+                isGood = true;
             }
 
-            if (IsGood)
+            if (isGood)
             {
-                WindowOptions windowOptions = new WindowOptions
+                if (PluginDatabase.PluginSettings.UseExternalViewer)
                 {
-                    ShowMinimizeButton = false,
-                    ShowMaximizeButton = true,
-                    ShowCloseButton = true,
-                    CanBeResizable = true,
-                    Height = 720,
-                    Width = 1280
-                };
-
-                Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
-                string Title = game != null
-                    ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
-                    : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
-
-                SsvSinglePictureView ViewExtension = new SsvSinglePictureView(Screenshots[Index], null);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(Title, ViewExtension, windowOptions);
-                _ = windowExtension.ShowDialog();
+                    ScreenshotsVisualizerWindows.OpenWithExternalViewer(Screenshots[Index].FileName);
+                }
+                else
+                {
+                    Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
+                    string title = game != null
+                        ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
+                        : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
+                    ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
+                    if (windows != null)
+                    {
+                        windows.ShowSinglePictureWindow(Screenshots[Index], null, title);
+                    }
+                }
             }
         }
 
-
         #region Image navigation
+
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
             IsNext = false;
@@ -274,7 +252,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 if (Timer != null)
                 {
                     Timer.Stop();
-                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Interval = PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000;
                     Timer.Start();
                 }
 
@@ -299,15 +277,15 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 if (Timer != null)
                 {
                     Timer.Stop();
-                    Timer.Interval = PluginDatabase.PluginSettings.Settings.ssvCarouselOptions.Time * 1000;
+                    Timer.Interval = PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000;
                     Timer.Start();
                 }
 
                 SetImage(Screenshots[Index]);
             }
         }
-        #endregion
 
+        #endregion
 
         private void PART_Contener_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -323,8 +301,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
         }
-
-
         private void PART_Contener_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (((FrameworkElement)sender).IsVisible)
@@ -337,8 +313,8 @@ namespace ScreenshotsVisualizer.Views.StartPage
             }
         }
 
-
         #region Activate/Deactivated carousel
+
         private void Application_Deactivated(object sender, EventArgs e)
         {
             Task.Run(() =>
@@ -368,7 +344,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 }));
             });
         }
-
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
             switch (((Window)sender).WindowState)
@@ -386,6 +361,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     break;
             }
         }
+
         #endregion
 
         private void PART_Contener_Loaded(object sender, RoutedEventArgs e)

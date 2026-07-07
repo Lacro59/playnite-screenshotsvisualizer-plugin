@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -7,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,10 +33,7 @@ namespace ScreenshotsVisualizer.Views
             PART_ImgPath.Content = string.Empty;
 
             gameScreenshots = PluginDatabase.Get(GameSelected);
-            List<Screenshot> Items = gameScreenshots.Items;
-            Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-            PART_ListScreenshots.ItemsSource = Items;
+            RefreshScreenshotList();
 
             SetInfos();
 
@@ -94,75 +91,52 @@ namespace ScreenshotsVisualizer.Views
             {
                 try
                 {
-                    if (File.Exists(screenshot.FileName))
+                    ClearScreenshotPreview();
+
+                    SsvScreenshotDeleteResult result = PluginDatabase.TryDeleteScreenshot(gameScreenshots.Id, screenshot);
+                    if (result == SsvScreenshotDeleteResult.Success
+                        || result == SsvScreenshotDeleteResult.SkippedMissingPhysicalFile)
                     {
-                        PART_Screenshot.Source = null;
-                        PART_Screenshot.UpdateLayout();
-
-                        _ = Task.Run(() => 
-                        {
-                            while(IsFileLocked(new FileInfo(screenshot.FileName)))
-                            {
-
-                            }
-
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                                screenshot.FileName,
-                                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
-                                Microsoft.VisualBasic.FileIO.UICancelOption.ThrowException);
-                        });
-
-                        _ = gameScreenshots.Items.Remove(screenshot);
-                        PluginDatabase.Update(gameScreenshots);
+                        RefreshScreenshotList();
+                        PART_ListScreenshots.SelectedIndex = -1;
+                        SetInfos();
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
-
-                List<Screenshot> Items = gameScreenshots.Items;
-                Items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
-
-                PART_ListScreenshots.SelectedIndex = -1;
-                PART_ListScreenshots.ItemsSource = null;
-                PART_ListScreenshots.ItemsSource = Items;
-
-                SetInfos();
-            }
-            else
-            {
-
             }
         }
 
-        protected bool IsFileLocked(FileInfo file)
+        private void RefreshScreenshotList()
         {
-            FileStream stream = null;
-
-            try
+            GameScreenshots cached = PluginDatabase.GetOnlyCache(gameScreenshots.Id);
+            if (cached != null)
             {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+                gameScreenshots = cached;
             }
 
-            //file is not locked
-            return false;
+            List<Screenshot> items = gameScreenshots?.Items != null
+                ? new List<Screenshot>(gameScreenshots.Items)
+                : new List<Screenshot>();
+
+            items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            PART_ListScreenshots.ItemsSource = items;
+        }
+
+        private void ClearScreenshotPreview()
+        {
+            PART_Screenshot.Source = null;
+            PART_Screenshot.Visibility = Visibility.Collapsed;
+            PART_Screenshot.UpdateLayout();
+
+            PART_Video.Source = null;
+            PART_Video.Visibility = Visibility.Collapsed;
+
+            PART_BtFolder.Visibility = Visibility.Collapsed;
+            PART_BtFolder.Tag = null;
+            PART_ImgPath.Content = string.Empty;
         }
 
 
@@ -176,7 +150,7 @@ namespace ScreenshotsVisualizer.Views
                 ScreenshotsTotalSize += item.FileSize;
             }
             PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize);
+            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
 
 
             List<Screenshot> videoOnly = gameScreenshots.Items.FindAll(x => x.IsVideo);
@@ -187,11 +161,11 @@ namespace ScreenshotsVisualizer.Views
                 VideosTotalSize += item.FileSize;
             }
             PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = Tools.SizeSuffix(VideosTotalSize);
+            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
 
 
             PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = Tools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
         }
 
 
@@ -224,7 +198,7 @@ namespace ScreenshotsVisualizer.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
             }
         }

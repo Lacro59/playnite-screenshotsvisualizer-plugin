@@ -1,5 +1,6 @@
 ﻿using CommonPlayniteShared.Common;
 using CommonPluginsShared;
+using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
@@ -7,17 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Models
 {
     public class Screenshot : ObservableObject
     {
-        [DontSerialize]
-        private static ILogger Logger => LogManager.GetLogger();
-
         [DontSerialize]
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
@@ -30,58 +25,38 @@ namespace ScreenshotsVisualizer.Models
         public string FileName { get; set; }
         public DateTime Modifed { get; set; }
 
-        public string sizeString;
+        [DontSerialize]
+        private bool _videoMetadataResolveAttempted;
+
+        private string _sizeString;
         [DontSerialize]
         public string SizeString
         {
             get
             {
-                if (sizeString.IsNullOrEmpty())
+                if (_sizeString.IsNullOrEmpty())
                 {
                     if (File.Exists(FileName))
                     {
                         if (IsVideo)
                         {
-                            try
-                            {
-                                if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
-                                {
-                                    string sizeArgs = "-v error -show_entries stream=width,height -of csv=s=x:p=0 \"{0}\"";
-                                    _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(sizeArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
+                            EnsureVideoMetadataResolved();
+                            return _sizeString;
+                        }
 
-                                    sizeString = stdOut.Trim();
-                                    return sizeString;
-                                }
-                                else
-                                {
-                                    Logger.Warn("No ffprobe executable");
-                                    API.Instance.Notifications.Add(new NotificationMessage(
-                                        $"{PluginDatabase.PluginName}-FfprobePath-Error",
-                                        $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
-                                        NotificationType.Error
-                                    ));
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                            }
-                        }
-                        else
-                        {
-                            ImageProperties imageProperties = Images.GetImageProperties(FileName);
-                            return imageProperties.Width + "x" + imageProperties.Height;
-                        }
+                        ImageProperties imageProperties = Images.GetImageProperties(FileName);
+                        return imageProperties.Width + "x" + imageProperties.Height;
                     }
                 }
-                return sizeString;
+
+                return _sizeString;
             }
 
-            set => SetValue(ref sizeString, value);
+            set => SetValue(ref _sizeString, value);
         }
 
         [DontSerialize]
-        public string FileSizeString => File.Exists(FileName) ? Tools.SizeSuffix(new FileInfo(FileName).Length) : string.Empty;
+        public string FileSizeString => File.Exists(FileName) ? UtilityTools.SizeSuffix(new FileInfo(FileName).Length) : string.Empty;
 
         [DontSerialize]
         public long FileSize => File.Exists(FileName) ? new FileInfo(FileName).Length : 0;
@@ -90,36 +65,23 @@ namespace ScreenshotsVisualizer.Models
         public string FileNameOnly => Path.GetFileName(FileName);
 
         [DontSerialize]
-        public bool IsVideo => new string[] { "mp4", "avi", "mkv", "webm" }.Any(s => Path.GetExtension(FileName).ToLower().Contains(s));
+        public bool IsVideo => SsvMediaFormatCatalog.IsVideoExtension(FileName, PluginDatabase.PluginSettings);
 
         [DontSerialize]
         public string ImageThumbnail
         {
             get
             {
-                if (PluginDatabase.PluginSettings.Settings.UsedThumbnails)
+                if (!IsVideo)
                 {
-                    string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                    string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                    string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileNameWithoutExt}_Thumbnail.jpg");
+                    string thumbnailPath = PluginDatabase.ThumbnailService.TryEnsureImageThumbnail(
+                        FileName,
+                        PluginDatabase.Paths.PluginCachePath,
+                        Modifed);
 
-                    if (File.Exists(FileThumbnail))
+                    if (!thumbnailPath.IsNullOrEmpty())
                     {
-                        return FileThumbnail;
-                    }
-
-                    try
-                    {
-                        _ = ImageTools.Resize(FileName, 320, FileThumbnail);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, "ScreenshootsVisualizer");
-                    }
-
-                    if (File.Exists(FileThumbnail))
-                    {
-                        return FileThumbnail;
+                        return thumbnailPath;
                     }
                 }
 
@@ -128,103 +90,93 @@ namespace ScreenshotsVisualizer.Models
         }
 
         #region Video
-        public string thumbnail;
+
+        private string _thumbnail;
         [DontSerialize]
         public string Thumbnail
         {
             get
             {
-                if (thumbnail.IsNullOrEmpty())
+                if (_thumbnail.IsNullOrEmpty() && IsVideo)
                 {
-                    if (IsVideo)
-                    {
-                        string FileNameWithoutExt = Path.GetFileNameWithoutExtension(FileNameOnly);
-                        string PathThumbnail = Path.Combine(PluginDatabase.Paths.PluginCachePath, "Thumbnails");
-                        string FileThumbnail = Path.Combine(PathThumbnail, FileNameWithoutExt + $"_{FileSize}_{Duration.TotalSeconds}_Thumbnail.jpg");
-
-                        if (File.Exists(FileThumbnail))
-                        {
-                            thumbnail = FileThumbnail;
-                            return FileThumbnail;
-                        }
-                        FileSystem.CreateDirectory(PathThumbnail);
-
-                        try
-                        {
-                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfmpegPath))
-                            {
-                                string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfmpegPath, string.Format(thumbArgs, FileName, FileThumbnail), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfmpegPath), true, out string stdOut, out string stdErr);
-                            }
-                            else
-                            {
-                                Logger.Warn("No ffmpeg executable");
-                                API.Instance.Notifications.Add(new NotificationMessage(
-                                    $"{PluginDatabase.PluginName}-FfmpegPath-Error",
-                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsvFfmpegNotFound"),
-                                    NotificationType.Error
-                                ));
-                            }
-
-                            thumbnail = FileThumbnail;
-                            return FileThumbnail;
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                        }
-                    }
+                    _thumbnail = PluginDatabase.ThumbnailService.TryEnsureVideoThumbnail(
+                        FileName,
+                        PluginDatabase.Paths.PluginCachePath,
+                        Modifed,
+                        FileSize,
+                        Duration.TotalSeconds,
+                        PluginDatabase.PluginSettings.FfmpegPath) ?? string.Empty;
                 }
-                return thumbnail;
+
+                return _thumbnail;
             }
 
-            set => SetValue(ref thumbnail, value);
+            set => SetValue(ref _thumbnail, value);
         }
 
         [DontSerialize]
         public string DurationString => IsVideo ? Duration.ToString(@"hh\:mm\:ss") : string.Empty;
 
-        public TimeSpan duration = default;
+        private TimeSpan _duration = default;
         [DontSerialize]
         public TimeSpan Duration
         {
             get
             {
-                if (duration == default)
+                if (IsVideo)
                 {
-                    if (IsVideo)
-                    {
-                        try
-                        {
-                            if (File.Exists(PluginDatabase.PluginSettings.Settings.FfprobePath))
-                            {
-                                string durationArgs = "-v error -show_entries format=duration -sexagesimal -of default=noprint_wrappers=1:nokey=1 \"{0}\"";
-                                _ = ProcessStarter.StartProcessWait(PluginDatabase.PluginSettings.Settings.FfprobePath, string.Format(durationArgs, FileName), Path.GetDirectoryName(PluginDatabase.PluginSettings.Settings.FfprobePath), true, out string stdOut, out string stdErr);
-                                _ = TimeSpan.TryParse(stdOut, out duration);
-                            }
-                            else
-                            {
-                                Logger.Warn("No ffprobe executable");
-                                API.Instance.Notifications.Add(new NotificationMessage(
-                                    $"{PluginDatabase.PluginName}-FfprobePath-Error",
-                                    $"{PluginDatabase.PluginName}\r\n" + ResourceProvider.GetString("LOCSsFfprobeNotFound"),
-                                    NotificationType.Error
-                                ));
-                            }
-
-                            return duration == null ? default : duration;
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                        }
-                    }
+                    EnsureVideoMetadataResolved();
                 }
-                return duration;
+
+                return _duration;
             }
 
-            set => SetValue(ref duration, value);
+            set => SetValue(ref _duration, value);
         }
+
+        private void EnsureVideoMetadataResolved()
+        {
+            if (_videoMetadataResolveAttempted || !IsVideo || !File.Exists(FileName))
+            {
+                return;
+            }
+
+            _videoMetadataResolveAttempted = true;
+
+            try
+            {
+                Common.LogDebug(true, string.Format(
+                    "[SsvVideoMetadata] Resolve start for '{0}' (modified={1:u})",
+                    FileName,
+                    Modifed.ToUniversalTime()));
+
+                if (PluginDatabase.VideoMetadataService.TryGetVideoMetadata(
+                    FileName,
+                    Modifed,
+                    PluginDatabase.PluginSettings.FfprobePath,
+                    out SsvVideoMetadata metadata))
+                {
+                    _duration = metadata.Duration;
+                    _sizeString = metadata.SizeString;
+                    Common.LogDebug(true, string.Format(
+                        "[SsvVideoMetadata] Resolve ok for '{0}' ({1}, {2})",
+                        FileName,
+                        _sizeString,
+                        _duration));
+                }
+                else
+                {
+                    Common.LogDebug(true, string.Format(
+                        "[SsvVideoMetadata] Resolve failed for '{0}'",
+                        FileName));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+        }
+
         #endregion
     }
 }

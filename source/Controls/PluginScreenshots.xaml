@@ -6,9 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:ScreenshotsVisualizer.Controls" 
-    xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel" 
-    xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters" 
-    xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
     xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=local:PluginScreenshotsDataContext, IsDesignTimeCreatable=True}"
@@ -20,15 +17,11 @@
     MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxWidth}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
-        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <convertersshared:IndexConverter x:Key="IndexConverter" />
-        <convertersshared:ImageConverter x:Key="ImageConverter" />
-        <convertersshared:GetMediaTypeConverter x:Key="GetMediaTypeConverter" />
-        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
-        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Views/Templates/SsvScreenshotsGalleryResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         <DataTemplate x:Key="ItemTemplate">
             <DockPanel Margin="0,5" Width="220">
                 <controls1:TextBlockTrimmed MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
@@ -41,63 +34,26 @@
                                             VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                 <Grid Margin="0,0,5,0">
-                    <controls:ImageAsync Grid.Column="0" Grid.Row="2" Height="96" Width="170" Stretch="Uniform" x:Name="PART_Picture"
-                                         Parameter="2" RenderOptions.BitmapScalingMode="Fant">
-                        <controls:ImageAsync.Style>
-                            <Style TargetType="{x:Type controls:ImageAsync}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsVideo}" Value="False">
-                                        <Setter Property="Source" Value="{Binding ImageThumbnail, IsAsync=True}" />
-                                    </DataTrigger>
-
-                                    <DataTrigger Binding="{Binding IsVideo}" Value="True">
-                                        <Setter Property="Source" Value="{Binding Thumbnail, IsAsync=True}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </controls:ImageAsync.Style>
-                    </controls:ImageAsync>
-
-                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                               FontFamily="{DynamicResource FontIcoFont}" FontSize="20"
-                               Style="{DynamicResource BaseTextBlockStyle}" 
-                               Text="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}">
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                    <ContentControl Content="{Binding}" Style="{StaticResource SsvScreenshotThumbnailBlockFixedStyle}" />
                 </Grid>
 
                 <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
-                        ToolTip="{DynamicResource LOCRemoveTitle}" FontFamily="{DynamicResource CommonFont}" 
+                        Style="{DynamicResource ListRowHoverRevealIconButton}"
+                        FontFamily="{DynamicResource CommonFont}"
+                        ToolTip="{DynamicResource LOCRemoveTitle}"
                         VerticalAlignment="Bottom" />
             </DockPanel>
         </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
         <ListBox Name="PART_ListScreenshots"
-                 VirtualizingPanel.CacheLengthUnit="Item" 
-                 VirtualizingPanel.ScrollUnit="Pixel" 
-                 VirtualizingPanel.VirtualizationMode="Recycling"
-                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"                         
+                 Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
                  SelectionChanged="PART_ListScreenshots_SelectionChanged"
                  ItemsSource="{Binding ItemsSource}"
                  ItemTemplate="{StaticResource ItemTemplate}"     
                  Tag="{Binding AddBorder}">
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
         </ListBox>
     </DockPanel>
 </controls:PluginUserControlExtend>

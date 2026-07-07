@@ -2,6 +2,7 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
+using CommonPluginsShared.UI;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -10,9 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -23,11 +21,11 @@ namespace ScreenshotsVisualizer.Controls
     /// </summary>
     public partial class PluginListScreenshotsVertical : PluginUserControlExtend
     {
-        private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        private static ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginListScreenshotsVerticalDataContext ControlDataContext = new PluginListScreenshotsVerticalDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginListScreenshotsVerticalDataContext)controlDataContext;
@@ -38,43 +36,35 @@ namespace ScreenshotsVisualizer.Controls
         {
             InitializeComponent();
             this.DataContext = ControlDataContext;
+            Loaded += OnLoaded;
+            PART_ListScreenshots.AddHandler(System.Windows.UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
+        }
 
-            _ = Task.Run(() =>
+        protected override void AttachStaticEvents()
+        {
+            base.AttachStaticEvents();
+            AttachPluginEvents(PluginDatabase.PluginName, () =>
             {
-                // Wait extension database are loaded
-                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
-                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
-                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
-
-                    // Apply settings
-                    PluginSettings_PropertyChanged(null, null);
-
-                    PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
-                });
+                PluginDatabase.PluginSettings.PropertyChanged += CreatePluginSettingsHandler();
+                PluginDatabase.DatabaseItemUpdated += CreateDatabaseItemUpdatedHandler<GameScreenshots>();
+                PluginDatabase.DatabaseItemCollectionChanged += CreateDatabaseCollectionChangedHandler<GameScreenshots>();
             });
         }
 
-
         public override void SetDefaultDataContext()
         {
-            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationShowPicturesVertical;
-            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.Settings.AddBorder;
-            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.Settings.AddRoundedCorner;
-            ControlDataContext.HideInfos = PluginDatabase.PluginSettings.Settings.HideScreenshotsInfos;
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.EnableIntegrationShowPicturesVertical;
+            ControlDataContext.AddBorder = PluginDatabase.PluginSettings.AddBorder;
+            ControlDataContext.AddRoundedCorner = PluginDatabase.PluginSettings.AddRoundedCorner;
+            ControlDataContext.HideInfos = PluginDatabase.PluginSettings.HideScreenshotsInfos;
 
             ControlDataContext.CountItems = 0;
             ControlDataContext.ItemsSource = new ObservableCollection<Screenshot>();
         }
 
-
-        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginGameEntry pluginGameData)
         {
-            GameScreenshots gameScreenshots = (GameScreenshots)PluginGameData;
+            GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
             List<Screenshot> screenshots = gameScreenshots.Items;
             screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
@@ -83,42 +73,39 @@ namespace ScreenshotsVisualizer.Controls
             ControlDataContext.CountItems = screenshots.Count;
         }
 
-
         #region Events
+
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PluginDatabase.PluginSettings.Settings.LinkWithSinglePicture && PluginDatabase.PluginSettings.Settings.EnableIntegrationShowSinglePicture)
+            if (PluginDatabase.PluginSettings.LinkWithSinglePicture && PluginDatabase.PluginSettings.EnableIntegrationShowSinglePicture)
             {
-                PluginSinglePicture ssvSinglePicture = UI.FindVisualChildren<PluginSinglePicture>(Application.Current.MainWindow).FirstOrDefault();
-
-                if (ssvSinglePicture != null)
-                {
-                    ssvSinglePicture.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
-                }
+                PluginSinglePicture ssvSinglePicture = UIHelper.FindVisualChildren<PluginSinglePicture>(System.Windows.Application.Current.MainWindow).FirstOrDefault();
+                ssvSinglePicture?.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
             }
         }
+
         #endregion
     }
 
 
     public class PluginListScreenshotsVerticalDataContext : ObservableObject, IDataContext
     {
-        private bool isActivated;
-        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+        private bool _isActivated;
+        public bool IsActivated { get => _isActivated; set => SetValue(ref _isActivated, value); }
 
-        private bool addBorder;
-        public bool AddBorder { get => addBorder; set => SetValue(ref addBorder, value); }
+        private bool _addBorder;
+        public bool AddBorder { get => _addBorder; set => SetValue(ref _addBorder, value); }
 
-        private bool addRoundedCorner;
-        public bool AddRoundedCorner { get => addRoundedCorner; set => SetValue(ref addRoundedCorner, value); }
+        private bool _addRoundedCorner;
+        public bool AddRoundedCorner { get => _addRoundedCorner; set => SetValue(ref _addRoundedCorner, value); }
 
-        private bool hideInfos;
-        public bool HideInfos { get => hideInfos; set => SetValue(ref hideInfos, value); }
+        private bool _hideInfos;
+        public bool HideInfos { get => _hideInfos; set => SetValue(ref _hideInfos, value); }
 
-        private int countItems = 10;
-        public int CountItems { get => countItems; set => SetValue(ref countItems, value); }
+        private int _countItems = 10;
+        public int CountItems { get => _countItems; set => SetValue(ref _countItems, value); }
 
-        private ObservableCollection<Screenshot> itemsSource = new ObservableCollection<Screenshot>
+        private ObservableCollection<Screenshot> _itemsSource = new ObservableCollection<Screenshot>
         {
             new Screenshot
             {
@@ -126,6 +113,6 @@ namespace ScreenshotsVisualizer.Controls
                 Modifed = DateTime.Now
             }
         };
-        public ObservableCollection<Screenshot> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+        public ObservableCollection<Screenshot> ItemsSource { get => _itemsSource; set => SetValue(ref _itemsSource, value); }
     }
 }
