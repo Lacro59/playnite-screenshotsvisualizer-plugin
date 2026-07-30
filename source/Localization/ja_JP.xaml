@@ -1,277 +1,277 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSsvScreenshot">{0} ?????????</sys:String>
-    <sys:String x:Key="LOCSsvScreenshots">{0} ?????????</sys:String>
-    <sys:String x:Key="LOCSsvVideo">{0} ??</sys:String>
-    <sys:String x:Key="LOCSsvVideos">{0} ??</sys:String>
+    <sys:String x:Key="LOCSsvScreenshot">{0} スクリーンショット</sys:String>
+    <sys:String x:Key="LOCSsvScreenshots">{0} スクリーンショット</sys:String>
+    <sys:String x:Key="LOCSsvVideo">{0} 動画</sys:String>
+    <sys:String x:Key="LOCSsvVideos">{0} 動画</sys:String>
 
 
-    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg ???????????????</sys:String>
-    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe ???????????????</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick ???????????????</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick ??:</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionSection">????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionTabTitle">????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionIntro">????????????????????? ImageMagick ????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAdd">???????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEdit">???????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAddTitle">?????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEditTitle">?????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionName">??</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormat">????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionQuality">??</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionStripMetadata">????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionExtraArguments">????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionCommandPreview">?????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNameRequired">???????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">??????????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNoCommands">?????????????????</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg の実行ファイルが見つかりません</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe の実行ファイルが見つかりません</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick の実行ファイルが見つかりません</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick パス：</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionSection">画像変換コマンド</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionTabTitle">画像変換</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionIntro">ゲームメニューとメインメニューから使用する ImageMagick とカスタム変換プロファイルを設定します。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">コマンドを追加</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">コマンドを編集</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAddTitle">変換コマンドを追加</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEditTitle">変換コマンドを編集</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionName">名前</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">出力形式</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">品質</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">メタデータを削除</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">追加引数</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">コマンドプレビュー</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">コマンド名は必須です。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">出力形式は必須です。</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNoCommands">変換コマンドが設定されていません。</sys:String>
 
-    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsIntro">?????????????????????????????????(.jpg?.jpeg?.png?.mp4)???????????????(?:.avif ? .jxl)?????????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsImageSection">?????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">?????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">??????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">?????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">?????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">???????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsAddCustom">??</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">.jxl ????????????????(?????)?</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">?????????.jxl ???????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">?????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">???????????????????? Windows ??????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Windows ?????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">??? Windows Store ???????(AV1?WebP???? HEIF ????)??????</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">??????????????(TGA)?</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">?????????????????????? ffmpeg/ffprobe ??????????</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">対応形式</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsIntro">スキャン対象の画像と動画の拡張子をリストとして管理します。必須形式（.jpg、.jpeg、.png、.mp4）は削除できません。任意の拡張子（例：.avif や .jxl）を追加し、不要な拡張子を削除できます。変更後はライブラリの更新が必要です。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsImageSection">画像拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">動画拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">既定値に戻す</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">すべて有効</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">すべて無効</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">共通形式は、設定の保存時に常に有効のまま保持されます。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">追加の画像拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">追加の動画拡張子</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsAddCustom">追加</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">.jxl のような拡張子を入力してください（英数字のみ）。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">拡張子が無効です。.jxl のような値を使用してください。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">この拡張子はすでに一覧にあります。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">カスタム拡張子です。表示できるかどうかは Windows またはインストール済みコーデックによって異なります。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Windows の組み込み画像サポートでデコードされます。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">任意の Windows Store 画像コーデック（AV1、WebP、または HEIF 拡張機能）が必要です。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">プラグインでデコードされます（TGA）。</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">動画サムネイルとメタデータには、その他タブの ffmpeg/ffprobe パスが使用されます。</sys:String>
 
 
     <!-- MainView -->
 
     <sys:String x:Key="LOCSsv">ScreenshotsVisualizer</sys:String>
-    <sys:String x:Key="LOCSsvTitle">?????????</sys:String>
+    <sys:String x:Key="LOCSsvTitle">スクリーンショット</sys:String>
 
-    <sys:String x:Key="LOCSsvLatest">??</sys:String>
+    <sys:String x:Key="LOCSsvLatest">最新</sys:String>
     
-    <sys:String x:Key="LOCSsvViewScreenshots">????????????????</sys:String>
-    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">???????????????????</sys:String>
-    <sys:String x:Key="LOCSsvMoveToSave">?????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConvertImages">?????</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionUnnamed">?????????</sys:String>
+    <sys:String x:Key="LOCSsvViewScreenshots">ゲームのスクリーンショットを表示</sys:String>
+    <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">スクリーンショットのディレクトリを開く</sys:String>
+    <sys:String x:Key="LOCSsvMoveToSave">スクリーンショットを保存ディレクトリに移動</sys:String>
+    <sys:String x:Key="LOCSsvConvertImages">画像を変換</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionUnnamed">名前なしのコマンド</sys:String>
     
-    <sys:String x:Key="LOCSsvMovingToSave">?????????????...</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageCount">???</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">????????(???)</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSize">????????</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoCount">???</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">????????(???)</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSize">????????</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">???????</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalCount">???</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">?????(???)</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSize">?????</sys:String>
+    <sys:String x:Key="LOCSsvMovingToSave">スクリーンショットを移動中...</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageCount">画像数</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">画像の合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSize">画像の合計サイズ</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoCount">動画数</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">動画の合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSize">動画の合計サイズ</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">動画の合計時間</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalCount">合計数</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">合計サイズ（バイト）</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSize">合計サイズ</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">???????????????????????????</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">すべてのスクリーンショットを移動してもよろしいですか？</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">{0} ??????????????</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">{0} を削除してもよろしいですか？</sys:String>
 
     
     <!-- SsvManager -->
 
-    <sys:String x:Key="LOCSsvLastSsv">????????????</sys:String>
+    <sys:String x:Key="LOCSsvLastSsv">最後のスクリーンショット</sys:String>
 
     
     <!-- StartPage -->
 
-    <sys:String x:Key="LOCSsvCarousel">?????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselAddGameName">???????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">??????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">????????????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">??????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">?? (?)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">?????????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">????????</sys:String>
-    <sys:String x:Key="LOCSsvCarouselWithVideo">??????</sys:String>
+    <sys:String x:Key="LOCSsvCarousel">カルーセル</sys:String>
+    <sys:String x:Key="LOCSsvCarouselAddGameName">ゲーム名を表示</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAllRandom">すべてのスクリーンショットリストをランダム化</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">サムネイルを使用</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">各ゲームの最新スクリーンショットのみ表示</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">ゲームごとのスクリーンショット数</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">ゲーム数</sys:String>
+    <sys:String x:Key="LOCSsvCarouselEnableAutoChange">自動変更を有効にする</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">時間 (秒)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">お気に入りのゲームのみ表示</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">特定のソースのみ</sys:String>
+    <sys:String x:Key="LOCSsvCarouselWithVideo">動画を含める</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvUseExternalViever">??????????</sys:String>
+    <sys:String x:Key="LOCSsvUseExternalViever">外部ビューアーを使用</sys:String>
     
-    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg ??:</sys:String>
-    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe ??:</sys:String>
-    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">ffmpeg ????????????</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg パス：</sys:String>
+    <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe パス：</sys:String>
+    <sys:String x:Key="LOCSsvDownloadFfmpegLabel">ffmpeg パッケージをダウンロード</sys:String>
 
-    <sys:String x:Key="LOCSsvThumbnailCacheDescription">??????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">?????????:</sys:String>
-    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">?????:</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheDescription">ギャラリーの読み込みを高速化するために生成されたサムネイル画像です。</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">キャッシュ済み項目：</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">合計サイズ：</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalPath">?????????????????</sys:String>
+    <sys:String x:Key="LOCSsvGlobalPath">グローバルスクリーンショットのパス</sys:String>
 
-    <sys:String x:Key="LOCSsvScanSubFolders">???????????</sys:String>
+    <sys:String x:Key="LOCSsvScanSubFolders">サブフォルダをスキャン</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvAddSteamGame">Steam ??????</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">ゲームにスクリーンショットがある場合はタグを追加</sys:String>
+    <sys:String x:Key="LOCSsvAddSteamGame">Steam ゲームを追加</sys:String>
     <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
     <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
     <sys:String x:Key="LOCSsvPresetUbisoft">Ubisoft Connect</sys:String>
     <sys:String x:Key="LOCSsvPresetRetroArch">RetroArch</sys:String>
     <sys:String x:Key="LOCSsvPresetScummVM">ScummVM</sys:String>
     <sys:String x:Key="LOCSsvPresetXboxGameBar">Xbox Game Bar</sys:String>
-    <sys:String x:Key="LOCSsvPresetGogTooltip">GOG ?????????? GOG Galaxy ????????({GogScreenshotDir}\{Name})???????</sys:String>
-    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Ubisoft ?????????? Ubisoft Connect ????????({UbisoftScreenshotsDir}\{Name})???????</sys:String>
-    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">???????????????????????? RetroArch ???????????????</sys:String>
-    <sys:String x:Key="LOCSsvPresetScummVMTooltip">???????????????????????? ScummVM ???????????????</sys:String>
-    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">???????? {Name}* ? Xbox Game Bar ??????????({XboxGamebarScreenshotsDir})???????</sys:String>
-    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">?????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigQuickAddHint">????????????????????????????? 1 ????????????????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">?????????????????????????Playnite:{Name}, {GameId}, {InstallDir}, {Platform}, �
+    <sys:String x:Key="LOCSsvPresetGogTooltip">GOG ライブラリゲーム用に GOG Galaxy グローバルソース（{GogScreenshotDir}\{Name}）を追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetUbisoftTooltip">Ubisoft ライブラリゲーム用に Ubisoft Connect グローバルソース（{UbisoftScreenshotsDir}\{Name}）を追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetRetroArchTooltip">エミュレーターのファイルパターンフィルター付きで RetroArch グローバルソースを追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetScummVMTooltip">エミュレーターのファイルパターンフィルター付きで ScummVM グローバルソースを追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetXboxGameBarTooltip">ファイルパターン {Name}* で Xbox Game Bar キャプチャフォルダー（{XboxGamebarScreenshotsDir}）を追加します。</sys:String>
+    <sys:String x:Key="LOCSsvPresetAlreadyInGlobal">このプリセットはすでにグローバルソースで設定されています。</sys:String>
+    <sys:String x:Key="LOCSsvConfigQuickAddHint">グローバルソースに標準エントリを追加します。各プリセットは 1 回だけ追加できます。適用対象によって、スキャン時にどのゲームで使用するかを絞り込みます。</sys:String>
+    <sys:String x:Key="LOCSsvConfigPathVariablesTooltip" xml:space="preserve">フォルダーパスにはプレースホルダーを使用できます。Playnite：{Name}, {GameId}, {InstallDir}, {Platform}, …
 
-????????:
+ストアフォルダー：
 {SteamScreenshotsDir}, {UbisoftScreenshotsDir}, {GogScreenshotDir}, {XboxGamebarScreenshotsDir}, {RetroArchScreenshotsDir}
 
-?????????????????????????????????????????</sys:String>
+ライブプレビュー付きの完全な一覧を確認するには、「変数を挿入」を使用してください。</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSourceApplicability">????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">????????????????????????????????
-????????????????????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite ???</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">???????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">????????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">?????????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">??</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">???????</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">???</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch ??</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM ??</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">適用対象</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">スキャン時に、このグローバルソースを適用するゲームを制限します。
+すべてのゲームに適用するには、ソースを「すべて」、エミュレーターを「なし」のままにしてください。</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite ソース</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">すべてのソース</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">選択したもののみ</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">選択したものを除外</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">ソース名</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">追加</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">エミュレーター</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">すべて</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch のみ</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM のみ</sys:String>
     
-    <sys:String x:Key="LOCSsvNumberToDigit">??? {digit} ????</sys:String>
+    <sys:String x:Key="LOCSsvNumberToDigit">数値を {digit} 桁に変換</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePicture">??????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvShowPictures">?????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesVertical">????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvShowPicturesList">????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvAddBorder">?????</sys:String>
-    <sys:String x:Key="LOCSsvAddRoundedCorner">?????</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePicture">単一のスクリーンショットのコントロールを表示</sys:String>
+    <sys:String x:Key="LOCSsvShowPictures">スクリーンショット一覧のコントロールを表示</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesVertical">縦向きスクリーンショット一覧のコントロールを表示</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesList">大量のスクリーンショット一覧のコントロールを表示</sys:String>
+    <sys:String x:Key="LOCSsvAddBorder">外枠を追加</sys:String>
+    <sys:String x:Key="LOCSsvAddRoundedCorner">角丸を追加</sys:String>
 
-    <sys:String x:Key="LOCSsvShowSinglePictureOptions">?????????????????</sys:String>
+    <sys:String x:Key="LOCSsvShowSinglePictureOptions">単一スクリーンショットのオプション</sys:String>
     
-    <sys:String x:Key="LOCSsvShowPicturesOptions">?????????????????</sys:String>
+    <sys:String x:Key="LOCSsvShowPicturesOptions">スクリーンショット一覧のオプション</sys:String>
 
-    <sys:String x:Key="LOCSsvHideScreenshotsInfos">???????????????</sys:String>
+    <sys:String x:Key="LOCSsvHideScreenshotsInfos">スクリーンショット情報を非表示</sys:String>
 
-    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">????????</sys:String>
-    <sys:String x:Key="LOCSsvLinkWithSinglePicture">???????????????????</sys:String>
+    <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">画像選択時に開く</sys:String>
+    <sys:String x:Key="LOCSsvLinkWithSinglePicture">選択を単一スクリーンショット表示と連動</sys:String>
     
-    <sys:String x:Key="LOCSsvUsedFilePattern">???????????</sys:String>
-    <sys:String x:Key="LOCSsvEnableFolderToSave">????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvFilePattern">????????</sys:String>
+    <sys:String x:Key="LOCSsvUsedFilePattern">ファイルパターンを使用</sys:String>
+    <sys:String x:Key="LOCSsvEnableFolderToSave">スクリーンショットを専用フォルダーへ移動できるようにする</sys:String>
+    <sys:String x:Key="LOCSsvFilePattern">ファイルパターン</sys:String>
 
-    <sys:String x:Key="LOCSsvSetAbsolute">???????</sys:String>
-    <sys:String x:Key="LOCSsvSetRelative">???????</sys:String>
+    <sys:String x:Key="LOCSsvSetAbsolute">絶対パスに変換</sys:String>
+    <sys:String x:Key="LOCSsvSetRelative">相対パスに変換</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">?????????????:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">さらに、以下も使用できます：</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">??</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternTooltipExample">?:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">数字</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">例：</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">??????????????????????
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">このフォルダーをすべてのゲームに追加します。
 
-?:
+例：
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
-    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">????????????????????1 ??????????????????????????????????????????????
-??????????????????????????????????????? {Name} ???????????????????????
-????? &quot;File pattern&quot; ?????????????????????????????????
+    <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">設定済みのすべてのソースフォルダーから、1 つのアーカイブフォルダーへスクリーンショットを移動するゲームメニューアクションを追加します。
+アーカイブフォルダーのパスには、上の保存先フィールドが使用されます。そのパスに {Name} が含まれていない場合は、自動的に追加されます。
+ファイルは &quot;File pattern&quot; を使用して名前変更され、その後プラグイン内のリンクが更新されます。
 
-?:
-????????:
+例：
+ソースフォルダー：
 - {Public}\Screenshots
 - {SteamScreenshotsDir}\435790\screenshots
 - {GogScreenshotDir}\{Name}
 - {XboxGamebarScreenshotsDir}
 
-??????:
+アーカイブ先：
 {DropboxFolder}\Screenshots\{Name}</sys:String>
 
     <!-- Notifications -->
 
-    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">???????????????????????????</sys:String>
+    <sys:String x:Key="LOCSsvMoveToFolderToSaveError">スクリーンショットを移動するための設定が不足しています</sys:String>
 
-    <!-- Settings � Configuration tab (phase 1.5 master-detail) -->
+    <!-- Settings — Configuration tab (phase 1.5 master-detail) -->
 
     <!-- Layout sections -->
-    <sys:String x:Key="LOCSsvConfigSectionContexts">??????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSources">???</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">??? � {0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">??????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionArchiving">?????</sys:String>
-    <sys:String x:Key="LOCSsvArchivingIntro">??????????????????? 1 ????????????????????????????????????????????????????????????????????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvArchivingDestinationFolder">???????????</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationTitle">??????????</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">?????????????�</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">???????????????�</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">??????�</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">??????????</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationFailed">?????????????????:{0}</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">???????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationTitle">??????????</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">?????????????�</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">?????????????????�</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">??????�</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationCompleted">??????????</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationFailed">?????????????????:{0}</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternInsertVariable">?????</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">???????:{Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
-    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">???????</sys:String>
-    <sys:String x:Key="LOCSsvConfigContextGlobals">?????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">???????</sys:String>
-    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} ?????</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoActiveSources">?????????????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">??????????????????</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionContexts">コンテキスト</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSources">ソース</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">ソース — {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionQuickAdd">クイック追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionArchiving">アーカイブ</sys:String>
+    <sys:String x:Key="LOCSsvArchivingIntro">ゲームメニューからスクリーンショットを 1 つのアーカイブフォルダーへ移動する方法を設定します。これらの設定はすべてのゲームに自動的に適用されます。ゲームごとの設定がないゲームも含め、スキャン時にはアーカイブフォルダーも対象になります。</sys:String>
+    <sys:String x:Key="LOCSsvArchivingDestinationFolder">アーカイブ先フォルダー</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationTitle">アーカイブ設定の移行</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">設定のバックアップを作成中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">重複するアーカイブ項目を削除中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">設定を保存中…</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationCompleted">移行が完了しました。</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationFailed">アーカイブ設定の移行に失敗しました：{0}</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">重複するアーカイブ項目は削除されませんでした。</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationTitle">プリセット設定の移行</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">設定のバックアップを作成中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationConsolidating">グローバルプリセットソースを統合中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">設定を保存中…</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationCompleted">移行が完了しました。</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationFailed">プリセット設定の移行に失敗しました：{0}</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">プリセット移行による変更は適用されませんでした。</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternInsertVariable">変数を挿入</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">利用可能な変数：{Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
+    <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">パス変数を挿入</sys:String>
+    <sys:String x:Key="LOCSsvConfigContextGlobals">グローバル</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">設定済みゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} 件のゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoActiveSources">このコンテキストにはスクリーンショットソースが設定されていません。</sys:String>
+    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">このゲームのグローバルソースを上書き</sys:String>
 
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
-    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">???????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionManualAdd">?????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">??????????????????????????????????????????????????????</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">グローバルパス</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionManualAdd">ゲームを手動で追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoGamesConfigured">ゲームが設定されていません。「ゲームを追加」または「グローバル」のクイック追加プリセットを使用してください。</sys:String>
 
     <!-- Game selection dialog -->
-    <sys:String x:Key="LOCSsvConfigAddGameTitle">??????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSelectGameTitle">??????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">???????????????????????????</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddGameTitle">ゲームを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigSelectGameTitle">設定するゲームを選択</sys:String>
+    <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">ライブラリ内のすべてのゲームはすでに設定されています。</sys:String>
 
     <!-- Source editor dialog -->
-    <sys:String x:Key="LOCSsvConfigSourcePath">??????????????</sys:String>
-    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">????????:{0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">???:{0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">?????:{0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSourceTitle">???????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSourceTitle">???????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigSaveSource">??</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSource">??????</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSource">??</sys:String>
-    <sys:String x:Key="LOCSsvConfigSourcePathRequired">???????????????????????</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePath">スクリーンショットフォルダー</sys:String>
+    <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">ファイルパターン：{0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">ソース：{0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">除外ソース：{0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSourceTitle">スクリーンショットソースを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSourceTitle">スクリーンショットソースを編集</sys:String>
+    <sys:String x:Key="LOCSsvConfigSaveSource">保存</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSource">ソースを追加</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSource">編集</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePathRequired">スクリーンショットフォルダーのパスは必須です。</sys:String>
 
     <!-- Phase 2 placeholders -->
-    <sys:String x:Key="LOCSsvConfigPreview">?????</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormat">?????</sys:String>
-    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">??????????????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigTestGame">???????</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathExists">????????????????</sys:String>
-    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">?????????????????</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreview">プレビュー</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormat">名前の形式</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreviewComingSoon">今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">設定テストは今後のアップデートで利用可能になります。</sys:String>
+    <sys:String x:Key="LOCSsvConfigTestGame">テスト用ゲーム</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathExists">解決済みフォルダーが存在します。</sys:String>
+    <sys:String x:Key="LOCSsvConfigResolvedPathMissing">解決済みフォルダーが存在しません。</sys:String>
     
 </ResourceDictionary>
