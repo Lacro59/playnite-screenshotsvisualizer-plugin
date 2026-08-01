@@ -7,41 +7,41 @@
     <sys:String x:Key="LOCSsvVideos">{0} videók</sys:String>
 
 
-    <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
-    <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick executable was not found</sys:String>
-    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick path:</sys:String>
+    <sys:String x:Key="LOCSsvFfmpegNotFound">Az ffmpeg futtatható fájl nem található</sys:String>
+    <sys:String x:Key="LOCSsFfprobeNotFound">Az ffprobe futtatható fájl nem található</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickNotFound">Az ImageMagick futtatható fájl nem található</sys:String>
+    <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick útvonal:</sys:String>
     <sys:String x:Key="LOCSsvImageConversionSection">Image conversion commands</sys:String>
     <sys:String x:Key="LOCSsvImageConversionTabTitle">Image conversion</sys:String>
     <sys:String x:Key="LOCSsvImageConversionIntro">Configure ImageMagick and custom conversion profiles used from the game and main menus.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionAdd">Add command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionEdit">Edit command</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionAdd">Parancs hozzáadása</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionEdit">Parancs szerkesztése</sys:String>
     <sys:String x:Key="LOCSsvImageConversionAddTitle">Add conversion command</sys:String>
     <sys:String x:Key="LOCSsvImageConversionEditTitle">Edit conversion command</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionName">Name</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Output format</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionQuality">Quality</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Strip metadata</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionExtraArguments">Extra arguments</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Command preview</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionNameRequired">Command name is required.</sys:String>
-    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Output format is required.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionName">Név</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormat">Kimeneti formátum</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionQuality">Minőség</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionStripMetadata">Metaadatok eltávolítása</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionExtraArguments">További paraméterek</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionCommandPreview">Parancs előnézet</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionNameRequired">Parancs név az kötelező.</sys:String>
+    <sys:String x:Key="LOCSsvImageConversionOutputFormatRequired">Kimeneti formátum kötelező.</sys:String>
     <sys:String x:Key="LOCSsvImageConversionNoCommands">No conversion commands configured.</sys:String>
 
-    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">Supported formats</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsTabTitle">Támogatott formátumok</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsIntro">Manage scanned image and video extensions as lists. Essential formats (.jpg, .jpeg, .png, .mp4) cannot be removed. Add any extension (for example .avif or .jxl) and remove optional ones. A library refresh is required after changes.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsImageSection">Image extensions</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsVideoSection">Video extensions</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">Restore defaults</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">Enable all</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">Disable all</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">Alapértékek visszaállítása</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEnableAll">Összes engedélyezése</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsDisableAll">Összes letiltása</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">Common format always kept enabled when settings are saved.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">Additional image extensions</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">Additional video extensions</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsAddCustom">Add</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Enter an extension such as .jxl (letters and digits only).</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">The extension is invalid. Use a value such as .jxl.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">This extension is already listed.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Írjon be egy kiterjesztést, például .jxl (csak betűk és számok).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">A kiterjesztés érvénytelen. Használjon olyan értéket, mint például .jxl.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">Ez a kiterjesztés már szerepel a listán.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Custom extension; display depends on Windows or installed codecs.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decoded by built-in Windows imaging support.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (AV1, WebP or HEIF extension).</sys:String>
@@ -64,22 +64,22 @@
     
     <sys:String x:Key="LOCSsvMovingToSave">Moving the screenshoots...</sys:String>
     <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSize">Image total size</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Kép teljes mérete (bájt)</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSize">Kép teljes mérete</sys:String>
     <sys:String x:Key="LOCSsvCsvVideoCount">Video count</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Video total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Video total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Video total duration</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Videó teljes mérete (bájt)</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Videó teljes mérete</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Videó teljes hossza</sys:String>
     <sys:String x:Key="LOCSsvCsvTotalCount">Total count</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSize">Total size</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Teljes méret (bájt)</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSize">Teljes méret</sys:String>
 
-    <sys:String x:Key="LOCSsvWarningToMove">Are you sure you want to move all of the screenshots?</sys:String>
+    <sys:String x:Key="LOCSsvWarningToMove">Biztosan át akarod helyezni az összes képernyőképet?</sys:String>
 
 
     <!-- ScreenshotsVisualizerView -->
 
-    <sys:String x:Key="LOCSsvDeleteConfirm">Valóban törölni szeretné &quot;{0}&quot;?</sys:String>
+    <sys:String x:Key="LOCSsvDeleteConfirm">Valóban törölni szeretné {0}?</sys:String>
 
     
     <!-- SsvManager -->
@@ -93,19 +93,19 @@
     <sys:String x:Key="LOCSsvCarouselAddGameName">A játék nevének megjelenítése</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAllRandom">Randomize all screenshots list</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableLowerResolution">Használt miniatűrök</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Show only the most recent screenshots for each game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Number of screenshots per game</sys:String>
-    <sys:String x:Key="LOCSsvCarouselLimitGame">Number of games</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyMostRecent">Minden játék esetében csak a legfrissebb képernyőképeket mutasd</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitPerGame">Képernyőképek száma játékonként</sys:String>
+    <sys:String x:Key="LOCSsvCarouselLimitGame">Játékok száma</sys:String>
     <sys:String x:Key="LOCSsvCarouselEnableAutoChange">Enable auto change</sys:String>
-    <sys:String x:Key="LOCSsvCarouselTime">Time (seconds)</sys:String>
-    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Show only favorites games</sys:String>
-    <sys:String x:Key="LOCSsvCarouselSourcesList">Only certain sources</sys:String>
+    <sys:String x:Key="LOCSsvCarouselTime">Idő (másodperc)</sys:String>
+    <sys:String x:Key="LOCSsvCarouselOnlyFavorite">Csak a kedvenc játékok mutatása</sys:String>
+    <sys:String x:Key="LOCSsvCarouselSourcesList">Csak bizonyos források</sys:String>
     <sys:String x:Key="LOCSsvCarouselWithVideo">Include videos</sys:String>
 
 
     <!-- ScreenshotsVisualizerSettingsView -->
 
-    <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
+    <sys:String x:Key="LOCSsvUseExternalViever">Használjon külső megjelenítőt</sys:String>
     
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
@@ -113,13 +113,13 @@
 
     <sys:String x:Key="LOCSsvThumbnailCacheDescription">Thumbnail images generated to speed up gallery loading.</sys:String>
     <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">Cached items:</sys:String>
-    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Total size:</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Teljes méret:</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
     
-    <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
+    <sys:String x:Key="LOCSsvAddTag">Címke hozzáadása, ha a játékhoz vannak képernyőképek</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Steam játék hozzáadása</sys:String>
     <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
     <sys:String x:Key="LOCSsvPresetGog">GOG Galaxy</sys:String>
@@ -141,18 +141,18 @@ Store folders:
 
 Use Insert variable for the full list with live preview.</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Applicability</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceApplicability">Alkalmazhatóság</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceApplicabilityHint">Restrict which games receive this global source at scan time. Leave sources on All and emulator on None to apply to every game.</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite sources</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">All sources</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Only selected</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Exclude selected</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Source names</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterMode">Playnite források</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterAll">Összes forrás</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterWhitelist">Csak a kiválasztott </sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterBlacklist">Kiválasztott kizárása</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceFilterSources">Forrás nevek</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceFilterAddSource">Add</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Emulator</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Any</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch only</sys:String>
-    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM only</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorFilter">Emulátor</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Bármely</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">Csak RetroArch</sys:String>
+    <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">Csak ScummVM</sys:String>
     
     <sys:String x:Key="LOCSsvNumberToDigit">Szám átalakítása {digit} értékre</sys:String>
 
@@ -179,15 +179,15 @@ Use Insert variable for the full list with live preview.</sys:String>
     <sys:String x:Key="LOCSsvSetAbsolute">Transform to absolute path</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transform to relative path</sys:String>
     
-    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">In addition, you can use:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipIntro">Ezen felül, használhatod:</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">number(s)</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternTooltipExample">Example:</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipDigitDescription">szám(ok)</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternTooltipExample">Példa:</sys:String>
 
-    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Add this folder for all games.
+    <sys:String x:Key="LOCSsvGlobalSearchTooltip" xml:space="preserve">Adja hozzá ezt a mappát az összes játékhoz.
     
-Example:
+Példa:
 {PlayniteDir}\ExtraMetadata\{GameId}\Screenshots</sys:String>
 
     <sys:String x:Key="LOCSsvMoveFolderExplain" xml:space="preserve">Adds a game menu action to move screenshots from all configured source folders to one archive folder.
@@ -212,34 +212,35 @@ Archive destination:
 
     <!-- Layout sections -->
     <sys:String x:Key="LOCSsvConfigSectionContexts">Contexts</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSources">Sources</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Sources — {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSources">Források</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionSourcesFor">Források — {0}</sys:String>
     <sys:String x:Key="LOCSsvConfigSectionQuickAdd">Quick add</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiving</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionArchiving">Archiválás</sys:String>
     <sys:String x:Key="LOCSsvArchivingIntro">Configure how screenshots are moved into a single archive folder from the game menu. These settings apply to all games automatically—the archive folder is included when scanning, including games without per-game configuration.</sys:String>
     <sys:String x:Key="LOCSsvArchivingDestinationFolder">Archive destination folder</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationTitle">Archive settings migration</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationCreatingBackup">Creating settings backup...</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationCleaningDuplicates">Removing duplicate archive entries...</sys:String>
-    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Saving settings...</sys:String>
+    <sys:String x:Key="LOCSsvArchiveMigrationSavingSettings">Beállítások mentése...</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationCompleted">Migration completed.</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationFailed">Archive settings migration failed: {0}</sys:String>
     <sys:String x:Key="LOCSsvArchiveMigrationNoDuplicatesRemoved">No duplicate archive entries were removed.</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationTitle">Preset settings migration</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationCreatingBackup">Creating settings backup...</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationConsolidating">Consolidating global preset sources...</sys:String>
-    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Saving settings...</sys:String>
+    <sys:String x:Key="LOCSsvPresetMigrationSavingSettings">Beállítások mentése...</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationCompleted">Migration completed.</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationFailed">Preset settings migration failed: {0}</sys:String>
     <sys:String x:Key="LOCSsvPresetMigrationNoChangesApplied">No preset migration changes were applied.</sys:String>
     <sys:String x:Key="LOCSsvFilePatternInsertVariable">Insert variable</sys:String>
-    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Available variables: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
+    <sys:String x:Key="LOCSsvFilePatternAvailableVariables">Elérhető változók: {Name}, {DateModified}, {DateTimeModified}, {digit}</sys:String>
     <sys:String x:Key="LOCSsvFolderToSaveInsertVariable">Insert path variable</sys:String>
     <sys:String x:Key="LOCSsvConfigContextGlobals">Globals</sys:String>
-    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Configured games</sys:String>
-    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} game(s)</sys:String>
+    <sys:String x:Key="LOCSsvConfigSectionConfiguredGames">Beállított játékok
+</sys:String>
+    <sys:String x:Key="LOCSsvConfigConfiguredGamesCount">{0} játék</sys:String>
     <sys:String x:Key="LOCSsvConfigNoActiveSources">No screenshot sources configured for this context.</sys:String>
-    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">Override global sources for this game</sys:String>
+    <sys:String x:Key="LOCSsvConfigOverrideGlobalConfigs">A játék globális forrásainak felülírása</sys:String>
 
     <!-- Legacy phase 1 (kept for Crowdin compatibility) -->
     <sys:String x:Key="LOCSsvConfigSectionGlobalPaths">Global paths</sys:String>
@@ -247,25 +248,25 @@ Archive destination:
     <sys:String x:Key="LOCSsvConfigNoGamesConfigured">No games configured. Use Add a game or a quick-add preset in Globals.</sys:String>
 
     <!-- Game selection dialog -->
-    <sys:String x:Key="LOCSsvConfigAddGameTitle">Add a game</sys:String>
-    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Select a game to configure</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddGameTitle">Játék hozzáadása</sys:String>
+    <sys:String x:Key="LOCSsvConfigSelectGameTitle">Válasszon ki egy játékot a beállításhoz</sys:String>
     <sys:String x:Key="LOCSsvConfigNoUnconfiguredGames">All library games are already configured.</sys:String>
 
     <!-- Source editor dialog -->
-    <sys:String x:Key="LOCSsvConfigSourcePath">Screenshot folder</sys:String>
+    <sys:String x:Key="LOCSsvConfigSourcePath">Képernyőkép mappa</sys:String>
     <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">File pattern: {0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources: {0}</sys:String>
-    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Excluded sources: {0}</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
-    <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>
-    <sys:String x:Key="LOCSsvConfigAddSource">Add a source</sys:String>
-    <sys:String x:Key="LOCSsvConfigEditSource">Edit</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Források: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Kizárt források: {0}</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSourceTitle">Képernyőkép forrás hozzáadása</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSourceTitle">Képernyőkép forrás szerkesztése</sys:String>
+    <sys:String x:Key="LOCSsvConfigSaveSource">Mentés</sys:String>
+    <sys:String x:Key="LOCSsvConfigAddSource">Forrás hozzáadása</sys:String>
+    <sys:String x:Key="LOCSsvConfigEditSource">Szerkesztés</sys:String>
     <sys:String x:Key="LOCSsvConfigSourcePathRequired">A screenshot folder path is required.</sys:String>
 
     <!-- Phase 2 placeholders -->
-    <sys:String x:Key="LOCSsvConfigPreview">Preview</sys:String>
-    <sys:String x:Key="LOCSsvConfigNameFormat">Name format</sys:String>
+    <sys:String x:Key="LOCSsvConfigPreview">Előnézet</sys:String>
+    <sys:String x:Key="LOCSsvConfigNameFormat">Névformátum</sys:String>
     <sys:String x:Key="LOCSsvConfigPreviewComingSoon">Available in a future update.</sys:String>
     <sys:String x:Key="LOCSsvConfigNameFormatComingSoon">Available in a future update.</sys:String>
     <sys:String x:Key="LOCSsvConfigTestConfigComingSoon">Configuration test will be available in a future update.</sys:String>
