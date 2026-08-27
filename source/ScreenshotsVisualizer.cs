@@ -321,6 +321,83 @@ namespace ScreenshotsVisualizer
         {
         }
 
+        
+        #region External refresh
+
+        /// <summary>
+        /// Gets the PluginDatabase instance for external plugins to call via reflection.
+        /// </summary>
+        public ScreenshotsVisualizerDatabase GetDatabase()
+        {
+            return PluginDatabase;
+        }
+
+        /// <summary>
+        /// Manually refreshes screenshot data for the specified game (for external plugin calls).
+        /// </summary>
+        public void RefreshGame(Game game)
+        {
+            if (game == null) return;
+
+            try
+            {
+                Common.LogDebug(true, $"Manual refresh requested for game: {game.Name}");
+
+                GameSettings gameSettings = PluginDatabase.GetGameSettings(game.Id);
+                if (gameSettings != null)
+                {
+                    PluginDatabase.SetDataFromSettings(gameSettings);
+                    Common.LogDebug(true, $"Game data refreshed for: {game.Name}");
+                }
+
+                if (game.Id == PluginDatabase.GameContext.Id)
+                {
+                    PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+        }
+
+        /// <summary>
+        /// Manually refreshes screenshot data for the specified game by game name.
+        /// </summary>
+        public void RefreshGameByName(string gameName)
+        {
+            if (string.IsNullOrEmpty(gameName)) return;
+
+            try
+            {
+                var game = API.Instance.Database.Games
+                    .FirstOrDefault(g => g.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
+
+                if (game != null)
+                {
+                    RefreshGame(game);
+                }
+                else
+                {
+                    Common.LogDebug(true, $"Game not found: {gameName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes screenshot data for the specified game (compatible with GameSnap calls).
+        /// </summary>
+        public void RefreshData(Game game)
+        {
+            RefreshGame(game);
+        }
+
+        #endregion
+
         #region Settings
 
         public override ISettings GetSettings(bool firstRunSettings)
