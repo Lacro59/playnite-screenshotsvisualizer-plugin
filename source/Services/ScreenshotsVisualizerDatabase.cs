@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
@@ -28,6 +28,8 @@ namespace ScreenshotsVisualizer.Services
         private readonly ImageMagickConversionService _imageMagickConversionService;
         private readonly SsvThumbnailService _thumbnailService;
         private readonly SsvVideoMetadataService _videoMetadataService;
+        private readonly HashSet<string> _missingFolderNotifiedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _missingFolderNotifyLock = new object();
 
         /// <summary>
         /// Gets the thumbnail generation service used for image and video cache paths.
@@ -87,6 +89,91 @@ namespace ScreenshotsVisualizer.Services
         private static void LogScanWarn(string message)
         {
             Logger.Warn(string.Format("[SsvDatabase] {0}", message));
+        }
+
+        private void LogPathResolutionOutcome(Game game, FolderSettings folderSettings, SsvPathResolution resolution)
+        {
+            if (resolution == null || game == null || folderSettings == null)
+            {
+                return;
+            }
+
+            if (resolution.Variant == SsvPathResolveVariant.Underscore
+                || resolution.Variant == SsvPathResolveVariant.Strip)
+            {
+                LogScanWarn(string.Format(
+                    "[SsvPath] fallback variant={0} game=\"{1}\" configured=\"{2}\" path=\"{3}\" canonical=\"{4}\"",
+                    resolution.Variant,
+                    game.Name,
+                    folderSettings.ScreenshotsFolder,
+                    resolution.Path,
+                    resolution.CanonicalPath));
+            }
+        }
+
+        private void NotifyMissingSanitizedFolderOnce(Game game, FolderSettings folderSettings, SsvPathResolution resolution)
+        {
+            if (resolution == null || resolution.Exists || game == null || folderSettings == null)
+            {
+                return;
+            }
+
+            if (!GameNameNeedsPathSanitize(game))
+            {
+                return;
+            }
+
+            // Only when the configured template expands via {Name} — other missing folders (e.g. Steam GameId) are unrelated to illegal-name sanitize.
+            string configured = folderSettings.ScreenshotsFolder ?? string.Empty;
+            if (configured.IndexOf("{Name}", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                return;
+            }
+
+            string notifyKey = string.Format("{0}|{1}", game.Id, configured);
+            lock (_missingFolderNotifyLock)
+            {
+                if (!_missingFolderNotifiedKeys.Add(notifyKey))
+                {
+                    return;
+                }
+            }
+
+            string body = string.Format(
+                ResourceProvider.GetString("LOCSsvScreenshotsFolderMissingHint"),
+                game.Name ?? string.Empty);
+
+            LogScanDebug(string.Format(
+                "[SsvPath] missing-folder notification shown game=\"{0}\" configured=\"{1}\" resolved=\"{2}\"",
+                game.Name,
+                folderSettings.ScreenshotsFolder,
+                resolution.CanonicalPath));
+
+            API.Instance.Notifications.Add(new NotificationMessage(
+                string.Format("{0}-MissingFolder-{1}", PluginName, game.Id),
+                string.Format("{0}\r\n{1}", PluginName, body),
+                NotificationType.Info));
+        }
+
+        private static bool GameNameNeedsPathSanitize(Game game)
+        {
+            string name = game?.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                return true;
+            }
+
+            if (name != name.Trim())
+            {
+                return true;
+            }
+
+            return Regex.IsMatch(name, @"\s{2,}");
         }
 
         private static string GetConversionProfileLogLabel(SsvImageConversionCustomCmd command)
@@ -882,8 +969,8 @@ namespace ScreenshotsVisualizer.Services
             GameScreenshots gameScreenshots = GetDefault(game);
             try
             {
-                gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders();
                 gameScreenshots.InSettings = true;
+                List<string> resolvedFolders = new List<string>();
 
                 foreach (FolderSettings screenshotsFolder in item.ScreenshotsFolders)
                 {
@@ -897,10 +984,16 @@ namespace ScreenshotsVisualizer.Services
                             continue;
                         }
 
-                        string pathFolder = _pathResolver.ResolvePath(game, screenshotsFolder);
+                        SsvPathResolution resolution = _pathResolver.ResolveExistingPath(game, screenshotsFolder);
+                        LogPathResolutionOutcome(game, screenshotsFolder, resolution);
+                        string pathFolder = resolution.Exists ? resolution.Path : resolution.CanonicalPath;
+                        if (!pathFolder.IsNullOrEmpty())
+                        {
+                            resolvedFolders.Add(pathFolder);
+                        }
 
                         HashSet<string> extensions = SsvMediaFormatCatalog.GetEnabledScanExtensions(PluginSettings);
-                        if (Directory.Exists(pathFolder))
+                        if (resolution.Exists)
                         {
                             SearchOption searchOption = SearchOption.TopDirectoryOnly;
                             if (screenshotsFolder.ScanSubFolders)
@@ -953,6 +1046,7 @@ namespace ScreenshotsVisualizer.Services
                                 game.Name,
                                 screenshotsFolder.ScreenshotsFolder,
                                 pathFolder));
+                            NotifyMissingSanitizedFolderOnce(game, screenshotsFolder, resolution);
                         }
                     }
                     catch (Exception ex)
@@ -960,6 +1054,8 @@ namespace ScreenshotsVisualizer.Services
                         LogError(ex, string.Format("Error on {0} for {1}", game.Name, screenshotsFolder.ScreenshotsFolder));
                     }
                 }
+
+                gameScreenshots.ScreenshotsFolders = resolvedFolders;
 
                 IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
                 if (elements?.Count() > 0)

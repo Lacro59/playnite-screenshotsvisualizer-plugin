@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommonPluginsShared.Interfaces;
+using CommonPluginsShared.IO;
 using CommonPluginsStores;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 
 namespace ScreenshotsVisualizer.Models
 {
@@ -13,15 +15,35 @@ namespace ScreenshotsVisualizer.Models
         public List<FolderSettings> ScreenshotsFolders { get; set; }
         public bool OverrideGlobalConfigs { get; set; }
 
-        // TODO TEMP
         public bool ScanSubFolders { get; set; }
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
 
-        public List<string> GetScreenshotsFolders() => ScreenshotsFolders
-                .Select(x => PlayniteTools.StringExpandWithStores(API.Instance.Database.Games.Get(Id), x.ScreenshotsFolder))
+        /// <summary>
+        /// Expands and canonically sanitizes configured screenshot folders for this game.
+        /// Prefer scan/preview flows that use <c>SsvPathResolver.ResolveExistingPath</c> for underscore/strip fallbacks.
+        /// </summary>
+        /// <returns>Expanded canonical folder paths (may not exist on disk).</returns>
+        public List<string> GetScreenshotsFolders()
+        {
+            if (ScreenshotsFolders == null)
+            {
+                return new List<string>();
+            }
+
+            Game game = API.Instance.Database.Games.Get(Id);
+            if (game == null)
+            {
+                return new List<string>();
+            }
+
+            return ScreenshotsFolders
+                .Where(x => x != null && !string.IsNullOrEmpty(x.ScreenshotsFolder))
+                .Select(x => PathValidator.GetSafePath(PlayniteTools.StringExpandWithStores(game, x.ScreenshotsFolder), false))
+                .Where(x => !string.IsNullOrEmpty(x))
                 .ToList();
+        }
     }
 
 

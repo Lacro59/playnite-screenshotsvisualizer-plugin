@@ -479,9 +479,10 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             }
 
             FolderSettings model = WorkingCopy.ToModel();
-            ResolvedPath = _pathResolver.ResolvePath(SelectedTestGame.Game, model);
+            SsvPathResolution resolution = _pathResolver.ResolveExistingPath(SelectedTestGame.Game, model);
+            ResolvedPath = resolution.Exists ? resolution.Path : resolution.CanonicalPath;
             ResolvedFilePattern = _pathResolver.ResolveFilePatternRegex(SelectedTestGame.Game, model);
-            ResolvedPathExists = !string.IsNullOrEmpty(ResolvedPath) && Directory.Exists(ResolvedPath);
+            ResolvedPathExists = resolution.Exists;
             NotifyPreviewChanged();
         }
 
