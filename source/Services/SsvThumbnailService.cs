@@ -284,16 +284,12 @@ namespace ScreenshotsVisualizer.Services
 
             if (sourceInfo.Length > MaxSourceFileBytes)
             {
-                LogThumbnailDebug(string.Format(
-                    "Skipped image (> {0} MB): '{1}' ({2} bytes)",
+                WriteFailureMarker(failureMarkerPath);
+                LogThumbnailWarn(string.Format(
+                    "Thumbnail generation skipped: source file exceeds {0} MB: '{1}' ({2} bytes)",
                     MaxSourceFileBytes / (1024 * 1024),
                     sourcePath,
                     sourceInfo.Length));
-                LogSkippedSource(string.Format(
-                    "Thumbnail generation skipped: source file exceeds {0} MB: '{1}'",
-                    MaxSourceFileBytes / (1024 * 1024),
-                    sourcePath));
-                WriteFailureMarker(failureMarkerPath);
                 return null;
             }
 
@@ -550,11 +546,6 @@ namespace ScreenshotsVisualizer.Services
                 FileSystem.DeleteFileSafe(temporaryPath);
                 throw;
             }
-        }
-
-        private void LogSkippedSource(string message)
-        {
-            Common.LogError(null, true, message, false, _pluginName);
         }
 
         private static void LogThumbnailDebug(string message)
