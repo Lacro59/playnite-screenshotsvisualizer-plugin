@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Commands;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
@@ -122,6 +122,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
                     SetImage(null);
                     Screenshots.Clear();
+                    Index = 0;
                 });
 
                 Random r = new Random();
@@ -182,10 +183,14 @@ namespace ScreenshotsVisualizer.Views.StartPage
                         Timer.Start();
                         Timer.Elapsed += Timer_Elapsed;
                     }
-                    if (Screenshots?.Count > 1)
+                    if (Screenshots != null && Screenshots.Count > 0)
                     {
                         Index = 0;
                         SetImage(Screenshots[Index]);
+                    }
+                    else
+                    {
+                        Index = 0;
                     }
                 });
             });
@@ -212,23 +217,35 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 isGood = true;
             }
 
-            if (isGood)
+            if (!isGood)
             {
-                if (PluginDatabase.PluginSettings.UseExternalViewer)
+                return;
+            }
+
+            if (Screenshots == null || Screenshots.Count == 0 || Index < 0 || Index >= Screenshots.Count)
+            {
+                Logger.Warn(string.Format(
+                    "[SsvCarousel][dblclick] ignored — empty or out-of-range index={0} count={1}",
+                    Index,
+                    Screenshots?.Count ?? 0));
+                return;
+            }
+
+            Screenshot screenshot = Screenshots[Index];
+            if (PluginDatabase.PluginSettings.UseExternalViewer)
+            {
+                ScreenshotsVisualizerWindows.OpenWithExternalViewer(screenshot.FileName);
+            }
+            else
+            {
+                Game game = API.Instance.Database.Games.Get(screenshot.GameId);
+                string title = game != null
+                    ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + screenshot.FileNameOnly
+                    : ResourceProvider.GetString("LOCSsv") + " - " + screenshot.FileNameOnly;
+                ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
+                if (windows != null)
                 {
-                    ScreenshotsVisualizerWindows.OpenWithExternalViewer(Screenshots[Index].FileName);
-                }
-                else
-                {
-                    Game game = API.Instance.Database.Games.Get(Screenshots[Index].GameId);
-                    string title = game != null
-                        ? ResourceProvider.GetString("LOCSsv") + " - " + game.Name + " - " + Screenshots[Index].FileNameOnly
-                        : ResourceProvider.GetString("LOCSsv") + " - " + Screenshots[Index].FileNameOnly;
-                    ScreenshotsVisualizerWindows windows = PluginDatabase.PluginWindows as ScreenshotsVisualizerWindows;
-                    if (windows != null)
-                    {
-                        windows.ShowSinglePictureWindow(Screenshots[Index], null, title);
-                    }
+                    windows.ShowSinglePictureWindow(screenshot, null, title);
                 }
             }
         }

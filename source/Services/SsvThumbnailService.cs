@@ -19,7 +19,7 @@ namespace ScreenshotsVisualizer.Services
         /// <summary>
         /// Maximum length of the longest thumbnail edge in pixels.
         /// </summary>
-        public const int ThumbnailMaxDimension = 320;
+        public const int ThumbnailMaxDimension = 600;
 
         /// <summary>
         /// Maximum source file size accepted for image thumbnail generation (30 MB).
@@ -65,12 +65,27 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
-        /// Builds the legacy image thumbnail cache path for a source file name.
+        /// Builds the image thumbnail cache path for a source file name (includes <see cref="ThumbnailMaxDimension"/>).
         /// </summary>
         /// <param name="cacheRootPath">Plugin cache root directory.</param>
         /// <param name="sourceFileName">Source file name with extension.</param>
         /// <returns>Absolute path to the cached JPEG thumbnail.</returns>
         public static string GetImageThumbnailCachePath(string cacheRootPath, string sourceFileName)
+        {
+            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sourceFileName);
+            string thumbnailsDirectory = Path.Combine(cacheRootPath, ThumbnailsFolderName);
+            return Path.Combine(
+                thumbnailsDirectory,
+                fileNameWithoutExt + "_" + fileNameWithoutExt + "_" + ThumbnailMaxDimension + "_Thumbnail.jpg");
+        }
+
+        /// <summary>
+        /// Builds the pre-dimension image thumbnail cache path (max edge 320, no dimension in the file name).
+        /// </summary>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        /// <param name="sourceFileName">Source file name with extension.</param>
+        /// <returns>Absolute path to the legacy cached JPEG thumbnail.</returns>
+        public static string GetLegacyImageThumbnailCachePath(string cacheRootPath, string sourceFileName)
         {
             string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sourceFileName);
             string thumbnailsDirectory = Path.Combine(cacheRootPath, ThumbnailsFolderName);
@@ -144,6 +159,7 @@ namespace ScreenshotsVisualizer.Services
                 sourceFileName));
 
             TryDeleteCacheEntry(GetImageThumbnailCachePath(cacheRootPath, sourceFileName));
+            TryDeleteCacheEntry(GetLegacyImageThumbnailCachePath(cacheRootPath, sourceFileName));
 
             if (screenshot.IsVideo)
             {
@@ -174,6 +190,26 @@ namespace ScreenshotsVisualizer.Services
                 FileSystem.DeleteFileSafe(failureMarkerPath);
                 LogThumbnailDebug(string.Format("Deleted thumbnail failure marker '{0}'", failureMarkerPath));
             }
+        }
+
+        /// <summary>
+        /// Deletes a pre-dimension image thumbnail cache entry so it cannot be reused after a max-edge bump.
+        /// </summary>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        /// <param name="sourceFileName">Source file name with extension.</param>
+        private void RemoveLegacyImageThumbnailCacheIfPresent(string cacheRootPath, string sourceFileName)
+        {
+            string legacyPath = GetLegacyImageThumbnailCachePath(cacheRootPath, sourceFileName);
+            if (!File.Exists(legacyPath) && !File.Exists(GetFailureMarkerPath(legacyPath)))
+            {
+                return;
+            }
+
+            LogThumbnailDebug(string.Format(
+                "Invalidating legacy image thumbnail (pre-{0}): '{1}'",
+                ThumbnailMaxDimension,
+                legacyPath));
+            TryDeleteCacheEntry(legacyPath);
         }
 
         /// <summary>
@@ -222,7 +258,9 @@ namespace ScreenshotsVisualizer.Services
                 return null;
             }
 
-            string thumbnailPath = GetImageThumbnailCachePath(cacheRootPath, Path.GetFileName(sourcePath));
+            string sourceFileName = Path.GetFileName(sourcePath);
+            string thumbnailPath = GetImageThumbnailCachePath(cacheRootPath, sourceFileName);
+            RemoveLegacyImageThumbnailCacheIfPresent(cacheRootPath, sourceFileName);
             string failureMarkerPath = GetFailureMarkerPath(thumbnailPath);
             ClearFailureMarkerIfSourceChanged(sourcePath, sourceModified, failureMarkerPath);
 
