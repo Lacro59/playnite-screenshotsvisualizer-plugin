@@ -3,11 +3,20 @@
 
 # Local agent workspaces (not versioned — copy/sync manually between repos)
 .ai/
+.agents/
 .tasks/
 .study/
 .cursor/
 .scripts/
+.docs/
+.assets/
+.issues/
+.projects/
+.semgrep/
 .cursorignore
+.semgrepignore
+.graphifyignore
+.rumdl_cache/
 
 # Graphify (graphe local — régénérer avec `graphify update .`)
 graphify-out/
@@ -21,6 +30,7 @@ graphify-out/
 *.userprefs
 
 # Build results
+build/out/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
