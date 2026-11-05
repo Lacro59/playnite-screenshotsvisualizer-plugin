@@ -271,7 +271,7 @@ namespace ScreenshotsVisualizer.Services
 
         private static void LogMetadataDebug(string message)
         {
-            Common.LogDebug(true, string.Format("{0} {1}", LogPrefix, message));
+            Common.LogDebug(string.Format("{0} {1}", LogPrefix, message));
         }
 
         private sealed class VideoMetadataCacheEntry

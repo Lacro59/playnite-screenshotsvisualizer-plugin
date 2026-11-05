@@ -188,7 +188,7 @@ namespace ScreenshotsVisualizer.Services
                     cleanup.EmptyGameSettingsRemoved,
                     backup.ArchivePath));
 
-                CommonPluginsShared.Common.LogDebug(true, string.Format(
+                CommonPluginsShared.Common.LogDebug(string.Format(
                     "[SsvPresetMigration] Completed — {0} change(s).",
                     cleanup.TotalChanges));
 

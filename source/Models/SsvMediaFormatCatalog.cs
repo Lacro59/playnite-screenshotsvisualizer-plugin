@@ -15,10 +15,11 @@ namespace ScreenshotsVisualizer.Models
         /// Increment when built-in formats with <see cref="SsvMediaFormatDefinition.EnabledByDefault"/> are added
         /// so existing installations receive a one-time merge without overriding user removals.
         /// </summary>
-        public const int CurrentMediaFormatCatalogRevision = 1;
+        public const int CurrentMediaFormatCatalogRevision = 2;
 
         private const string WicNativeHintKey = "LOCSsvMediaFormatCodecWicNative";
         private const string WicExtensionHintKey = "LOCSsvMediaFormatCodecWicExtension";
+        private const string MagickHostHintKey = "LOCSsvMediaFormatCodecMagickHost";
         private const string CustomDecoderHintKey = "LOCSsvMediaFormatCodecCustomDecoder";
         private const string FfmpegHintKey = "LOCSsvMediaFormatCodecFfmpeg";
         private const string CustomUnknownHintKey = "LOCSsvMediaFormatCodecCustomUnknown";
@@ -38,6 +39,7 @@ namespace ScreenshotsVisualizer.Models
             new SsvMediaFormatDefinition(".webp", SsvMediaFormatKind.Image, true, false, true, false, WicExtensionHintKey),
             new SsvMediaFormatDefinition(".tga", SsvMediaFormatKind.Image, true, false, false, true, CustomDecoderHintKey),
             new SsvMediaFormatDefinition(".avif", SsvMediaFormatKind.Image, true, false, true, false, WicExtensionHintKey),
+            new SsvMediaFormatDefinition(".jxl", SsvMediaFormatKind.Image, true, false, false, false, MagickHostHintKey),
             new SsvMediaFormatDefinition(".heic", SsvMediaFormatKind.Image, false, false, true, false, WicExtensionHintKey),
             new SsvMediaFormatDefinition(".mp4", SsvMediaFormatKind.Video, true, true, false, false, FfmpegHintKey),
             new SsvMediaFormatDefinition(".avi", SsvMediaFormatKind.Video, true, false, false, false, FfmpegHintKey),

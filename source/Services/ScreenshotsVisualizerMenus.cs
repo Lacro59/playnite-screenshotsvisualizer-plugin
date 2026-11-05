@@ -48,7 +48,7 @@ namespace ScreenshotsVisualizer.Services
 
             if (includedGames.Count == 0)
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[LibraryFilter] ScreenshotsVisualizerMenus: game menu hidden — no eligible game in selection ({0} selected, IncludeEmulatedGames={1}, SourceFilter={2})",
                     args.Games.Count,
                     _settings.IncludeEmulatedGames,
@@ -60,7 +60,7 @@ namespace ScreenshotsVisualizer.Services
             int excludedCount = args.Games.Count - includedGames.Count;
             if (excludedCount > 0)
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[LibraryFilter] ScreenshotsVisualizerMenus: {0}/{1} selected game(s) excluded from menu actions (IncludeEmulatedGames={2}, SourceFilter={3})",
                     excludedCount,
                     args.Games.Count,
@@ -113,7 +113,7 @@ namespace ScreenshotsVisualizer.Services
                         Description = ResourceProvider.GetString("LOCSsvMoveToSave"),
                         Action = gameMenuItem =>
                         {
-                            Common.LogDebug(true, string.Format(
+                            Common.LogDebug(string.Format(
                                 "[SsvMenus] MoveToFolderToSave requested for {0} game(s) (global archive config)",
                                 ids.Count));
 
@@ -276,7 +276,7 @@ namespace ScreenshotsVisualizer.Services
                             }
                             else
                             {
-                                Common.LogDebug(true, "[SsvMenus] MoveToFolderToSaveAll requested (global archive config)");
+                                Common.LogDebug("[SsvMenus] MoveToFolderToSaveAll requested (global archive config)");
                                 Database.MoveToFolderToSaveAll();
                             }
                         }
@@ -326,7 +326,7 @@ namespace ScreenshotsVisualizer.Services
                     Description = GetConversionCommandMenuLabel(commandCopy),
                     Action = gameMenuItem =>
                     {
-                        Common.LogDebug(true, string.Format(
+                        Common.LogDebug(string.Format(
                             "[SsvMenus] ConvertGameScreenshots requested — profile '{0}', {1} game(s)",
                             GetConversionCommandMenuLabel(commandCopy),
                             gameIds.Count));
@@ -361,7 +361,7 @@ namespace ScreenshotsVisualizer.Services
                     Description = GetConversionCommandMenuLabel(commandCopy),
                     Action = mainMenuItem =>
                     {
-                        Common.LogDebug(true, string.Format(
+                        Common.LogDebug(string.Format(
                             "[SsvMenus] ConvertGameScreenshots requested (all games) — profile '{0}', {1} game(s)",
                             GetConversionCommandMenuLabel(commandCopy),
                             allGameIds.Count));

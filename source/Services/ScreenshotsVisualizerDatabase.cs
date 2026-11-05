@@ -68,12 +68,12 @@ namespace ScreenshotsVisualizer.Services
 
         private static void LogScanDebug(string message)
         {
-            Common.LogDebug(true, string.Format("[SsvDatabase] {0}", message));
+            Common.LogDebug(string.Format("[SsvDatabase] {0}", message));
         }
 
         private static void LogDeleteDebug(string message)
         {
-            Common.LogDebug(true, string.Format("[SsvDelete] {0}", message));
+            Common.LogDebug(string.Format("[SsvDelete] {0}", message));
         }
 
         private static void LogDeleteInfo(string message)
@@ -808,7 +808,7 @@ namespace ScreenshotsVisualizer.Services
             }
             else
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvDatabase] GetGameSettings — global source merge disabled for {0} (OverrideGlobalConfigs=true).",
                     id));
             }
@@ -842,7 +842,7 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
 
-            Common.LogDebug(true, string.Format(
+            Common.LogDebug(string.Format(
                 "[SsvDatabase] GetGameSettings — game {0}, persistedFolders={1}, mergedGlobalSources={2}, effectiveFoldersBeforeArchive={3}.",
                 id,
                 persistedGameSettings?.ScreenshotsFolders?.Count ?? 0,
@@ -1074,7 +1074,7 @@ namespace ScreenshotsVisualizer.Services
                         string imageThumb = x.ImageThumbnail;
                     });
                     imageThumbnailStopwatch.Stop();
-                    Common.LogDebug(true, string.Format(
+                    Common.LogDebug(string.Format(
                         "[SsvThumbnail] Image pre-generation for '{0}' completed ({1} image(s), {2} ms)",
                         game.Name,
                         imageCount,
@@ -1089,7 +1089,7 @@ namespace ScreenshotsVisualizer.Services
                         string size = x.SizeString;
                     });
                     videoThumbnailStopwatch.Stop();
-                    Common.LogDebug(true, string.Format(
+                    Common.LogDebug(string.Format(
                         "[SsvThumbnail] Video pre-generation for '{0}' completed ({1} video(s), {2} ms)",
                         game.Name,
                         videoCount,
@@ -1108,7 +1108,7 @@ namespace ScreenshotsVisualizer.Services
                     game.Name,
                     Get(game, true)?.Items?.Count ?? 0));
                 scanStopwatch.Stop();
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvThumbnail] Scan duration for '{0}' completed ({1} ms)",
                     game.Name,
                     scanStopwatch.ElapsedMilliseconds));

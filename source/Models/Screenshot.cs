@@ -1,4 +1,4 @@
-﻿using CommonPlayniteShared.Common;
+using CommonPlayniteShared.Common;
 using CommonPluginsShared;
 using CommonPluginsShared.Utilities;
 using Playnite.SDK;
@@ -145,7 +145,7 @@ namespace ScreenshotsVisualizer.Models
 
             try
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvVideoMetadata] Resolve start for '{0}' (modified={1:u})",
                     FileName,
                     Modifed.ToUniversalTime()));
@@ -158,7 +158,7 @@ namespace ScreenshotsVisualizer.Models
                 {
                     _duration = metadata.Duration;
                     _sizeString = metadata.SizeString;
-                    Common.LogDebug(true, string.Format(
+                    Common.LogDebug(string.Format(
                         "[SsvVideoMetadata] Resolve ok for '{0}' ({1}, {2})",
                         FileName,
                         _sizeString,
@@ -166,7 +166,7 @@ namespace ScreenshotsVisualizer.Models
                 }
                 else
                 {
-                    Common.LogDebug(true, string.Format(
+                    Common.LogDebug(string.Format(
                         "[SsvVideoMetadata] Resolve failed for '{0}'",
                         FileName));
                 }

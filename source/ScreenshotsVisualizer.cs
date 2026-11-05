@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.PlayniteExtended;
 using Playnite.SDK;
@@ -66,7 +66,7 @@ namespace ScreenshotsVisualizer
                 string buttonName = ((Button)sender).Name;
                 if (buttonName == "PART_CustomSsvButton")
                 {
-                    Common.LogDebug(true, "OnCustomThemeButtonClick()");
+                    Common.LogDebug("OnCustomThemeButtonClick()");
                     PluginDatabase.PluginWindows.ShowPluginGameDataWindow(PluginDatabase.GameContext);
                 }
             }
@@ -138,7 +138,7 @@ namespace ScreenshotsVisualizer
         {
             List<StartPageViewArgsBase> views = new List<StartPageViewArgsBase>
             {
-                new StartPageViewArgsBase 
+                new StartPageViewArgsBase
                 {
                     Name = ResourceProvider.GetString("LOCSsvCarousel"),
                     ViewId = "SsvCarousel",

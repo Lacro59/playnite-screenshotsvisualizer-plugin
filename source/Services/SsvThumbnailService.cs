@@ -550,7 +550,7 @@ namespace ScreenshotsVisualizer.Services
 
         private static void LogThumbnailDebug(string message)
         {
-            Common.LogDebug(true, string.Format("{0} {1}", LogPrefix, message));
+            Common.LogDebug(string.Format("{0} {1}", LogPrefix, message));
         }
 
         private static void LogThumbnailWarn(string message)

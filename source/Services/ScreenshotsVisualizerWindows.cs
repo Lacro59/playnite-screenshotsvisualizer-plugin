@@ -42,7 +42,7 @@ namespace ScreenshotsVisualizer.Services
                 return;
             }
 
-            Common.LogDebug(true, string.Format("[SsvWindows] Open screenshot with external viewer: {0}", Path.GetFileName(filePath)));
+            Common.LogDebug(string.Format("[SsvWindows] Open screenshot with external viewer: {0}", Path.GetFileName(filePath)));
             _ = Process.Start(filePath);
         }
 
@@ -102,7 +102,7 @@ namespace ScreenshotsVisualizer.Services
 
             try
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvWindows] open gallery gameId={0} name=\"{1}\"",
                     gameContext.Id,
                     gameContext.Name));

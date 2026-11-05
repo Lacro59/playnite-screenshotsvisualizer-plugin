@@ -103,7 +103,7 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
 
-            CommonPluginsShared.Common.LogDebug(true, string.Format(
+            CommonPluginsShared.Common.LogDebug(string.Format(
                 "[SsvGlobalSourceMigration] Duplicate scan completed — mode={0}, scanned games={1}, duplicates={2}.",
                 remove ? "remove" : "count",
                 scannedGames,

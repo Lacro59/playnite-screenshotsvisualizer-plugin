@@ -86,7 +86,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 return;
             }
 
-            Common.LogDebug(true, string.Format(
+            Common.LogDebug(string.Format(
                 "[SsvCarouselSettings][{0}] EnableLowerResolution={1}, EnableAllRandom={2}, EnableAutoChange={3}, LimitPerGame={4}, Margin={5}, SourcesChecked={6}",
                 phase,
                 options.EnableLowerResolution,
@@ -102,7 +102,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             CheckBox lowerResolutionCheckBox = FindName("PART_EnableLowerResolution") as CheckBox;
             if (lowerResolutionCheckBox == null)
             {
-                Common.LogDebug(true, "[SsvCarouselSettings][binding] PART_EnableLowerResolution not found");
+                Common.LogDebug("[SsvCarouselSettings][binding] PART_EnableLowerResolution not found");
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 return;
             }
 
-            Common.LogDebug(true, string.Format(
+            Common.LogDebug(string.Format(
                 "[SsvCarouselSettings][binding] path={0}, status={1}, hasError={2}, targetIsChecked={3}",
                 expression.ParentBinding?.Path?.Path ?? "null",
                 expression.Status,

@@ -52,7 +52,7 @@ namespace ScreenshotsVisualizer.Services
 
             if (string.IsNullOrWhiteSpace(imageMagickPath) || !File.Exists(imageMagickPath))
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvImageMagick] Executable not found (path: '{0}')",
                     imageMagickPath ?? string.Empty));
                 NotifyImageMagickNotFound();
@@ -72,7 +72,7 @@ namespace ScreenshotsVisualizer.Services
                 DateTime originalWriteTime = File.GetLastWriteTime(inputPath);
                 string workingDirectory = Path.GetDirectoryName(imageMagickPath);
 
-                Common.LogDebug(true, string.Format("[SsvImageMagick] Executing: {0}", invocation.CommandLinePreview));
+                Common.LogDebug(string.Format("[SsvImageMagick] Executing: {0}", invocation.CommandLinePreview));
 
                 int exitCode = ProcessStarter.StartProcessWait(
                     invocation.ExecutablePath,
@@ -101,7 +101,7 @@ namespace ScreenshotsVisualizer.Services
                 }
 
                 string finalOutputPath = CompleteSuccessfulConversion(command, invocation, originalWriteTime);
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvImageMagick] Success: '{0}' -> '{1}' (exit code {2})",
                     inputPath,
                     finalOutputPath,
