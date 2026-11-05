@@ -59,9 +59,21 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void SetImage(Screenshot screenshot)
         {
-            bool isVideo = screenshot?.IsVideo ?? false;
+            if (screenshot == null)
+            {
+                Common.LogDebug("[SsvCarousel][preview] cleared");
+                return;
+            }
 
-            if (File.Exists(screenshot?.FileName))
+            bool isVideo = screenshot.IsVideo;
+            bool exists = File.Exists(screenshot.FileName);
+            Common.LogDebug(string.Format(
+                "[SsvCarousel][preview] isVideo={0} exists={1} file={2}",
+                isVideo,
+                exists,
+                screenshot.FileNameOnly));
+
+            if (exists)
             {
                 string pictureSource;
                 if (isVideo)

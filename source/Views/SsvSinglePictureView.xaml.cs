@@ -51,7 +51,14 @@ namespace ScreenshotsVisualizer.Views
             string pictureSource = string.Empty;
             Game game = API.Instance.Database.Games.Get(screenshot.GameId);
 
-            if (File.Exists(screenshot.FileName))
+            bool exists = File.Exists(screenshot.FileName);
+            Common.LogDebug(string.Format(
+                "[SsvSinglePicture][preview] isVideo={0} exists={1} file={2}",
+                screenshot.IsVideo,
+                exists,
+                screenshot.FileNameOnly));
+
+            if (exists)
             {
                 pictureSource = screenshot.FileName;
             }

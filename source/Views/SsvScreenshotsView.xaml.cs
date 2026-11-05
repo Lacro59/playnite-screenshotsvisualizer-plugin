@@ -43,35 +43,47 @@ namespace ScreenshotsVisualizer.Views
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PART_ListScreenshots.SelectedItem != null)
+            if (PART_ListScreenshots.SelectedItem == null)
             {
-                Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
-                PART_BtFolder.Visibility = Visibility.Visible;
-                PART_BtFolder.Tag = screenshot.FileName;
-                PART_ImgPath.Content = screenshot.FileName;
+                Common.LogDebug("[SsvScreenshotsView][preview] cleared");
+                return;
+            }
 
-                if (File.Exists(screenshot.FileName))
-                {
-                    if (screenshot.IsVideo)
-                    {
-                        PART_Screenshot.Source = null;
-                        PART_Screenshot.Visibility = Visibility.Collapsed;
+            Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
+            PART_BtFolder.Visibility = Visibility.Visible;
+            PART_BtFolder.Tag = screenshot.FileName;
+            PART_ImgPath.Content = screenshot.FileName;
 
-                        PART_Video.Source = new Uri(screenshot.FileName);
-                        PART_Video.Visibility = Visibility.Visible;
+            bool exists = File.Exists(screenshot.FileName);
+            Common.LogDebug(string.Format(
+                "[SsvScreenshotsView][preview] isVideo={0} exists={1} file={2}",
+                screenshot.IsVideo,
+                exists,
+                screenshot.FileNameOnly));
 
-                        PART_Video.LoadedBehavior = MediaState.Play;
-                    }
-                    else
-                    {
-                        PART_Video.Source = null;
-                        PART_Video.Visibility = Visibility.Collapsed;
+            if (!exists)
+            {
+                return;
+            }
 
-                        CommonPluginsShared.Converters.ImageConverter imageConverter = new CommonPluginsShared.Converters.ImageConverter();
-                        PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
-                        PART_Screenshot.Visibility = Visibility.Visible;
-                    }
-                }
+            if (screenshot.IsVideo)
+            {
+                PART_Screenshot.Source = null;
+                PART_Screenshot.Visibility = Visibility.Collapsed;
+
+                PART_Video.Source = new Uri(screenshot.FileName);
+                PART_Video.Visibility = Visibility.Visible;
+
+                PART_Video.LoadedBehavior = MediaState.Play;
+            }
+            else
+            {
+                PART_Video.Source = null;
+                PART_Video.Visibility = Visibility.Collapsed;
+
+                CommonPluginsShared.Converters.ImageConverter imageConverter = new CommonPluginsShared.Converters.ImageConverter();
+                PART_Screenshot.Source = (BitmapImage)imageConverter.Convert(new[] { screenshot.FileName, "0" }, null, null, null);
+                PART_Screenshot.Visibility = Visibility.Visible;
             }
         }
 

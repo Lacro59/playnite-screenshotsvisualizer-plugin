@@ -187,6 +187,7 @@ namespace ScreenshotsVisualizer.Views
             dataContext.FileNameImage = string.Empty;
             dataContext.FileNameVideo = string.Empty;
             dataContext.FilePath = string.Empty;
+            Common.LogDebug("[SsvManager][preview] cleared");
         }
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,10 +203,23 @@ namespace ScreenshotsVisualizer.Views
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
                 ((SsvScreenshotsManagerData)DataContext).FileNameVideo = string.Empty;
                 ((SsvScreenshotsManagerData)DataContext).FilePath = string.Empty;
+                Common.LogDebug("[SsvManager][preview] cleared");
                 return;
             }
 
             Screenshot item = listbox.SelectedItem as Screenshot;
+            if (item == null)
+            {
+                return;
+            }
+
+            bool exists = File.Exists(item.FileName);
+            Common.LogDebug(string.Format(
+                "[SsvManager][preview] isVideo={0} exists={1} file={2}",
+                item.IsVideo,
+                exists,
+                item.FileNameOnly));
+
             if (item.IsVideo)
             {
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
