@@ -153,6 +153,7 @@
     <Compile Include="Models\SsvPresetMigrationResult.cs" />
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
     <Compile Include="Models\SsvMediaFormatCatalog.cs" />
+    <Compile Include="Models\SsvMediaDecodeEngine.cs" />
     <Compile Include="Models\SsvMediaFormatDefinition.cs" />
     <Compile Include="Models\SsvMediaFormatKind.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />

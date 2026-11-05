@@ -12,24 +12,21 @@ namespace ScreenshotsVisualizer.Models
         /// <param name="kind">Image or video category.</param>
         /// <param name="enabledByDefault">Whether the extension is enabled when settings are first created.</param>
         /// <param name="isEssential">Whether the extension must remain enabled when settings are persisted.</param>
-        /// <param name="requiresWicCodec">Whether decoding depends on an optional Windows WIC codec.</param>
-        /// <param name="requiresCustomDecoder">Whether decoding uses a non-WIC plugin decoder.</param>
+        /// <param name="decodeEngine">Primary decode or media pipeline for this format.</param>
         /// <param name="codecHintResourceKey">Localization key describing codec requirements for tooltips.</param>
         public SsvMediaFormatDefinition(
             string extension,
             SsvMediaFormatKind kind,
             bool enabledByDefault,
             bool isEssential,
-            bool requiresWicCodec,
-            bool requiresCustomDecoder,
+            SsvMediaDecodeEngine decodeEngine,
             string codecHintResourceKey)
         {
             Extension = extension;
             Kind = kind;
             EnabledByDefault = enabledByDefault;
             IsEssential = isEssential;
-            RequiresWicCodec = requiresWicCodec;
-            RequiresCustomDecoder = requiresCustomDecoder;
+            DecodeEngine = decodeEngine;
             CodecHintResourceKey = codecHintResourceKey;
         }
 
@@ -54,14 +51,9 @@ namespace ScreenshotsVisualizer.Models
         public bool IsEssential { get; }
 
         /// <summary>
-        /// Gets whether display depends on an optional Windows Store WIC codec.
+        /// Gets the primary decode or media pipeline for this format.
         /// </summary>
-        public bool RequiresWicCodec { get; }
-
-        /// <summary>
-        /// Gets whether the plugin supplies a custom decoder (for example TGA).
-        /// </summary>
-        public bool RequiresCustomDecoder { get; }
+        public SsvMediaDecodeEngine DecodeEngine { get; }
 
         /// <summary>
         /// Gets the localization resource key for codec requirement hints.

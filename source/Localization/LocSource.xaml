@@ -45,8 +45,8 @@
     <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">This extension is already listed.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Custom extension; display depends on Windows or installed codecs.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decoded by built-in Windows imaging support.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (AV1, WebP or HEIF extension).</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecMagickHost">Decoded by Playnite (Magick.NET). JPEG XL requires Playnite 10.63 or newer.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (for example the HEIF extension).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecMagickHost">Decoded by Playnite (Magick.NET: WebP, AVIF, JPEG XL). JPEG XL requires Playnite 10.63 or newer.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Decoded by the plugin (TGA).</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Video thumbnail and metadata use ffmpeg/ffprobe paths from the Misc tab.</sys:String>
 
