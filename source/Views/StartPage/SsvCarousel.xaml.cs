@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -36,6 +35,9 @@ namespace ScreenshotsVisualizer.Views.StartPage
         private System.Timers.Timer Timer { get; set; }
         private bool WindowsIsActivated { get; set; } = true;
         private bool IsNext { get; set; } = true;
+
+        private bool _lifecycleHooksAttached;
+        private Window _mainWindowHooked;
 
 
         public SsvCarousel()
@@ -111,19 +113,18 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
             _ = Task.Run(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                if (!TryInvokeOnUi(() =>
                 {
-                    if (Timer != null)
-                    {
-                        Timer.Stop();
-                        Timer.Dispose();
-                        Timer = null;
-                    }
+                    StopAndDisposeTimer();
 
                     SetImage(null);
                     Screenshots.Clear();
                     Index = 0;
-                });
+                }))
+                {
+                    Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at start");
+                    return;
+                }
 
                 Random r = new Random();
 
@@ -174,14 +175,14 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     temp.Sort((z, y) => r.Next(-1, 1));
                 }
 
-                Application.Current.Dispatcher.Invoke(() =>
+                if (!TryInvokeOnUi(() =>
                 {
                     Screenshots = temp.Where(x => File.Exists(x.FileName)).ToObservable();
                     if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange)
                     {
                         Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
-                        Timer.Start();
                         Timer.Elapsed += Timer_Elapsed;
+                        Timer.Start();
                     }
                     if (Screenshots != null && Screenshots.Count > 0)
                     {
@@ -192,7 +193,10 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     {
                         Index = 0;
                     }
-                });
+                }))
+                {
+                    Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at apply");
+                }
             });
         }
 
@@ -203,10 +207,18 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 return;
             }
 
-            Application.Current.Dispatcher.Invoke(() =>
+            if (!TryInvokeOnUi(() =>
             {
+                if (!IsLoaded)
+                {
+                    return;
+                }
+
                 ButtonNext_Click(null, null);
-            });
+            }))
+            {
+                Logger.Debug("[SsvCarousel][timer] skipped — no UI dispatcher (shutdown)");
+            }
         }
 
         private void PART_Contener_MouseDown(object sender, MouseButtonEventArgs e)
@@ -318,6 +330,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             ButtonNext.Visibility = Visibility.Collapsed;
             ButtonPrev.Visibility = Visibility.Collapsed;
         }
+
         private void PART_Contener_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (((FrameworkElement)sender).IsVisible)
@@ -337,13 +350,24 @@ namespace ScreenshotsVisualizer.Views.StartPage
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
-                Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                if (!TryBeginInvokeOnUi(() =>
                 {
+                    if (!IsLoaded)
+                    {
+                        return;
+                    }
+
                     WindowsIsActivated = false;
-                    PART_Video.LoadedBehavior = MediaState.Pause;
+                    if (PART_Video != null)
+                    {
+                        PART_Video.LoadedBehavior = MediaState.Pause;
+                    }
 
                     Timer?.Stop();
-                }));
+                }))
+                {
+                    Logger.Debug("[SsvCarousel][deactivated] skipped — no UI dispatcher (shutdown)");
+                }
             });
         }
 
@@ -352,15 +376,27 @@ namespace ScreenshotsVisualizer.Views.StartPage
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
-                Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                if (!TryBeginInvokeOnUi(() =>
                 {
+                    if (!IsLoaded)
+                    {
+                        return;
+                    }
+
                     WindowsIsActivated = true;
-                    PART_Video.LoadedBehavior = MediaState.Pause;
+                    if (PART_Video != null)
+                    {
+                        PART_Video.LoadedBehavior = MediaState.Pause;
+                    }
 
                     Timer?.Start();
-                }));
+                }))
+                {
+                    Logger.Debug("[SsvCarousel][activated] skipped — no UI dispatcher (shutdown)");
+                }
             });
         }
+
         private void MainWindow_StateChanged(object sender, EventArgs e)
         {
             switch (((Window)sender).WindowState)
@@ -383,10 +419,167 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private void PART_Contener_Loaded(object sender, RoutedEventArgs e)
         {
-            // Activate/Deactivated animation
-            Application.Current.Activated += Application_Activated;
-            Application.Current.Deactivated += Application_Deactivated;
-            Application.Current.MainWindow.StateChanged += MainWindow_StateChanged;
+            AttachLifecycleHooks();
+
+            // Start Page may fire Unloaded then Loaded again; ctor Update can finish while detached.
+            if (Screenshots == null || Screenshots.Count == 0)
+            {
+                Logger.Debug("[SsvCarousel][loaded] empty carousel — refreshing");
+                Update();
+            }
+            else
+            {
+                SetImage(Screenshots[Index < Screenshots.Count ? Index : 0]);
+                if (Screenshots.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange && Timer == null)
+                {
+                    Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
+                    Timer.Elapsed += Timer_Elapsed;
+                    Timer.Start();
+                }
+                else
+                {
+                    Timer?.Start();
+                }
+            }
+        }
+
+        private void PART_Contener_Unloaded(object sender, RoutedEventArgs e)
+        {
+            DetachLifecycleHooks();
+            StopAndDisposeTimer();
+            Logger.Debug("[SsvCarousel][unloaded] timer stopped and lifecycle hooks detached");
+        }
+
+        private void AttachLifecycleHooks()
+        {
+            if (_lifecycleHooksAttached)
+            {
+                return;
+            }
+
+            Application app = Application.Current;
+            if (app == null)
+            {
+                Logger.Debug("[SsvCarousel][loaded] skipped lifecycle hooks — Application.Current is null");
+                return;
+            }
+
+            app.Activated += Application_Activated;
+            app.Deactivated += Application_Deactivated;
+
+            Window mainWindow = app.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.StateChanged += MainWindow_StateChanged;
+                _mainWindowHooked = mainWindow;
+            }
+
+            _lifecycleHooksAttached = true;
+        }
+
+        private void DetachLifecycleHooks()
+        {
+            if (!_lifecycleHooksAttached)
+            {
+                return;
+            }
+
+            Application app = Application.Current;
+            if (app != null)
+            {
+                app.Activated -= Application_Activated;
+                app.Deactivated -= Application_Deactivated;
+            }
+
+            if (_mainWindowHooked != null)
+            {
+                _mainWindowHooked.StateChanged -= MainWindow_StateChanged;
+                _mainWindowHooked = null;
+            }
+
+            _lifecycleHooksAttached = false;
+        }
+
+        private void StopAndDisposeTimer()
+        {
+            if (Timer == null)
+            {
+                return;
+            }
+
+            Timer.Elapsed -= Timer_Elapsed;
+            Timer.Stop();
+            Timer.Dispose();
+            Timer = null;
+        }
+
+        /// <summary>
+        /// Invokes <paramref name="action"/> on the UI dispatcher when the host application is still alive.
+        /// </summary>
+        /// <param name="action">UI work to run.</param>
+        /// <returns><c>true</c> when the action was invoked; otherwise <c>false</c>.</returns>
+        private bool TryInvokeOnUi(Action action)
+        {
+            Dispatcher dispatcher = GetLiveUiDispatcher();
+            if (dispatcher == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                dispatcher.Invoke(action);
+                return true;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Queues <paramref name="action"/> on the UI dispatcher when the host application is still alive.
+        /// </summary>
+        /// <param name="action">UI work to run.</param>
+        /// <returns><c>true</c> when the action was queued; otherwise <c>false</c>.</returns>
+        private bool TryBeginInvokeOnUi(Action action)
+        {
+            Dispatcher dispatcher = GetLiveUiDispatcher();
+            if (dispatcher == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                _ = dispatcher.BeginInvoke(DispatcherPriority.Normal, action);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        private Dispatcher GetLiveUiDispatcher()
+        {
+            Application app = Application.Current;
+            if (app == null)
+            {
+                return null;
+            }
+
+            Dispatcher dispatcher = app.Dispatcher;
+            if (dispatcher == null || dispatcher.HasShutdownStarted || dispatcher.HasShutdownFinished)
+            {
+                return null;
+            }
+
+            return dispatcher;
         }
     }
 }
