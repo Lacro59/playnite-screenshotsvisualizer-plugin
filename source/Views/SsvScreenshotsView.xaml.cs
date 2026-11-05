@@ -189,24 +189,16 @@ namespace ScreenshotsVisualizer.Views
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
             Screenshot screenshot = PART_ListScreenshots.SelectedItem as Screenshot;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
-                try
-                {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
-                    Clipboard.SetDataObject(img);
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
+                SsvClipboardHelper.TryCopyImageFile(screenshot.FileName);
             }
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
                 PART_Copy.Visibility = Visibility.Visible;
             }

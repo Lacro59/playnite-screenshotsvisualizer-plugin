@@ -204,15 +204,7 @@ namespace ScreenshotsVisualizer.Views
                 return;
             }
 
-            try
-            {
-                System.Drawing.Image img = System.Drawing.Image.FromFile(Screenshot.FileName);
-                Clipboard.SetDataObject(img);
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
+            SsvClipboardHelper.TryCopyImageFile(Screenshot.FileName);
         }
 
         private void PART_Expand_Click(object sender, RoutedEventArgs e)

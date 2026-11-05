@@ -64,7 +64,7 @@ namespace ScreenshotsVisualizer.Views
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            _ = Task.Run(() => 
+            _ = Task.Run(() =>
             {
                 try
                 {
@@ -269,24 +269,16 @@ namespace ScreenshotsVisualizer.Views
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
             Screenshot screenshot = PART_ListScreenshots.SelectedItem as Screenshot;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
-                try
-                {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
-                    Clipboard.SetDataObject(img);
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
+                SsvClipboardHelper.TryCopyImageFile(screenshot.FileName);
             }
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
                 PART_Copy.Visibility = Visibility.Visible;
             }
@@ -334,7 +326,7 @@ namespace ScreenshotsVisualizer.Views
 
         public Guid Id { get; set; }
         public string Icon { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
         public string SourceIcon => TransformIcon.Get(SourceName);
