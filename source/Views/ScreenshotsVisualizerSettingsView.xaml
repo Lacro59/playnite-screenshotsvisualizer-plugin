@@ -206,6 +206,8 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="10" />
                                         <RowDefinition Height="auto" />
+                                        <RowDefinition Height="10" />
+                                        <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Grid.Column="0" Grid.Row="0"
@@ -244,7 +246,14 @@
                                         </DockPanel>
                                     </StackPanel>
 
-                                    <TextBlock Grid.Row="4" Grid.ColumnSpan="5" Text="{DynamicResource LOCSsvMoveFolderExplain}"
+                                    <CheckBox Grid.Row="4" Grid.ColumnSpan="5"
+                                              IsChecked="{Binding Settings.ArchiveIncludeInConversion, FallbackValue=True}">
+                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                                                   Text="{DynamicResource LOCSsvArchiveIncludeInConversion}"
+                                                   TextWrapping="Wrap" />
+                                    </CheckBox>
+
+                                    <TextBlock Grid.Row="6" Grid.ColumnSpan="5" Text="{DynamicResource LOCSsvMoveFolderExplain}"
                                                Style="{DynamicResource BaseTextBlockStyle}" TextWrapping="Wrap" />
                                 </Grid>
                             </StackPanel>

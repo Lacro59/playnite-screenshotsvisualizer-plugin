@@ -105,6 +105,66 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
         }
 
         /// <summary>
+        /// Gets or sets whether files from this source are included in archive / move-to-folder operations.
+        /// </summary>
+        public bool IncludeInArchive
+        {
+            get => _settings.IncludeInArchive;
+            set
+            {
+                if (_settings.IncludeInArchive != value)
+                {
+                    _settings.IncludeInArchive = value;
+                    OnPropertyChanged();
+                    NotifyOperationStatusPropertiesChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether files from this source are included in ImageMagick conversion operations.
+        /// </summary>
+        public bool IncludeInConversion
+        {
+            get => _settings.IncludeInConversion;
+            set
+            {
+                if (_settings.IncludeInConversion != value)
+                {
+                    _settings.IncludeInConversion = value;
+                    OnPropertyChanged();
+                    NotifyOperationStatusPropertiesChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets display opacity for the archive-operation status glyph (dimmed when excluded).
+        /// </summary>
+        public double ArchiveOperationOpacity => IncludeInArchive ? 1.0 : 0.35;
+
+        /// <summary>
+        /// Gets display opacity for the conversion-operation status glyph (dimmed when excluded).
+        /// </summary>
+        public double ConversionOperationOpacity => IncludeInConversion ? 1.0 : 0.35;
+
+        /// <summary>
+        /// Gets the localized tooltip for archive-operation inclusion state.
+        /// </summary>
+        public string ArchiveOperationToolTip =>
+            ResourceProvider.GetString(IncludeInArchive
+                ? "LOCSsvSourceListIncludedInArchive"
+                : "LOCSsvSourceListExcludedFromArchive");
+
+        /// <summary>
+        /// Gets the localized tooltip for conversion-operation inclusion state.
+        /// </summary>
+        public string ConversionOperationToolTip =>
+            ResourceProvider.GetString(IncludeInConversion
+                ? "LOCSsvSourceListIncludedInConversion"
+                : "LOCSsvSourceListExcludedFromConversion");
+
+        /// <summary>
         /// Gets or sets how Playnite library sources constrain this global source entry.
         /// </summary>
         public SourceFilterMode ApplicableSourceFilterMode
@@ -282,6 +342,9 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             UsedFilePattern = settings.UsedFilePattern;
             ScanSubFolders = settings.ScanSubFolders;
             FilePattern = settings.FilePattern;
+            IncludeInArchive = settings.IncludeInArchive;
+            IncludeInConversion = settings.IncludeInConversion;
+            NotifyOperationStatusPropertiesChanged();
             ApplicableSourceFilterMode = settings.ApplicableSourceFilterMode;
             SetApplicableSources(settings.ApplicableSources);
             ApplicableEmulatorFilter = settings.ApplicableEmulatorFilter;
@@ -295,6 +358,14 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             OnPropertyChanged(nameof(ScanSubFoldersSummary));
             OnPropertyChanged(nameof(ShowApplicabilitySummary));
             OnPropertyChanged(nameof(ApplicabilitySummary));
+        }
+
+        private void NotifyOperationStatusPropertiesChanged()
+        {
+            OnPropertyChanged(nameof(ArchiveOperationOpacity));
+            OnPropertyChanged(nameof(ConversionOperationOpacity));
+            OnPropertyChanged(nameof(ArchiveOperationToolTip));
+            OnPropertyChanged(nameof(ConversionOperationToolTip));
         }
     }
 }

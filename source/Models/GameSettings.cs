@@ -48,7 +48,7 @@ namespace ScreenshotsVisualizer.Models
 
 
     /// <summary>
-    /// Screenshot folder path, scan options, and optional global applicability constraints.
+    /// Screenshot folder path, scan options, operation inclusion flags, and optional global applicability constraints.
     /// Applicability fields are meaningful only for entries in
     /// <see cref="ScreenshotsVisualizerSettings.GlobalScreenshotSources"/>; they are ignored on per-game folders.
     /// </summary>
@@ -75,6 +75,18 @@ namespace ScreenshotsVisualizer.Models
         public string ScreenshotsFolder { get; set; }
 
         /// <summary>
+        /// Gets or sets whether files from this source are included in archive / move-to-folder operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool IncludeInArchive { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether files from this source are included in ImageMagick conversion operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool IncludeInConversion { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets how Playnite library source names constrain this global source.
         /// Default <see cref="SourceFilterMode.All"/> applies to every source.
         /// </summary>
@@ -94,7 +106,7 @@ namespace ScreenshotsVisualizer.Models
         public SsvApplicableEmulatorFilter ApplicableEmulatorFilter { get; set; } = SsvApplicableEmulatorFilter.None;
 
         /// <summary>
-        /// Creates a shallow copy of this folder settings instance, including applicability fields.
+        /// Creates a shallow copy of this folder settings instance, including applicability and operation flags.
         /// </summary>
         /// <returns>A new <see cref="FolderSettings"/> with the same values.</returns>
         public FolderSettings Clone()
@@ -105,6 +117,8 @@ namespace ScreenshotsVisualizer.Models
                 UsedFilePattern = UsedFilePattern,
                 FilePattern = FilePattern,
                 ScreenshotsFolder = ScreenshotsFolder,
+                IncludeInArchive = IncludeInArchive,
+                IncludeInConversion = IncludeInConversion,
                 ApplicableSourceFilterMode = ApplicableSourceFilterMode,
                 ApplicableSources = ApplicableSources != null
                     ? new List<string>(ApplicableSources)

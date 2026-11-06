@@ -10,6 +10,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" VerticalAlignment="Center">
@@ -32,7 +34,32 @@
                                            Visibility="{Binding ShowApplicabilitySummary, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 
-            <Button Grid.Column="2"
+            <!-- Archive: PlayniteBase save glyph &#xee00; · Conversion: Media UpdateDbIcon &#xefd1; -->
+            <StackPanel Grid.Column="2"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                           FontFamily="{DynamicResource FontIcoFont}"
+                           FontWeight="Light"
+                           FontSize="{DynamicResource FontSize}"
+                           Foreground="{DynamicResource GlyphBrush}"
+                           Text="&#xee00;"
+                           Opacity="{Binding ArchiveOperationOpacity}"
+                           ToolTip="{Binding ArchiveOperationToolTip}"
+                           Margin="0,0,8,0"
+                           VerticalAlignment="Center" />
+                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                           FontFamily="{DynamicResource FontIcoFont}"
+                           FontWeight="Light"
+                           FontSize="{DynamicResource FontSize}"
+                           Foreground="{DynamicResource GlyphBrush}"
+                           Text="&#xefd1;"
+                           Opacity="{Binding ConversionOperationOpacity}"
+                           ToolTip="{Binding ConversionOperationToolTip}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+
+            <Button Grid.Column="4"
                     VerticalAlignment="Center"
                     Style="{DynamicResource ListRowHoverRevealIconButton}"
                     FontFamily="{DynamicResource CommonFont}"

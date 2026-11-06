@@ -51,7 +51,10 @@ namespace ScreenshotsVisualizer.Services
             {
                 ScreenshotsFolder = settings.FolderToSave,
                 UsedFilePattern = true,
-                FilePattern = settings.FileSavePattern ?? string.Empty
+                FilePattern = settings.FileSavePattern ?? string.Empty,
+                // Archive destination is not a move source; conversion follows the dedicated settings flag.
+                IncludeInArchive = false,
+                IncludeInConversion = settings.ArchiveIncludeInConversion
             };
         }
 

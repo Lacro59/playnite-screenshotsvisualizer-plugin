@@ -120,6 +120,11 @@
     <sys:String x:Key="LOCSsvGlobalPath">Global screenshots path</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">Scan sub folders</sys:String>
+    <sys:String x:Key="LOCSsvFolderOperationsSection">Operations</sys:String>
+    <sys:String x:Key="LOCSsvFolderOperationsHint">Choose whether screenshots from this source are included when moving to the archive folder or converting images. Scanning and gallery are unchanged.</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInArchive">Include in archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInConversion">Include in image conversion</sys:String>
+    <sys:String x:Key="LOCSsvArchiveIncludeInConversion">Include archive folder in image conversion</sys:String>
 
     <sys:String x:Key="LOCSsvAddTag">Add tag if the game has screenshots</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Add Steam game</sys:String>
@@ -259,6 +264,10 @@ Archive destination:
     <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">File pattern: {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources: {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Excluded sources: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInArchive">Included in archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromArchive">Excluded from archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInConversion">Included in image conversion</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromConversion">Excluded from image conversion</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>

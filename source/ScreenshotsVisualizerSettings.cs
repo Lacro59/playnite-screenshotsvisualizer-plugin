@@ -1,4 +1,4 @@
-﻿using Playnite.SDK;
+using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.ViewModels.Settings;
@@ -101,6 +101,13 @@ namespace ScreenshotsVisualizer
         public string FileSavePattern { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets whether files under the archive destination (<see cref="FolderToSave"/>)
+        /// are included in ImageMagick conversion operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool ArchiveIncludeInConversion { get; set; } = true;
+
+        /// <summary>
         /// Legacy single global screenshot folder path. Migrated into <see cref="GlobalScreenshotSources"/> on load.
         /// Kept for JSON backward compatibility until all consumers use the list.
         /// </summary>
@@ -176,7 +183,7 @@ namespace ScreenshotsVisualizer
 
         private SsvCarouselOptions _ssvCarouselOptions = new SsvCarouselOptions();
         public SsvCarouselOptions ssvCarouselOptions { get => _ssvCarouselOptions; set => SetValue(ref _ssvCarouselOptions, value); }
-        
+
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -186,7 +193,7 @@ namespace ScreenshotsVisualizer
         private List<Screenshot> _listScreenshots = new List<Screenshot>();
         [DontSerialize]
         public List<Screenshot> ListScreenshots { get => _listScreenshots; set => SetValue(ref _listScreenshots, value); }
-        
+
         #endregion
 
         #region Global screenshot sources

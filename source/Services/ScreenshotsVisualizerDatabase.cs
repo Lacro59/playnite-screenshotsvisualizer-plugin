@@ -432,14 +432,20 @@ namespace ScreenshotsVisualizer.Services
                         pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, pathFolder);
                         pathFolder = PathValidator.GetSafePath(pathFolder, false);
 
-                        LogScanDebug(string.Format(
-                            "MoveToFolderToSave started for '{0}' — destination '{1}' (global FolderToSave / FileSavePattern)",
-                            game.Name,
-                            pathFolder));
-
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
                         int movedCount = 0;
+                        int excludedSourceCount = 0;
+                        List<string> includedArchiveRoots = SsvFolderOperationFilter.BuildIncludedArchiveRoots(
+                            game,
+                            gameSettings?.ScreenshotsFolders,
+                            _pathResolver);
+
+                        LogScanDebug(string.Format(
+                            "MoveToFolderToSave started for '{0}' — destination '{1}', {2} included archive root(s)",
+                            game.Name,
+                            pathFolder,
+                            includedArchiveRoots.Count));
 
                         FileSystem.CreateDirectory(pathFolder);
 
@@ -451,6 +457,12 @@ namespace ScreenshotsVisualizer.Services
 
                             if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(pathFolder, StringComparison.InvariantCultureIgnoreCase))
                             {
+                                if (!SsvFolderOperationFilter.IsFileIncluded(screenshot.FileName, includedArchiveRoots))
+                                {
+                                    excludedSourceCount++;
+                                    continue;
+                                }
+
                                 string ext = Path.GetExtension(screenshot.FileName);
 
                                 pattern = pattern.Replace("{DateModified}", screenshot.Modifed.ToString("yyyy-MM-dd"));
@@ -506,10 +518,11 @@ namespace ScreenshotsVisualizer.Services
                         }
 
                         LogScanDebug(string.Format(
-                            "MoveToFolderToSave completed for '{0}' — {1} file(s) moved to '{2}'",
+                            "MoveToFolderToSave completed for '{0}' — {1} file(s) moved to '{2}', {3} excluded by source flags",
                             game.Name,
                             movedCount,
-                            pathFolder));
+                            pathFolder,
+                            excludedSourceCount));
 
                         // Refresh data
                         if (gameSettings != null)
@@ -613,16 +626,24 @@ namespace ScreenshotsVisualizer.Services
 
             int videoCount = data.Items.Count(x => x.IsVideo);
             int imageCount = data.Items.Count - videoCount;
+            GameSettings effectiveSettings = GetGameSettings(game.Id);
+            List<string> includedConversionRoots = SsvFolderOperationFilter.BuildIncludedConversionRoots(
+                game,
+                effectiveSettings?.ScreenshotsFolders,
+                _pathResolver);
+
             LogScanDebug(string.Format(
-                "ConvertGameScreenshots started for '{0}' — profile '{1}' ({2}), {3} image(s), {4} video(s) skipped",
+                "ConvertGameScreenshots started for '{0}' — profile '{1}' ({2}), {3} image(s), {4} video(s) skipped, {5} included conversion root(s)",
                 game.Name,
                 GetConversionProfileLogLabel(command),
                 command.OutputFormat ?? string.Empty,
                 imageCount,
-                videoCount));
+                videoCount,
+                includedConversionRoots.Count));
 
             int convertedCount = 0;
             int skippedOutputFormatCount = 0;
+            int excludedSourceCount = 0;
             foreach (Screenshot screenshot in data.Items)
             {
                 if (progress?.CancelToken.IsCancellationRequested == true)
@@ -632,6 +653,13 @@ namespace ScreenshotsVisualizer.Services
 
                 if (screenshot.IsVideo)
                 {
+                    continue;
+                }
+
+                if (!SsvFolderOperationFilter.IsFileIncluded(screenshot.FileName, includedConversionRoots))
+                {
+                    excludedSourceCount++;
+                    AdvanceConversionFileProgress(progress, game, screenshot);
                     continue;
                 }
 
@@ -657,11 +685,12 @@ namespace ScreenshotsVisualizer.Services
             }
 
             LogScanDebug(string.Format(
-                "ConvertGameScreenshots completed for '{0}' — profile '{1}', {2} file(s) converted, {3} already in target format",
+                "ConvertGameScreenshots completed for '{0}' — profile '{1}', {2} file(s) converted, {3} already in target format, {4} excluded by source flags",
                 game.Name,
                 GetConversionProfileLogLabel(command),
                 convertedCount,
-                skippedOutputFormatCount));
+                skippedOutputFormatCount,
+                excludedSourceCount));
 
             return hasConverted;
         }

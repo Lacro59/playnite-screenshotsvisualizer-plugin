@@ -220,6 +220,7 @@
     <Compile Include="Services\SsvScreenshotDeleteResult.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
+    <Compile Include="Services\SsvFolderOperationFilter.cs" />
     <Compile Include="Services\SsvClipboardHelper.cs" />
     <Compile Include="Services\SsvGlobalSourceFolderHelper.cs" />
     <Compile Include="Services\SsvPresetFolderHelper.cs" />
