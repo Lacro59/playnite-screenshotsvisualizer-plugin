@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Commands;
 using CommonPluginsShared.UI;
 using CommonPluginsShared.Utilities;
@@ -27,6 +27,7 @@ namespace ScreenshotsVisualizer.Views
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
+        private int _infosSequence;
 
         public SsvScreenshotsManager()
         {
@@ -121,42 +122,136 @@ namespace ScreenshotsVisualizer.Views
         }
 
 
+        private const int InfosUiPublishIntervalMs = 100;
+
         private void SetInfos()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            int sequence = Interlocked.Increment(ref _infosSequence);
+            PublishInfosProgress(sequence, 0, 0, 0, 0);
 
-            List<Screenshot> screenOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
-            int ScreenshotsCount = screenOnly.Count;
-            long ScreenshotsTotalSize = 0;
-            foreach (Screenshot item in screenOnly)
+            _ = Task.Run(() =>
             {
-                ScreenshotsTotalSize += item.FileSize;
-            }
-            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                Stopwatch uiPublishWatch = Stopwatch.StartNew();
+                try
+                {
+                    List<GameScreenshots> allGames = PluginDatabase.GetAllCache().ToList();
+                    int screenshotsCount = 0;
+                    int videosCount = 0;
+                    long screenshotsTotalSize = 0;
+                    long videosTotalSize = 0;
 
+                    foreach (GameScreenshots gameScreenshots in allGames)
+                    {
+                        if (sequence != Volatile.Read(ref _infosSequence))
+                        {
+                            return;
+                        }
 
-            List<Screenshot> videoOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => x.IsVideo).ToList();
-            int VideosCount = videoOnly.Count;
-            long VideosTotalSize = 0;
-            foreach (Screenshot item in videoOnly)
+                        if (gameScreenshots?.Items != null)
+                        {
+                            foreach (Screenshot item in gameScreenshots.Items)
+                            {
+                                if (item == null)
+                                {
+                                    continue;
+                                }
+
+                                if (item.IsVideo)
+                                {
+                                    videosCount++;
+                                    videosTotalSize += item.FileSize;
+                                }
+                                else
+                                {
+                                    screenshotsCount++;
+                                    screenshotsTotalSize += item.FileSize;
+                                }
+                            }
+                        }
+
+                        if (uiPublishWatch.ElapsedMilliseconds >= InfosUiPublishIntervalMs)
+                        {
+                            uiPublishWatch.Restart();
+                            PublishInfosProgress(
+                                sequence,
+                                screenshotsCount,
+                                videosCount,
+                                screenshotsTotalSize,
+                                videosTotalSize);
+                        }
+                    }
+
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][infos] screenshots={0} videos={1} files={2} ms={3}",
+                        screenshotsCount,
+                        videosCount,
+                        screenshotsCount + videosCount,
+                        stopwatch.ElapsedMilliseconds));
+
+                    PublishInfosProgress(
+                        sequence,
+                        screenshotsCount,
+                        videosCount,
+                        screenshotsTotalSize,
+                        videosTotalSize);
+                }
+                catch (Exception ex)
+                {
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][infos] screenshots=0 videos=0 files=0 ms={0} failed=true",
+                        stopwatch.ElapsedMilliseconds));
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    PublishInfosProgress(sequence, 0, 0, 0, 0);
+                }
+            });
+        }
+
+        private void PublishInfosProgress(
+            int sequence,
+            int screenshotsCount,
+            int videosCount,
+            long screenshotsTotalSize,
+            long videosTotalSize)
+        {
+            string screenshotsCountText = FormatScreenshotsCount(screenshotsCount);
+            string videosCountText = FormatVideosCount(videosCount);
+            string screenshotsSizeText = UtilityTools.SizeSuffix(screenshotsTotalSize);
+            string videosSizeText = UtilityTools.SizeSuffix(videosTotalSize);
+            string filesCountText = (screenshotsCount + videosCount).ToString();
+            string filesSizeText = UtilityTools.SizeSuffix(screenshotsTotalSize + videosTotalSize);
+
+            _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
             {
-                VideosTotalSize += item.FileSize;
-            }
-            PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
+                if (sequence != Volatile.Read(ref _infosSequence))
+                {
+                    return;
+                }
 
+                SsvScreenshotsManagerData dataContext = (SsvScreenshotsManagerData)DataContext;
+                dataContext.InfosScreenshotsCountText = screenshotsCountText;
+                dataContext.InfosScreenshotsSizeText = screenshotsSizeText;
+                dataContext.InfosVideosCountText = videosCountText;
+                dataContext.InfosVideosSizeText = videosSizeText;
+                dataContext.InfosFilesCountText = filesCountText;
+                dataContext.InfosFilesSizeText = filesSizeText;
+            }));
+        }
 
-            PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+        private static string FormatScreenshotsCount(int count)
+        {
+            return count > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), count)
+                : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), count);
+        }
 
-            stopwatch.Stop();
-            Common.LogDebug(string.Format(
-                "[SsvManager][infos] screenshots={0} videos={1} files={2} ms={3}",
-                ScreenshotsCount,
-                VideosCount,
-                ScreenshotsCount + VideosCount,
-                stopwatch.ElapsedMilliseconds));
+        private static string FormatVideosCount(int count)
+        {
+            return count > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), count)
+                : string.Format(ResourceProvider.GetString("LOCSsvVideo"), count);
         }
 
 
@@ -362,6 +457,24 @@ namespace ScreenshotsVisualizer.Views
 
         private string _FilePath = string.Empty;
         public string FilePath { get => _FilePath; set => SetValue(ref _FilePath, value); }
+
+        private string _infosScreenshotsCountText = string.Empty;
+        public string InfosScreenshotsCountText { get => _infosScreenshotsCountText; set => SetValue(ref _infosScreenshotsCountText, value); }
+
+        private string _infosScreenshotsSizeText = string.Empty;
+        public string InfosScreenshotsSizeText { get => _infosScreenshotsSizeText; set => SetValue(ref _infosScreenshotsSizeText, value); }
+
+        private string _infosVideosCountText = string.Empty;
+        public string InfosVideosCountText { get => _infosVideosCountText; set => SetValue(ref _infosVideosCountText, value); }
+
+        private string _infosVideosSizeText = string.Empty;
+        public string InfosVideosSizeText { get => _infosVideosSizeText; set => SetValue(ref _infosVideosSizeText, value); }
+
+        private string _infosFilesCountText = "0";
+        public string InfosFilesCountText { get => _infosFilesCountText; set => SetValue(ref _infosFilesCountText, value); }
+
+        private string _infosFilesSizeText = string.Empty;
+        public string InfosFilesSizeText { get => _infosFilesSizeText; set => SetValue(ref _infosFilesSizeText, value); }
     }
 
 

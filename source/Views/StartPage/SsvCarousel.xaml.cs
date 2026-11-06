@@ -2,7 +2,6 @@ using CommonPluginsShared;
 using CommonPluginsShared.Commands;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
-using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
@@ -39,7 +38,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
         private bool _lifecycleHooksAttached;
         private Window _mainWindowHooked;
-
+        private int _updateSequence;
 
         public SsvCarousel()
         {
@@ -123,6 +122,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
         private void Update()
         {
             PART_Contener.Margin = new Thickness(PluginDatabase.PluginSettings.ssvCarouselOptions.Margin);
+            int sequence = Interlocked.Increment(ref _updateSequence);
 
             _ = Task.Run(() =>
             {
@@ -144,62 +144,104 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     return;
                 }
 
-                Random r = new Random();
-
-                List<GameScreenshots> pluginData = PluginDatabase.GetAllCache().Where(x => x.ScreenshotsCount > 0).ToList();
-                pluginData.Sort((z, y) => r.Next(-1, 1));
-
-                if (PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList?.Where(x => x.IsCheck)?.Count() > 0)
+                if (sequence != Volatile.Read(ref _updateSequence))
                 {
-                    pluginData = pluginData.Where(x => PluginDatabase.PluginSettings.ssvCarouselOptions.SourcesList.Where(y => y.IsCheck).Any(y => y.Name.IsEqual(x.Source?.Name))).ToList();
+                    return;
                 }
 
-                if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyFavorite)
+                var carouselOptions = PluginDatabase.PluginSettings.ssvCarouselOptions;
+                bool withVideo = carouselOptions.WithVideo;
+                bool onlyMostRecent = carouselOptions.OnlyMostRecent;
+                bool enableAllRandom = carouselOptions.EnableAllRandom;
+                int limitGame = carouselOptions.LimitGame;
+                int limitPerGame = carouselOptions.LimitPerGame;
+
+                List<string> checkedSourceNames = carouselOptions.SourcesList?
+                    .Where(x => x.IsCheck)
+                    .Select(x => x.Name)
+                    .ToList() ?? new List<string>();
+                bool filterBySource = checkedSourceNames.Count > 0;
+
+                // Use Items.Count / HasData — not ScreenshotsCount (that property File.Exists every file).
+                List<GameScreenshots> pluginData = PluginDatabase.GetAllCache()
+                    .Where(x => x.HasData && !x.Hidden)
+                    .ToList();
+
+                if (filterBySource)
+                {
+                    pluginData = pluginData
+                        .Where(x => checkedSourceNames.Any(name => name.IsEqual(x.Source?.Name)))
+                        .ToList();
+                }
+
+                if (carouselOptions.OnlyFavorite)
                 {
                     pluginData = pluginData.Where(x => x.Favorite).ToList();
                 }
 
-                if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame != 0)
+                ShuffleInPlace(pluginData);
+
+                if (limitGame != 0 && pluginData.Count > limitGame)
                 {
-                    pluginData = pluginData.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitGame).ToList();
+                    pluginData = pluginData.Take(limitGame).ToList();
                 }
 
-                List<Screenshot> temp = Screenshots.ToList();
-                pluginData.Where(x => x.Count > 0 && !x.Hidden).ToList().ForEach(x =>
+                List<Screenshot> temp = new List<Screenshot>();
+                foreach (GameScreenshots gameScreenshots in pluginData)
                 {
-                    List<Screenshot> data = Serialization.GetClone(x.Items.Where(y => PluginDatabase.PluginSettings.ssvCarouselOptions.WithVideo ? true : !y.IsVideo).ToList());
-                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.OnlyMostRecent)
+                    if (gameScreenshots.Items == null || gameScreenshots.Items.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    List<Screenshot> data = gameScreenshots.Items
+                        .Where(y => y != null && (withVideo || !y.IsVideo))
+                        .ToList();
+
+                    if (onlyMostRecent)
                     {
                         data = data.OrderByDescending(z => z.Modifed).ToList();
                     }
                     else
                     {
-                        r = new Random();
-                        data.Sort((z, y) => r.Next(-1, 1));
+                        ShuffleInPlace(data);
                     }
 
-                    if (PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame != 0)
+                    if (limitPerGame != 0 && data.Count > limitPerGame)
                     {
-                        data = data.Take(PluginDatabase.PluginSettings.ssvCarouselOptions.LimitPerGame).ToList();
+                        data = data.Take(limitPerGame).ToList();
                     }
 
-                    data.ForEach(c => c.GameId = x.Id);
-                    temp.AddRange(data);
-                });
+                    foreach (Screenshot screenshot in data)
+                    {
+                        screenshot.GameId = gameScreenshots.Id;
+                    }
 
-                if (PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAllRandom)
-                {
-                    r = new Random();
-                    temp.Sort((z, y) => r.Next(-1, 1));
+                    temp.AddRange(data);
                 }
 
-                List<Screenshot> existingScreenshots = temp.Where(x => File.Exists(x.FileName)).ToList();
+                if (enableAllRandom)
+                {
+                    ShuffleInPlace(temp);
+                }
+
+                if (sequence != Volatile.Read(ref _updateSequence))
+                {
+                    return;
+                }
+
+                List<Screenshot> existingScreenshots = FilterExistingFiles(temp);
                 if (!TryInvokeOnUi(() =>
                 {
-                    Screenshots = existingScreenshots.ToObservable();
-                    if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange)
+                    if (sequence != Volatile.Read(ref _updateSequence))
                     {
-                        Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
+                        return;
+                    }
+
+                    Screenshots = existingScreenshots.ToObservable();
+                    if (Screenshots?.Count > 2 && carouselOptions.EnableAutoChange)
+                    {
+                        Timer = new System.Timers.Timer(carouselOptions.Time * 1000);
                         Timer.Elapsed += Timer_Elapsed;
                         Timer.Start();
                     }
@@ -229,6 +271,59 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     existingScreenshots.Count,
                     stopwatch.ElapsedMilliseconds));
             });
+        }
+
+        /// <summary>
+        /// Keeps screenshots whose files exist, preserving order. Existence checks run in parallel.
+        /// </summary>
+        /// <param name="candidates">Ordered candidate screenshots.</param>
+        /// <returns>Screenshots with an existing file on disk.</returns>
+        private static List<Screenshot> FilterExistingFiles(List<Screenshot> candidates)
+        {
+            if (candidates == null || candidates.Count == 0)
+            {
+                return new List<Screenshot>();
+            }
+
+            bool[] exists = new bool[candidates.Count];
+            Parallel.For(0, candidates.Count, i =>
+            {
+                string fileName = candidates[i].FileName;
+                exists[i] = !string.IsNullOrEmpty(fileName) && File.Exists(fileName);
+            });
+
+            List<Screenshot> existing = new List<Screenshot>(candidates.Count);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (exists[i])
+                {
+                    existing.Add(candidates[i]);
+                }
+            }
+
+            return existing;
+        }
+
+        /// <summary>
+        /// Fisher–Yates shuffle (unbiased), replacing biased Sort with Random.Next(-1, 1).
+        /// </summary>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <param name="list">List to shuffle in place.</param>
+        private static void ShuffleInPlace<T>(IList<T> list)
+        {
+            if (list == null || list.Count < 2)
+            {
+                return;
+            }
+
+            Random random = new Random();
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                T swap = list[i];
+                list[i] = list[j];
+                list[j] = swap;
+            }
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
