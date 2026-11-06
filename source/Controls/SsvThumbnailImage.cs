@@ -3,6 +3,7 @@ using CommonPluginsShared;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
