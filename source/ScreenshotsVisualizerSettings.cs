@@ -6,6 +6,7 @@ using Playnite.SDK.Data;
 using System.Collections.Generic;
 using ScreenshotsVisualizer.Models.StartPage;
 using System.Linq;
+using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Utilities;
 using System.Threading.Tasks;
@@ -573,13 +574,28 @@ namespace ScreenshotsVisualizer
 
         /// <summary>
         /// Refreshes thumbnail cache statistics displayed in the settings view.
+        /// Failures are logged and replaced with neutral values so settings can still open.
         /// </summary>
         public void RefreshThumbnailCacheInfo()
         {
-            ThumbnailCacheStats stats = SsvThumbnailService.GetThumbnailCacheStats(
-                ScreenshotsVisualizer.PluginDatabase.Paths.PluginCachePath);
-            ThumbnailCacheFileCountText = stats.FileCount.ToString();
-            ThumbnailCacheSizeText = UtilityTools.SizeSuffix(stats.TotalBytes);
+            try
+            {
+                ThumbnailCacheStats stats = SsvThumbnailService.GetThumbnailCacheStats(
+                    ScreenshotsVisualizer.PluginDatabase.Paths.PluginCachePath);
+                ThumbnailCacheFileCountText = stats.FileCount.ToString();
+                ThumbnailCacheSizeText = UtilityTools.SizeSuffix(stats.TotalBytes);
+            }
+            catch (Exception ex)
+            {
+                ThumbnailCacheFileCountText = "0";
+                ThumbnailCacheSizeText = UtilityTools.SizeSuffix(0);
+                Common.LogError(
+                    ex,
+                    false,
+                    "[SsvThumbnail] Failed to refresh thumbnail cache stats.",
+                    false,
+                    ScreenshotsVisualizer.PluginName);
+            }
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.

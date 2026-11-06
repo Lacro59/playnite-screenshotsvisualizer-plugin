@@ -225,10 +225,24 @@ namespace ScreenshotsVisualizer.Services
                 return new ThumbnailCacheStats(0, 0);
             }
 
+            string[] filePaths;
+            try
+            {
+                filePaths = Directory.GetFiles(thumbnailsDirectory, "*", SearchOption.TopDirectoryOnly);
+            }
+            catch (Exception ex)
+            {
+                LogThumbnailWarn(string.Format(
+                    "Unable to list thumbnail cache directory '{0}': {1}",
+                    thumbnailsDirectory,
+                    ex.Message));
+                return new ThumbnailCacheStats(0, 0);
+            }
+
             int fileCount = 0;
             long totalBytes = 0;
 
-            foreach (string filePath in Directory.GetFiles(thumbnailsDirectory, "*", SearchOption.TopDirectoryOnly))
+            foreach (string filePath in filePaths)
             {
                 if (filePath.EndsWith(FailedMarkerSuffix, StringComparison.OrdinalIgnoreCase)
                     || filePath.EndsWith(TemporaryFileSuffix, StringComparison.OrdinalIgnoreCase))
@@ -236,9 +250,29 @@ namespace ScreenshotsVisualizer.Services
                     continue;
                 }
 
-                FileInfo fileInfo = new FileInfo(filePath);
-                fileCount++;
-                totalBytes += fileInfo.Length;
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    if (!fileInfo.Exists)
+                    {
+                        LogThumbnailDebug(string.Format(
+                            "Skipping missing thumbnail cache entry '{0}'",
+                            filePath));
+                        continue;
+                    }
+
+                    long length = fileInfo.Length;
+                    fileCount++;
+                    totalBytes += length;
+                }
+                catch (Exception ex)
+                {
+                    // Long / invalid cache paths can make Length throw even after GetFiles.
+                    LogThumbnailDebug(string.Format(
+                        "Skipping unreadable thumbnail cache entry '{0}': {1}",
+                        filePath,
+                        ex.Message));
+                }
             }
 
             return new ThumbnailCacheStats(fileCount, totalBytes);
