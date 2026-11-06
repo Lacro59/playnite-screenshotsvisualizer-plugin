@@ -156,6 +156,7 @@
     <Compile Include="Models\SsvMediaDecodeEngine.cs" />
     <Compile Include="Models\SsvMediaFormatDefinition.cs" />
     <Compile Include="Models\SsvMediaFormatKind.cs" />
+    <Compile Include="Models\SsvScreenshotListOptions.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
     <Compile Include="Models\SsvImageConversionResult.cs" />
     <Compile Include="Models\SsvVideoMetadata.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Services\ImageMagickCommandBuilder.cs" />
     <Compile Include="Services\ImageMagickConversionService.cs" />
     <Compile Include="Services\SsvScreenshotDeleteResult.cs" />
+    <Compile Include="Services\SsvScreenshotListOrder.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
     <Compile Include="Services\SsvFolderOperationFilter.cs" />

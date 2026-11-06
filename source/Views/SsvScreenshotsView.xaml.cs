@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Utilities;
 using Playnite.SDK;
 using Playnite.SDK.Models;
@@ -23,6 +23,7 @@ namespace ScreenshotsVisualizer.Views
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private GameScreenshots gameScreenshots { get; set; }
+        private bool _suppressListToolbarEvents;
 
 
         public SsvScreenshotsView(Game GameSelected)
@@ -32,12 +33,103 @@ namespace ScreenshotsVisualizer.Views
             PART_BtFolder.Visibility = Visibility.Collapsed;
             PART_ImgPath.Content = string.Empty;
 
+            InitializeListToolbar();
+
             gameScreenshots = PluginDatabase.Get(GameSelected);
             RefreshScreenshotList();
 
             SetInfos();
 
             PART_Copy.Visibility = Visibility.Collapsed;
+        }
+
+        private const string SortCaretAscending = "\uea6a";
+        private const string SortCaretDescending = "\uea67";
+
+        private void InitializeListToolbar()
+        {
+            _suppressListToolbarEvents = true;
+            try
+            {
+                PART_CbSortBy.ItemsSource = SsvScreenshotListOrder.CreateSortByChoices();
+                PART_CbMediaFilter.ItemsSource = SsvScreenshotListOrder.CreateMediaFilterChoices();
+
+                PART_CbSortBy.SelectedValue = PluginDatabase.PluginSettings.ScreenshotsListSortBy;
+                PART_CbMediaFilter.SelectedValue = PluginDatabase.PluginSettings.ScreenshotsListMediaFilter;
+                UpdateSortDirectionButton();
+            }
+            finally
+            {
+                _suppressListToolbarEvents = false;
+            }
+        }
+
+        private void PART_ListToolbar_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_suppressListToolbarEvents)
+            {
+                return;
+            }
+
+            PersistListToolbarSettings();
+            RefreshScreenshotList();
+            SetInfos();
+        }
+
+        private void PART_BtSortDirection_Click(object sender, RoutedEventArgs e)
+        {
+            if (_suppressListToolbarEvents)
+            {
+                return;
+            }
+
+            SsvScreenshotSortDirection current = PluginDatabase.PluginSettings.ScreenshotsListSortDirection;
+            PluginDatabase.PluginSettings.ScreenshotsListSortDirection =
+                current == SsvScreenshotSortDirection.Ascending
+                    ? SsvScreenshotSortDirection.Descending
+                    : SsvScreenshotSortDirection.Ascending;
+
+            UpdateSortDirectionButton();
+            PersistListToolbarSettings();
+            RefreshScreenshotList();
+            SetInfos();
+        }
+
+        private void UpdateSortDirectionButton()
+        {
+            bool descending = PluginDatabase.PluginSettings.ScreenshotsListSortDirection
+                == SsvScreenshotSortDirection.Descending;
+            PART_TbSortDirectionCaret.Text = descending ? SortCaretDescending : SortCaretAscending;
+            PART_BtSortDirection.ToolTip = ResourceProvider.GetString(
+                descending ? "LOCSsvSortDescending" : "LOCSsvSortAscending");
+        }
+
+        private void PersistListToolbarSettings()
+        {
+            if (PART_CbSortBy.SelectedValue is SsvScreenshotSortBy sortBy)
+            {
+                PluginDatabase.PluginSettings.ScreenshotsListSortBy = sortBy;
+            }
+
+            if (PART_CbMediaFilter.SelectedValue is SsvScreenshotMediaFilter mediaFilter)
+            {
+                PluginDatabase.PluginSettings.ScreenshotsListMediaFilter = mediaFilter;
+            }
+
+            try
+            {
+                PluginDatabase.PersistSettingsAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            Common.LogDebug(string.Format(
+                "[SsvScreenshotsView][toolbar] sortBy={0} direction={1} filter={2}",
+                PluginDatabase.PluginSettings.ScreenshotsListSortBy,
+                PluginDatabase.PluginSettings.ScreenshotsListSortDirection,
+                PluginDatabase.PluginSettings.ScreenshotsListMediaFilter));
         }
 
 
@@ -129,12 +221,27 @@ namespace ScreenshotsVisualizer.Views
                 gameScreenshots = cached;
             }
 
-            List<Screenshot> items = gameScreenshots?.Items != null
-                ? new List<Screenshot>(gameScreenshots.Items)
-                : new List<Screenshot>();
+            SsvScreenshotSortBy sortBy = PluginDatabase.PluginSettings.ScreenshotsListSortBy;
+            SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.ScreenshotsListSortDirection;
+            SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.ScreenshotsListMediaFilter;
 
-            items.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            List<Screenshot> items = SsvScreenshotListOrder.Apply(
+                gameScreenshots?.Items,
+                mediaFilter,
+                sortBy,
+                sortDirection);
+
             PART_ListScreenshots.ItemsSource = items;
+
+            SsvScreenshotListStats stats = SsvScreenshotListOrder.ComputeStats(items);
+            Common.LogDebug(string.Format(
+                "[SsvScreenshotsView][refresh] files={0} images={1} videos={2} sortBy={3} direction={4} filter={5}",
+                items.Count,
+                stats.ImageCount,
+                stats.VideoCount,
+                sortBy,
+                sortDirection,
+                mediaFilter));
         }
 
         private void ClearScreenshotPreview()
@@ -154,30 +261,21 @@ namespace ScreenshotsVisualizer.Views
 
         private void SetInfos()
         {
-            List<Screenshot> screenOnly = gameScreenshots.Items.FindAll(x => !x.IsVideo);
-            int ScreenshotsCount = screenOnly.Count;
-            long ScreenshotsTotalSize = 0;
-            foreach (Screenshot item in screenOnly)
-            {
-                ScreenshotsTotalSize += item.FileSize;
-            }
-            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
+            IEnumerable<Screenshot> displayed = PART_ListScreenshots.ItemsSource as IEnumerable<Screenshot>;
+            SsvScreenshotListStats stats = SsvScreenshotListOrder.ComputeStats(displayed);
 
+            PART_ScreenshotsCount.Content = stats.ImageCount > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), stats.ImageCount)
+                : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), stats.ImageCount);
+            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(stats.ImageTotalSize);
 
-            List<Screenshot> videoOnly = gameScreenshots.Items.FindAll(x => x.IsVideo);
-            int VideosCount = videoOnly.Count;
-            long VideosTotalSize = 0;
-            foreach (Screenshot item in videoOnly)
-            {
-                VideosTotalSize += item.FileSize;
-            }
-            PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
+            PART_VideosCount.Content = stats.VideoCount > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), stats.VideoCount)
+                : string.Format(ResourceProvider.GetString("LOCSsvVideo"), stats.VideoCount);
+            PART_VideosSize.Content = UtilityTools.SizeSuffix(stats.VideoTotalSize);
 
-
-            PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+            PART_FilesCount.Content = stats.FileCount;
+            PART_FilesSize.Content = UtilityTools.SizeSuffix(stats.FileTotalSize);
         }
 
 

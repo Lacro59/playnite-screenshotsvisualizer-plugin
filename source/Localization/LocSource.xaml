@@ -6,6 +6,22 @@
     <sys:String x:Key="LOCSsvVideo">{0} video</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} videos</sys:String>
 
+    <sys:String x:Key="LOCSsvSortBy">Sort by</sys:String>
+    <sys:String x:Key="LOCSsvSortByDate">Date</sys:String>
+    <sys:String x:Key="LOCSsvSortByName">Name</sys:String>
+    <sys:String x:Key="LOCSsvSortBySize">Size</sys:String>
+    <sys:String x:Key="LOCSsvSortByType">Type</sys:String>
+    <sys:String x:Key="LOCSsvSortAscending">Ascending</sys:String>
+    <sys:String x:Key="LOCSsvSortDescending">Descending</sys:String>
+    <sys:String x:Key="LOCSsvSortDirection">Sort direction</sys:String>
+    <sys:String x:Key="LOCSsvFilterMedia">Filter</sys:String>
+    <sys:String x:Key="LOCSsvFilterAll">All</sys:String>
+    <sys:String x:Key="LOCSsvFilterImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvFilterVideos">Videos</sys:String>
+    <sys:String x:Key="LOCSsvLibraryTotals">Library totals</sys:String>
+    <sys:String x:Key="LOCSsvColumnImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvColumnVideos">Videos</sys:String>
+    <sys:String x:Key="LOCSsvColumnSize">Size</sys:String>
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>

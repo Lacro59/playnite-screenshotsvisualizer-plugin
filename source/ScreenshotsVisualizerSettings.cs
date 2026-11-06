@@ -178,6 +178,36 @@ namespace ScreenshotsVisualizer
 
         public bool UseExternalViewer { get; set; } = false;
 
+        private SsvScreenshotSortBy _screenshotsListSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the persisted sort criterion for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotSortBy ScreenshotsListSortBy
+        {
+            get => _screenshotsListSortBy;
+            set => SetValue(ref _screenshotsListSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _screenshotsListSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the persisted sort direction for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotSortDirection ScreenshotsListSortDirection
+        {
+            get => _screenshotsListSortDirection;
+            set => SetValue(ref _screenshotsListSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _screenshotsListMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the persisted media-type filter for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotMediaFilter ScreenshotsListMediaFilter
+        {
+            get => _screenshotsListMediaFilter;
+            set => SetValue(ref _screenshotsListMediaFilter, value);
+        }
+
         #endregion
 
         #region Settings StartPage
