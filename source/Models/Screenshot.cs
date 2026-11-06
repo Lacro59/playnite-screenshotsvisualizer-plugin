@@ -29,6 +29,9 @@ namespace ScreenshotsVisualizer.Models
         [DontSerialize]
         private bool _videoMetadataResolveAttempted;
 
+        [DontSerialize]
+        private bool _thumbnailResolveLogged;
+
         private string _sizeString;
         [DontSerialize]
         public string SizeString
@@ -100,13 +103,40 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (_thumbnail.IsNullOrEmpty() && IsVideo)
                 {
+                    double durationSeconds = Duration.TotalSeconds;
                     _thumbnail = PluginDatabase.ThumbnailService.TryEnsureVideoThumbnail(
                         FileName,
                         PluginDatabase.Paths.PluginCachePath,
                         Modifed,
                         FileSize,
-                        Duration.TotalSeconds,
+                        durationSeconds,
                         PluginDatabase.PluginSettings.FfmpegPath) ?? string.Empty;
+
+                    if (!_thumbnailResolveLogged)
+                    {
+                        _thumbnailResolveLogged = true;
+                        string resolveReason = "ok";
+                        if (_thumbnail.IsNullOrEmpty())
+                        {
+                            string cachePath = SsvThumbnailService.GetVideoThumbnailCachePath(
+                                PluginDatabase.Paths.PluginCachePath,
+                                FileNameOnly,
+                                FileSize,
+                                durationSeconds);
+                            resolveReason = File.Exists(SsvThumbnailService.GetFailureMarkerPath(cachePath))
+                                ? "failureMarker"
+                                : "ensureReturnedNull";
+                        }
+
+                        Common.LogDebug(string.Format(
+                            "[SsvThumbnail][video][resolve] file={0} bytes={1} durationSeconds={2} empty={3} reason={4} path={5}",
+                            FileNameOnly,
+                            FileSize,
+                            durationSeconds.ToString("G", System.Globalization.CultureInfo.InvariantCulture),
+                            _thumbnail.IsNullOrEmpty(),
+                            resolveReason,
+                            _thumbnail.IsNullOrEmpty() ? string.Empty : Path.GetFileName(_thumbnail)));
+                    }
                 }
 
                 return _thumbnail;
@@ -137,7 +167,12 @@ namespace ScreenshotsVisualizer.Models
 
         private void EnsureVideoMetadataResolved()
         {
-            if (_videoMetadataResolveAttempted || !IsVideo || !File.Exists(FileName))
+            if (!IsVideo || !File.Exists(FileName))
+            {
+                return;
+            }
+
+            if (_videoMetadataResolveAttempted)
             {
                 return;
             }

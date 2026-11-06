@@ -7,6 +7,7 @@ using ScreenshotsVisualizer.Models;
 using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -35,6 +36,7 @@ namespace ScreenshotsVisualizer.Services
         private const string FailedMarkerSuffix = ".failed";
         private const string TemporaryFileSuffix = ".tmp";
         private const string LogPrefix = "[SsvThumbnail]";
+        private const int MaxLoggedProcessOutputChars = 256;
 
         private readonly string _pluginName;
         private bool _ffmpegNotFoundNotified;
@@ -418,13 +420,24 @@ namespace ScreenshotsVisualizer.Services
             double durationSeconds,
             string ffmpegPath)
         {
-            if (string.IsNullOrWhiteSpace(sourcePath) || !File.Exists(sourcePath))
+            if (string.IsNullOrWhiteSpace(sourcePath))
             {
+                LogThumbnailDebug("[video] skip reason=emptySourcePath");
                 return null;
             }
 
-            string thumbnailPath = GetVideoThumbnailCachePath(cacheRootPath, Path.GetFileName(sourcePath), fileSize, durationSeconds);
+            string sourceFileOnly = Path.GetFileName(sourcePath);
+            if (!File.Exists(sourcePath))
+            {
+                LogThumbnailDebug(string.Format(
+                    "[video] skip reason=sourceMissing file={0}",
+                    sourceFileOnly));
+                return null;
+            }
+
+            string thumbnailPath = GetVideoThumbnailCachePath(cacheRootPath, sourceFileOnly, fileSize, durationSeconds);
             string failureMarkerPath = GetFailureMarkerPath(thumbnailPath);
+            string durationLogged = durationSeconds.ToString("G", CultureInfo.InvariantCulture);
             ClearFailureMarkerIfSourceChanged(sourcePath, sourceModified, failureMarkerPath);
 
             if (File.Exists(failureMarkerPath))
@@ -437,19 +450,21 @@ namespace ScreenshotsVisualizer.Services
                 return thumbnailPath;
             }
 
-            string sourceFileOnly = Path.GetFileName(sourcePath);
             if (File.Exists(thumbnailPath))
             {
                 LogThumbnailDebug(string.Format(
-                    "Cache stale, regenerating video file={0}",
-                    sourceFileOnly));
+                    "[video] cache stale, regenerating file={0} durationSeconds={1}",
+                    sourceFileOnly,
+                    durationLogged));
             }
 
             if (string.IsNullOrWhiteSpace(ffmpegPath) || !File.Exists(ffmpegPath))
             {
                 LogThumbnailDebug(string.Format(
-                    "ffmpeg not found, skipping video file={0}",
-                    sourceFileOnly));
+                    "[video] skip reason=ffmpegMissing file={0} durationSeconds={1} ffmpegPath={2}",
+                    sourceFileOnly,
+                    durationLogged,
+                    ffmpegPath ?? string.Empty));
                 NotifyFfmpegNotFoundOnce();
                 WriteFailureMarker(failureMarkerPath);
                 return null;
@@ -457,10 +472,12 @@ namespace ScreenshotsVisualizer.Services
 
             Stopwatch generationStopwatch = Stopwatch.StartNew();
             LogThumbnailDebug(string.Format(
-                "Generating video thumbnail file={0} bytes={1} durationSeconds={2}",
+                "[video] generating file={0} bytes={1} durationSeconds={2} durationUnresolved={3} cacheFile={4}",
                 sourceFileOnly,
                 fileSize,
-                durationSeconds));
+                durationLogged,
+                durationSeconds <= 0,
+                Path.GetFileName(thumbnailPath)));
 
             try
             {
@@ -470,9 +487,10 @@ namespace ScreenshotsVisualizer.Services
                 {
                     generationStopwatch.Stop();
                     LogThumbnailDebug(string.Format(
-                        "ffmpeg produced no file file={0} elapsedMs={1}",
+                        "[video] ffmpeg produced no file file={0} elapsedMs={1} cacheFile={2}",
                         sourceFileOnly,
-                        generationStopwatch.ElapsedMilliseconds));
+                        generationStopwatch.ElapsedMilliseconds,
+                        Path.GetFileName(thumbnailPath)));
                     WriteFailureMarker(failureMarkerPath);
                     return null;
                 }
@@ -481,17 +499,19 @@ namespace ScreenshotsVisualizer.Services
                 {
                     generationStopwatch.Stop();
                     LogThumbnailDebug(string.Format(
-                        "Created video thumbnail file={0} elapsedMs={1}",
+                        "[video] created file={0} elapsedMs={1} cacheFile={2}",
                         sourceFileOnly,
-                        generationStopwatch.ElapsedMilliseconds));
+                        generationStopwatch.ElapsedMilliseconds,
+                        Path.GetFileName(thumbnailPath)));
                     return thumbnailPath;
                 }
 
                 generationStopwatch.Stop();
                 LogThumbnailDebug(string.Format(
-                    "Video thumbnail missing after ffmpeg file={0} elapsedMs={1}",
+                    "[video] missing after ffmpeg ok claim file={0} elapsedMs={1} cacheFile={2}",
                     sourceFileOnly,
-                    generationStopwatch.ElapsedMilliseconds));
+                    generationStopwatch.ElapsedMilliseconds,
+                    Path.GetFileName(thumbnailPath)));
                 WriteFailureMarker(failureMarkerPath);
                 return null;
             }
@@ -499,7 +519,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 generationStopwatch.Stop();
                 LogThumbnailDebug(string.Format(
-                    "Video thumbnail failed file={0} elapsedMs={1}",
+                    "[video] exception file={0} elapsedMs={1}",
                     sourceFileOnly,
                     generationStopwatch.ElapsedMilliseconds));
                 Common.LogError(ex, true, false, _pluginName);
@@ -656,17 +676,49 @@ namespace ScreenshotsVisualizer.Services
                 FileSystem.CreateDirectory(directory);
             }
 
+            string sourceFileOnly = Path.GetFileName(sourcePath);
             string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
+            string arguments = string.Format(thumbArgs, sourcePath, thumbnailPath);
             string workingDirectory = Path.GetDirectoryName(ffmpegPath);
-            _ = ProcessStarter.StartProcessWait(
+            LogThumbnailDebug(string.Format(
+                "[video][ffmpeg] start file={0} out={1}",
+                sourceFileOnly,
+                Path.GetFileName(thumbnailPath)));
+
+            int exitCode = ProcessStarter.StartProcessWait(
                 ffmpegPath,
-                string.Format(thumbArgs, sourcePath, thumbnailPath),
+                arguments,
                 workingDirectory,
                 true,
                 out string stdOut,
                 out string stdErr);
 
-            return File.Exists(thumbnailPath);
+            bool outputExists = File.Exists(thumbnailPath);
+            LogThumbnailDebug(string.Format(
+                "[video][ffmpeg] done file={0} exitCode={1} outputExists={2} stderr=[{3}] stdout=[{4}]",
+                sourceFileOnly,
+                exitCode,
+                outputExists,
+                FormatLoggedProcessOutput(stdErr),
+                FormatLoggedProcessOutput(stdOut)));
+
+            return outputExists;
+        }
+
+        private static string FormatLoggedProcessOutput(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            string normalized = value.Replace("\r", "\\r").Replace("\n", "\\n");
+            if (normalized.Length <= MaxLoggedProcessOutputChars)
+            {
+                return normalized;
+            }
+
+            return normalized.Substring(0, MaxLoggedProcessOutputChars) + "...";
         }
 
         private void NotifyFfprobeNotFoundOnce()
