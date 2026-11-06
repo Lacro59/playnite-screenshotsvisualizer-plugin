@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -125,6 +126,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
 
             _ = Task.Run(() =>
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 if (!TryInvokeOnUi(() =>
                 {
                     StopAndDisposeTimer();
@@ -134,7 +136,11 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Index = 0;
                 }))
                 {
+                    stopwatch.Stop();
                     Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at start");
+                    Common.LogDebug(string.Format(
+                        "[SsvCarousel][update] aborted=start screenshots=0 ms={0}",
+                        stopwatch.ElapsedMilliseconds));
                     return;
                 }
 
@@ -187,9 +193,10 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     temp.Sort((z, y) => r.Next(-1, 1));
                 }
 
+                List<Screenshot> existingScreenshots = temp.Where(x => File.Exists(x.FileName)).ToList();
                 if (!TryInvokeOnUi(() =>
                 {
-                    Screenshots = temp.Where(x => File.Exists(x.FileName)).ToObservable();
+                    Screenshots = existingScreenshots.ToObservable();
                     if (Screenshots?.Count > 2 && PluginDatabase.PluginSettings.ssvCarouselOptions.EnableAutoChange)
                     {
                         Timer = new System.Timers.Timer(PluginDatabase.PluginSettings.ssvCarouselOptions.Time * 1000);
@@ -207,8 +214,20 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     }
                 }))
                 {
+                    stopwatch.Stop();
                     Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at apply");
+                    Common.LogDebug(string.Format(
+                        "[SsvCarousel][update] aborted=apply screenshots={0} ms={1}",
+                        existingScreenshots.Count,
+                        stopwatch.ElapsedMilliseconds));
+                    return;
                 }
+
+                stopwatch.Stop();
+                Common.LogDebug(string.Format(
+                    "[SsvCarousel][update] screenshots={0} ms={1}",
+                    existingScreenshots.Count,
+                    stopwatch.ElapsedMilliseconds));
             });
         }
 

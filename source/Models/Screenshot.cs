@@ -6,6 +6,7 @@ using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -145,9 +146,10 @@ namespace ScreenshotsVisualizer.Models
 
             try
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 Common.LogDebug(string.Format(
-                    "[SsvVideoMetadata] Resolve start for '{0}' (modified={1:u})",
-                    FileName,
+                    "[SsvVideoMetadata][resolve] start file={0} modified={1:u}",
+                    FileNameOnly,
                     Modifed.ToUniversalTime()));
 
                 if (PluginDatabase.VideoMetadataService.TryGetVideoMetadata(
@@ -158,17 +160,21 @@ namespace ScreenshotsVisualizer.Models
                 {
                     _duration = metadata.Duration;
                     _sizeString = metadata.SizeString;
+                    stopwatch.Stop();
                     Common.LogDebug(string.Format(
-                        "[SsvVideoMetadata] Resolve ok for '{0}' ({1}, {2})",
-                        FileName,
+                        "[SsvVideoMetadata][resolve] ok file={0} size={1} duration={2} elapsedMs={3}",
+                        FileNameOnly,
                         _sizeString,
-                        _duration));
+                        _duration,
+                        stopwatch.ElapsedMilliseconds));
                 }
                 else
                 {
+                    stopwatch.Stop();
                     Common.LogDebug(string.Format(
-                        "[SsvVideoMetadata] Resolve failed for '{0}'",
-                        FileName));
+                        "[SsvVideoMetadata][resolve] failed file={0} elapsedMs={1}",
+                        FileNameOnly,
+                        stopwatch.ElapsedMilliseconds));
                 }
             }
             catch (Exception ex)

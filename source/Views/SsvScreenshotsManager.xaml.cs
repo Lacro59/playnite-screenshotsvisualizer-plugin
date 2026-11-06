@@ -66,6 +66,7 @@ namespace ScreenshotsVisualizer.Views
 
             _ = Task.Run(() =>
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 try
                 {
                     ObservableCollection<LveGame> LveGames = PluginDatabase.GetAllCache().Where(x => x.HasData)
@@ -80,10 +81,19 @@ namespace ScreenshotsVisualizer.Views
                                                                         LastSsv = x.Items.Select(y => y.Modifed).Max(),
                                                                         Total = x.Items.Count
                                                                     }).ToObservable();
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][load] games={0} ms={1}",
+                        LveGames.Count,
+                        stopwatch.ElapsedMilliseconds));
                     return LveGames;
                 }
                 catch (Exception ex)
                 {
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][load] games=0 ms={0} failed=true",
+                        stopwatch.ElapsedMilliseconds));
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     return new ObservableCollection<LveGame>();
                 }
@@ -113,6 +123,8 @@ namespace ScreenshotsVisualizer.Views
 
         private void SetInfos()
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             List<Screenshot> screenOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
             int ScreenshotsCount = screenOnly.Count;
             long ScreenshotsTotalSize = 0;
@@ -137,6 +149,14 @@ namespace ScreenshotsVisualizer.Views
 
             PART_FilesCount.Content = ScreenshotsCount + VideosCount;
             PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+
+            stopwatch.Stop();
+            Common.LogDebug(string.Format(
+                "[SsvManager][infos] screenshots={0} videos={1} files={2} ms={3}",
+                ScreenshotsCount,
+                VideosCount,
+                ScreenshotsCount + VideosCount,
+                stopwatch.ElapsedMilliseconds));
         }
 
 
@@ -163,14 +183,25 @@ namespace ScreenshotsVisualizer.Views
         {
             _ = Task.Run(() =>
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 GameScreenshots gameScreenshots = PluginDatabase.Get(gameId, true);
                 if (gameScreenshots?.Items == null)
                 {
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][refresh] files=0 ms={0}",
+                        stopwatch.ElapsedMilliseconds));
                     return false;
                 }
 
                 List<Screenshot> screenshots = gameScreenshots.Items;
                 screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+
+                stopwatch.Stop();
+                Common.LogDebug(string.Format(
+                    "[SsvManager][refresh] files={0} ms={1}",
+                    screenshots.Count,
+                    stopwatch.ElapsedMilliseconds));
 
                 _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
