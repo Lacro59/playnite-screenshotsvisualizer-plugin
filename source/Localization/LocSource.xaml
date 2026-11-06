@@ -19,6 +19,7 @@
     <sys:String x:Key="LOCSsvFilterImages">Images</sys:String>
     <sys:String x:Key="LOCSsvFilterVideos">Videos</sys:String>
     <sys:String x:Key="LOCSsvLibraryTotals">Library totals</sys:String>
+    <sys:String x:Key="LOCSsvThemeControlListOrderNote">List order preferences apply when a theme hosts this control. They are not used by the plugin Manager or game screenshot views.</sys:String>
     <sys:String x:Key="LOCSsvColumnImages">Images</sys:String>
     <sys:String x:Key="LOCSsvColumnVideos">Videos</sys:String>
     <sys:String x:Key="LOCSsvColumnSize">Size</sys:String>

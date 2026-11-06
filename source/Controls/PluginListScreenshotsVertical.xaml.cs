@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
@@ -66,8 +66,22 @@ namespace ScreenshotsVisualizer.Controls
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
-            List<Screenshot> screenshots = gameScreenshots.Items;
-            screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            SsvScreenshotSortBy sortBy = PluginDatabase.PluginSettings.IntegrationShowPicturesVerticalSortBy;
+            SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.IntegrationShowPicturesVerticalSortDirection;
+            SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.IntegrationShowPicturesVerticalMediaFilter;
+
+            List<Screenshot> screenshots = SsvScreenshotListOrder.Apply(
+                gameScreenshots?.Items,
+                mediaFilter,
+                sortBy,
+                sortDirection);
+
+            Common.LogDebug(string.Format(
+                "[PluginListScreenshotsVertical][setdata] files={0} sortBy={1} direction={2} filter={3}",
+                screenshots.Count,
+                sortBy,
+                sortDirection,
+                mediaFilter));
 
             ControlDataContext.ItemsSource = screenshots.ToObservable();
             ControlDataContext.CountItems = screenshots.Count;
