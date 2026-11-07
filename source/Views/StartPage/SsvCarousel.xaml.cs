@@ -137,7 +137,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 }))
                 {
                     stopwatch.Stop();
-                    Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at start");
                     Common.LogDebug(string.Format(
                         "[SsvCarousel][update] aborted=start screenshots=0 ms={0}",
                         stopwatch.ElapsedMilliseconds));
@@ -257,7 +256,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 }))
                 {
                     stopwatch.Stop();
-                    Logger.Debug("[SsvCarousel][update] aborted — no UI dispatcher at apply");
                     Common.LogDebug(string.Format(
                         "[SsvCarousel][update] aborted=apply screenshots={0} ms={1}",
                         existingScreenshots.Count,
@@ -312,7 +310,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                 ButtonNext_Click(null, null);
             }))
             {
-                Logger.Debug("[SsvCarousel][timer] skipped — no UI dispatcher (shutdown)");
+                Common.LogDebug("[SsvCarousel][timer] skipped — no UI dispatcher (shutdown)");
             }
         }
 
@@ -461,7 +459,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Timer?.Stop();
                 }))
                 {
-                    Logger.Debug("[SsvCarousel][deactivated] skipped — no UI dispatcher (shutdown)");
+                    Common.LogDebug("[SsvCarousel][deactivated] skipped — no UI dispatcher (shutdown)");
                 }
             });
         }
@@ -487,7 +485,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     Timer?.Start();
                 }))
                 {
-                    Logger.Debug("[SsvCarousel][activated] skipped — no UI dispatcher (shutdown)");
+                    Common.LogDebug("[SsvCarousel][activated] skipped — no UI dispatcher (shutdown)");
                 }
             });
         }
@@ -519,7 +517,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             // Start Page may fire Unloaded then Loaded again; ctor Update can finish while detached.
             if (Screenshots == null || Screenshots.Count == 0)
             {
-                Logger.Debug("[SsvCarousel][loaded] empty carousel — refreshing");
+                Common.LogDebug("[SsvCarousel][loaded] empty carousel — refreshing");
                 Update();
             }
             else
@@ -542,7 +540,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
         {
             DetachLifecycleHooks();
             StopAndDisposeTimer();
-            Logger.Debug("[SsvCarousel][unloaded] timer stopped and lifecycle hooks detached");
+            Common.LogDebug("[SsvCarousel][unloaded] timer stopped and lifecycle hooks detached");
         }
 
         private void AttachLifecycleHooks()
@@ -555,7 +553,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
             Application app = Application.Current;
             if (app == null)
             {
-                Logger.Debug("[SsvCarousel][loaded] skipped lifecycle hooks — Application.Current is null");
+                Common.LogDebug("[SsvCarousel][loaded] skipped lifecycle hooks — Application.Current is null");
                 return;
             }
 
