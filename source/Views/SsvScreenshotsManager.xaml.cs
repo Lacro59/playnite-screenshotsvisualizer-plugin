@@ -307,19 +307,22 @@ namespace ScreenshotsVisualizer.Views
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 GameScreenshots gameScreenshots = PluginDatabase.Get(gameId, true);
+                int skippedMissing;
                 List<Screenshot> screenshots = SsvScreenshotListOrder.Apply(
                     gameScreenshots?.Items,
                     mediaFilter,
                     sortBy,
-                    sortDirection);
+                    sortDirection,
+                    out skippedMissing);
                 SsvScreenshotListStats stats = SsvScreenshotListOrder.ComputeStats(screenshots);
 
                 stopwatch.Stop();
                 Common.LogDebug(string.Format(
-                    "[SsvManager][refresh] files={0} images={1} videos={2} sortBy={3} direction={4} filter={5} ms={6}",
+                    "[SsvManager][refresh] files={0} images={1} videos={2} skippedMissing={3} sortBy={4} direction={5} filter={6} ms={7}",
                     screenshots.Count,
                     stats.ImageCount,
                     stats.VideoCount,
+                    skippedMissing,
                     sortBy,
                     sortDirection,
                     mediaFilter,

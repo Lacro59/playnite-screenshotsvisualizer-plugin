@@ -230,7 +230,7 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     return;
                 }
 
-                List<Screenshot> existingScreenshots = FilterExistingFiles(temp);
+                List<Screenshot> existingScreenshots = SsvScreenshotListOrder.FilterExistingFiles(temp);
                 if (!TryInvokeOnUi(() =>
                 {
                     if (sequence != Volatile.Read(ref _updateSequence))
@@ -271,37 +271,6 @@ namespace ScreenshotsVisualizer.Views.StartPage
                     existingScreenshots.Count,
                     stopwatch.ElapsedMilliseconds));
             });
-        }
-
-        /// <summary>
-        /// Keeps screenshots whose files exist, preserving order. Existence checks run in parallel.
-        /// </summary>
-        /// <param name="candidates">Ordered candidate screenshots.</param>
-        /// <returns>Screenshots with an existing file on disk.</returns>
-        private static List<Screenshot> FilterExistingFiles(List<Screenshot> candidates)
-        {
-            if (candidates == null || candidates.Count == 0)
-            {
-                return new List<Screenshot>();
-            }
-
-            bool[] exists = new bool[candidates.Count];
-            Parallel.For(0, candidates.Count, i =>
-            {
-                string fileName = candidates[i].FileName;
-                exists[i] = !string.IsNullOrEmpty(fileName) && File.Exists(fileName);
-            });
-
-            List<Screenshot> existing = new List<Screenshot>(candidates.Count);
-            for (int i = 0; i < candidates.Count; i++)
-            {
-                if (exists[i])
-                {
-                    existing.Add(candidates[i]);
-                }
-            }
-
-            return existing;
         }
 
         /// <summary>

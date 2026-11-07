@@ -2,6 +2,8 @@ using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ScreenshotsVisualizer.Services
 {
@@ -59,7 +61,7 @@ namespace ScreenshotsVisualizer.Services
     }
 
     /// <summary>
-    /// Filters and sorts screenshot lists without mutating the source collection (cache-safe).
+    /// Filters (existing files, media type) and sorts screenshot lists without mutating the source collection (cache-safe).
     /// </summary>
     public static class SsvScreenshotListOrder
     {
@@ -142,7 +144,71 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
-        /// Returns a new list filtered by <paramref name="mediaFilter"/> then sorted by
+        /// Keeps screenshots whose files exist on disk, preserving order.
+        /// Existence checks run in parallel. Does not mutate <paramref name="candidates"/>.
+        /// </summary>
+        /// <param name="candidates">Ordered candidate screenshots (may be null).</param>
+        /// <returns>New list of screenshots with an existing file; empty when none qualify.</returns>
+        public static List<Screenshot> FilterExistingFiles(IEnumerable<Screenshot> candidates)
+        {
+            int skippedMissing;
+            return FilterExistingFiles(candidates, out skippedMissing);
+        }
+
+        /// <summary>
+        /// Keeps screenshots whose files exist on disk, preserving order.
+        /// Existence checks run in parallel. Does not mutate <paramref name="candidates"/>.
+        /// </summary>
+        /// <param name="candidates">Ordered candidate screenshots (may be null).</param>
+        /// <param name="skippedMissing">Count of non-null candidates excluded (empty path or missing file).</param>
+        /// <returns>New list of screenshots with an existing file; empty when none qualify.</returns>
+        public static List<Screenshot> FilterExistingFiles(IEnumerable<Screenshot> candidates, out int skippedMissing)
+        {
+            skippedMissing = 0;
+            if (candidates == null)
+            {
+                return new List<Screenshot>();
+            }
+
+            List<Screenshot> list = new List<Screenshot>();
+            foreach (Screenshot item in candidates)
+            {
+                if (item != null)
+                {
+                    list.Add(item);
+                }
+            }
+
+            if (list.Count == 0)
+            {
+                return list;
+            }
+
+            bool[] exists = new bool[list.Count];
+            Parallel.For(0, list.Count, i =>
+            {
+                string fileName = list[i].FileName;
+                exists[i] = !string.IsNullOrEmpty(fileName) && File.Exists(fileName);
+            });
+
+            List<Screenshot> existing = new List<Screenshot>(list.Count);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (exists[i])
+                {
+                    existing.Add(list[i]);
+                }
+                else
+                {
+                    skippedMissing++;
+                }
+            }
+
+            return existing;
+        }
+
+        /// <summary>
+        /// Returns a new list of existing files, filtered by <paramref name="mediaFilter"/> then sorted by
         /// <paramref name="sortBy"/> / <paramref name="sortDirection"/>.
         /// Never calls <c>Sort</c> on <paramref name="source"/>.
         /// </summary>
@@ -157,19 +223,33 @@ namespace ScreenshotsVisualizer.Services
             SsvScreenshotSortBy sortBy,
             SsvScreenshotSortDirection sortDirection)
         {
-            List<Screenshot> result = new List<Screenshot>();
-            if (source == null)
-            {
-                return result;
-            }
+            int skippedMissing;
+            return Apply(source, mediaFilter, sortBy, sortDirection, out skippedMissing);
+        }
 
-            foreach (Screenshot item in source)
-            {
-                if (item == null)
-                {
-                    continue;
-                }
+        /// <summary>
+        /// Returns a new list of existing files, filtered by <paramref name="mediaFilter"/> then sorted by
+        /// <paramref name="sortBy"/> / <paramref name="sortDirection"/>.
+        /// Never calls <c>Sort</c> on <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">Source items (may be null).</param>
+        /// <param name="mediaFilter">Media-type filter.</param>
+        /// <param name="sortBy">Sort criterion.</param>
+        /// <param name="sortDirection">Sort direction.</param>
+        /// <param name="skippedMissing">Count of non-null candidates excluded (empty path or missing file).</param>
+        /// <returns>New list; empty when <paramref name="source"/> is null or empty.</returns>
+        public static List<Screenshot> Apply(
+            IEnumerable<Screenshot> source,
+            SsvScreenshotMediaFilter mediaFilter,
+            SsvScreenshotSortBy sortBy,
+            SsvScreenshotSortDirection sortDirection,
+            out int skippedMissing)
+        {
+            List<Screenshot> existing = FilterExistingFiles(source, out skippedMissing);
+            List<Screenshot> result = new List<Screenshot>(existing.Count);
 
+            foreach (Screenshot item in existing)
+            {
                 if (!MatchesFilter(item, mediaFilter))
                 {
                     continue;

@@ -225,20 +225,23 @@ namespace ScreenshotsVisualizer.Views
             SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.ScreenshotsListSortDirection;
             SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.ScreenshotsListMediaFilter;
 
+            int skippedMissing;
             List<Screenshot> items = SsvScreenshotListOrder.Apply(
                 gameScreenshots?.Items,
                 mediaFilter,
                 sortBy,
-                sortDirection);
+                sortDirection,
+                out skippedMissing);
 
             PART_ListScreenshots.ItemsSource = items;
 
             SsvScreenshotListStats stats = SsvScreenshotListOrder.ComputeStats(items);
             Common.LogDebug(string.Format(
-                "[SsvScreenshotsView][refresh] files={0} images={1} videos={2} sortBy={3} direction={4} filter={5}",
+                "[SsvScreenshotsView][refresh] files={0} images={1} videos={2} skippedMissing={3} sortBy={4} direction={5} filter={6}",
                 items.Count,
                 stats.ImageCount,
                 stats.VideoCount,
+                skippedMissing,
                 sortBy,
                 sortDirection,
                 mediaFilter));
