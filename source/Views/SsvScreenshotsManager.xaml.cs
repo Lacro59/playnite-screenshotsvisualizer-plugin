@@ -28,6 +28,8 @@ namespace ScreenshotsVisualizer.Views
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
         private bool _suppressListToolbarEvents;
+        private readonly List<LveGame> _allLveGames = new List<LveGame>();
+        private string _gameNameFilter = string.Empty;
 
         public SsvScreenshotsManager()
         {
@@ -207,25 +209,86 @@ namespace ScreenshotsVisualizer.Views
             {
                 _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    ObservableCollection<LveGame> games = antecedent.Result;
-                    ((SsvScreenshotsManagerData)DataContext).LveGames = games;
-                    PublishLibraryInfosFromGames(games);
-
-                    PART_LveGames.Sorting();
-                    if (selectedGameId.HasValue)
+                    ObservableCollection<LveGame> games = antecedent.Result ?? new ObservableCollection<LveGame>();
+                    _allLveGames.Clear();
+                    foreach (LveGame game in games)
                     {
-                        LveGame selectedGame = ((SsvScreenshotsManagerData)DataContext).LveGames
-                            .FirstOrDefault(x => x.Id == selectedGameId.Value);
-                        if (selectedGame != null)
+                        if (game != null)
                         {
-                            PART_LveGames.SelectedItem = selectedGame;
+                            _allLveGames.Add(game);
                         }
                     }
+
+                    PublishLibraryInfosFromGames(_allLveGames);
+                    ApplyGameNameFilter(selectedGameId);
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
                 }));
             });
+        }
+
+        private void PART_GameNameFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = PART_GameNameFilter?.Text ?? string.Empty;
+            if (string.Equals(_gameNameFilter, searchText, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _gameNameFilter = searchText;
+            Guid? selectedGameId = (PART_LveGames.SelectedItem as LveGame)?.Id;
+            ApplyGameNameFilter(selectedGameId);
+        }
+
+        private void ApplyGameNameFilter(Guid? preferredSelectedId)
+        {
+            string query = (_gameNameFilter ?? string.Empty).Trim();
+            List<LveGame> filtered = new List<LveGame>();
+            if (string.IsNullOrEmpty(query))
+            {
+                filtered.AddRange(_allLveGames);
+            }
+            else
+            {
+                foreach (LveGame game in _allLveGames)
+                {
+                    if (game?.Name != null
+                        && game.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        filtered.Add(game);
+                    }
+                }
+            }
+
+            ObservableCollection<LveGame> visible = filtered.ToObservable();
+            ((SsvScreenshotsManagerData)DataContext).LveGames = visible;
+            PART_LveGames.Sorting();
+
+            LveGame match = null;
+            if (preferredSelectedId.HasValue)
+            {
+                match = visible.FirstOrDefault(x => x.Id == preferredSelectedId.Value);
+            }
+
+            bool selectionKept = match != null;
+            if (selectionKept)
+            {
+                PART_LveGames.SelectedItem = match;
+            }
+            else
+            {
+                PART_LveGames.SelectedItem = null;
+                ((SsvScreenshotsManagerData)DataContext).Screenshots = new ObservableCollection<Screenshot>();
+                ClearScreenshotPreview();
+            }
+
+            Common.LogDebug(string.Format(
+                "[SsvManager][game-filter] queryLen={0} visible={1} total={2} selectionKept={3}",
+                query.Length,
+                visible.Count,
+                _allLveGames.Count,
+                selectionKept));
         }
 
 

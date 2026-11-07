@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=local:SsvScreenshotsManagerData}">
 
@@ -155,10 +156,25 @@
                 </Border>
 
                 <Grid Name="PART_LveGamesContener" Grid.Row="2">
-                    <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesContener, Path=ActualHeight}"
-                                               SelectionChanged="PART_LveGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}"
-                                               SortingEnable="True" SortingSortDirection="Descending" SortingDefaultDataName="LastActivity"
-                                               ItemsSource="{Binding LveGames}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <playnitecontrols:SearchBox x:Name="PART_GameNameFilter"
+                                                Grid.Row="0"
+                                                VerticalAlignment="Center"
+                                                Height="{Binding ActualHeight, ElementName=PART_CbSortBy}"
+                                                MinHeight="{Binding ActualHeight, ElementName=PART_CbSortBy}"
+                                                ToolTip="{DynamicResource LOCSsvFilterGameName}"
+                                                TextChanged="PART_GameNameFilter_TextChanged" />
+
+                    <Grid Name="PART_LveGamesHost" Grid.Row="2">
+                        <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesHost, Path=ActualHeight}"
+                                                   SelectionChanged="PART_LveGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}"
+                                                   SortingEnable="True" SortingSortDirection="Descending" SortingDefaultDataName="LastActivity"
+                                                   ItemsSource="{Binding LveGames}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="50" x:Name="lvGameIcon">
@@ -262,7 +278,8 @@
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
-                    </controlsShared:ListViewExtend>
+                        </controlsShared:ListViewExtend>
+                    </Grid>
                 </Grid>
             </Grid>
 
