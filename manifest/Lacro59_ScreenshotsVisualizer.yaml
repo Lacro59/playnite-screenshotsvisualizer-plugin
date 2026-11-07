@@ -179,3 +179,26 @@ Packages:
       - 'Fixed: File pattern matching requires full file name match'
       - 'Fixed: Carousel display issues'
       - 'Fixed: Global screenshot sources applied correctly at runtime'
+  - Version: 3.6.0
+    RequiredApiVersion: 6.16.0
+    ReleaseDate: 2026-11-07
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.6.0/playnite-screenshotsvisualizer-plugin_3_6_0.pext
+    Changelog:
+      - 'Added: JPEG XL (.jxl) screenshot support'
+      - 'Added: Media decode engine matrix and Magick format hints in settings'
+      - 'Added: Per-folder flags to exclude paths from archive and conversion'
+      - 'Added: Screenshots manager columns with list sort and filter'
+      - 'Added: Theme control options for sort and filter'
+      - 'Added: Game name filter in the screenshots manager'
+      - 'Added: Background warm-up for missing thumbnails'
+      - 'Fixed: Carousel settings not persisting after change (#106)'
+      - 'Fixed: Fullscreen screenshots gallery exception (#109)'
+      - 'Fixed: Game folder matching when the name has Windows-illegal characters (#110)'
+      - 'Fixed: Misleading null error when skipping oversized thumbnail sources (#108)'
+      - 'Fixed: Settings page failing to load with a broken thumbnail cache (#113)'
+      - 'Fixed: Clipboard copy for non-GDI formats via Magick/WIC'
+      - 'Fixed: Desktop-only StaticResource crash in the screenshot gallery'
+      - 'Fixed: Carousel shutdown hardening without blanking the display'
+      - 'Fixed: Theme media glyph foreground in screenshot lists'
+      - 'Improved: Manager and carousel load performance'
+      - 'Updated: Localizations'
