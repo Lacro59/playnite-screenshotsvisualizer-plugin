@@ -55,6 +55,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -120,6 +122,33 @@
         </Grid>
 
         <Border Grid.Row="10"
+                BorderBrush="{DynamicResource NormalBorderBrush}"
+                BorderThickness="{DynamicResource ControlBorderThickness}"
+                CornerRadius="{DynamicResource ControlCornerRadius}"
+                Padding="8">
+            <StackPanel>
+                <TextBlock Style="{DynamicResource SectionHeaderText}"
+                           Text="{DynamicResource LOCSsvFolderOperationsSection}" />
+                <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                           Margin="0,4,0,8"
+                           Foreground="{DynamicResource GlyphBrush}"
+                           Text="{DynamicResource LOCSsvFolderOperationsHint}"
+                           TextWrapping="Wrap" />
+                <CheckBox IsChecked="{Binding WorkingCopy.IncludeInArchive, FallbackValue=True}"
+                          Margin="0,0,0,6">
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvIncludeInArchive}"
+                               TextWrapping="Wrap" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding WorkingCopy.IncludeInConversion, FallbackValue=True}">
+                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}"
+                               Text="{DynamicResource LOCSsvIncludeInConversion}"
+                               TextWrapping="Wrap" />
+                </CheckBox>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="12"
                 BorderBrush="{DynamicResource NormalBorderBrush}"
                 BorderThickness="{DynamicResource ControlBorderThickness}"
                 CornerRadius="{DynamicResource ControlCornerRadius}"
@@ -212,7 +241,7 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="12"
+        <Border Grid.Row="14"
                 BorderBrush="{DynamicResource NormalBorderBrush}"
                 BorderThickness="{DynamicResource ControlBorderThickness}"
                 CornerRadius="{DynamicResource ControlCornerRadius}"

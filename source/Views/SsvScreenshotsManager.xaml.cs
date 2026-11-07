@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Commands;
 using CommonPluginsShared.UI;
 using CommonPluginsShared.Utilities;
@@ -27,19 +27,118 @@ namespace ScreenshotsVisualizer.Views
     {
         private ScreenshotsVisualizerDatabase PluginDatabase => ScreenshotsVisualizer.PluginDatabase;
 
+        private bool _suppressListToolbarEvents;
+        private readonly List<LveGame> _allLveGames = new List<LveGame>();
+        private string _gameNameFilter = string.Empty;
 
         public SsvScreenshotsManager()
         {
             InitializeComponent();
             DataContext = new SsvScreenshotsManagerData();
 
+            InitializeListToolbar();
             SetData();
-            SetInfos();
 
             PluginDatabase.DatabaseItemUpdated += Database_ItemUpdated;
 
             PART_ListScreenshots.AddHandler(UIElement.MouseDownEvent, new MouseButtonEventHandler(PluginDatabase.ListBoxItem_MouseLeftButtonDownClick), true);
             PART_Copy.Visibility = Visibility.Collapsed;
+        }
+
+        private const string SortCaretAscending = "\uea6a";
+        private const string SortCaretDescending = "\uea67";
+
+        private void InitializeListToolbar()
+        {
+            _suppressListToolbarEvents = true;
+            try
+            {
+                PART_CbSortBy.ItemsSource = SsvScreenshotListOrder.CreateSortByChoices();
+                PART_CbMediaFilter.ItemsSource = SsvScreenshotListOrder.CreateMediaFilterChoices();
+
+                PART_CbSortBy.SelectedValue = PluginDatabase.PluginSettings.ScreenshotsListSortBy;
+                PART_CbMediaFilter.SelectedValue = PluginDatabase.PluginSettings.ScreenshotsListMediaFilter;
+                UpdateSortDirectionButton();
+            }
+            finally
+            {
+                _suppressListToolbarEvents = false;
+            }
+        }
+
+        private void PART_ListToolbar_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_suppressListToolbarEvents)
+            {
+                return;
+            }
+
+            PersistListToolbarSettings();
+            RefreshListAfterToolbarChange();
+        }
+
+        private void PART_BtSortDirection_Click(object sender, RoutedEventArgs e)
+        {
+            if (_suppressListToolbarEvents)
+            {
+                return;
+            }
+
+            SsvScreenshotSortDirection current = PluginDatabase.PluginSettings.ScreenshotsListSortDirection;
+            PluginDatabase.PluginSettings.ScreenshotsListSortDirection =
+                current == SsvScreenshotSortDirection.Ascending
+                    ? SsvScreenshotSortDirection.Descending
+                    : SsvScreenshotSortDirection.Ascending;
+
+            UpdateSortDirectionButton();
+            PersistListToolbarSettings();
+            RefreshListAfterToolbarChange();
+        }
+
+        private void RefreshListAfterToolbarChange()
+        {
+            LveGame selectedGame = PART_LveGames.SelectedItem as LveGame;
+            if (selectedGame != null)
+            {
+                RefreshScreenshotsForGame(selectedGame.Id);
+            }
+        }
+
+        private void UpdateSortDirectionButton()
+        {
+            bool descending = PluginDatabase.PluginSettings.ScreenshotsListSortDirection
+                == SsvScreenshotSortDirection.Descending;
+            PART_TbSortDirectionCaret.Text = descending ? SortCaretDescending : SortCaretAscending;
+            PART_BtSortDirection.ToolTip = ResourceProvider.GetString(
+                descending ? "LOCSsvSortDescending" : "LOCSsvSortAscending");
+        }
+
+        private void PersistListToolbarSettings()
+        {
+            if (PART_CbSortBy.SelectedValue is SsvScreenshotSortBy sortBy)
+            {
+                PluginDatabase.PluginSettings.ScreenshotsListSortBy = sortBy;
+            }
+
+            if (PART_CbMediaFilter.SelectedValue is SsvScreenshotMediaFilter mediaFilter)
+            {
+                PluginDatabase.PluginSettings.ScreenshotsListMediaFilter = mediaFilter;
+            }
+
+            try
+            {
+                PluginDatabase.PersistSettingsAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            Common.LogDebug(string.Format(
+                "[SsvManager][toolbar] sortBy={0} direction={1} filter={2}",
+                PluginDatabase.PluginSettings.ScreenshotsListSortBy,
+                PluginDatabase.PluginSettings.ScreenshotsListSortDirection,
+                PluginDatabase.PluginSettings.ScreenshotsListMediaFilter));
         }
 
         private void Database_ItemUpdated(object sender, ItemUpdatedEventArgs<GameScreenshots> e)
@@ -50,7 +149,6 @@ namespace ScreenshotsVisualizer.Views
                 {
                     Guid? selectedGameId = (PART_LveGames.SelectedItem as LveGame)?.Id;
                     SetData(selectedGameId);
-                    SetInfos();
                 }
                 catch (Exception ex)
                 {
@@ -64,26 +162,46 @@ namespace ScreenshotsVisualizer.Views
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            _ = Task.Run(() => 
+            _ = Task.Run(() =>
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 try
                 {
                     ObservableCollection<LveGame> LveGames = PluginDatabase.GetAllCache().Where(x => x.HasData)
-                                                                    .Select(x => new LveGame
+                                                                    .Select(x =>
                                                                     {
-                                                                        Id = x.Id,
-                                                                        Icon = API.Instance.Database.GetFullFilePath(x.Icon),
-                                                                        Name = x.Name,
-                                                                        LastActivity = x.LastActivity,
-                                                                        SourceName = PlayniteTools.GetSourceName(x.Id),
+                                                                        SsvScreenshotListStats gameStats = SsvScreenshotListOrder.ComputeStats(x.Items);
+                                                                        return new LveGame
+                                                                        {
+                                                                            Id = x.Id,
+                                                                            Icon = API.Instance.Database.GetFullFilePath(x.Icon),
+                                                                            Name = x.Name,
+                                                                            LastActivity = x.LastActivity,
+                                                                            SourceName = PlayniteTools.GetSourceName(x.Id),
 
-                                                                        LastSsv = x.Items.Select(y => y.Modifed).Max(),
-                                                                        Total = x.Items.Count
+                                                                            LastSsv = x.Items.Select(y => y.Modifed).Max(),
+                                                                            ImageCount = gameStats.ImageCount,
+                                                                            VideoCount = gameStats.VideoCount,
+                                                                            ImageTotalSize = gameStats.ImageTotalSize,
+                                                                            VideoTotalSize = gameStats.VideoTotalSize,
+                                                                            Total = gameStats.FileCount,
+                                                                            TotalSizeBytes = gameStats.FileTotalSize,
+                                                                            TotalSizeString = UtilityTools.SizeSuffix(gameStats.FileTotalSize)
+                                                                        };
                                                                     }).ToObservable();
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][load] games={0} ms={1}",
+                        LveGames.Count,
+                        stopwatch.ElapsedMilliseconds));
                     return LveGames;
                 }
                 catch (Exception ex)
                 {
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvManager][load] games=0 ms={0} failed=true",
+                        stopwatch.ElapsedMilliseconds));
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     return new ObservableCollection<LveGame>();
                 }
@@ -91,18 +209,18 @@ namespace ScreenshotsVisualizer.Views
             {
                 _ = Application.Current.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    ((SsvScreenshotsManagerData)DataContext).LveGames = antecedent.Result;
-
-                    PART_LveGames.Sorting();
-                    if (selectedGameId.HasValue)
+                    ObservableCollection<LveGame> games = antecedent.Result ?? new ObservableCollection<LveGame>();
+                    _allLveGames.Clear();
+                    foreach (LveGame game in games)
                     {
-                        LveGame selectedGame = ((SsvScreenshotsManagerData)DataContext).LveGames
-                            .FirstOrDefault(x => x.Id == selectedGameId.Value);
-                        if (selectedGame != null)
+                        if (game != null)
                         {
-                            PART_LveGames.SelectedItem = selectedGame;
+                            _allLveGames.Add(game);
                         }
                     }
+
+                    PublishLibraryInfosFromGames(_allLveGames);
+                    ApplyGameNameFilter(selectedGameId);
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
@@ -110,33 +228,116 @@ namespace ScreenshotsVisualizer.Views
             });
         }
 
-
-        private void SetInfos()
+        private void PART_GameNameFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            List<Screenshot> screenOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => !x.IsVideo).ToList();
-            int ScreenshotsCount = screenOnly.Count;
-            long ScreenshotsTotalSize = 0;
-            foreach (Screenshot item in screenOnly)
+            string searchText = PART_GameNameFilter?.Text ?? string.Empty;
+            if (string.Equals(_gameNameFilter, searchText, StringComparison.Ordinal))
             {
-                ScreenshotsTotalSize += item.FileSize;
+                return;
             }
-            PART_ScreenshotsCount.Content = ScreenshotsCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), ScreenshotsCount) : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), ScreenshotsCount);
-            PART_ScreenshotsSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize);
 
+            _gameNameFilter = searchText;
+            Guid? selectedGameId = (PART_LveGames.SelectedItem as LveGame)?.Id;
+            ApplyGameNameFilter(selectedGameId);
+        }
 
-            List<Screenshot> videoOnly = PluginDatabase.GetAllCache().SelectMany(x => x.Items).Where(x => x.IsVideo).ToList();
-            int VideosCount = videoOnly.Count;
-            long VideosTotalSize = 0;
-            foreach (Screenshot item in videoOnly)
+        private void ApplyGameNameFilter(Guid? preferredSelectedId)
+        {
+            string query = (_gameNameFilter ?? string.Empty).Trim();
+            List<LveGame> filtered = new List<LveGame>();
+            if (string.IsNullOrEmpty(query))
             {
-                VideosTotalSize += item.FileSize;
+                filtered.AddRange(_allLveGames);
             }
-            PART_VideosCount.Content = VideosCount > 1 ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), VideosCount) : string.Format(ResourceProvider.GetString("LOCSsvVideo"), VideosCount);
-            PART_VideosSize.Content = UtilityTools.SizeSuffix(VideosTotalSize);
+            else
+            {
+                foreach (LveGame game in _allLveGames)
+                {
+                    if (game?.Name != null
+                        && game.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        filtered.Add(game);
+                    }
+                }
+            }
+
+            ObservableCollection<LveGame> visible = filtered.ToObservable();
+            ((SsvScreenshotsManagerData)DataContext).LveGames = visible;
+            PART_LveGames.Sorting();
+
+            LveGame match = null;
+            if (preferredSelectedId.HasValue)
+            {
+                match = visible.FirstOrDefault(x => x.Id == preferredSelectedId.Value);
+            }
+
+            bool selectionKept = match != null;
+            if (selectionKept)
+            {
+                PART_LveGames.SelectedItem = match;
+            }
+            else
+            {
+                PART_LveGames.SelectedItem = null;
+                ((SsvScreenshotsManagerData)DataContext).Screenshots = new ObservableCollection<Screenshot>();
+                ClearScreenshotPreview();
+            }
+
+            Common.LogDebug(string.Format(
+                "[SsvManager][game-filter] queryLen={0} visible={1} total={2} selectionKept={3}",
+                query.Length,
+                visible.Count,
+                _allLveGames.Count,
+                selectionKept));
+        }
 
 
-            PART_FilesCount.Content = ScreenshotsCount + VideosCount;
-            PART_FilesSize.Content = UtilityTools.SizeSuffix(ScreenshotsTotalSize + VideosTotalSize);
+        private void PublishLibraryInfosFromGames(IEnumerable<LveGame> games)
+        {
+            SsvScreenshotListStats libraryStats = new SsvScreenshotListStats();
+            if (games != null)
+            {
+                foreach (LveGame game in games)
+                {
+                    if (game == null)
+                    {
+                        continue;
+                    }
+
+                    libraryStats.ImageCount += game.ImageCount;
+                    libraryStats.VideoCount += game.VideoCount;
+                    libraryStats.ImageTotalSize += game.ImageTotalSize;
+                    libraryStats.VideoTotalSize += game.VideoTotalSize;
+                }
+            }
+
+            SsvScreenshotsManagerData dataContext = (SsvScreenshotsManagerData)DataContext;
+            dataContext.InfosScreenshotsCountText = FormatScreenshotsCount(libraryStats.ImageCount);
+            dataContext.InfosScreenshotsSizeText = UtilityTools.SizeSuffix(libraryStats.ImageTotalSize);
+            dataContext.InfosVideosCountText = FormatVideosCount(libraryStats.VideoCount);
+            dataContext.InfosVideosSizeText = UtilityTools.SizeSuffix(libraryStats.VideoTotalSize);
+            dataContext.InfosFilesCountText = libraryStats.FileCount.ToString();
+            dataContext.InfosFilesSizeText = UtilityTools.SizeSuffix(libraryStats.FileTotalSize);
+
+            Common.LogDebug(string.Format(
+                "[SsvManager][library] files={0} images={1} videos={2}",
+                libraryStats.FileCount,
+                libraryStats.ImageCount,
+                libraryStats.VideoCount));
+        }
+
+        private static string FormatScreenshotsCount(int count)
+        {
+            return count > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvScreenshots"), count)
+                : string.Format(ResourceProvider.GetString("LOCSsvScreenshot"), count);
+        }
+
+        private static string FormatVideosCount(int count)
+        {
+            return count > 1
+                ? string.Format(ResourceProvider.GetString("LOCSsvVideos"), count)
+                : string.Format(ResourceProvider.GetString("LOCSsvVideo"), count);
         }
 
 
@@ -161,16 +362,34 @@ namespace ScreenshotsVisualizer.Views
 
         private void RefreshScreenshotsForGame(Guid gameId)
         {
+            SsvScreenshotSortBy sortBy = PluginDatabase.PluginSettings.ScreenshotsListSortBy;
+            SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.ScreenshotsListSortDirection;
+            SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.ScreenshotsListMediaFilter;
+
             _ = Task.Run(() =>
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 GameScreenshots gameScreenshots = PluginDatabase.Get(gameId, true);
-                if (gameScreenshots?.Items == null)
-                {
-                    return false;
-                }
+                int skippedMissing;
+                List<Screenshot> screenshots = SsvScreenshotListOrder.Apply(
+                    gameScreenshots?.Items,
+                    mediaFilter,
+                    sortBy,
+                    sortDirection,
+                    out skippedMissing);
+                SsvScreenshotListStats stats = SsvScreenshotListOrder.ComputeStats(screenshots);
 
-                List<Screenshot> screenshots = gameScreenshots.Items;
-                screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+                stopwatch.Stop();
+                Common.LogDebug(string.Format(
+                    "[SsvManager][refresh] files={0} images={1} videos={2} skippedMissing={3} sortBy={4} direction={5} filter={6} ms={7}",
+                    screenshots.Count,
+                    stats.ImageCount,
+                    stats.VideoCount,
+                    skippedMissing,
+                    sortBy,
+                    sortDirection,
+                    mediaFilter,
+                    stopwatch.ElapsedMilliseconds));
 
                 _ = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
@@ -187,6 +406,7 @@ namespace ScreenshotsVisualizer.Views
             dataContext.FileNameImage = string.Empty;
             dataContext.FileNameVideo = string.Empty;
             dataContext.FilePath = string.Empty;
+            Common.LogDebug("[SsvManager][preview] cleared");
         }
 
         private void PART_ListScreenshots_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,10 +422,23 @@ namespace ScreenshotsVisualizer.Views
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
                 ((SsvScreenshotsManagerData)DataContext).FileNameVideo = string.Empty;
                 ((SsvScreenshotsManagerData)DataContext).FilePath = string.Empty;
+                Common.LogDebug("[SsvManager][preview] cleared");
                 return;
             }
 
             Screenshot item = listbox.SelectedItem as Screenshot;
+            if (item == null)
+            {
+                return;
+            }
+
+            bool exists = File.Exists(item.FileName);
+            Common.LogDebug(string.Format(
+                "[SsvManager][preview] isVideo={0} exists={1} file={2}",
+                item.IsVideo,
+                exists,
+                item.FileNameOnly));
+
             if (item.IsVideo)
             {
                 ((SsvScreenshotsManagerData)DataContext).FileNameImage = string.Empty;
@@ -254,7 +487,6 @@ namespace ScreenshotsVisualizer.Views
                     if (result == SsvScreenshotDeleteResult.Success
                         || result == SsvScreenshotDeleteResult.SkippedMissingPhysicalFile)
                     {
-                        SetInfos();
                         RefreshScreenshotsForGame(gameId);
                     }
                 }
@@ -269,24 +501,16 @@ namespace ScreenshotsVisualizer.Views
         private void PART_Copy_Click(object sender, RoutedEventArgs e)
         {
             Screenshot screenshot = PART_ListScreenshots.SelectedItem as Screenshot;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
-                try
-                {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(screenshot.FileName);
-                    Clipboard.SetDataObject(img);
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
+                SsvClipboardHelper.TryCopyImageFile(screenshot.FileName);
             }
         }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             Screenshot screenshot = (Screenshot)PART_ListScreenshots.SelectedItem;
-            if (!screenshot?.IsVideo ?? false && File.Exists(screenshot?.FileName))
+            if (screenshot != null && !screenshot.IsVideo && File.Exists(screenshot.FileName))
             {
                 PART_Copy.Visibility = Visibility.Visible;
             }
@@ -325,6 +549,24 @@ namespace ScreenshotsVisualizer.Views
 
         private string _FilePath = string.Empty;
         public string FilePath { get => _FilePath; set => SetValue(ref _FilePath, value); }
+
+        private string _infosScreenshotsCountText = string.Empty;
+        public string InfosScreenshotsCountText { get => _infosScreenshotsCountText; set => SetValue(ref _infosScreenshotsCountText, value); }
+
+        private string _infosScreenshotsSizeText = string.Empty;
+        public string InfosScreenshotsSizeText { get => _infosScreenshotsSizeText; set => SetValue(ref _infosScreenshotsSizeText, value); }
+
+        private string _infosVideosCountText = string.Empty;
+        public string InfosVideosCountText { get => _infosVideosCountText; set => SetValue(ref _infosVideosCountText, value); }
+
+        private string _infosVideosSizeText = string.Empty;
+        public string InfosVideosSizeText { get => _infosVideosSizeText; set => SetValue(ref _infosVideosSizeText, value); }
+
+        private string _infosFilesCountText = "0";
+        public string InfosFilesCountText { get => _infosFilesCountText; set => SetValue(ref _infosFilesCountText, value); }
+
+        private string _infosFilesSizeText = string.Empty;
+        public string InfosFilesSizeText { get => _infosFilesSizeText; set => SetValue(ref _infosFilesSizeText, value); }
     }
 
 
@@ -334,13 +576,19 @@ namespace ScreenshotsVisualizer.Views
 
         public Guid Id { get; set; }
         public string Icon { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
         public string SourceIcon => TransformIcon.Get(SourceName);
 
         public DateTime LastSsv { get; set; }
+        public int ImageCount { get; set; }
+        public int VideoCount { get; set; }
+        public long ImageTotalSize { get; set; }
+        public long VideoTotalSize { get; set; }
         public int Total { get; set; }
+        public long TotalSizeBytes { get; set; }
+        public string TotalSizeString { get; set; }
 
         public RelayCommand<Guid> GoToGame => CommandsNavigation.GoToGame;
         public bool GameExist => API.Instance.Database.Games.Get(Id) != null;

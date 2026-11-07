@@ -73,7 +73,7 @@ namespace ScreenshotsVisualizer.Services
             }
 
             bool hasPendingWork = HasPendingMigrationWork(settings);
-            CommonPluginsShared.Common.LogDebug(true, string.Format(
+            CommonPluginsShared.Common.LogDebug(string.Format(
                 "[SsvGlobalSourceMigration] ScheduleIfNeeded — pending={0}, markerExists={1}.",
                 hasPendingWork,
                 IsMigrationCompleted(pluginUserDataPath)));
@@ -81,7 +81,7 @@ namespace ScreenshotsVisualizer.Services
             {
                 if (!hasPendingWork)
                 {
-                    CommonPluginsShared.Common.LogDebug(true, "[SsvGlobalSourceMigration] Skipped — marker exists and no pending work.");
+                    CommonPluginsShared.Common.LogDebug("[SsvGlobalSourceMigration] Skipped — marker exists and no pending work.");
                     onCompleted?.Invoke();
                     return;
                 }
@@ -91,7 +91,7 @@ namespace ScreenshotsVisualizer.Services
             else if (!hasPendingWork)
             {
                 WriteMigrationMarker(pluginUserDataPath, 0, null, "No global source duplicates found.");
-                CommonPluginsShared.Common.LogDebug(true, "[SsvGlobalSourceMigration] No pending duplicate found — marker written.");
+                CommonPluginsShared.Common.LogDebug("[SsvGlobalSourceMigration] No pending duplicate found — marker written.");
                 onCompleted?.Invoke();
                 return;
             }
@@ -114,7 +114,7 @@ namespace ScreenshotsVisualizer.Services
             string pluginName,
             Action<ScreenshotsVisualizerSettings> saveSettings)
         {
-            CommonPluginsShared.Common.LogDebug(true, "[SsvGlobalSourceMigration] RunMigration started.");
+            CommonPluginsShared.Common.LogDebug("[SsvGlobalSourceMigration] RunMigration started.");
             SsvArchiveSettingsBackupResult backup = SsvArchiveSettingsMigration.TryCreateSettingsBackupZip(
                 pluginUserDataPath,
                 pluginName,
@@ -142,7 +142,7 @@ namespace ScreenshotsVisualizer.Services
                     removed,
                     backup.ArchivePath));
 
-                CommonPluginsShared.Common.LogDebug(true, string.Format(
+                CommonPluginsShared.Common.LogDebug(string.Format(
                     "[SsvGlobalSourceMigration] Completed — removed {0} duplicate(s).",
                     removed));
 
@@ -187,7 +187,7 @@ namespace ScreenshotsVisualizer.Services
             }
 
             File.WriteAllText(markerPath, content);
-            CommonPluginsShared.Common.LogDebug(true, string.Format(
+            CommonPluginsShared.Common.LogDebug(string.Format(
                 "[SsvGlobalSourceMigration] Marker written: '{0}'.",
                 markerPath));
         }

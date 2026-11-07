@@ -294,7 +294,8 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
             {
                 codecHint = isEssential
                     ? ResourceProvider.GetString("LOCSsvMediaFormatsEssentialHint")
-                    : ResourceProvider.GetString(definition.CodecHintResourceKey);
+                    : ResourceProvider.GetString(
+                        SsvMediaFormatCatalog.GetCodecHintResourceKey(definition.DecodeEngine));
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.PlayniteExtended;
 using Playnite.SDK;
@@ -66,7 +66,7 @@ namespace ScreenshotsVisualizer
                 string buttonName = ((Button)sender).Name;
                 if (buttonName == "PART_CustomSsvButton")
                 {
-                    Common.LogDebug(true, "OnCustomThemeButtonClick()");
+                    Common.LogDebug("OnCustomThemeButtonClick()");
                     PluginDatabase.PluginWindows.ShowPluginGameDataWindow(PluginDatabase.GameContext);
                 }
             }
@@ -138,7 +138,7 @@ namespace ScreenshotsVisualizer
         {
             List<StartPageViewArgsBase> views = new List<StartPageViewArgsBase>
             {
-                new StartPageViewArgsBase 
+                new StartPageViewArgsBase
                 {
                     Name = ResourceProvider.GetString("LOCSsvCarousel"),
                     ViewId = "SsvCarousel",
@@ -307,6 +307,19 @@ namespace ScreenshotsVisualizer
                         pluginUserDataPath,
                         PluginDatabase.PluginName,
                         saveSettings)));
+
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                    PluginDatabase.ScheduleLibraryThumbnailWarmup();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+            });
         }
 
         // Add code to be executed when Playnite is shutting down.

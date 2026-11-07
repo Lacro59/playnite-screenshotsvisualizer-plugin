@@ -1,4 +1,4 @@
-﻿using CommonPlayniteShared.Common;
+using CommonPlayniteShared.Common;
 using CommonPluginsShared;
 using CommonPluginsShared.Utilities;
 using Playnite.SDK;
@@ -6,6 +6,7 @@ using Playnite.SDK.Data;
 using ScreenshotsVisualizer.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -27,6 +28,9 @@ namespace ScreenshotsVisualizer.Models
 
         [DontSerialize]
         private bool _videoMetadataResolveAttempted;
+
+        [DontSerialize]
+        private bool _thumbnailResolveLogged;
 
         private string _sizeString;
         [DontSerialize]
@@ -99,13 +103,40 @@ namespace ScreenshotsVisualizer.Models
             {
                 if (_thumbnail.IsNullOrEmpty() && IsVideo)
                 {
+                    double durationSeconds = Duration.TotalSeconds;
                     _thumbnail = PluginDatabase.ThumbnailService.TryEnsureVideoThumbnail(
                         FileName,
                         PluginDatabase.Paths.PluginCachePath,
                         Modifed,
                         FileSize,
-                        Duration.TotalSeconds,
+                        durationSeconds,
                         PluginDatabase.PluginSettings.FfmpegPath) ?? string.Empty;
+
+                    if (!_thumbnailResolveLogged)
+                    {
+                        _thumbnailResolveLogged = true;
+                        string resolveReason = "ok";
+                        if (_thumbnail.IsNullOrEmpty())
+                        {
+                            string cachePath = SsvThumbnailService.GetVideoThumbnailCachePath(
+                                PluginDatabase.Paths.PluginCachePath,
+                                FileNameOnly,
+                                FileSize,
+                                durationSeconds);
+                            resolveReason = File.Exists(SsvThumbnailService.GetFailureMarkerPath(cachePath))
+                                ? "failureMarker"
+                                : "ensureReturnedNull";
+                        }
+
+                        Common.LogDebug(string.Format(
+                            "[SsvThumbnail][video][resolve] file={0} bytes={1} durationSeconds={2} empty={3} reason={4} path={5}",
+                            FileNameOnly,
+                            FileSize,
+                            durationSeconds.ToString("G", System.Globalization.CultureInfo.InvariantCulture),
+                            _thumbnail.IsNullOrEmpty(),
+                            resolveReason,
+                            _thumbnail.IsNullOrEmpty() ? string.Empty : Path.GetFileName(_thumbnail)));
+                    }
                 }
 
                 return _thumbnail;
@@ -136,7 +167,12 @@ namespace ScreenshotsVisualizer.Models
 
         private void EnsureVideoMetadataResolved()
         {
-            if (_videoMetadataResolveAttempted || !IsVideo || !File.Exists(FileName))
+            if (!IsVideo || !File.Exists(FileName))
+            {
+                return;
+            }
+
+            if (_videoMetadataResolveAttempted)
             {
                 return;
             }
@@ -145,9 +181,10 @@ namespace ScreenshotsVisualizer.Models
 
             try
             {
-                Common.LogDebug(true, string.Format(
-                    "[SsvVideoMetadata] Resolve start for '{0}' (modified={1:u})",
-                    FileName,
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                Common.LogDebug(string.Format(
+                    "[SsvVideoMetadata][resolve] start file={0} modified={1:u}",
+                    FileNameOnly,
                     Modifed.ToUniversalTime()));
 
                 if (PluginDatabase.VideoMetadataService.TryGetVideoMetadata(
@@ -158,17 +195,21 @@ namespace ScreenshotsVisualizer.Models
                 {
                     _duration = metadata.Duration;
                     _sizeString = metadata.SizeString;
-                    Common.LogDebug(true, string.Format(
-                        "[SsvVideoMetadata] Resolve ok for '{0}' ({1}, {2})",
-                        FileName,
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvVideoMetadata][resolve] ok file={0} size={1} duration={2} elapsedMs={3}",
+                        FileNameOnly,
                         _sizeString,
-                        _duration));
+                        _duration,
+                        stopwatch.ElapsedMilliseconds));
                 }
                 else
                 {
-                    Common.LogDebug(true, string.Format(
-                        "[SsvVideoMetadata] Resolve failed for '{0}'",
-                        FileName));
+                    stopwatch.Stop();
+                    Common.LogDebug(string.Format(
+                        "[SsvVideoMetadata][resolve] failed file={0} elapsedMs={1}",
+                        FileNameOnly,
+                        stopwatch.ElapsedMilliseconds));
                 }
             }
             catch (Exception ex)

@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="ScreenshotsVisualizer.Views.SsvScreenshotsManager"
+<UserControl x:Class="ScreenshotsVisualizer.Views.SsvScreenshotsManager"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ScreenshotsVisualizer.Views"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=local:SsvScreenshotsManagerData}">
 
@@ -37,7 +38,7 @@
                     <TextBlock MaxWidth="{Binding ElementName=PART_GridText, Path=ActualWidth}"
                                        Text="{Binding FileNameOnly, FallbackValue='NameOfFile'}" MinWidth="250" FontWeight="Bold"
                                        Style="{DynamicResource BaseTextBlockStyle}"
-                                       TextTrimming="CharacterEllipsis" 
+                                       TextTrimming="CharacterEllipsis"
                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
 
@@ -72,7 +73,7 @@
                                        Style="{DynamicResource BaseTextBlockStyle}"
                                        Text="{Binding FileSizeString, FallbackValue='1.5Mo'}" />
 
-                    <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click" 
+                    <Button Name="PART_BtDelete" Content="" Click="PART_BtDelete_Click"
                                     Grid.Column="2" Grid.Row="0" Grid.RowSpan="10"
                                     Style="{DynamicResource ListRowHoverRevealIconButton}"
                                     FontFamily="{DynamicResource CommonFont}"
@@ -106,23 +107,81 @@
 
             <Grid Grid.Column="0" Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <Grid Name="PART_LveGamesContener" Grid.Row="0">
-                    <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesContener, Path=ActualHeight}"
-                                               SelectionChanged="PART_LveGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
-                                               SortingEnable="True" SortingSortDirection="Descending" SortingDefaultDataName="LastActivity"
-                                               ItemsSource="{Binding LveGames}">
+
+                <Border Grid.Row="0"
+                        Padding="8,6"
+                        BorderBrush="{DynamicResource NormalBorderBrush}"
+                        BorderThickness="{DynamicResource ControlBorderThickness}"
+                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                        Background="{DynamicResource ControlBackgroundBrush}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,16,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   FontWeight="SemiBold"
+                                   Text="{DynamicResource LOCSsvLibraryTotals}" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosScreenshotsCountText}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="8,0,16,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosScreenshotsSizeText}" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosVideosCountText}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="8,0,16,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosVideosSizeText}" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{DynamicResource LOCCommonTotal}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="8,0,0,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosFilesCountText}" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="8,0,0,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{Binding InfosFilesSizeText}" />
+                    </StackPanel>
+                </Border>
+
+                <Grid Name="PART_LveGamesContener" Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <playnitecontrols:SearchBox x:Name="PART_GameNameFilter"
+                                                Grid.Row="0"
+                                                VerticalAlignment="Center"
+                                                Height="{Binding ActualHeight, ElementName=PART_CbSortBy}"
+                                                MinHeight="{Binding ActualHeight, ElementName=PART_CbSortBy}"
+                                                ToolTip="{DynamicResource LOCSsvFilterGameName}"
+                                                TextChanged="PART_GameNameFilter_TextChanged" />
+
+                    <Grid Name="PART_LveGamesHost" Grid.Row="2">
+                        <controlsShared:ListViewExtend x:Name="PART_LveGames" Height="{Binding ElementName=PART_LveGamesHost, Path=ActualHeight}"
+                                                   SelectionChanged="PART_LveGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}"
+                                                   SortingEnable="True" SortingSortDirection="Descending" SortingDefaultDataName="LastActivity"
+                                                   ItemsSource="{Binding LveGames}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="50" x:Name="lvGameIcon">
                                     <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32"
                                            Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -131,7 +190,7 @@
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
                                     <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
                                 </GridViewColumn>
-                                <GridViewColumn Width="210" x:Name="lvGameName">
+                                <GridViewColumn Width="180" x:Name="lvGameName">
                                     <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -149,31 +208,55 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
+                                <GridViewColumn Width="130" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
                                     <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
                                     <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
                                 </GridViewColumn>
-                                <GridViewColumn Width="75" x:Name="lvGamesSource">
+                                <GridViewColumn Width="60" x:Name="lvGamesSource">
                                     <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}"
                                            HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastSsv, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastSsv">
+                                <GridViewColumn Width="130" DisplayMemberBinding="{Binding LastSsv, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastSsv">
                                     <GridViewColumnHeader Name="lvLastSsv" Content="{DynamicResource LOCSsvLastSsv}" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding ImageCount}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="55" x:Name="lvGameImageCount">
+                                    <GridViewColumnHeader Name="lvImageCount" Content="{DynamicResource LOCSsvColumnImages}" Tag="ImageCount" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding ImageCount}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding VideoCount}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="55" x:Name="lvGameVideoCount">
+                                    <GridViewColumnHeader Name="lvVideoCount" Content="{DynamicResource LOCSsvColumnVideos}" Tag="VideoCount" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding VideoCount}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding Total}">
                                     <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
                                 </GridViewColumn>
-                                <GridViewColumn Width="60" x:Name="lvGameSsvCount">
+                                <GridViewColumn Width="50" x:Name="lvGameSsvCount">
                                     <GridViewColumnHeader Name="lvSsvCount" Content="{DynamicResource LOCCommonTotal}" Tag="Total" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -181,66 +264,50 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding TotalSizeBytes}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="70" x:Name="lvGameTotalSize">
+                                    <GridViewColumnHeader Name="lvTotalSize" Content="{DynamicResource LOCSsvColumnSize}" Tag="TotalSizeBytes" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding TotalSizeString}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
-                    </controlsShared:ListViewExtend>
-                </Grid>
-
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Column="1" Grid.Row="0" Content="{DynamicResource LOCGameDetails}" />
-                    <Label Grid.Column="3" Grid.Row="0" Name="PART_ScreenshotsCount" Content="10 screenshots" />
-                    <Label Grid.Column="5" Grid.Row="0" Name="PART_ScreenshotsSize" Content="12.3Mb" HorizontalAlignment="Right" />
-
-                    <Label Grid.Column="3" Grid.Row="2" Name="PART_VideosCount" Content="2 videos" />
-                    <Label Grid.Column="5" Grid.Row="2" Name="PART_VideosSize" Content="102.3Mb" HorizontalAlignment="Right" />
-
-                    <Label Grid.Column="1" Grid.Row="4" Content="{DynamicResource LOCCommonTotal}" />
-                    <Label Grid.Column="3" Grid.Row="4" Name="PART_FilesCount" Content="0" />
-                    <Label Grid.Column="5" Grid.Row="4" Name="PART_FilesSize" Content="12.3Mb" HorizontalAlignment="Right" />
+                        </controlsShared:ListViewExtend>
+                    </Grid>
                 </Grid>
             </Grid>
 
 
             <DockPanel Grid.Column="2" Grid.Row="0" LastChildFill="True">
                 <DockPanel DockPanel.Dock="Bottom" Visibility="{Binding FilePath, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
-                    <Button Content="&#xec5b;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,0,10,0" Click="Button_Click"                            
+                    <Button Content="&#xec5b;" FontFamily="{DynamicResource FontIcoFont}" Margin="0,0,10,0" Click="Button_Click"
                             ToolTip="{DynamicResource LOCSsvOpenScreenshotsDirectory}" DockPanel.Dock="Left" />
-                    
+
                     <controls:TextBlockTrimmed Text="{Binding FilePath, FallbackValue='FilePath'}" Style="{DynamicResource BaseTextBlockStyle}"
                                                VerticalAlignment="Center" />
                 </DockPanel>
 
                 <Grid MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
                     <Grid Name="PART_Contener">
-                        <controlsShared:ImageAsync x:Name="PART_Screenshot" Visibility="{Binding FileNameImage, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
+                        <controlsShared:ImageAsync x:Name="PART_Screenshot" Visibility="{Binding FileNameImage, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
                                                    Source="{Binding FileNameImage}"
                                                    MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
                                                    MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
 
-                        <controls:MediaElementExtend Visibility="{Binding FileNameVideo, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}" 
+                        <controls:MediaElementExtend Visibility="{Binding FileNameVideo, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
                                                      Source="{Binding FileNameVideo}" LoadedBehavior="Play" x:Name="PART_Video"
                                                      MaxHeight="{Binding ElementName=PART_Contener, Path=ActualHeight}"
                                                      MaxWidth="{Binding ElementName=PART_Contener, Path=ActualWidth}" />
                     </Grid>
-                
+
                     <Grid Grid.Column="2" Grid.Row="0" Background="Transparent">
-                        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec51;" 
+                        <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec51;"
                             Background="Transparent" BorderThickness="0" FontSize="45"
                             HorizontalAlignment="Right" VerticalAlignment="Bottom"
                             Click="PART_Copy_Click" Name="PART_Copy" />
@@ -249,15 +316,67 @@
             </DockPanel>
 
             <Grid Name="PART_ListScreenshotsContener" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
-                <ListBox Name="PART_ListScreenshots"
-                         Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
-                         SelectionChanged="PART_ListScreenshots_SelectionChanged"
-                         ItemsSource="{Binding Screenshots}"
-                         ItemTemplate="{StaticResource ItemTemplate}"     
-                         Tag="{Binding AddBorder}"
-                         Height="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualHeight}" 
-                         Width="{Binding ElementName=PART_ListScreenshotsContener, Path=ActualWidth}">
-                </ListBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,10,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{DynamicResource LOCSsvSortBy}" />
+                        <ComboBox Name="PART_CbSortBy"
+                                  MinWidth="120"
+                                  Margin="0,0,10,0"
+                                  Style="{DynamicResource FilterComboBox}"
+                                  DisplayMemberPath="Label"
+                                  SelectedValuePath="Value"
+                                  SelectionChanged="PART_ListToolbar_SelectionChanged" />
+                        <Button Name="PART_BtSortDirection"
+                                Style="{DynamicResource IconButton}"
+                                ToolTip="{DynamicResource LOCSsvSortDirection}"
+                                Click="PART_BtSortDirection_Click">
+                            <TextBlock Name="PART_TbSortDirectionCaret"
+                                       Text="&#xea67;"
+                                       Style="{DynamicResource BaseTextBlockStyle}"
+                                       FontFamily="{DynamicResource FontIcoFont}"
+                                       FontSize="{DynamicResource FontSize}"
+                                       FontWeight="Light" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,10,0"
+                                   Style="{DynamicResource BaseTextBlockStyle}"
+                                   Text="{DynamicResource LOCSsvFilterMedia}" />
+                        <ComboBox Name="PART_CbMediaFilter"
+                                  MinWidth="120"
+                                  Style="{DynamicResource FilterComboBox}"
+                                  DisplayMemberPath="Label"
+                                  SelectedValuePath="Value"
+                                  SelectionChanged="PART_ListToolbar_SelectionChanged" />
+                    </StackPanel>
+                </DockPanel>
+
+                <Grid Name="PART_ListScreenshotsHost" Grid.Row="2">
+                    <ListBox Name="PART_ListScreenshots"
+                             Style="{StaticResource SsvScreenshotsListBoxHorizontalStyle}"
+                             SelectionChanged="PART_ListScreenshots_SelectionChanged"
+                             ItemsSource="{Binding Screenshots}"
+                             ItemTemplate="{StaticResource ItemTemplate}"
+                             Tag="{Binding AddBorder}"
+                             Height="{Binding ElementName=PART_ListScreenshotsHost, Path=ActualHeight}"
+                             Width="{Binding ElementName=PART_ListScreenshotsHost, Path=ActualWidth}">
+                    </ListBox>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

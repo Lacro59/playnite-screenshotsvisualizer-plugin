@@ -1,4 +1,4 @@
-﻿using Playnite.SDK;
+using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using ScreenshotsVisualizer.Services;
 using ScreenshotsVisualizer.ViewModels.Settings;
@@ -6,6 +6,7 @@ using Playnite.SDK.Data;
 using System.Collections.Generic;
 using ScreenshotsVisualizer.Models.StartPage;
 using System.Linq;
+using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Utilities;
 using System.Threading.Tasks;
@@ -101,6 +102,13 @@ namespace ScreenshotsVisualizer
         public string FileSavePattern { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets whether files under the archive destination (<see cref="FolderToSave"/>)
+        /// are included in ImageMagick conversion operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool ArchiveIncludeInConversion { get; set; } = true;
+
+        /// <summary>
         /// Legacy single global screenshot folder path. Migrated into <see cref="GlobalScreenshotSources"/> on load.
         /// Kept for JSON backward compatibility until all consumers use the list.
         /// </summary>
@@ -170,13 +178,163 @@ namespace ScreenshotsVisualizer
 
         public bool UseExternalViewer { get; set; } = false;
 
+        private SsvScreenshotSortBy _screenshotsListSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the persisted sort criterion for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotSortBy ScreenshotsListSortBy
+        {
+            get => _screenshotsListSortBy;
+            set => SetValue(ref _screenshotsListSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _screenshotsListSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the persisted sort direction for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotSortDirection ScreenshotsListSortDirection
+        {
+            get => _screenshotsListSortDirection;
+            set => SetValue(ref _screenshotsListSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _screenshotsListMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the persisted media-type filter for Manager and game screenshot lists.
+        /// </summary>
+        public SsvScreenshotMediaFilter ScreenshotsListMediaFilter
+        {
+            get => _screenshotsListMediaFilter;
+            set => SetValue(ref _screenshotsListMediaFilter, value);
+        }
+
+        private SsvScreenshotSortBy _integrationShowPicturesSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the sort criterion for the theme horizontal pictures list control.
+        /// </summary>
+        public SsvScreenshotSortBy IntegrationShowPicturesSortBy
+        {
+            get => _integrationShowPicturesSortBy;
+            set => SetValue(ref _integrationShowPicturesSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _integrationShowPicturesSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the sort direction for the theme horizontal pictures list control.
+        /// </summary>
+        public SsvScreenshotSortDirection IntegrationShowPicturesSortDirection
+        {
+            get => _integrationShowPicturesSortDirection;
+            set => SetValue(ref _integrationShowPicturesSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _integrationShowPicturesMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the media-type filter for the theme horizontal pictures list control.
+        /// </summary>
+        public SsvScreenshotMediaFilter IntegrationShowPicturesMediaFilter
+        {
+            get => _integrationShowPicturesMediaFilter;
+            set => SetValue(ref _integrationShowPicturesMediaFilter, value);
+        }
+
+        private SsvScreenshotSortBy _integrationShowPicturesVerticalSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the sort criterion for the theme vertical pictures list control.
+        /// </summary>
+        public SsvScreenshotSortBy IntegrationShowPicturesVerticalSortBy
+        {
+            get => _integrationShowPicturesVerticalSortBy;
+            set => SetValue(ref _integrationShowPicturesVerticalSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _integrationShowPicturesVerticalSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the sort direction for the theme vertical pictures list control.
+        /// </summary>
+        public SsvScreenshotSortDirection IntegrationShowPicturesVerticalSortDirection
+        {
+            get => _integrationShowPicturesVerticalSortDirection;
+            set => SetValue(ref _integrationShowPicturesVerticalSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _integrationShowPicturesVerticalMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the media-type filter for the theme vertical pictures list control.
+        /// </summary>
+        public SsvScreenshotMediaFilter IntegrationShowPicturesVerticalMediaFilter
+        {
+            get => _integrationShowPicturesVerticalMediaFilter;
+            set => SetValue(ref _integrationShowPicturesVerticalMediaFilter, value);
+        }
+
+        private SsvScreenshotSortBy _integrationPicturesListSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the sort criterion for the theme pictures list control.
+        /// </summary>
+        public SsvScreenshotSortBy IntegrationPicturesListSortBy
+        {
+            get => _integrationPicturesListSortBy;
+            set => SetValue(ref _integrationPicturesListSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _integrationPicturesListSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the sort direction for the theme pictures list control.
+        /// </summary>
+        public SsvScreenshotSortDirection IntegrationPicturesListSortDirection
+        {
+            get => _integrationPicturesListSortDirection;
+            set => SetValue(ref _integrationPicturesListSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _integrationPicturesListMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the media-type filter for the theme pictures list control.
+        /// </summary>
+        public SsvScreenshotMediaFilter IntegrationPicturesListMediaFilter
+        {
+            get => _integrationPicturesListMediaFilter;
+            set => SetValue(ref _integrationPicturesListMediaFilter, value);
+        }
+
+        private SsvScreenshotSortBy _integrationShowSinglePictureSortBy = SsvScreenshotSortBy.Date;
+        /// <summary>
+        /// Gets or sets the sort criterion for the theme single-picture control.
+        /// </summary>
+        public SsvScreenshotSortBy IntegrationShowSinglePictureSortBy
+        {
+            get => _integrationShowSinglePictureSortBy;
+            set => SetValue(ref _integrationShowSinglePictureSortBy, value);
+        }
+
+        private SsvScreenshotSortDirection _integrationShowSinglePictureSortDirection = SsvScreenshotSortDirection.Descending;
+        /// <summary>
+        /// Gets or sets the sort direction for the theme single-picture control.
+        /// </summary>
+        public SsvScreenshotSortDirection IntegrationShowSinglePictureSortDirection
+        {
+            get => _integrationShowSinglePictureSortDirection;
+            set => SetValue(ref _integrationShowSinglePictureSortDirection, value);
+        }
+
+        private SsvScreenshotMediaFilter _integrationShowSinglePictureMediaFilter = SsvScreenshotMediaFilter.All;
+        /// <summary>
+        /// Gets or sets the media-type filter for the theme single-picture control.
+        /// </summary>
+        public SsvScreenshotMediaFilter IntegrationShowSinglePictureMediaFilter
+        {
+            get => _integrationShowSinglePictureMediaFilter;
+            set => SetValue(ref _integrationShowSinglePictureMediaFilter, value);
+        }
+
         #endregion
 
         #region Settings StartPage
 
         private SsvCarouselOptions _ssvCarouselOptions = new SsvCarouselOptions();
         public SsvCarouselOptions ssvCarouselOptions { get => _ssvCarouselOptions; set => SetValue(ref _ssvCarouselOptions, value); }
-        
+
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -186,7 +344,7 @@ namespace ScreenshotsVisualizer
         private List<Screenshot> _listScreenshots = new List<Screenshot>();
         [DontSerialize]
         public List<Screenshot> ListScreenshots { get => _listScreenshots; set => SetValue(ref _listScreenshots, value); }
-        
+
         #endregion
 
         #region Global screenshot sources
@@ -509,6 +667,39 @@ namespace ScreenshotsVisualizer
             private set => SetValue(ref _thumbnailCacheSizeText, value);
         }
 
+        private List<SsvScreenshotListChoice<SsvScreenshotSortBy>> _screenshotSortByChoices =
+            new List<SsvScreenshotListChoice<SsvScreenshotSortBy>>();
+        /// <summary>
+        /// Gets localized sort-by choices for theme list-control settings.
+        /// </summary>
+        public List<SsvScreenshotListChoice<SsvScreenshotSortBy>> ScreenshotSortByChoices
+        {
+            get => _screenshotSortByChoices;
+            private set => SetValue(ref _screenshotSortByChoices, value);
+        }
+
+        private List<SsvScreenshotListChoice<SsvScreenshotSortDirection>> _screenshotSortDirectionChoices =
+            new List<SsvScreenshotListChoice<SsvScreenshotSortDirection>>();
+        /// <summary>
+        /// Gets localized sort-direction choices for theme list-control settings.
+        /// </summary>
+        public List<SsvScreenshotListChoice<SsvScreenshotSortDirection>> ScreenshotSortDirectionChoices
+        {
+            get => _screenshotSortDirectionChoices;
+            private set => SetValue(ref _screenshotSortDirectionChoices, value);
+        }
+
+        private List<SsvScreenshotListChoice<SsvScreenshotMediaFilter>> _screenshotMediaFilterChoices =
+            new List<SsvScreenshotListChoice<SsvScreenshotMediaFilter>>();
+        /// <summary>
+        /// Gets localized media-filter choices for theme list-control settings.
+        /// </summary>
+        public List<SsvScreenshotListChoice<SsvScreenshotMediaFilter>> ScreenshotMediaFilterChoices
+        {
+            get => _screenshotMediaFilterChoices;
+            private set => SetValue(ref _screenshotMediaFilterChoices, value);
+        }
+
 
         public ScreenshotsVisualizerSettingsViewModel(ScreenshotsVisualizer plugin)
         {
@@ -562,17 +753,43 @@ namespace ScreenshotsVisualizer
             GamesConfiguration.CaptureCancelSnapshot();
             ConfigurationContext.CaptureCancelSnapshot();
             RefreshThumbnailCacheInfo();
+            RefreshScreenshotListChoices();
+        }
+
+        /// <summary>
+        /// Rebuilds localized ComboBox choices when settings open (plugin LOC may be unavailable at VM ctor).
+        /// </summary>
+        private void RefreshScreenshotListChoices()
+        {
+            ScreenshotSortByChoices = SsvScreenshotListOrder.CreateSortByChoices();
+            ScreenshotSortDirectionChoices = SsvScreenshotListOrder.CreateSortDirectionChoices();
+            ScreenshotMediaFilterChoices = SsvScreenshotListOrder.CreateMediaFilterChoices();
         }
 
         /// <summary>
         /// Refreshes thumbnail cache statistics displayed in the settings view.
+        /// Failures are logged and replaced with neutral values so settings can still open.
         /// </summary>
         public void RefreshThumbnailCacheInfo()
         {
-            ThumbnailCacheStats stats = SsvThumbnailService.GetThumbnailCacheStats(
-                ScreenshotsVisualizer.PluginDatabase.Paths.PluginCachePath);
-            ThumbnailCacheFileCountText = stats.FileCount.ToString();
-            ThumbnailCacheSizeText = UtilityTools.SizeSuffix(stats.TotalBytes);
+            try
+            {
+                ThumbnailCacheStats stats = SsvThumbnailService.GetThumbnailCacheStats(
+                    ScreenshotsVisualizer.PluginDatabase.Paths.PluginCachePath);
+                ThumbnailCacheFileCountText = stats.FileCount.ToString();
+                ThumbnailCacheSizeText = UtilityTools.SizeSuffix(stats.TotalBytes);
+            }
+            catch (Exception ex)
+            {
+                ThumbnailCacheFileCountText = "0";
+                ThumbnailCacheSizeText = UtilityTools.SizeSuffix(0);
+                Common.LogError(
+                    ex,
+                    false,
+                    "[SsvThumbnail] Failed to refresh thumbnail cache stats.",
+                    false,
+                    ScreenshotsVisualizer.PluginName);
+            }
         }
 
         // Code executed when user decides to cancel any changes made since BeginEdit was called.

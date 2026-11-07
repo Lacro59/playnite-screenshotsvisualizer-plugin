@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <!-- Host Playnite already ships Magick native; do not copy Magick.Native into the extension output. -->
+    <MagickCopyNativeWindows>false</MagickCopyNativeWindows>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +60,18 @@
     </Reference>
     <Reference Include="FuzzySharp, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FuzzySharp.2.0.2\lib\net461\FuzzySharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=14.17.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>packages\Magick.NET.Core.14.17.2\lib\netstandard20\Magick.NET.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Magick.NET.SystemWindowsMedia, Version=8.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>packages\Magick.NET.SystemWindowsMedia.8.0.28\lib\net462\Magick.NET.SystemWindowsMedia.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Magick.NET-Q8-x86, Version=14.17.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>packages\Magick.NET-Q8-x86.14.17.2\lib\netstandard20\Magick.NET-Q8-x86.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Playnite.SDK, Version=6.16.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -139,8 +153,10 @@
     <Compile Include="Models\SsvPresetMigrationResult.cs" />
     <Compile Include="Models\SsvArchiveSettingsBackupResult.cs" />
     <Compile Include="Models\SsvMediaFormatCatalog.cs" />
+    <Compile Include="Models\SsvMediaDecodeEngine.cs" />
     <Compile Include="Models\SsvMediaFormatDefinition.cs" />
     <Compile Include="Models\SsvMediaFormatKind.cs" />
+    <Compile Include="Models\SsvScreenshotListOptions.cs" />
     <Compile Include="Models\SsvImageConversionCustomCmd.cs" />
     <Compile Include="Models\SsvImageConversionResult.cs" />
     <Compile Include="Models\SsvVideoMetadata.cs" />
@@ -203,8 +219,11 @@
     <Compile Include="Services\ImageMagickCommandBuilder.cs" />
     <Compile Include="Services\ImageMagickConversionService.cs" />
     <Compile Include="Services\SsvScreenshotDeleteResult.cs" />
+    <Compile Include="Services\SsvScreenshotListOrder.cs" />
     <Compile Include="Services\ScreenshotsVisualizerDatabase.cs" />
     <Compile Include="Services\SsvArchiveFolderHelper.cs" />
+    <Compile Include="Services\SsvFolderOperationFilter.cs" />
+    <Compile Include="Services\SsvClipboardHelper.cs" />
     <Compile Include="Services\SsvGlobalSourceFolderHelper.cs" />
     <Compile Include="Services\SsvPresetFolderHelper.cs" />
     <Compile Include="Services\SsvPresetSettingsMigration.cs" />
@@ -218,6 +237,7 @@
     <Compile Include="Services\SsvPathResolver.cs" />
     <Compile Include="Services\SsvVideoMetadataService.cs" />
     <Compile Include="Services\SsvThumbnailService.cs" />
+    <Compile Include="Services\SsvThumbnailWarmupService.cs" />
     <Compile Include="Services\ScreenshotsVisualizerTopPanelItem.cs" />
     <Compile Include="Services\ScreenshotsVisualizerViewSidebar.cs" />
     <Compile Include="Services\ScreenshotsVisualizerWindows.cs" />

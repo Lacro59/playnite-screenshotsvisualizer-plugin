@@ -42,7 +42,7 @@ namespace ScreenshotsVisualizer.Services
                 return;
             }
 
-            Common.LogDebug(true, string.Format("[SsvWindows] Open screenshot with external viewer: {0}", Path.GetFileName(filePath)));
+            Common.LogDebug(string.Format("[SsvWindows] Open screenshot with external viewer: {0}", Path.GetFileName(filePath)));
             _ = Process.Start(filePath);
         }
 
@@ -100,22 +100,38 @@ namespace ScreenshotsVisualizer.Services
                 return;
             }
 
-            WindowOptions windowOptions = new WindowOptions
+            try
             {
-                ShowMinimizeButton = false,
-                ShowMaximizeButton = true,
-                ShowCloseButton = true,
-                CanBeResizable = true,
-                Height = 720,
-                Width = 1200
-            };
+                Common.LogDebug(string.Format(
+                    "[SsvWindows] open gallery gameId={0} name=\"{1}\"",
+                    gameContext.Id,
+                    gameContext.Name));
 
-            SsvScreenshotsView viewExtension = new SsvScreenshotsView(gameContext);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(
-                ResourceProvider.GetString("LOCSsvTitle"),
-                viewExtension,
-                windowOptions);
-            _ = windowExtension.ShowDialog();
+                WindowOptions windowOptions = new WindowOptions
+                {
+                    ShowMinimizeButton = false,
+                    ShowMaximizeButton = true,
+                    ShowCloseButton = true,
+                    CanBeResizable = true,
+                    Height = 720,
+                    Width = 1200
+                };
+
+                SsvScreenshotsView viewExtension = new SsvScreenshotsView(gameContext);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(
+                    ResourceProvider.GetString("LOCSsvTitle"),
+                    viewExtension,
+                    windowOptions);
+                _ = windowExtension.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                // Host menu already shows a generic dialog; log here so extensions.log has SSV context (e.g. XAML StaticResource failures).
+                Common.LogError(
+                    ex,
+                    false,
+                    string.Format("[SsvWindows] open gallery failed gameId={0}", gameContext.Id));
+            }
         }
     }
 }

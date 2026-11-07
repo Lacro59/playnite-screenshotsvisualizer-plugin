@@ -93,7 +93,7 @@ namespace ScreenshotsVisualizer.Services
                 archivePath,
                 archivedCount));
 
-            CommonPluginsShared.Common.LogDebug(true, string.Format(
+            CommonPluginsShared.Common.LogDebug(string.Format(
                 "[SsvArchiveMigration] Settings backup created: '{0}'",
                 archivePath));
 
@@ -250,7 +250,7 @@ namespace ScreenshotsVisualizer.Services
                     removed,
                     backup.ArchivePath));
 
-                CommonPluginsShared.Common.LogDebug(true, string.Format(
+                CommonPluginsShared.Common.LogDebug(string.Format(
                     "[SsvArchiveMigration] Completed — removed {0} duplicate(s).",
                     removed));
 

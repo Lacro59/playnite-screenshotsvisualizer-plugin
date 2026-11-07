@@ -15,10 +15,11 @@ namespace ScreenshotsVisualizer.Models
         /// Increment when built-in formats with <see cref="SsvMediaFormatDefinition.EnabledByDefault"/> are added
         /// so existing installations receive a one-time merge without overriding user removals.
         /// </summary>
-        public const int CurrentMediaFormatCatalogRevision = 1;
+        public const int CurrentMediaFormatCatalogRevision = 2;
 
         private const string WicNativeHintKey = "LOCSsvMediaFormatCodecWicNative";
         private const string WicExtensionHintKey = "LOCSsvMediaFormatCodecWicExtension";
+        private const string MagickHostHintKey = "LOCSsvMediaFormatCodecMagickHost";
         private const string CustomDecoderHintKey = "LOCSsvMediaFormatCodecCustomDecoder";
         private const string FfmpegHintKey = "LOCSsvMediaFormatCodecFfmpeg";
         private const string CustomUnknownHintKey = "LOCSsvMediaFormatCodecCustomUnknown";
@@ -29,20 +30,21 @@ namespace ScreenshotsVisualizer.Models
 
         private static readonly IReadOnlyList<SsvMediaFormatDefinition> Definitions = new List<SsvMediaFormatDefinition>
         {
-            new SsvMediaFormatDefinition(".jpg", SsvMediaFormatKind.Image, true, true, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".jpeg", SsvMediaFormatKind.Image, true, true, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".jfif", SsvMediaFormatKind.Image, true, false, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".png", SsvMediaFormatKind.Image, true, true, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".gif", SsvMediaFormatKind.Image, true, false, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".bmp", SsvMediaFormatKind.Image, true, false, false, false, WicNativeHintKey),
-            new SsvMediaFormatDefinition(".webp", SsvMediaFormatKind.Image, true, false, true, false, WicExtensionHintKey),
-            new SsvMediaFormatDefinition(".tga", SsvMediaFormatKind.Image, true, false, false, true, CustomDecoderHintKey),
-            new SsvMediaFormatDefinition(".avif", SsvMediaFormatKind.Image, true, false, true, false, WicExtensionHintKey),
-            new SsvMediaFormatDefinition(".heic", SsvMediaFormatKind.Image, false, false, true, false, WicExtensionHintKey),
-            new SsvMediaFormatDefinition(".mp4", SsvMediaFormatKind.Video, true, true, false, false, FfmpegHintKey),
-            new SsvMediaFormatDefinition(".avi", SsvMediaFormatKind.Video, true, false, false, false, FfmpegHintKey),
-            new SsvMediaFormatDefinition(".mkv", SsvMediaFormatKind.Video, true, false, false, false, FfmpegHintKey),
-            new SsvMediaFormatDefinition(".webm", SsvMediaFormatKind.Video, true, false, false, false, FfmpegHintKey)
+            CreateDefinition(".jpg", SsvMediaFormatKind.Image, true, true, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".jpeg", SsvMediaFormatKind.Image, true, true, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".jfif", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".png", SsvMediaFormatKind.Image, true, true, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".gif", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".bmp", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.WicNative),
+            CreateDefinition(".webp", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.MagickHost),
+            CreateDefinition(".tga", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.TgaSharp),
+            CreateDefinition(".avif", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.MagickHost),
+            CreateDefinition(".jxl", SsvMediaFormatKind.Image, true, false, SsvMediaDecodeEngine.MagickHost),
+            CreateDefinition(".heic", SsvMediaFormatKind.Image, false, false, SsvMediaDecodeEngine.WicExtension),
+            CreateDefinition(".mp4", SsvMediaFormatKind.Video, true, true, SsvMediaDecodeEngine.Ffmpeg),
+            CreateDefinition(".avi", SsvMediaFormatKind.Video, true, false, SsvMediaDecodeEngine.Ffmpeg),
+            CreateDefinition(".mkv", SsvMediaFormatKind.Video, true, false, SsvMediaDecodeEngine.Ffmpeg),
+            CreateDefinition(".webm", SsvMediaFormatKind.Video, true, false, SsvMediaDecodeEngine.Ffmpeg)
         };
 
         private static readonly HashSet<string> CatalogVideoExtensions = new HashSet<string>(
@@ -57,6 +59,45 @@ namespace ScreenshotsVisualizer.Models
         /// Localization key used for user-defined extension tooltips.
         /// </summary>
         public static string CustomUnknownHintResourceKey => CustomUnknownHintKey;
+
+        /// <summary>
+        /// Returns the localization resource key for a decode engine tooltip.
+        /// </summary>
+        /// <param name="decodeEngine">Primary decode or media pipeline.</param>
+        public static string GetCodecHintResourceKey(SsvMediaDecodeEngine decodeEngine)
+        {
+            switch (decodeEngine)
+            {
+                case SsvMediaDecodeEngine.WicNative:
+                    return WicNativeHintKey;
+                case SsvMediaDecodeEngine.WicExtension:
+                    return WicExtensionHintKey;
+                case SsvMediaDecodeEngine.MagickHost:
+                    return MagickHostHintKey;
+                case SsvMediaDecodeEngine.TgaSharp:
+                    return CustomDecoderHintKey;
+                case SsvMediaDecodeEngine.Ffmpeg:
+                    return FfmpegHintKey;
+                default:
+                    return CustomUnknownHintKey;
+            }
+        }
+
+        private static SsvMediaFormatDefinition CreateDefinition(
+            string extension,
+            SsvMediaFormatKind kind,
+            bool enabledByDefault,
+            bool isEssential,
+            SsvMediaDecodeEngine decodeEngine)
+        {
+            return new SsvMediaFormatDefinition(
+                extension,
+                kind,
+                enabledByDefault,
+                isEssential,
+                decodeEngine,
+                GetCodecHintResourceKey(decodeEngine));
+        }
 
         /// <summary>
         /// Returns all known media format definitions.

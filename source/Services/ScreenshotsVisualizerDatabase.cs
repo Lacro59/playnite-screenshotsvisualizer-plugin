@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
@@ -28,6 +28,9 @@ namespace ScreenshotsVisualizer.Services
         private readonly ImageMagickConversionService _imageMagickConversionService;
         private readonly SsvThumbnailService _thumbnailService;
         private readonly SsvVideoMetadataService _videoMetadataService;
+        private readonly SsvThumbnailWarmupService _thumbnailWarmupService;
+        private readonly HashSet<string> _missingFolderNotifiedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _missingFolderNotifyLock = new object();
 
         /// <summary>
         /// Gets the thumbnail generation service used for image and video cache paths.
@@ -39,6 +42,11 @@ namespace ScreenshotsVisualizer.Services
         /// </summary>
         public SsvVideoMetadataService VideoMetadataService => _videoMetadataService;
 
+        /// <summary>
+        /// Gets the silent background warmup queue for missing thumbnails.
+        /// </summary>
+        public SsvThumbnailWarmupService ThumbnailWarmupService => _thumbnailWarmupService;
+
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
             TagBefore = "[SSV]";
@@ -48,6 +56,7 @@ namespace ScreenshotsVisualizer.Services
             _imageMagickConversionService = new ImageMagickConversionService(PluginName);
             _thumbnailService = new SsvThumbnailService(PluginName);
             _videoMetadataService = new SsvVideoMetadataService(PluginName, _thumbnailService);
+            _thumbnailWarmupService = new SsvThumbnailWarmupService(PluginName, _thumbnailService);
         }
 
         #region Logging
@@ -66,12 +75,12 @@ namespace ScreenshotsVisualizer.Services
 
         private static void LogScanDebug(string message)
         {
-            Common.LogDebug(true, string.Format("[SsvDatabase] {0}", message));
+            Common.LogDebug(string.Format("[SsvDatabase] {0}", message));
         }
 
         private static void LogDeleteDebug(string message)
         {
-            Common.LogDebug(true, string.Format("[SsvDelete] {0}", message));
+            Common.LogDebug(string.Format("[SsvDelete] {0}", message));
         }
 
         private static void LogDeleteInfo(string message)
@@ -87,6 +96,91 @@ namespace ScreenshotsVisualizer.Services
         private static void LogScanWarn(string message)
         {
             Logger.Warn(string.Format("[SsvDatabase] {0}", message));
+        }
+
+        private void LogPathResolutionOutcome(Game game, FolderSettings folderSettings, SsvPathResolution resolution)
+        {
+            if (resolution == null || game == null || folderSettings == null)
+            {
+                return;
+            }
+
+            if (resolution.Variant == SsvPathResolveVariant.Underscore
+                || resolution.Variant == SsvPathResolveVariant.Strip)
+            {
+                LogScanWarn(string.Format(
+                    "[SsvPath] fallback variant={0} game=\"{1}\" configured=\"{2}\" path=\"{3}\" canonical=\"{4}\"",
+                    resolution.Variant,
+                    game.Name,
+                    folderSettings.ScreenshotsFolder,
+                    resolution.Path,
+                    resolution.CanonicalPath));
+            }
+        }
+
+        private void NotifyMissingSanitizedFolderOnce(Game game, FolderSettings folderSettings, SsvPathResolution resolution)
+        {
+            if (resolution == null || resolution.Exists || game == null || folderSettings == null)
+            {
+                return;
+            }
+
+            if (!GameNameNeedsPathSanitize(game))
+            {
+                return;
+            }
+
+            // Only when the configured template expands via {Name} — other missing folders (e.g. Steam GameId) are unrelated to illegal-name sanitize.
+            string configured = folderSettings.ScreenshotsFolder ?? string.Empty;
+            if (configured.IndexOf("{Name}", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                return;
+            }
+
+            string notifyKey = string.Format("{0}|{1}", game.Id, configured);
+            lock (_missingFolderNotifyLock)
+            {
+                if (!_missingFolderNotifiedKeys.Add(notifyKey))
+                {
+                    return;
+                }
+            }
+
+            string body = string.Format(
+                ResourceProvider.GetString("LOCSsvScreenshotsFolderMissingHint"),
+                game.Name ?? string.Empty);
+
+            LogScanDebug(string.Format(
+                "[SsvPath] missing-folder notification shown game=\"{0}\" configured=\"{1}\" resolved=\"{2}\"",
+                game.Name,
+                folderSettings.ScreenshotsFolder,
+                resolution.CanonicalPath));
+
+            API.Instance.Notifications.Add(new NotificationMessage(
+                string.Format("{0}-MissingFolder-{1}", PluginName, game.Id),
+                string.Format("{0}\r\n{1}", PluginName, body),
+                NotificationType.Info));
+        }
+
+        private static bool GameNameNeedsPathSanitize(Game game)
+        {
+            string name = game?.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            {
+                return true;
+            }
+
+            if (name != name.Trim())
+            {
+                return true;
+            }
+
+            return Regex.IsMatch(name, @"\s{2,}");
         }
 
         private static string GetConversionProfileLogLabel(SsvImageConversionCustomCmd command)
@@ -345,14 +439,20 @@ namespace ScreenshotsVisualizer.Services
                         pathFolder = CommonPluginsStores.PlayniteTools.StringExpandWithStores(game, pathFolder);
                         pathFolder = PathValidator.GetSafePath(pathFolder, false);
 
-                        LogScanDebug(string.Format(
-                            "MoveToFolderToSave started for '{0}' — destination '{1}' (global FolderToSave / FileSavePattern)",
-                            game.Name,
-                            pathFolder));
-
                         GameScreenshots gameScreenshots = Get(game);
                         int digit = 1;
                         int movedCount = 0;
+                        int excludedSourceCount = 0;
+                        List<string> includedArchiveRoots = SsvFolderOperationFilter.BuildIncludedArchiveRoots(
+                            game,
+                            gameSettings?.ScreenshotsFolders,
+                            _pathResolver);
+
+                        LogScanDebug(string.Format(
+                            "MoveToFolderToSave started for '{0}' — destination '{1}', {2} included archive root(s)",
+                            game.Name,
+                            pathFolder,
+                            includedArchiveRoots.Count));
 
                         FileSystem.CreateDirectory(pathFolder);
 
@@ -364,6 +464,12 @@ namespace ScreenshotsVisualizer.Services
 
                             if (File.Exists(screenshot.FileName) && !screenshot.FileName.Contains(pathFolder, StringComparison.InvariantCultureIgnoreCase))
                             {
+                                if (!SsvFolderOperationFilter.IsFileIncluded(screenshot.FileName, includedArchiveRoots))
+                                {
+                                    excludedSourceCount++;
+                                    continue;
+                                }
+
                                 string ext = Path.GetExtension(screenshot.FileName);
 
                                 pattern = pattern.Replace("{DateModified}", screenshot.Modifed.ToString("yyyy-MM-dd"));
@@ -419,10 +525,11 @@ namespace ScreenshotsVisualizer.Services
                         }
 
                         LogScanDebug(string.Format(
-                            "MoveToFolderToSave completed for '{0}' — {1} file(s) moved to '{2}'",
+                            "MoveToFolderToSave completed for '{0}' — {1} file(s) moved to '{2}', {3} excluded by source flags",
                             game.Name,
                             movedCount,
-                            pathFolder));
+                            pathFolder,
+                            excludedSourceCount));
 
                         // Refresh data
                         if (gameSettings != null)
@@ -526,16 +633,24 @@ namespace ScreenshotsVisualizer.Services
 
             int videoCount = data.Items.Count(x => x.IsVideo);
             int imageCount = data.Items.Count - videoCount;
+            GameSettings effectiveSettings = GetGameSettings(game.Id);
+            List<string> includedConversionRoots = SsvFolderOperationFilter.BuildIncludedConversionRoots(
+                game,
+                effectiveSettings?.ScreenshotsFolders,
+                _pathResolver);
+
             LogScanDebug(string.Format(
-                "ConvertGameScreenshots started for '{0}' — profile '{1}' ({2}), {3} image(s), {4} video(s) skipped",
+                "ConvertGameScreenshots started for '{0}' — profile '{1}' ({2}), {3} image(s), {4} video(s) skipped, {5} included conversion root(s)",
                 game.Name,
                 GetConversionProfileLogLabel(command),
                 command.OutputFormat ?? string.Empty,
                 imageCount,
-                videoCount));
+                videoCount,
+                includedConversionRoots.Count));
 
             int convertedCount = 0;
             int skippedOutputFormatCount = 0;
+            int excludedSourceCount = 0;
             foreach (Screenshot screenshot in data.Items)
             {
                 if (progress?.CancelToken.IsCancellationRequested == true)
@@ -545,6 +660,13 @@ namespace ScreenshotsVisualizer.Services
 
                 if (screenshot.IsVideo)
                 {
+                    continue;
+                }
+
+                if (!SsvFolderOperationFilter.IsFileIncluded(screenshot.FileName, includedConversionRoots))
+                {
+                    excludedSourceCount++;
+                    AdvanceConversionFileProgress(progress, game, screenshot);
                     continue;
                 }
 
@@ -570,11 +692,12 @@ namespace ScreenshotsVisualizer.Services
             }
 
             LogScanDebug(string.Format(
-                "ConvertGameScreenshots completed for '{0}' — profile '{1}', {2} file(s) converted, {3} already in target format",
+                "ConvertGameScreenshots completed for '{0}' — profile '{1}', {2} file(s) converted, {3} already in target format, {4} excluded by source flags",
                 game.Name,
                 GetConversionProfileLogLabel(command),
                 convertedCount,
-                skippedOutputFormatCount));
+                skippedOutputFormatCount,
+                excludedSourceCount));
 
             return hasConverted;
         }
@@ -721,7 +844,7 @@ namespace ScreenshotsVisualizer.Services
             }
             else
             {
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvDatabase] GetGameSettings — global source merge disabled for {0} (OverrideGlobalConfigs=true).",
                     id));
             }
@@ -755,7 +878,7 @@ namespace ScreenshotsVisualizer.Services
                 }
             }
 
-            Common.LogDebug(true, string.Format(
+            Common.LogDebug(string.Format(
                 "[SsvDatabase] GetGameSettings — game {0}, persistedFolders={1}, mergedGlobalSources={2}, effectiveFoldersBeforeArchive={3}.",
                 id,
                 persistedGameSettings?.ScreenshotsFolders?.Count ?? 0,
@@ -858,7 +981,7 @@ namespace ScreenshotsVisualizer.Services
         /// Updates the screenshot data for the specified game based on the provided <see cref="GameSettings"/>.
         /// For each configured screenshots folder, the method scans for supported image and video files,
         /// applies file pattern matching if enabled, and updates the game's screenshot collection accordingly.
-        /// Also ensures that image and video thumbnails are generated, and video metadata (duration, size) is resolved.
+        /// Missing thumbnails are enqueued for silent background generation (images then videos).
         /// Any errors encountered during the process are logged.
         /// </summary>
         /// <param name="item">The <see cref="GameSettings"/> containing folder and pattern information for the game.</param>
@@ -882,8 +1005,8 @@ namespace ScreenshotsVisualizer.Services
             GameScreenshots gameScreenshots = GetDefault(game);
             try
             {
-                gameScreenshots.ScreenshotsFolders = item.GetScreenshotsFolders();
                 gameScreenshots.InSettings = true;
+                List<string> resolvedFolders = new List<string>();
 
                 foreach (FolderSettings screenshotsFolder in item.ScreenshotsFolders)
                 {
@@ -897,10 +1020,16 @@ namespace ScreenshotsVisualizer.Services
                             continue;
                         }
 
-                        string pathFolder = _pathResolver.ResolvePath(game, screenshotsFolder);
+                        SsvPathResolution resolution = _pathResolver.ResolveExistingPath(game, screenshotsFolder);
+                        LogPathResolutionOutcome(game, screenshotsFolder, resolution);
+                        string pathFolder = resolution.Exists ? resolution.Path : resolution.CanonicalPath;
+                        if (!pathFolder.IsNullOrEmpty())
+                        {
+                            resolvedFolders.Add(pathFolder);
+                        }
 
                         HashSet<string> extensions = SsvMediaFormatCatalog.GetEnabledScanExtensions(PluginSettings);
-                        if (Directory.Exists(pathFolder))
+                        if (resolution.Exists)
                         {
                             SearchOption searchOption = SearchOption.TopDirectoryOnly;
                             if (screenshotsFolder.ScanSubFolders)
@@ -953,6 +1082,7 @@ namespace ScreenshotsVisualizer.Services
                                 game.Name,
                                 screenshotsFolder.ScreenshotsFolder,
                                 pathFolder));
+                            NotifyMissingSanitizedFolderOnce(game, screenshotsFolder, resolution);
                         }
                     }
                     catch (Exception ex)
@@ -961,46 +1091,18 @@ namespace ScreenshotsVisualizer.Services
                     }
                 }
 
+                gameScreenshots.ScreenshotsFolders = resolvedFolders;
+
                 IEnumerable<Screenshot> elements = gameScreenshots?.Items?.Where(x => x != null);
                 if (elements?.Count() > 0)
                 {
                     elements = elements.GroupBy(x => x.FileName).Select(g => g.First());
                     gameScreenshots.DateLastRefresh = DateTime.Now;
                     gameScreenshots.Items = elements.ToList();
-
-                    int imageCount = gameScreenshots.Items.Count(x => !x.IsVideo);
-                    int videoCount = gameScreenshots.Items.Count(x => x.IsVideo);
-
-                    // Force generation of data from image
-                    Stopwatch imageThumbnailStopwatch = Stopwatch.StartNew();
-                    gameScreenshots.Items.Where(x => !x.IsVideo).ForEach(x =>
-                    {
-                        string imageThumb = x.ImageThumbnail;
-                    });
-                    imageThumbnailStopwatch.Stop();
-                    Common.LogDebug(true, string.Format(
-                        "[SsvThumbnail] Image pre-generation for '{0}' completed ({1} image(s), {2} ms)",
-                        game.Name,
-                        imageCount,
-                        imageThumbnailStopwatch.ElapsedMilliseconds));
-
-                    // Force generation of data from video
-                    Stopwatch videoThumbnailStopwatch = Stopwatch.StartNew();
-                    gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
-                    {
-                        string thumb = x.Thumbnail;
-                        string duration = x.DurationString;
-                        string size = x.SizeString;
-                    });
-                    videoThumbnailStopwatch.Stop();
-                    Common.LogDebug(true, string.Format(
-                        "[SsvThumbnail] Video pre-generation for '{0}' completed ({1} video(s), {2} ms)",
-                        game.Name,
-                        videoCount,
-                        videoThumbnailStopwatch.ElapsedMilliseconds));
                 }
 
                 AddOrUpdate(gameScreenshots);
+                EnqueueGameThumbnailWarmup(gameScreenshots);
 
                 if (GameContext?.Id == game.Id)
                 {
@@ -1012,7 +1114,7 @@ namespace ScreenshotsVisualizer.Services
                     game.Name,
                     Get(game, true)?.Items?.Count ?? 0));
                 scanStopwatch.Stop();
-                Common.LogDebug(true, string.Format(
+                Common.LogDebug(string.Format(
                     "[SsvThumbnail] Scan duration for '{0}' completed ({1} ms)",
                     game.Name,
                     scanStopwatch.ElapsedMilliseconds));
@@ -1021,6 +1123,47 @@ namespace ScreenshotsVisualizer.Services
             {
                 LogError(ex);
             }
+        }
+
+        /// <summary>
+        /// Enqueues silent background generation of missing thumbnails for all games already in the plugin cache.
+        /// Does not rescan screenshot folders on disk.
+        /// </summary>
+        public void ScheduleLibraryThumbnailWarmup()
+        {
+            if (Paths == null || string.IsNullOrEmpty(Paths.PluginCachePath))
+            {
+                LogScanWarn("ScheduleLibraryThumbnailWarmup skipped — plugin cache path unavailable");
+                return;
+            }
+
+            _thumbnailWarmupService.EnqueueLibrary(
+                GetAllCache(),
+                Paths.PluginCachePath,
+                PluginSettings?.FfmpegPath);
+        }
+
+        private void EnqueueGameThumbnailWarmup(GameScreenshots gameScreenshots)
+        {
+            if (gameScreenshots?.Items == null || gameScreenshots.Items.Count == 0)
+            {
+                return;
+            }
+
+            if (Paths == null || string.IsNullOrEmpty(Paths.PluginCachePath))
+            {
+                LogScanWarn(string.Format(
+                    "EnqueueGameThumbnailWarmup skipped for '{0}' — plugin cache path unavailable",
+                    gameScreenshots.Name));
+                return;
+            }
+
+            _thumbnailWarmupService.EnqueueGame(
+                gameScreenshots.Id,
+                gameScreenshots.Name,
+                gameScreenshots.Items,
+                Paths.PluginCachePath,
+                PluginSettings?.FfmpegPath);
         }
 
         #region Tag

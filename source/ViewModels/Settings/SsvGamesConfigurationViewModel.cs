@@ -1,4 +1,5 @@
 using CommonPluginsShared;
+using CommonPluginsShared.IO;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
@@ -523,9 +524,19 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
 
                         foreach (FolderEntryItem folder in game.ScreenshotsFolders)
                         {
-                            folder.ScreenshotsFolder = relative
-                                ? StorePlayniteTools.PathToRelativeWithStores(playniteGame, folder.ScreenshotsFolder)
-                                : StorePlayniteTools.StringExpandWithStores(playniteGame, folder.ScreenshotsFolder);
+                            if (relative)
+                            {
+                                folder.ScreenshotsFolder = StorePlayniteTools.PathToRelativeWithStores(
+                                    playniteGame,
+                                    folder.ScreenshotsFolder);
+                            }
+                            else
+                            {
+                                string expanded = StorePlayniteTools.StringExpandWithStores(
+                                    playniteGame,
+                                    folder.ScreenshotsFolder);
+                                folder.ScreenshotsFolder = PathValidator.GetSafePath(expanded, false);
+                            }
                         }
 
                         activateGlobalProgress.CurrentProgressValue++;

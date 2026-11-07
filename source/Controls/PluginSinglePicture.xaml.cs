@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Converters;
@@ -76,16 +76,26 @@ namespace ScreenshotsVisualizer.Controls
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
-            Screenshots = gameScreenshots.Items;
-            Screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            SsvScreenshotSortBy sortBy = PluginDatabase.PluginSettings.IntegrationShowSinglePictureSortBy;
+            SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.IntegrationShowSinglePictureSortDirection;
+            SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.IntegrationShowSinglePictureMediaFilter;
+
+            Screenshots = SsvScreenshotListOrder.Apply(
+                gameScreenshots?.Items,
+                mediaFilter,
+                sortBy,
+                sortDirection);
+
+            Common.LogDebug(string.Format(
+                "[PluginSinglePicture][setdata] files={0} sortBy={1} direction={2} filter={3}",
+                Screenshots.Count,
+                sortBy,
+                sortDirection,
+                mediaFilter));
 
             Index = 0;
-
-            if (Screenshots.Count > 1)
-            {
-                ControlDataContext.EnablePrev = true;
-                ControlDataContext.EnableNext = true;
-            }
+            ControlDataContext.EnablePrev = Screenshots.Count > 1;
+            ControlDataContext.EnableNext = Screenshots.Count > 1;
 
             if (Screenshots.Count > 0)
             {

@@ -29,24 +29,24 @@
     <sys:String x:Key="LOCSsvImageConversionNoCommands">Команды конвертации не настроены.</sys:String>
 
     <sys:String x:Key="LOCSsvMediaFormatsTabTitle">Поддерживаемые форматы</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsIntro">Manage scanned image and video extensions as lists. Essential formats (.jpg, .jpeg, .png, .mp4) cannot be removed. Add any extension (for example .avif or .jxl) and remove optional ones. A library refresh is required after changes.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsImageSection">Image extensions</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">Video extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsIntro">Управляйте расширениями сканированных изображений и видео в виде списков. Основные форматы (.jpg, .jpeg, .png, .mp4) удалить нельзя. Добавляйте любые расширения (например, .avif или .jxl) и удаляйте необязательные. После внесения изменений требуется обновление библиотеки.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsImageSection">Расширения изображений</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsVideoSection">Расширения видео</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsRestoreDefaults">Восстановить по умолчанию</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsEnableAll">Включить все</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsDisableAll">Отключить все</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">Common format always kept enabled when settings are saved.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">Additional image extensions</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">Additional video extensions</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsEssentialHint">Общий формат всегда включается при сохранении настроек.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomImageSection">Дополнительные расширения изображений</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomVideoSection">Дополнительные расширения видео</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatsAddCustom">Добавить</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Enter an extension such as .jxl (letters and digits only).</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">The extension is invalid. Use a value such as .jxl.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">This extension is already listed.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Custom extension; display depends on Windows or installed codecs.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decoded by built-in Windows imaging support.</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (AV1, WebP or HEIF extension).</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Decoded by the plugin (TGA).</sys:String>
-    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Video thumbnail and metadata use ffmpeg/ffprobe paths from the Misc tab.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsCustomExtensionHint">Введите расширение, например .jxl (только буквы и цифры).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionInvalid">Расширение недопустимо. Используйте значение, например .jxl.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatsExtensionDuplicate">Это расширение уже в списке.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Пользовательское расширение; отображение зависит от операционной системы Windows или установленных кодеков.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Декодируется с помощью встроенной функции обработки изображений Windows.</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Требуется дополнительный кодек для обработки изображений из Windows Store (расширение AV1, WebP или HEIF).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Декодировано плагином (TGA).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Видео миниатюры и метаданные используют ffmpeg/ffprobe пути из вкладки Прочее.</sys:String>
 
 
     <!-- MainView -->

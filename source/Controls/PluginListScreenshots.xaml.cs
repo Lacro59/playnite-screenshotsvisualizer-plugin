@@ -1,4 +1,4 @@
-﻿using CommonPluginsShared;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Extensions;
@@ -78,9 +78,15 @@ namespace ScreenshotsVisualizer.Controls
         {
             GameScreenshots gameScreenshots = (GameScreenshots)pluginGameData;
 
-            List<Screenshot> screenshots = gameScreenshots.Items;
-            screenshots.Sort((x, y) => y.Modifed.CompareTo(x.Modifed));
+            SsvScreenshotSortBy sortBy = PluginDatabase.PluginSettings.IntegrationShowPicturesSortBy;
+            SsvScreenshotSortDirection sortDirection = PluginDatabase.PluginSettings.IntegrationShowPicturesSortDirection;
+            SsvScreenshotMediaFilter mediaFilter = PluginDatabase.PluginSettings.IntegrationShowPicturesMediaFilter;
 
+            List<Screenshot> screenshots = SsvScreenshotListOrder.Apply(
+                gameScreenshots?.Items,
+                mediaFilter,
+                sortBy,
+                sortDirection);
 
             // With PlayerActivities
             if (ControlDataContext.DateTaken != default)
@@ -90,6 +96,15 @@ namespace ScreenshotsVisualizer.Controls
                     .ToList();
             }
 
+            Common.LogDebug(string.Format(
+                "[PluginListScreenshots][setdata] files={0} sortBy={1} direction={2} filter={3} dateTaken={4}",
+                screenshots.Count,
+                sortBy,
+                sortDirection,
+                mediaFilter,
+                ControlDataContext.DateTaken == default
+                    ? "none"
+                    : ControlDataContext.DateTaken.ToString("yyyy-MM-dd")));
 
             ControlDataContext.ItemsSource = screenshots.ToObservable();
             ControlDataContext.CountItems = screenshots.Count;
@@ -118,7 +133,7 @@ namespace ScreenshotsVisualizer.Controls
                 ssvSinglePicture?.SetPictureFromList(PART_ListScreenshots.SelectedIndex);
             }
         }
-        
+
         #endregion
     }
 

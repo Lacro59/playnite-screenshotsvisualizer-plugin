@@ -27,11 +27,12 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="SsvScreenshotMediaIconStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+    <Style x:Key="SsvScreenshotMediaIconStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
         <Setter Property="FontFamily" Value="{DynamicResource FontIcoFont}" />
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="Text" Value="{Binding FileName, Converter={StaticResource GetMediaTypeConverter}}" />
         <Setter Property="Effect">
             <Setter.Value>

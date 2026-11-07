@@ -5,7 +5,9 @@ using Playnite.SDK;
 using Playnite.SDK.Models;
 using ScreenshotsVisualizer.Models;
 using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -19,7 +21,7 @@ namespace ScreenshotsVisualizer.Services
         /// <summary>
         /// Maximum length of the longest thumbnail edge in pixels.
         /// </summary>
-        public const int ThumbnailMaxDimension = 320;
+        public const int ThumbnailMaxDimension = 600;
 
         /// <summary>
         /// Maximum source file size accepted for image thumbnail generation (30 MB).
@@ -34,6 +36,7 @@ namespace ScreenshotsVisualizer.Services
         private const string FailedMarkerSuffix = ".failed";
         private const string TemporaryFileSuffix = ".tmp";
         private const string LogPrefix = "[SsvThumbnail]";
+        private const int MaxLoggedProcessOutputChars = 256;
 
         private readonly string _pluginName;
         private bool _ffmpegNotFoundNotified;
@@ -65,12 +68,27 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
-        /// Builds the legacy image thumbnail cache path for a source file name.
+        /// Builds the image thumbnail cache path for a source file name (includes <see cref="ThumbnailMaxDimension"/>).
         /// </summary>
         /// <param name="cacheRootPath">Plugin cache root directory.</param>
         /// <param name="sourceFileName">Source file name with extension.</param>
         /// <returns>Absolute path to the cached JPEG thumbnail.</returns>
         public static string GetImageThumbnailCachePath(string cacheRootPath, string sourceFileName)
+        {
+            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sourceFileName);
+            string thumbnailsDirectory = Path.Combine(cacheRootPath, ThumbnailsFolderName);
+            return Path.Combine(
+                thumbnailsDirectory,
+                fileNameWithoutExt + "_" + fileNameWithoutExt + "_" + ThumbnailMaxDimension + "_Thumbnail.jpg");
+        }
+
+        /// <summary>
+        /// Builds the pre-dimension image thumbnail cache path (max edge 320, no dimension in the file name).
+        /// </summary>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        /// <param name="sourceFileName">Source file name with extension.</param>
+        /// <returns>Absolute path to the legacy cached JPEG thumbnail.</returns>
+        public static string GetLegacyImageThumbnailCachePath(string cacheRootPath, string sourceFileName)
         {
             string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sourceFileName);
             string thumbnailsDirectory = Path.Combine(cacheRootPath, ThumbnailsFolderName);
@@ -144,6 +162,7 @@ namespace ScreenshotsVisualizer.Services
                 sourceFileName));
 
             TryDeleteCacheEntry(GetImageThumbnailCachePath(cacheRootPath, sourceFileName));
+            TryDeleteCacheEntry(GetLegacyImageThumbnailCachePath(cacheRootPath, sourceFileName));
 
             if (screenshot.IsVideo)
             {
@@ -177,22 +196,65 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
+        /// Deletes a pre-dimension image thumbnail cache entry so it cannot be reused after a max-edge bump.
+        /// </summary>
+        /// <param name="cacheRootPath">Plugin cache root directory.</param>
+        /// <param name="sourceFileName">Source file name with extension.</param>
+        private void RemoveLegacyImageThumbnailCacheIfPresent(string cacheRootPath, string sourceFileName)
+        {
+            string legacyPath = GetLegacyImageThumbnailCachePath(cacheRootPath, sourceFileName);
+            if (!File.Exists(legacyPath) && !File.Exists(GetFailureMarkerPath(legacyPath)))
+            {
+                return;
+            }
+
+            LogThumbnailDebug(string.Format(
+                "Invalidating legacy image thumbnail (pre-{0}): '{1}'",
+                ThumbnailMaxDimension,
+                legacyPath));
+            TryDeleteCacheEntry(legacyPath);
+        }
+
+        /// <summary>
         /// Counts cached thumbnail files and their total size on disk.
         /// </summary>
         /// <param name="cacheRootPath">Plugin cache root directory.</param>
         /// <returns>File count and total byte size for thumbnail cache entries.</returns>
         public static ThumbnailCacheStats GetThumbnailCacheStats(string cacheRootPath)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             string thumbnailsDirectory = Path.Combine(cacheRootPath ?? string.Empty, ThumbnailsFolderName);
             if (!Directory.Exists(thumbnailsDirectory))
             {
+                stopwatch.Stop();
+                LogThumbnailDebug(string.Format(
+                    "Cache stats files=0 bytes=0 ms={0}",
+                    stopwatch.ElapsedMilliseconds));
+                return new ThumbnailCacheStats(0, 0);
+            }
+
+            string[] filePaths;
+            try
+            {
+                filePaths = Directory.GetFiles(thumbnailsDirectory, "*", SearchOption.TopDirectoryOnly);
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                LogThumbnailWarn(string.Format(
+                    "Unable to list thumbnail cache directory '{0}': {1}",
+                    thumbnailsDirectory,
+                    ex.Message));
+                LogThumbnailDebug(string.Format(
+                    "Cache stats files=0 bytes=0 ms={0} failed=true",
+                    stopwatch.ElapsedMilliseconds));
                 return new ThumbnailCacheStats(0, 0);
             }
 
             int fileCount = 0;
             long totalBytes = 0;
 
-            foreach (string filePath in Directory.GetFiles(thumbnailsDirectory, "*", SearchOption.TopDirectoryOnly))
+            foreach (string filePath in filePaths)
             {
                 if (filePath.EndsWith(FailedMarkerSuffix, StringComparison.OrdinalIgnoreCase)
                     || filePath.EndsWith(TemporaryFileSuffix, StringComparison.OrdinalIgnoreCase))
@@ -200,11 +262,37 @@ namespace ScreenshotsVisualizer.Services
                     continue;
                 }
 
-                FileInfo fileInfo = new FileInfo(filePath);
-                fileCount++;
-                totalBytes += fileInfo.Length;
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    if (!fileInfo.Exists)
+                    {
+                        LogThumbnailDebug(string.Format(
+                            "Skipping missing thumbnail cache entry '{0}'",
+                            filePath));
+                        continue;
+                    }
+
+                    long length = fileInfo.Length;
+                    fileCount++;
+                    totalBytes += length;
+                }
+                catch (Exception ex)
+                {
+                    // Long / invalid cache paths can make Length throw even after GetFiles.
+                    LogThumbnailDebug(string.Format(
+                        "Skipping unreadable thumbnail cache entry '{0}': {1}",
+                        filePath,
+                        ex.Message));
+                }
             }
 
+            stopwatch.Stop();
+            LogThumbnailDebug(string.Format(
+                "Cache stats files={0} bytes={1} ms={2}",
+                fileCount,
+                totalBytes,
+                stopwatch.ElapsedMilliseconds));
             return new ThumbnailCacheStats(fileCount, totalBytes);
         }
 
@@ -222,7 +310,9 @@ namespace ScreenshotsVisualizer.Services
                 return null;
             }
 
-            string thumbnailPath = GetImageThumbnailCachePath(cacheRootPath, Path.GetFileName(sourcePath));
+            string sourceFileName = Path.GetFileName(sourcePath);
+            string thumbnailPath = GetImageThumbnailCachePath(cacheRootPath, sourceFileName);
+            RemoveLegacyImageThumbnailCacheIfPresent(cacheRootPath, sourceFileName);
             string failureMarkerPath = GetFailureMarkerPath(thumbnailPath);
             ClearFailureMarkerIfSourceChanged(sourcePath, sourceModified, failureMarkerPath);
 
@@ -237,32 +327,30 @@ namespace ScreenshotsVisualizer.Services
             }
 
             FileInfo sourceInfo = new FileInfo(sourcePath);
+            string sourceFileOnly = Path.GetFileName(sourcePath);
             if (File.Exists(thumbnailPath))
             {
                 LogThumbnailDebug(string.Format(
-                    "Cache stale, regenerating image: '{0}'",
-                    sourcePath));
+                    "Cache stale, regenerating image file={0}",
+                    sourceFileOnly));
             }
 
             if (sourceInfo.Length > MaxSourceFileBytes)
             {
-                LogThumbnailDebug(string.Format(
-                    "Skipped image (> {0} MB): '{1}' ({2} bytes)",
-                    MaxSourceFileBytes / (1024 * 1024),
-                    sourcePath,
-                    sourceInfo.Length));
-                LogSkippedSource(string.Format(
-                    "Thumbnail generation skipped: source file exceeds {0} MB: '{1}'",
-                    MaxSourceFileBytes / (1024 * 1024),
-                    sourcePath));
                 WriteFailureMarker(failureMarkerPath);
+                LogThumbnailWarn(string.Format(
+                    "Thumbnail generation skipped: source file exceeds {0} MB: file={1} bytes={2}",
+                    MaxSourceFileBytes / (1024 * 1024),
+                    sourceFileOnly,
+                    sourceInfo.Length));
                 return null;
             }
 
+            Stopwatch generationStopwatch = Stopwatch.StartNew();
             ImageProperties imageProperties = Images.GetImageProperties(sourcePath);
             LogThumbnailDebug(string.Format(
-                "Generating image thumbnail: '{0}' ({1}x{2}, {3} bytes)",
-                sourcePath,
+                "Generating image thumbnail file={0} size={1}x{2} bytes={3}",
+                sourceFileOnly,
                 imageProperties.Width,
                 imageProperties.Height,
                 sourceInfo.Length));
@@ -273,7 +361,11 @@ namespace ScreenshotsVisualizer.Services
                 BitmapSource decodedImage = DecodeBoundedImage(sourcePath, imageProperties);
                 if (decodedImage == null)
                 {
-                    LogThumbnailDebug(string.Format("Decode failed: '{0}'", sourcePath));
+                    generationStopwatch.Stop();
+                    LogThumbnailDebug(string.Format(
+                        "Decode failed file={0} elapsedMs={1}",
+                        sourceFileOnly,
+                        generationStopwatch.ElapsedMilliseconds));
                     WriteFailureMarker(failureMarkerPath);
                     return null;
                 }
@@ -281,16 +373,29 @@ namespace ScreenshotsVisualizer.Services
                 SaveJpeg(decodedImage, thumbnailPath);
                 if (File.Exists(thumbnailPath))
                 {
-                    LogThumbnailDebug(string.Format("Created: '{0}'", thumbnailPath));
+                    generationStopwatch.Stop();
+                    LogThumbnailDebug(string.Format(
+                        "Created image thumbnail file={0} elapsedMs={1}",
+                        sourceFileOnly,
+                        generationStopwatch.ElapsedMilliseconds));
                     return thumbnailPath;
                 }
 
-                LogThumbnailDebug(string.Format("JPEG write failed: '{0}'", thumbnailPath));
+                generationStopwatch.Stop();
+                LogThumbnailDebug(string.Format(
+                    "JPEG write failed file={0} elapsedMs={1}",
+                    sourceFileOnly,
+                    generationStopwatch.ElapsedMilliseconds));
                 WriteFailureMarker(failureMarkerPath);
                 return null;
             }
             catch (Exception ex)
             {
+                generationStopwatch.Stop();
+                LogThumbnailDebug(string.Format(
+                    "Image thumbnail failed file={0} elapsedMs={1}",
+                    sourceFileOnly,
+                    generationStopwatch.ElapsedMilliseconds));
                 Common.LogError(ex, true, false, _pluginName);
                 WriteFailureMarker(failureMarkerPath);
                 return null;
@@ -315,13 +420,24 @@ namespace ScreenshotsVisualizer.Services
             double durationSeconds,
             string ffmpegPath)
         {
-            if (string.IsNullOrWhiteSpace(sourcePath) || !File.Exists(sourcePath))
+            if (string.IsNullOrWhiteSpace(sourcePath))
             {
+                LogThumbnailDebug("[video] skip reason=emptySourcePath");
                 return null;
             }
 
-            string thumbnailPath = GetVideoThumbnailCachePath(cacheRootPath, Path.GetFileName(sourcePath), fileSize, durationSeconds);
+            string sourceFileOnly = Path.GetFileName(sourcePath);
+            if (!File.Exists(sourcePath))
+            {
+                LogThumbnailDebug(string.Format(
+                    "[video] skip reason=sourceMissing file={0}",
+                    sourceFileOnly));
+                return null;
+            }
+
+            string thumbnailPath = GetVideoThumbnailCachePath(cacheRootPath, sourceFileOnly, fileSize, durationSeconds);
             string failureMarkerPath = GetFailureMarkerPath(thumbnailPath);
+            string durationLogged = durationSeconds.ToString("G", CultureInfo.InvariantCulture);
             ClearFailureMarkerIfSourceChanged(sourcePath, sourceModified, failureMarkerPath);
 
             if (File.Exists(failureMarkerPath))
@@ -337,23 +453,31 @@ namespace ScreenshotsVisualizer.Services
             if (File.Exists(thumbnailPath))
             {
                 LogThumbnailDebug(string.Format(
-                    "Cache stale, regenerating video: '{0}'",
-                    sourcePath));
+                    "[video] cache stale, regenerating file={0} durationSeconds={1}",
+                    sourceFileOnly,
+                    durationLogged));
             }
 
             if (string.IsNullOrWhiteSpace(ffmpegPath) || !File.Exists(ffmpegPath))
             {
-                LogThumbnailDebug(string.Format("ffmpeg not found, skipping video: '{0}'", sourcePath));
+                LogThumbnailDebug(string.Format(
+                    "[video] skip reason=ffmpegMissing file={0} durationSeconds={1} ffmpegPath={2}",
+                    sourceFileOnly,
+                    durationLogged,
+                    ffmpegPath ?? string.Empty));
                 NotifyFfmpegNotFoundOnce();
                 WriteFailureMarker(failureMarkerPath);
                 return null;
             }
 
+            Stopwatch generationStopwatch = Stopwatch.StartNew();
             LogThumbnailDebug(string.Format(
-                "Generating video thumbnail: '{0}' (size={1}, duration={2}s)",
-                sourcePath,
+                "[video] generating file={0} bytes={1} durationSeconds={2} durationUnresolved={3} cacheFile={4}",
+                sourceFileOnly,
                 fileSize,
-                durationSeconds));
+                durationLogged,
+                durationSeconds <= 0,
+                Path.GetFileName(thumbnailPath)));
 
             try
             {
@@ -361,23 +485,43 @@ namespace ScreenshotsVisualizer.Services
 
                 if (!GenerateVideoThumbnailWithFfmpeg(sourcePath, thumbnailPath, ffmpegPath))
                 {
-                    LogThumbnailDebug(string.Format("ffmpeg produced no file: '{0}'", thumbnailPath));
+                    generationStopwatch.Stop();
+                    LogThumbnailDebug(string.Format(
+                        "[video] ffmpeg produced no file file={0} elapsedMs={1} cacheFile={2}",
+                        sourceFileOnly,
+                        generationStopwatch.ElapsedMilliseconds,
+                        Path.GetFileName(thumbnailPath)));
                     WriteFailureMarker(failureMarkerPath);
                     return null;
                 }
 
                 if (File.Exists(thumbnailPath))
                 {
-                    LogThumbnailDebug(string.Format("Created video thumbnail: '{0}'", thumbnailPath));
+                    generationStopwatch.Stop();
+                    LogThumbnailDebug(string.Format(
+                        "[video] created file={0} elapsedMs={1} cacheFile={2}",
+                        sourceFileOnly,
+                        generationStopwatch.ElapsedMilliseconds,
+                        Path.GetFileName(thumbnailPath)));
                     return thumbnailPath;
                 }
 
-                LogThumbnailDebug(string.Format("Video thumbnail missing after ffmpeg: '{0}'", thumbnailPath));
+                generationStopwatch.Stop();
+                LogThumbnailDebug(string.Format(
+                    "[video] missing after ffmpeg ok claim file={0} elapsedMs={1} cacheFile={2}",
+                    sourceFileOnly,
+                    generationStopwatch.ElapsedMilliseconds,
+                    Path.GetFileName(thumbnailPath)));
                 WriteFailureMarker(failureMarkerPath);
                 return null;
             }
             catch (Exception ex)
             {
+                generationStopwatch.Stop();
+                LogThumbnailDebug(string.Format(
+                    "[video] exception file={0} elapsedMs={1}",
+                    sourceFileOnly,
+                    generationStopwatch.ElapsedMilliseconds));
                 Common.LogError(ex, true, false, _pluginName);
                 WriteFailureMarker(failureMarkerPath);
                 return null;
@@ -514,14 +658,9 @@ namespace ScreenshotsVisualizer.Services
             }
         }
 
-        private void LogSkippedSource(string message)
-        {
-            Common.LogError(null, true, message, false, _pluginName);
-        }
-
         private static void LogThumbnailDebug(string message)
         {
-            Common.LogDebug(true, string.Format("{0} {1}", LogPrefix, message));
+            Common.LogDebug(string.Format("{0} {1}", LogPrefix, message));
         }
 
         private static void LogThumbnailWarn(string message)
@@ -537,17 +676,49 @@ namespace ScreenshotsVisualizer.Services
                 FileSystem.CreateDirectory(directory);
             }
 
+            string sourceFileOnly = Path.GetFileName(sourcePath);
             string thumbArgs = "-i \"{0}\" -frames 1 -vf \"select=not(mod(n\\,1000)),scale=320:320:force_original_aspect_ratio=decrease\" \"{1}\"";
+            string arguments = string.Format(thumbArgs, sourcePath, thumbnailPath);
             string workingDirectory = Path.GetDirectoryName(ffmpegPath);
-            _ = ProcessStarter.StartProcessWait(
+            LogThumbnailDebug(string.Format(
+                "[video][ffmpeg] start file={0} out={1}",
+                sourceFileOnly,
+                Path.GetFileName(thumbnailPath)));
+
+            int exitCode = ProcessStarter.StartProcessWait(
                 ffmpegPath,
-                string.Format(thumbArgs, sourcePath, thumbnailPath),
+                arguments,
                 workingDirectory,
                 true,
                 out string stdOut,
                 out string stdErr);
 
-            return File.Exists(thumbnailPath);
+            bool outputExists = File.Exists(thumbnailPath);
+            LogThumbnailDebug(string.Format(
+                "[video][ffmpeg] done file={0} exitCode={1} outputExists={2} stderr=[{3}] stdout=[{4}]",
+                sourceFileOnly,
+                exitCode,
+                outputExists,
+                FormatLoggedProcessOutput(stdErr),
+                FormatLoggedProcessOutput(stdOut)));
+
+            return outputExists;
+        }
+
+        private static string FormatLoggedProcessOutput(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            string normalized = value.Replace("\r", "\\r").Replace("\n", "\\n");
+            if (normalized.Length <= MaxLoggedProcessOutputChars)
+            {
+                return normalized;
+            }
+
+            return normalized.Substring(0, MaxLoggedProcessOutputChars) + "...";
         }
 
         private void NotifyFfprobeNotFoundOnce()

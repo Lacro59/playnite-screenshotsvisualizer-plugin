@@ -4,6 +4,7 @@ using Playnite.SDK;
 using ScreenshotsVisualizer.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
@@ -105,15 +106,17 @@ namespace ScreenshotsVisualizer.Services
                 return false;
             }
 
+            string sourceFileOnly = Path.GetFileName(sourcePath);
             try
             {
                 string arguments = string.Format(CultureInfo.InvariantCulture, FfprobeArgumentsFormat, sourcePath);
                 string workingDirectory = Path.GetDirectoryName(ffprobePath);
                 LogMetadataDebug(string.Format(
-                    "ffprobe start for '{0}' (modified={1:u})",
-                    sourcePath,
+                    "ffprobe start file={0} modified={1:u}",
+                    sourceFileOnly,
                     sourceTimestamp));
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 _ = ProcessStarter.StartProcessWait(
                     ffprobePath,
                     arguments,
@@ -121,27 +124,30 @@ namespace ScreenshotsVisualizer.Services
                     true,
                     out string stdOut,
                     out string stdErr);
+                stopwatch.Stop();
+                long elapsedMs = stopwatch.ElapsedMilliseconds;
 
                 LogMetadataDebug(string.Format(
-                    "ffprobe stdout for '{0}': [{1}]",
-                    sourcePath,
+                    "ffprobe stdout file={0}: [{1}]",
+                    sourceFileOnly,
                     FormatLoggedProcessOutput(stdOut)));
 
                 if (!string.IsNullOrWhiteSpace(stdErr))
                 {
                     LogMetadataDebug(string.Format(
-                        "ffprobe stderr for '{0}': [{1}]",
-                        sourcePath,
+                        "ffprobe stderr file={0}: [{1}]",
+                        sourceFileOnly,
                         FormatLoggedProcessOutput(stdErr)));
                 }
 
                 if (!TryParseFfprobeOutput(stdOut, out TimeSpan duration, out int width, out int height, out string parseDetail))
                 {
                     LogMetadataDebug(string.Format(
-                        "ffprobe parse failed for '{0}' ({1}, stdout length={2})",
-                        sourcePath,
+                        "ffprobe parse failed file={0} detail={1} stdoutLength={2} elapsedMs={3}",
+                        sourceFileOnly,
                         parseDetail,
-                        stdOut?.Length ?? 0));
+                        stdOut?.Length ?? 0,
+                        elapsedMs));
                     return false;
                 }
 
@@ -153,11 +159,11 @@ namespace ScreenshotsVisualizer.Services
                 }
 
                 LogMetadataDebug(string.Format(
-                    "Cache store for '{0}' ({1}, {2}, modified={3:u})",
-                    sourcePath,
+                    "ffprobe ok file={0} size={1} duration={2} elapsedMs={3}",
+                    sourceFileOnly,
                     metadata.SizeString,
                     metadata.Duration,
-                    sourceTimestamp));
+                    elapsedMs));
                 return true;
             }
             catch (Exception ex)
@@ -271,7 +277,7 @@ namespace ScreenshotsVisualizer.Services
 
         private static void LogMetadataDebug(string message)
         {
-            Common.LogDebug(true, string.Format("{0} {1}", LogPrefix, message));
+            Common.LogDebug(string.Format("{0} {1}", LogPrefix, message));
         }
 
         private sealed class VideoMetadataCacheEntry

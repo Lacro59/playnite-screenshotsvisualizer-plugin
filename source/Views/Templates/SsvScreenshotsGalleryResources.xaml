@@ -18,7 +18,8 @@
         <VirtualizingStackPanel Orientation="Vertical" />
     </ItemsPanelTemplate>
 
-    <Style x:Key="SsvScreenshotsListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="SsvScreenshotsListBoxItemStyle" TargetType="{x:Type ListBoxItem}"
+           BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
     </Style>

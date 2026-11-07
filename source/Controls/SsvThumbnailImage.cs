@@ -2,13 +2,13 @@ using CommonPlayniteShared;
 using CommonPluginsShared;
 using ScreenshotsVisualizer.Services;
 using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ScreenshotsVisualizer.Controls
@@ -19,6 +19,8 @@ namespace ScreenshotsVisualizer.Controls
     /// </summary>
     public class SsvThumbnailImage : Image
     {
+        private const int SlowLoadLogThresholdMs = 100;
+
         private int _loadSequence;
         private string _currentSourcePath;
 
@@ -66,7 +68,16 @@ namespace ScreenshotsVisualizer.Controls
             BitmapSource loadedImage = null;
             if (!string.IsNullOrWhiteSpace(newSourcePath) && File.Exists(newSourcePath))
             {
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 loadedImage = await Task.Run(() => LoadBitmapFromPath(newSourcePath)).ConfigureAwait(true);
+                stopwatch.Stop();
+                if (stopwatch.ElapsedMilliseconds >= SlowLoadLogThresholdMs)
+                {
+                    Common.LogDebug(string.Format(
+                        "[SsvThumbnailImage][load] file={0} elapsedMs={1}",
+                        Path.GetFileName(newSourcePath),
+                        stopwatch.ElapsedMilliseconds));
+                }
             }
 
             if (sequence != Volatile.Read(ref _loadSequence))

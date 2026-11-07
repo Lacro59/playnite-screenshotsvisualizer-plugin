@@ -88,7 +88,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                     return;
                 }
 
-                Common.LogDebug(true, $"[SsvConfigContext] ContextSearchText changed: '{_contextSearchText}' -> '{normalized}'");
+                Common.LogDebug($"[SsvConfigContext] ContextSearchText changed: '{_contextSearchText}' -> '{normalized}'");
                 SetValue(ref _contextSearchText, normalized);
                 RefreshFilteredContexts();
             }
@@ -113,11 +113,11 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                     return;
                 }
 
-                Common.LogDebug(true, $"[SsvConfigContext] SelectedContext change requested: '{_selectedContext?.DisplayName ?? "null"}' -> '{normalizedContext.DisplayName}'");
+                Common.LogDebug($"[SsvConfigContext] SelectedContext change requested: '{_selectedContext?.DisplayName ?? "null"}' -> '{normalizedContext.DisplayName}'");
                 _selectedContext = normalizedContext;
                 _selectedIsGlobal = _selectedContext.IsGlobal;
                 _selectedGameId = _selectedContext.Game?.Id;
-                Common.LogDebug(true, $"[SsvConfigContext] SelectedContext applied: '{_selectedContext.DisplayName}', IsGlobal={_selectedIsGlobal}, GameId={_selectedGameId}");
+                Common.LogDebug($"[SsvConfigContext] SelectedContext applied: '{_selectedContext.DisplayName}', IsGlobal={_selectedIsGlobal}, GameId={_selectedGameId}");
                 OnPropertyChanged();
                 NotifyContextSelectionChanged();
                 UpdateActiveSourcesBinding();
@@ -473,7 +473,7 @@ namespace ScreenshotsVisualizer.ViewModels.Settings
                     else
                     {
                         keep = context.DisplayName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
-                        Common.LogDebug(true, $"[SsvConfigContext] FilterContextItem: query='{query}', context='{context.DisplayName}', match={keep}");
+                        Common.LogDebug($"[SsvConfigContext] FilterContextItem: query='{query}', context='{context.DisplayName}', match={keep}");
                     }
                 }
 

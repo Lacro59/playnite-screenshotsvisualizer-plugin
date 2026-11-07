@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommonPluginsShared.Interfaces;
+using CommonPluginsShared.IO;
 using CommonPluginsStores;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 
 namespace ScreenshotsVisualizer.Models
 {
@@ -13,20 +15,40 @@ namespace ScreenshotsVisualizer.Models
         public List<FolderSettings> ScreenshotsFolders { get; set; }
         public bool OverrideGlobalConfigs { get; set; }
 
-        // TODO TEMP
         public bool ScanSubFolders { get; set; }
         public bool UsedFilePattern { get; set; }
         public string FilePattern { get; set; }
         public string ScreenshotsFolder { get; set; }
 
-        public List<string> GetScreenshotsFolders() => ScreenshotsFolders
-                .Select(x => PlayniteTools.StringExpandWithStores(API.Instance.Database.Games.Get(Id), x.ScreenshotsFolder))
+        /// <summary>
+        /// Expands and canonically sanitizes configured screenshot folders for this game.
+        /// Prefer scan/preview flows that use <c>SsvPathResolver.ResolveExistingPath</c> for underscore/strip fallbacks.
+        /// </summary>
+        /// <returns>Expanded canonical folder paths (may not exist on disk).</returns>
+        public List<string> GetScreenshotsFolders()
+        {
+            if (ScreenshotsFolders == null)
+            {
+                return new List<string>();
+            }
+
+            Game game = API.Instance.Database.Games.Get(Id);
+            if (game == null)
+            {
+                return new List<string>();
+            }
+
+            return ScreenshotsFolders
+                .Where(x => x != null && !string.IsNullOrEmpty(x.ScreenshotsFolder))
+                .Select(x => PathValidator.GetSafePath(PlayniteTools.StringExpandWithStores(game, x.ScreenshotsFolder), false))
+                .Where(x => !string.IsNullOrEmpty(x))
                 .ToList();
+        }
     }
 
 
     /// <summary>
-    /// Screenshot folder path, scan options, and optional global applicability constraints.
+    /// Screenshot folder path, scan options, operation inclusion flags, and optional global applicability constraints.
     /// Applicability fields are meaningful only for entries in
     /// <see cref="ScreenshotsVisualizerSettings.GlobalScreenshotSources"/>; they are ignored on per-game folders.
     /// </summary>
@@ -53,6 +75,18 @@ namespace ScreenshotsVisualizer.Models
         public string ScreenshotsFolder { get; set; }
 
         /// <summary>
+        /// Gets or sets whether files from this source are included in archive / move-to-folder operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool IncludeInArchive { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether files from this source are included in ImageMagick conversion operations.
+        /// Default <c>true</c> preserves behavior for existing settings JSON without the field.
+        /// </summary>
+        public bool IncludeInConversion { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets how Playnite library source names constrain this global source.
         /// Default <see cref="SourceFilterMode.All"/> applies to every source.
         /// </summary>
@@ -72,7 +106,7 @@ namespace ScreenshotsVisualizer.Models
         public SsvApplicableEmulatorFilter ApplicableEmulatorFilter { get; set; } = SsvApplicableEmulatorFilter.None;
 
         /// <summary>
-        /// Creates a shallow copy of this folder settings instance, including applicability fields.
+        /// Creates a shallow copy of this folder settings instance, including applicability and operation flags.
         /// </summary>
         /// <returns>A new <see cref="FolderSettings"/> with the same values.</returns>
         public FolderSettings Clone()
@@ -83,6 +117,8 @@ namespace ScreenshotsVisualizer.Models
                 UsedFilePattern = UsedFilePattern,
                 FilePattern = FilePattern,
                 ScreenshotsFolder = ScreenshotsFolder,
+                IncludeInArchive = IncludeInArchive,
+                IncludeInConversion = IncludeInConversion,
                 ApplicableSourceFilterMode = ApplicableSourceFilterMode,
                 ApplicableSources = ApplicableSources != null
                     ? new List<string>(ApplicableSources)
