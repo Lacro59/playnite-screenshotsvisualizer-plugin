@@ -307,6 +307,19 @@ namespace ScreenshotsVisualizer
                         pluginUserDataPath,
                         PluginDatabase.PluginName,
                         saveSettings)));
+
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                    PluginDatabase.ScheduleLibraryThumbnailWarmup();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+            });
         }
 
         // Add code to be executed when Playnite is shutting down.

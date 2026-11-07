@@ -28,6 +28,7 @@ namespace ScreenshotsVisualizer.Services
         private readonly ImageMagickConversionService _imageMagickConversionService;
         private readonly SsvThumbnailService _thumbnailService;
         private readonly SsvVideoMetadataService _videoMetadataService;
+        private readonly SsvThumbnailWarmupService _thumbnailWarmupService;
         private readonly HashSet<string> _missingFolderNotifiedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private readonly object _missingFolderNotifyLock = new object();
 
@@ -41,6 +42,11 @@ namespace ScreenshotsVisualizer.Services
         /// </summary>
         public SsvVideoMetadataService VideoMetadataService => _videoMetadataService;
 
+        /// <summary>
+        /// Gets the silent background warmup queue for missing thumbnails.
+        /// </summary>
+        public SsvThumbnailWarmupService ThumbnailWarmupService => _thumbnailWarmupService;
+
         public ScreenshotsVisualizerDatabase(ScreenshotsVisualizerSettings pluginSettings, string pluginUserDataPath) : base(pluginSettings, "ScreenshotsVisualizer", pluginUserDataPath)
         {
             TagBefore = "[SSV]";
@@ -50,6 +56,7 @@ namespace ScreenshotsVisualizer.Services
             _imageMagickConversionService = new ImageMagickConversionService(PluginName);
             _thumbnailService = new SsvThumbnailService(PluginName);
             _videoMetadataService = new SsvVideoMetadataService(PluginName, _thumbnailService);
+            _thumbnailWarmupService = new SsvThumbnailWarmupService(PluginName, _thumbnailService);
         }
 
         #region Logging
@@ -974,7 +981,7 @@ namespace ScreenshotsVisualizer.Services
         /// Updates the screenshot data for the specified game based on the provided <see cref="GameSettings"/>.
         /// For each configured screenshots folder, the method scans for supported image and video files,
         /// applies file pattern matching if enabled, and updates the game's screenshot collection accordingly.
-        /// Also ensures that image and video thumbnails are generated, and video metadata (duration, size) is resolved.
+        /// Missing thumbnails are enqueued for silent background generation (images then videos).
         /// Any errors encountered during the process are logged.
         /// </summary>
         /// <param name="item">The <see cref="GameSettings"/> containing folder and pattern information for the game.</param>
@@ -1092,40 +1099,10 @@ namespace ScreenshotsVisualizer.Services
                     elements = elements.GroupBy(x => x.FileName).Select(g => g.First());
                     gameScreenshots.DateLastRefresh = DateTime.Now;
                     gameScreenshots.Items = elements.ToList();
-
-                    int imageCount = gameScreenshots.Items.Count(x => !x.IsVideo);
-                    int videoCount = gameScreenshots.Items.Count(x => x.IsVideo);
-
-                    // Force generation of data from image
-                    Stopwatch imageThumbnailStopwatch = Stopwatch.StartNew();
-                    gameScreenshots.Items.Where(x => !x.IsVideo).ForEach(x =>
-                    {
-                        string imageThumb = x.ImageThumbnail;
-                    });
-                    imageThumbnailStopwatch.Stop();
-                    Common.LogDebug(string.Format(
-                        "[SsvThumbnail] Image pre-generation for '{0}' completed ({1} image(s), {2} ms)",
-                        game.Name,
-                        imageCount,
-                        imageThumbnailStopwatch.ElapsedMilliseconds));
-
-                    // Force generation of data from video
-                    Stopwatch videoThumbnailStopwatch = Stopwatch.StartNew();
-                    gameScreenshots.Items.Where(x => x.IsVideo).ForEach(x =>
-                    {
-                        string thumb = x.Thumbnail;
-                        string duration = x.DurationString;
-                        string size = x.SizeString;
-                    });
-                    videoThumbnailStopwatch.Stop();
-                    Common.LogDebug(string.Format(
-                        "[SsvThumbnail] Video pre-generation for '{0}' completed ({1} video(s), {2} ms)",
-                        game.Name,
-                        videoCount,
-                        videoThumbnailStopwatch.ElapsedMilliseconds));
                 }
 
                 AddOrUpdate(gameScreenshots);
+                EnqueueGameThumbnailWarmup(gameScreenshots);
 
                 if (GameContext?.Id == game.Id)
                 {
@@ -1146,6 +1123,47 @@ namespace ScreenshotsVisualizer.Services
             {
                 LogError(ex);
             }
+        }
+
+        /// <summary>
+        /// Enqueues silent background generation of missing thumbnails for all games already in the plugin cache.
+        /// Does not rescan screenshot folders on disk.
+        /// </summary>
+        public void ScheduleLibraryThumbnailWarmup()
+        {
+            if (Paths == null || string.IsNullOrEmpty(Paths.PluginCachePath))
+            {
+                LogScanWarn("ScheduleLibraryThumbnailWarmup skipped — plugin cache path unavailable");
+                return;
+            }
+
+            _thumbnailWarmupService.EnqueueLibrary(
+                GetAllCache(),
+                Paths.PluginCachePath,
+                PluginSettings?.FfmpegPath);
+        }
+
+        private void EnqueueGameThumbnailWarmup(GameScreenshots gameScreenshots)
+        {
+            if (gameScreenshots?.Items == null || gameScreenshots.Items.Count == 0)
+            {
+                return;
+            }
+
+            if (Paths == null || string.IsNullOrEmpty(Paths.PluginCachePath))
+            {
+                LogScanWarn(string.Format(
+                    "EnqueueGameThumbnailWarmup skipped for '{0}' — plugin cache path unavailable",
+                    gameScreenshots.Name));
+                return;
+            }
+
+            _thumbnailWarmupService.EnqueueGame(
+                gameScreenshots.Id,
+                gameScreenshots.Name,
+                gameScreenshots.Items,
+                Paths.PluginCachePath,
+                PluginSettings?.FfmpegPath);
         }
 
         #region Tag
