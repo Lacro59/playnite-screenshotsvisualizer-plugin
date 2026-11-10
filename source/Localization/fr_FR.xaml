@@ -63,16 +63,16 @@
     <sys:String x:Key="LOCSsvImageConversionUnnamed">Commande sans nom</sys:String>
     
     <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvImageTotalSize">Image total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoCount">Video count</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Video total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Video total size</sys:String>
-    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Video total duration</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalCount">Total count</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Total size (bytes)</sys:String>
-    <sys:String x:Key="LOCSsvCsvTotalSize">Total size</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageCount">Nombre d'images</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Taille totale des images (bytes)</sys:String>
+    <sys:String x:Key="LOCSsvCsvImageTotalSize">Taille totale des images</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoCount">Nombre de vidéos</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSizeBytes">Taille totale des vidéos (bytes)</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalSize">Taille totale des vidéos</sys:String>
+    <sys:String x:Key="LOCSsvCsvVideoTotalDuration">Durée totale des vidéos</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalCount">Nombre total</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSizeBytes">Taille totale (bytes)</sys:String>
+    <sys:String x:Key="LOCSsvCsvTotalSize">Taille totale</sys:String>
 
     <sys:String x:Key="LOCSsvWarningToMove">Voulez-vous vraiment déplacer toutes les captures d'écran ?</sys:String>
 
@@ -111,9 +111,9 @@
     <sys:String x:Key="LOCSsvFfprobePathLabel">Chemin ffprobe :</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Télécharger le paquet ffmpeg</sys:String>
 
-    <sys:String x:Key="LOCSsvThumbnailCacheDescription">Thumbnail images generated to speed up gallery loading.</sys:String>
-    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">Cached items:</sys:String>
-    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Total size:</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheDescription">Miniatures générées pour accélérer le chargement de la galerie.</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheItemCountLabel">Éléments mis en cache :</sys:String>
+    <sys:String x:Key="LOCSsvThumbnailCacheSizeLabel">Taille totale :</sys:String>
 
     <sys:String x:Key="LOCSsvGlobalPath">Chemin global des captures d'écran</sys:String>
 
