@@ -202,3 +202,9 @@ Packages:
       - 'Fixed: Theme media glyph foreground in screenshot lists'
       - 'Improved: Manager and carousel load performance'
       - 'Updated: Localizations'
+  - Version: 3.6.1
+    RequiredApiVersion: 6.16.0
+    ReleaseDate: 2026-11-10
+    PackageUrl: https://github.com/Lacro59/playnite-screenshotsvisualizer-plugin/releases/download/v3.6.1/playnite-screenshotsvisualizer-plugin_3_6_1.pext
+    Changelog:
+      - 'Updated: Localizations'
