@@ -6,9 +6,28 @@
     <sys:String x:Key="LOCSsvVideo">{0} vidéo</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} vidéos</sys:String>
 
+    <sys:String x:Key="LOCSsvSortBy">Trier par</sys:String>
+    <sys:String x:Key="LOCSsvSortByDate">Date</sys:String>
+    <sys:String x:Key="LOCSsvSortByName">Nom</sys:String>
+    <sys:String x:Key="LOCSsvSortBySize">Taille</sys:String>
+    <sys:String x:Key="LOCSsvSortByType">Type</sys:String>
+    <sys:String x:Key="LOCSsvSortAscending">Croissant</sys:String>
+    <sys:String x:Key="LOCSsvSortDescending">Décroissant</sys:String>
+    <sys:String x:Key="LOCSsvSortDirection">Ordre du tri</sys:String>
+    <sys:String x:Key="LOCSsvFilterMedia">Filtre</sys:String>
+    <sys:String x:Key="LOCSsvFilterAll">Tout</sys:String>
+    <sys:String x:Key="LOCSsvFilterImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvFilterVideos">Vidéos</sys:String>
+    <sys:String x:Key="LOCSsvFilterGameName">Filtrer les jeux par nom</sys:String>
+    <sys:String x:Key="LOCSsvLibraryTotals">Total de la bibliothèque</sys:String>
+    <sys:String x:Key="LOCSsvThemeControlListOrderNote">Les préférences d'ordre de liste s'appliquent lorsqu'un thème héberge ce contrôle. Elles ne sont pas utilisées par le gestionnaire de plugin ou les vues de capture d'écran du jeu.</sys:String>
+    <sys:String x:Key="LOCSsvColumnImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvColumnVideos">Vidéos</sys:String>
+    <sys:String x:Key="LOCSsvColumnSize">Taille</sys:String>
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">L'exécutable ffmpeg n'a pas été trouvé</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">L'exécutable ffprobe n'a pas été trouvé</sys:String>
+    <sys:String x:Key="LOCSsvClipboardCopyFailed">Impossible de copier l'image dans le presse-papiers.</sys:String>
     <sys:String x:Key="LOCSsvImageMagickNotFound">L'exécutable ImageMagick n'a pas été trouvé</sys:String>
     <sys:String x:Key="LOCSsvImageMagickPathLabel">Chemin ImageMagick :</sys:String>
     <sys:String x:Key="LOCSsvImageConversionSection">Commandes de conversion d'images</sys:String>
@@ -45,6 +64,7 @@
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Extension personnalisée ; l’affichage dépend des codecs Windows installés.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Décodé par le support d’imagerie Windows intégré.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Nécessite un codec optionnel du Microsoft Store (extension AV1, WebP ou HEIF).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecMagickHost">Décodé par Playnite (Magick.NET: WebP, AVIF, JPEG XL). JPEG XL nécessite Playnite 10.63 ou plus récent.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Décodé par le plugin (TGA).</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Les vignettes et métadonnées vidéo utilisent les chemins ffmpeg/ffprobe de l’onglet Divers.</sys:String>
 
@@ -55,13 +75,13 @@
     <sys:String x:Key="LOCSsvTitle">Captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">Dernières</sys:String>
-    
+
     <sys:String x:Key="LOCSsvViewScreenshots">Voir les captures d'écran du jeu</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">Ouvrir le répertoire des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">Déplacer les captures d'écran vers le répertoire de sauvegarde</sys:String>
     <sys:String x:Key="LOCSsvConvertImages">Convertir les images</sys:String>
     <sys:String x:Key="LOCSsvImageConversionUnnamed">Commande sans nom</sys:String>
-    
+
     <sys:String x:Key="LOCSsvMovingToSave">Déplacement des captures d'écran...</sys:String>
     <sys:String x:Key="LOCSsvCsvImageCount">Nombre d'images</sys:String>
     <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Taille totale des images (bytes)</sys:String>
@@ -81,12 +101,12 @@
 
     <sys:String x:Key="LOCSsvDeleteConfirm">Êtes-vous sûr de vouloir supprimer {0} ?</sys:String>
 
-    
+
     <!-- SsvManager -->
 
     <sys:String x:Key="LOCSsvLastSsv">Dernière capture d'écran</sys:String>
 
-    
+
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carrousel</sys:String>
@@ -106,7 +126,7 @@
     <!-- ScreenshotsVisualizerSettingsView -->
 
     <sys:String x:Key="LOCSsvUseExternalViever">Utiliser un visualiseur externe</sys:String>
-    
+
     <sys:String x:Key="LOCSsvFfmpegPathLabel">Chemin ffmpeg :</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">Chemin ffprobe :</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Télécharger le paquet ffmpeg</sys:String>
@@ -118,7 +138,12 @@
     <sys:String x:Key="LOCSsvGlobalPath">Chemin global des captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">Scanner les sous-dossiers</sys:String>
-    
+    <sys:String x:Key="LOCSsvFolderOperationsSection">Opérations</sys:String>
+    <sys:String x:Key="LOCSsvFolderOperationsHint">Choisissez si les captures d'écran de cette source sont incluses lors du déplacement vers le dossier d'archive ou de la conversion d'images. La numérisation et la galerie sont inchangées.</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInArchive">Inclure dans l'archive / déplacer dans le dossier</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInConversion">Inclure dans la conversion d'image</sys:String>
+    <sys:String x:Key="LOCSsvArchiveIncludeInConversion">Inclure le dossier d'archives dans la conversion d'images</sys:String>
+
     <sys:String x:Key="LOCSsvAddTag">Ajouter un tag si le jeu a des captures d'écran</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">Ajouter jeux Steam</sys:String>
     <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
@@ -153,7 +178,7 @@ Utilisez Insérer une variable pour la liste complète avec aperçu en direct.</
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Tous</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch uniquement</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM uniquement</sys:String>
-    
+
     <sys:String x:Key="LOCSsvNumberToDigit">Transformer les nombres en {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">Afficher un contrôle avec une capture d'écran unique</sys:String>
@@ -164,21 +189,21 @@ Utilisez Insérer une variable pour la liste complète avec aperçu en direct.</
     <sys:String x:Key="LOCSsvAddRoundedCorner">Ajouter un coin arrondi</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">Options de capture d'écran unique</sys:String>
-    
+
     <sys:String x:Key="LOCSsvShowPicturesOptions">Options pour la liste des captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvHideScreenshotsInfos">Masquer les infos des captures d'écran</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">Ouvrir sur la sélection de l'image</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">Lier la sélection avec la vue simple de capture d'écran</sys:String>
-    
+
     <sys:String x:Key="LOCSsvUsedFilePattern">Utilisez un modèle de fichier</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">Activer le déplacement des captures d'écran dans un dossier unique</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">Modèle de fichier</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">Transformer en chemin absolu</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">Transformer en chemin relatif</sys:String>
-    
+
     <sys:String x:Key="LOCSsvFilePatternTooltipIntro">En plus, vous pouvez utiliser :</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
@@ -207,6 +232,7 @@ Destination d'archivage :
     <!-- Notifications -->
 
     <sys:String x:Key="LOCSsvMoveToFolderToSaveError">Il manque des paramètres pour déplacer les captures d'écran</sys:String>
+    <sys:String x:Key="LOCSsvScreenshotsFolderMissingHint">Dossier de capture d'écran non trouvé pour «{0}». Vérifiez la configuration du chemin de jeu ou rafraîchissez les données de capture d'écran.</sys:String>
 
     <!-- Settings — Configuration tab (phase 1.5 master-detail) -->
 
@@ -256,6 +282,10 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">Modèle de fichier : {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources : {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Sources exclues : {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInArchive">Inclus dans l'archive / déplacement vers le dossier</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromArchive">Exclus de l'archive / déplacement vers le dossier</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInConversion">Inclus dans la conversion d'images</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromConversion">Exclus de la conversion d'images</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">Ajouter une source</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">Modifier une source</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">Enregistrer</sys:String>
@@ -272,5 +302,5 @@ Destination d'archivage :
     <sys:String x:Key="LOCSsvConfigTestGame">Jeu de test</sys:String>
     <sys:String x:Key="LOCSsvConfigResolvedPathExists">Le dossier résolu existe.</sys:String>
     <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Le dossier résolu n'existe pas.</sys:String>
-    
+
 </ResourceDictionary>

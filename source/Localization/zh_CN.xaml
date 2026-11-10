@@ -6,9 +6,28 @@
     <sys:String x:Key="LOCSsvVideo">{0} 个视频</sys:String>
     <sys:String x:Key="LOCSsvVideos">{0} 个视频</sys:String>
 
+    <sys:String x:Key="LOCSsvSortBy">Sort by</sys:String>
+    <sys:String x:Key="LOCSsvSortByDate">Date</sys:String>
+    <sys:String x:Key="LOCSsvSortByName">Name</sys:String>
+    <sys:String x:Key="LOCSsvSortBySize">Size</sys:String>
+    <sys:String x:Key="LOCSsvSortByType">Type</sys:String>
+    <sys:String x:Key="LOCSsvSortAscending">Ascending</sys:String>
+    <sys:String x:Key="LOCSsvSortDescending">Descending</sys:String>
+    <sys:String x:Key="LOCSsvSortDirection">Sort direction</sys:String>
+    <sys:String x:Key="LOCSsvFilterMedia">Filter</sys:String>
+    <sys:String x:Key="LOCSsvFilterAll">All</sys:String>
+    <sys:String x:Key="LOCSsvFilterImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvFilterVideos">Videos</sys:String>
+    <sys:String x:Key="LOCSsvFilterGameName">Filter games by name</sys:String>
+    <sys:String x:Key="LOCSsvLibraryTotals">Library totals</sys:String>
+    <sys:String x:Key="LOCSsvThemeControlListOrderNote">List order preferences apply when a theme hosts this control. They are not used by the plugin Manager or game screenshot views.</sys:String>
+    <sys:String x:Key="LOCSsvColumnImages">Images</sys:String>
+    <sys:String x:Key="LOCSsvColumnVideos">Videos</sys:String>
+    <sys:String x:Key="LOCSsvColumnSize">Size</sys:String>
 
     <sys:String x:Key="LOCSsvFfmpegNotFound">ffmpeg executable was not found</sys:String>
     <sys:String x:Key="LOCSsFfprobeNotFound">ffprobe executable was not found</sys:String>
+    <sys:String x:Key="LOCSsvClipboardCopyFailed">Could not copy the image to the clipboard.</sys:String>
     <sys:String x:Key="LOCSsvImageMagickNotFound">ImageMagick executable was not found</sys:String>
     <sys:String x:Key="LOCSsvImageMagickPathLabel">ImageMagick path:</sys:String>
     <sys:String x:Key="LOCSsvImageConversionSection">Image conversion commands</sys:String>
@@ -45,6 +64,7 @@
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomUnknown">Custom extension; display depends on Windows or installed codecs.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicNative">Decoded by built-in Windows imaging support.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecWicExtension">Requires an optional Windows Store imaging codec (AV1, WebP or HEIF extension).</sys:String>
+    <sys:String x:Key="LOCSsvMediaFormatCodecMagickHost">Decoded by Playnite (Magick.NET: WebP, AVIF, JPEG XL). JPEG XL requires Playnite 10.63 or newer.</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecCustomDecoder">Decoded by the plugin (TGA).</sys:String>
     <sys:String x:Key="LOCSsvMediaFormatCodecFfmpeg">Video thumbnail and metadata use ffmpeg/ffprobe paths from the Misc tab.</sys:String>
 
@@ -55,13 +75,13 @@
     <sys:String x:Key="LOCSsvTitle">截图</sys:String>
 
     <sys:String x:Key="LOCSsvLatest">最新</sys:String>
-    
+
     <sys:String x:Key="LOCSsvViewScreenshots">查看游戏截图</sys:String>
     <sys:String x:Key="LOCSsvOpenScreenshotsDirectory">打开截图目录</sys:String>
     <sys:String x:Key="LOCSsvMoveToSave">将截图移动至保存目录</sys:String>
     <sys:String x:Key="LOCSsvConvertImages">Convert images</sys:String>
     <sys:String x:Key="LOCSsvImageConversionUnnamed">Unnamed command</sys:String>
-    
+
     <sys:String x:Key="LOCSsvMovingToSave">移动截图...</sys:String>
     <sys:String x:Key="LOCSsvCsvImageCount">Image count</sys:String>
     <sys:String x:Key="LOCSsvCsvImageTotalSizeBytes">Image total size (bytes)</sys:String>
@@ -81,12 +101,12 @@
 
     <sys:String x:Key="LOCSsvDeleteConfirm">您确定要删除 {0} 吗</sys:String>
 
-    
+
     <!-- SsvManager -->
 
     <sys:String x:Key="LOCSsvLastSsv">上一张截图</sys:String>
 
-    
+
     <!-- StartPage -->
 
     <sys:String x:Key="LOCSsvCarousel">Carousel</sys:String>
@@ -106,7 +126,7 @@
     <!-- ScreenshotsVisualizerSettingsView -->
 
     <sys:String x:Key="LOCSsvUseExternalViever">Use an external viewer</sys:String>
-    
+
     <sys:String x:Key="LOCSsvFfmpegPathLabel">ffmpeg path:</sys:String>
     <sys:String x:Key="LOCSsvFfprobePathLabel">ffprobe path:</sys:String>
     <sys:String x:Key="LOCSsvDownloadFfmpegLabel">Download ffmpeg package</sys:String>
@@ -118,7 +138,12 @@
     <sys:String x:Key="LOCSsvGlobalPath">全局截图</sys:String>
 
     <sys:String x:Key="LOCSsvScanSubFolders">扫描子文件夹</sys:String>
-    
+    <sys:String x:Key="LOCSsvFolderOperationsSection">Operations</sys:String>
+    <sys:String x:Key="LOCSsvFolderOperationsHint">Choose whether screenshots from this source are included when moving to the archive folder or converting images. Scanning and gallery are unchanged.</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInArchive">Include in archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvIncludeInConversion">Include in image conversion</sys:String>
+    <sys:String x:Key="LOCSsvArchiveIncludeInConversion">Include archive folder in image conversion</sys:String>
+
     <sys:String x:Key="LOCSsvAddTag">若游戏有截图则添加标签</sys:String>
     <sys:String x:Key="LOCSsvAddSteamGame">添加 Steam 游戏</sys:String>
     <sys:String x:Key="LOCSsvPresetSteam">Steam</sys:String>
@@ -153,7 +178,7 @@ Use Insert variable for the full list with live preview.</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorNone">Any</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorRetroArch">RetroArch only</sys:String>
     <sys:String x:Key="LOCSsvGlobalSourceEmulatorScummVM">ScummVM only</sys:String>
-    
+
     <sys:String x:Key="LOCSsvNumberToDigit">将数字转换为 {digit}</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePicture">显示具有一个单截图的控制</sys:String>
@@ -164,21 +189,21 @@ Use Insert variable for the full list with live preview.</sys:String>
     <sys:String x:Key="LOCSsvAddRoundedCorner">添加圆角</sys:String>
 
     <sys:String x:Key="LOCSsvShowSinglePictureOptions">单截图选项</sys:String>
-    
+
     <sys:String x:Key="LOCSsvShowPicturesOptions">列表截图选项</sys:String>
 
     <sys:String x:Key="LOCSsvHideScreenshotsInfos">隐藏截图信</sys:String>
 
     <sys:String x:Key="LOCSsvOpenViewerWithOnSelection">在图片选择时打</sys:String>
     <sys:String x:Key="LOCSsvLinkWithSinglePicture">将所选的链接到单截图视图</sys:String>
-    
+
     <sys:String x:Key="LOCSsvUsedFilePattern">已使用的文件模式</sys:String>
     <sys:String x:Key="LOCSsvEnableFolderToSave">启用截图在特殊文件夹的移</sys:String>
     <sys:String x:Key="LOCSsvFilePattern">文件模式</sys:String>
 
     <sys:String x:Key="LOCSsvSetAbsolute">转换为绝对路径</sys:String>
     <sys:String x:Key="LOCSsvSetRelative">转换为相对</sys:String>
-    
+
     <sys:String x:Key="LOCSsvFilePatternTooltipIntro">In addition, you can use:</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateModified">yyyy[-_]MM[-_]dd</sys:String>
     <sys:String x:Key="LOCSsvFilePatternTooltipFormatDateTimeModified">yyyy[-_]MM[-_]dd[ -_]HH[-_]mm[-_]ss</sys:String>
@@ -207,6 +232,7 @@ Archive destination:
     <!-- Notifications -->
 
     <sys:String x:Key="LOCSsvMoveToFolderToSaveError">缺失用于移动截图的设置</sys:String>
+    <sys:String x:Key="LOCSsvScreenshotsFolderMissingHint">Screenshot folder not found for &quot;{0}&quot;. Check the game path configuration or refresh screenshot data.</sys:String>
 
     <!-- Settings — Configuration tab (phase 1.5 master-detail) -->
 
@@ -256,6 +282,10 @@ Archive destination:
     <sys:String x:Key="LOCSsvSourceListFilePatternPrefix">File pattern: {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesWhitelist">Sources: {0}</sys:String>
     <sys:String x:Key="LOCSsvSourceListSourcesBlacklist">Excluded sources: {0}</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInArchive">Included in archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromArchive">Excluded from archive / move to folder</sys:String>
+    <sys:String x:Key="LOCSsvSourceListIncludedInConversion">Included in image conversion</sys:String>
+    <sys:String x:Key="LOCSsvSourceListExcludedFromConversion">Excluded from image conversion</sys:String>
     <sys:String x:Key="LOCSsvConfigAddSourceTitle">Add screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigEditSourceTitle">Edit screenshot source</sys:String>
     <sys:String x:Key="LOCSsvConfigSaveSource">Save</sys:String>
@@ -272,5 +302,5 @@ Archive destination:
     <sys:String x:Key="LOCSsvConfigTestGame">Test game</sys:String>
     <sys:String x:Key="LOCSsvConfigResolvedPathExists">Resolved folder exists.</sys:String>
     <sys:String x:Key="LOCSsvConfigResolvedPathMissing">Resolved folder does not exist.</sys:String>
-    
+
 </ResourceDictionary>
