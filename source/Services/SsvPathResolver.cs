@@ -28,8 +28,11 @@ namespace ScreenshotsVisualizer.Services
         /// <summary>Invalid filename characters removed.</summary>
         Strip = 2,
 
+        /// <summary>Expanded configured path used as-is (sanitization collapses repeated spaces, so folders with names like "Honkai  Star Rail" would otherwise never match).</summary>
+        Raw = 3,
+
         /// <summary>No existing directory matched any variant.</summary>
-        None = 3
+        None = 4
     }
 
     /// <summary>
@@ -87,7 +90,7 @@ namespace ScreenshotsVisualizer.Services
         }
 
         /// <summary>
-        /// Resolves a folder that exists on disk: canonical (spaces), then underscore, then strip.
+        /// Resolves a folder that exists on disk: canonical (spaces), then the raw configured path, then underscore, then strip.
         /// When none exist, <see cref="SsvPathResolution.Path"/> is the canonical path and <see cref="SsvPathResolution.Exists"/> is false.
         /// </summary>
         /// <param name="game">The game used for variable expansion.</param>
@@ -115,6 +118,18 @@ namespace ScreenshotsVisualizer.Services
                     Path = canonical,
                     CanonicalPath = canonical,
                     Variant = SsvPathResolveVariant.Canonical,
+                    Exists = true
+                };
+            }
+
+            string raw = Paths.FixSeparators(expanded);
+            if (!raw.IsNullOrEmpty() && !Paths.AreEqual(raw, canonical) && Directory.Exists(raw))
+            {
+                return new SsvPathResolution
+                {
+                    Path = raw,
+                    CanonicalPath = canonical,
+                    Variant = SsvPathResolveVariant.Raw,
                     Exists = true
                 };
             }
